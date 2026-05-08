@@ -6,6 +6,8 @@
     "build": "cd admin && npm install && npm run build",
     "postbuild": "cp -r admin/.next . && cp -r admin/public . && cp admin/package.json . || echo 'Ambiente Windows ou erro na copia'",
     "start": "next start",
+    "api:build": "cd api && npm install && npm run build",
+    "api:start": "node api/dist/main",
     "install:admin": "cd admin && npm install",
     "install:api": "cd api && npm install"
   },
