@@ -63,14 +63,25 @@ async function bootstrap() {
     prefix: '/public/',
   });
   
-  // Habilitar CORS com configurações de segurança
+  // Habilitar CORS com configurações robustas para produção
+  const allowedOrigins = [
+    'https://admin.daipohlmann.com.br',
+    'http://localhost:3000',
+    'http://localhost:3001'
+  ];
+
   app.enableCors({
-    origin: process.env.NODE_ENV === 'production' 
-      ? process.env.ALLOWED_ORIGINS?.split(',') || []
-      : true, // Em desenvolvimento, permite todas as origens
+    origin: (origin, callback) => {
+      // Se não houver origin (ex: mobile apps ou insomnia) ou se estiver na lista permitida
+      if (!origin || allowedOrigins.includes(origin) || origin.endsWith('.daipohlmann.com.br')) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
     exposedHeaders: ['X-Total-Count', 'X-Page', 'X-Per-Page'],
   });
   
