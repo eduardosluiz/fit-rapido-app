@@ -1,6 +1,6 @@
 1
 
-added 23 packages, and audited 24 packages in 10s
+added 23 packages, and audited 24 packages in 14s
 
 2
 
@@ -61,7 +61,7 @@ Run `npm audit` for details.
 
 18
 
-> cd api && npm install && npm run build
+> cd api && npm install --include=dev && npm run build
 
 19
 
@@ -72,19 +72,19 @@ npm warn deprecated inflight@1.0.6: This module is not supported, and leaks memo
 
 21
 
-npm warn deprecated rimraf@3.0.2: Rimraf versions prior to v4 are no longer supported
+npm warn deprecated supertest@6.3.4: Please upgrade to supertest v7.1.3+, see release notes at https://github.com/forwardemail/supertest/releases/tag/v7.1.3 - maintenance is supported by Forward Email @ https://forwardemail.net
 
 22
 
-npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+npm warn deprecated @humanwhocodes/config-array@0.13.0: Use @eslint/config-array instead
 
 23
 
-npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+npm warn deprecated rimraf@3.0.2: Rimraf versions prior to v4 are no longer supported
 
 24
 
-npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+npm warn deprecated @humanwhocodes/object-schema@2.0.3: Use @eslint/object-schema instead
 
 25
 
@@ -92,76 +92,118 @@ npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supporte
 
 26
 
+npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
 
 27
 
-added 920 packages, and audited 921 packages in 16s
+npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
 
 28
 
+npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
 
 29
 
-105 packages are looking for funding
+npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
 
 30
 
-run `npm fund` for details
+npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
 
 31
 
+npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
 
 32
 
-31 vulnerabilities (1 low, 14 moderate, 16 high)
+npm warn deprecated superagent@8.1.2: Please upgrade to superagent v10.2.2+, see release notes at https://github.com/forwardemail/superagent/releases/tag/v10.2.2 - maintenance is supported by Forward Email @ https://forwardemail.net
 
 33
 
+npm warn deprecated eslint@8.57.1: This version is no longer supported. Please see https://eslint.org/version-support for other options.
 
 34
 
-To address issues that do not require attention, run:
 
 35
 
-npm audit fix
+added 1259 packages, and audited 1260 packages in 24s
 
 36
 
 
 37
 
-Some issues need review, and may require choosing
+167 packages are looking for funding
 
 38
 
-a different dependency.
+run `npm fund` for details
 
 39
 
 
 40
 
-Run `npm audit` for details.
+44 vulnerabilities (2 low, 19 moderate, 22 high, 1 critical)
 
 41
 
 
 42
 
-> fit-rapido-api@0.1.0 build
+To address issues that do not require attention, run:
 
 43
 
-> nest build
+npm audit fix
 
 44
 
 
 45
 
-sh: nest: command not found
+Some issues need review, and may require choosing
 
 46
 
-ERROR: Failed to build the application
+a different dependency.
+
+47
+
+
+48
+
+Run `npm audit` for details.
+
+49
+
+
+50
+
+> fit-rapido-api@0.1.0 build
+
+51
+
+> npx nest build
+
+52
+
+
+53
+
+
+54
+
+> fit-rapido-monorepo@1.0.0 postbuild
+
+55
+
+> if pwd | grep -v -q 'api.daipohlmann'; then cp -r admin/.next . && cp -r admin/public . && cp admin/package.json . || echo 'Ambiente Windows'; fi
+
+56
+
+
+57
+
+ERROR: No output directory found after build
