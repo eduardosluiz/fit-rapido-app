@@ -1,6 +1,6 @@
 1
 
-added 23 packages, and audited 24 packages in 12s
+added 23 packages, and audited 24 packages in 10s
 
 2
 
@@ -47,7 +47,7 @@ Run `npm audit` for details.
 
 14
 
-> if [ "$APP_TYPE" = "API" ]; then npm run build:api; else npm run build:admin; fi
+> if pwd | grep -q 'api.daipohlmann'; then npm run build:api; else npm run build:admin; fi
 
 15
 
@@ -57,229 +57,111 @@ Run `npm audit` for details.
 
 17
 
-> fit-rapido-monorepo@1.0.0 build:admin
+> fit-rapido-monorepo@1.0.0 build:api
 
 18
 
-> cd admin && npm install && npm run build
+> cd api && npm install && npm run build
 
 19
 
 
 20
 
+npm warn deprecated inflight@1.0.6: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
 
 21
 
-added 148 packages, and audited 149 packages in 11s
+npm warn deprecated rimraf@3.0.2: Rimraf versions prior to v4 are no longer supported
 
 22
 
+npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
 
 23
 
-18 packages are looking for funding
+npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
 
 24
 
-run `npm fund` for details
+npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
 
 25
 
+npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
 
 26
 
-4 vulnerabilities (2 moderate, 1 high, 1 critical)
 
 27
 
+added 920 packages, and audited 921 packages in 16s
 
 28
 
-To address issues that do not require attention, run:
 
 29
 
-npm audit fix
+105 packages are looking for funding
 
 30
 
+run `npm fund` for details
 
 31
 
-To address all issues, run:
 
 32
 
-npm audit fix --force
+31 vulnerabilities (1 low, 14 moderate, 16 high)
 
 33
 
 
 34
 
-Run `npm audit` for details.
+To address issues that do not require attention, run:
 
 35
 
+npm audit fix
 
 36
 
-> fit-rapido-admin@0.1.0 build
 
 37
 
-> next build
+Some issues need review, and may require choosing
 
 38
 
+a different dependency.
 
 39
 
-⚠ Warning: Next.js inferred your workspace root, but it may not be correct.
 
 40
 
-We detected multiple lockfiles and selected the directory of /home/u432222060/domains/api.daipohlmann.com.br/public_html/.builds/source/repository/package-lock.json as the root directory.
+Run `npm audit` for details.
 
 41
 
-To silence this warning, set `outputFileTracingRoot` in your Next.js config, or consider removing one of the lockfiles if it's not needed.
 
 42
 
-See https://nextjs.org/docs/app/api-reference/config/next-config-js/output#caveats for more information.
+> fit-rapido-api@0.1.0 build
 
 43
 
-Detected additional lockfiles:
+> nest build
 
 44
 
-* /home/u432222060/domains/api.daipohlmann.com.br/public_html/.builds/source/repository/admin/package-lock.json
 
 45
 
+sh: nest: command not found
 
 46
-
-▲ Next.js 15.5.3
-
-47
-
-- Experiments (use with caution):
-
-48
-
-· optimizePackageImports
-
-49
-
-
-50
-
-Creating an optimized production build ...
-
-51
-
-Failed to compile.
-
-52
-
-
-53
-
-src/app/layout.tsx
-
-54
-
-An error occurred in `next/font`.
-
-55
-
-
-56
-
-Error: Cannot find module 'tailwindcss'
-
-57
-
-Require stack:
-
-58
-
-- /home/u432222060/domains/api.daipohlmann.com.br/public_html/.builds/source/repository/admin/node_modules/next/dist/build/webpack/config/blocks/css/plugins.js
-
-59
-
-- /home/u432222060/domains/api.daipohlmann.com.br/public_html/.builds/source/repository/admin/node_modules/next/dist/build/webpack/config/blocks/css/index.js
-
-60
-
-- /home/u432222060/domains/api.daipohlmann.com.br/public_html/.builds/source/repository/admin/node_modules/next/dist/build/webpack/config/index.js
-
-61
-
-- /home/u432222060/domains/api.daipohlmann.com.br/public_html/.builds/source/repository/admin/node_modules/next/dist/build/webpack-config.js
-
-62
-
-- /home/u432222060/domains/api.daipohlmann.com.br/public_html/.builds/source/repository/admin/node_modules/next/dist/build/webpack-build/impl.js
-
-63
-
-- /home/u432222060/domains/api.daipohlmann.com.br/public_html/.builds/source/repository/admin/node_modules/next/dist/compiled/jest-worker/processChild.js
-
-64
-
-at Module._resolveFilename (node:internal/modules/cjs/loader:1212:15)
-
-65
-
-at /home/u432222060/domains/api.daipohlmann.com.br/public_html/.builds/source/repository/admin/node_modules/next/dist/server/require-hook.js:57:36
-
-66
-
-at Function.resolve (node:internal/modules/helpers:193:19)
-
-67
-
-at loadPlugin (/home/u432222060/domains/api.daipohlmann.com.br/public_html/.builds/source/repository/admin/node_modules/next/dist/build/webpack/config/blocks/css/plugins.js:53:32)
-
-68
-
-at /home/u432222060/domains/api.daipohlmann.com.br/public_html/.builds/source/repository/admin/node_modules/next/dist/build/webpack/config/blocks/css/plugins.js:185:56
-
-69
-
-at Array.map ()
-
-70
-
-at getPostCssPlugins (/home/u432222060/domains/api.daipohlmann.com.br/public_html/.builds/source/repository/admin/node_modules/next/dist/build/webpack/config/blocks/css/plugins.js:185:47)
-
-71
-
-at async /home/u432222060/domains/api.daipohlmann.com.br/public_html/.builds/source/repository/admin/node_modules/next/dist/build/webpack/config/blocks/css/index.js:125:36
-
-72
-
-at async /home/u432222060/domains/api.daipohlmann.com.br/public_html/.builds/source/repository/admin/node_modules/next/dist/build/webpack/loaders/next-font-loader/index.js:94:33
-
-73
-
-at async Span.traceAsyncFn (/home/u432222060/domains/api.daipohlmann.com.br/public_html/.builds/source/repository/admin/node_modules/next/dist/trace/trace.js:157:20)
-
-74
-
-
-75
-
-
-76
-
-> Build failed because of webpack errors
-
-77
 
 ERROR: Failed to build the application

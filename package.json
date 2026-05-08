@@ -5,7 +5,7 @@
   "scripts": {
     "build": "if pwd | grep -q 'api.daipohlmann'; then npm run build:api; else npm run build:admin; fi",
     "build:admin": "cd admin && npm install && npm run build",
-    "build:api": "cd api && npm install && npm run build",
+    "build:api": "cd api && npm install --include=dev && npm run build",
     "postbuild": "if pwd | grep -v -q 'api.daipohlmann'; then cp -r admin/.next . && cp -r admin/public . && cp admin/package.json . || echo 'Ambiente Windows'; fi",
     "start": "if pwd | grep -q 'api.daipohlmann'; then node api/dist/main.js; else next start; fi",
     "install:admin": "cd admin && npm install",
