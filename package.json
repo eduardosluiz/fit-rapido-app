@@ -4,10 +4,12 @@
   "private": true,
   "scripts": {
     "build": "cd admin && npm install && npm run build",
-    "start": "cd admin && npm run start",
+    "postbuild": "cp -r admin/.next . && cp -r admin/public . && cp admin/package.json . || echo 'Ambiente Windows ou erro na copia'",
+    "start": "next start",
     "install:admin": "cd admin && npm install",
-    "install:api": "cd api && npm install",
-    "build:admin": "cd admin && npm run build",
-    "build:api": "cd api && npm run build"
+    "install:api": "cd api && npm install"
+  },
+  "dependencies": {
+    "next": "latest"
   }
 }
