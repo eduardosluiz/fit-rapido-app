@@ -3,15 +3,17 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "build": "cd admin && npm install && npm run build",
-    "postbuild": "cp -r admin/.next . && cp -r admin/public . && cp admin/package.json . || echo 'Ambiente Windows ou erro na copia'",
-    "start": "next start",
-    "api:build": "cd api && npm install && npm run build",
-    "api:start": "node api/dist/main",
+    "build": "npm run install:all && npm run build:admin && npm run build:api",
+    "install:all": "npm run install:admin && npm run install:api",
     "install:admin": "cd admin && npm install",
-    "install:api": "cd api && npm install"
+    "install:api": "cd api && npm install",
+    "build:admin": "cd admin && npm run build",
+    "build:api": "cd api && npm run build",
+    "postbuild": "cp -r admin/.next . && cp -r admin/public . && cp admin/package.json . || echo 'Ambiente Windows ou erro na copia'",
+    "start": "if [ \"$APP_TYPE\" = \"API\" ]; then node api/dist/main.js; else next start; fi"
   },
   "dependencies": {
-    "next": "latest"
+    "next": "latest",
+    "typescript": "latest"
   }
 }
