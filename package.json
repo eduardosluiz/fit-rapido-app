@@ -3,6 +3,8 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
+    "build": "cd admin && npm install && npm run build",
+    "start": "cd admin && npm run start",
     "install:admin": "cd admin && npm install",
     "install:api": "cd api && npm install",
     "build:admin": "cd admin && npm run build",
