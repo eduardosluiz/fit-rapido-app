@@ -1,0 +1,59 @@
+/* Design System: Fine Lines & Minimalist Tables - V4 */
+
+.data-table-container {
+  @apply w-full overflow-hidden bg-white dark:bg-[#111] 
+         rounded-2xl border border-gray-200 dark:border-[#222] shadow-sm;
+}
+
+.data-table {
+  @apply w-full border-collapse text-left;
+}
+
+.data-table thead th {
+  @apply py-4 px-6 border-b border-gray-300 dark:border-[#333] 
+         text-[10px] font-medium uppercase tracking-[0.2em] text-gray-700 
+         bg-gray-100/50 dark:bg-transparent;
+}
+
+.data-table tbody tr {
+  /* Linha divisória mais visível */
+  @apply border-b border-gray-200 dark:border-[#222] transition-colors duration-300
+         hover:bg-gray-100/40 dark:hover:bg-[#111]/50;
+}
+
+.data-table tbody td {
+  @apply py-5 px-6 text-[13px] font-normal text-gray-800 dark:text-gray-200;
+}
+
+.data-table tbody tr:last-child {
+  @apply border-b-0;
+}
+
+/* Ajustes para ícones de ação - CORES VIVAS POR PADRÃO */
+.data-table .action-icon-edit {
+  @apply text-blue-500 hover:text-blue-700 transition-colors duration-200;
+}
+
+.data-table .action-icon-delete {
+  @apply text-red-500 hover:text-red-700 transition-colors duration-200;
+}
+
+.data-table .action-icon-warning {
+  @apply text-orange-500 hover:text-orange-700 transition-colors duration-200;
+}
+
+.data-table .action-icon-success {
+  @apply text-emerald-500 hover:text-emerald-700 transition-colors duration-200;
+}
+
+.data-table .action-icon-neutral {
+  @apply text-gray-400 hover:text-gray-600 transition-colors duration-200;
+}
+
+.data-table .font-elegant {
+  @apply font-normal tracking-tight text-gray-900 dark:text-white;
+}
+
+.data-table .badge-slim {
+  @apply px-2 py-0.5 rounded-md text-[9px] font-normal uppercase tracking-widest;
+}

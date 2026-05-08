@@ -1,0 +1,41 @@
+{
+  "sucesso": [
+    {
+      "titulo": "🥬 Kits de Suco Verde para Congelar",
+      "id": "bfc431a4-b728-4eac-971c-57a8cc1f77b6"
+    },
+    {
+      "titulo": "🥭 Maracutaya – Smoothie Tropical",
+      "id": "c9cedc62-88e6-40c7-aea1-696af3a66637"
+    },
+    {
+      "titulo": "⏱ Dica Prática: Carne Moída no Freezer",
+      "id": "75f417ea-fd08-4d84-b8f6-ca878e25bff5"
+    },
+    {
+      "titulo": "🍯 Doce de Leite sem Pressão",
+      "id": "4a82a7ed-5275-4209-b22f-e17d76869239"
+    },
+    {
+      "titulo": "🍬 Bala de Doce de Leite Proteica",
+      "id": "c2e1b2dc-80a6-4127-9bcf-233b999ddb19"
+    },
+    {
+      "titulo": "🥥 Leite de Coco Caseiro",
+      "id": "37499ff5-7000-4431-8d94-84b1d4206157"
+    },
+    {
+      "titulo": "🧀 Melhor Pão de Queijo de Todos – 12 Unidades",
+      "id": "0b7df92e-91c8-45d6-b265-5c6eca918859"
+    },
+    {
+      "titulo": "🍅 Molho de Tomate Fit com Cenoura e Beterraba Assados",
+      "id": "dafc98ea-76f3-457c-be48-cb80bb4fbfd9"
+    },
+    {
+      "titulo": "🍞 Pão Fit de Claras e Cottage",
+      "id": "80a01dc7-bfdd-4d43-85f2-bd9b5d5588ad"
+    }
+  ],
+  "erro": []
+}

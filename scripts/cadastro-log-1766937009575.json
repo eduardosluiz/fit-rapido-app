@@ -1,0 +1,95 @@
+{
+  "sucesso": [
+    {
+      "titulo": "🥥 Leite de Coco Caseiro",
+      "id": "340c2689-2ce4-4c13-880c-7257ef521421"
+    },
+    {
+      "titulo": "🧀 Melhor Pão de Queijo de Todos – 12 Unidades",
+      "id": "5db812b4-b18f-4e72-9c4f-b34134abc4f1"
+    },
+    {
+      "titulo": "🍅 Molho de Tomate Fit com Cenoura e Beterraba Assados",
+      "id": "115d9466-df37-4223-8738-fffdcc421d4d"
+    },
+    {
+      "titulo": "🥜 Creme de Castanhas (Substituto Vegetal do Creme de Leite)",
+      "id": "02f661a4-daa8-4492-a6f4-b4b74dd94175"
+    },
+    {
+      "titulo": "🥥 Doce de Leite de Coco",
+      "id": "70971a3f-c7c2-430d-ae34-4e069448f1e9"
+    },
+    {
+      "titulo": "🐔 Coxinha Fit Proteica (4 unidades – 20 g de proteína cada)",
+      "id": "48688511-6c26-4611-8250-483929aab43c"
+    },
+    {
+      "titulo": "🥦 Bolinho de Brócolis com Frango",
+      "id": "710120c3-c7c3-4a3b-a285-5cca91568c18"
+    },
+    {
+      "titulo": "🍊 Bolo de Laranja Sem Glúten (com Calda)",
+      "id": "b7f1e84a-e35e-4546-ac99-53dbdb53d236"
+    },
+    {
+      "titulo": "🍌 Banana Dourada com Creme Proteico e Toque de Chocolate",
+      "id": "c2f2eed5-54a2-425a-9170-0cc464a7cdc6"
+    },
+    {
+      "titulo": "🍫 Chocolate com Grão-de-Bico Crocante",
+      "id": "ce510e1d-1946-4ef4-938d-5f59760b0905"
+    }
+  ],
+  "erro": [],
+  "duplicatas": [
+    {
+      "titulo": "🍬 Bala de Doce de Leite Proteica",
+      "erro": "Receita já existe com ID: c2e1b2dc-80a6-4127-9bcf-233b999ddb19"
+    },
+    {
+      "titulo": "🍞 Pão Fit de Claras e Cottage",
+      "erro": "Receita já existe com ID: 80a01dc7-bfdd-4d43-85f2-bd9b5d5588ad"
+    },
+    {
+      "titulo": "🍮 Pudim Rápido na Airfryer",
+      "erro": "Receita já existe com ID: 9d4ca10b-445e-41d5-aee0-7b34e6c8f196"
+    },
+    {
+      "titulo": "🍝 Strogonoff Sem Lactose",
+      "erro": "Receita já existe com ID: 1332c8f6-4c8a-4a6d-9056-b017a5d9011c"
+    },
+    {
+      "titulo": "💡 Conservação de Alimentos – Vácuo Caseiro",
+      "erro": "Receita já existe com ID: 15f7ead7-2493-4288-9405-375a260ffd71"
+    },
+    {
+      "titulo": "🍞 Torrada com Pastinha de Ovos e Queijo",
+      "erro": "Receita já existe com ID: e22100d7-70ca-4fb8-9a93-86c437174f18"
+    },
+    {
+      "titulo": "🥧 Bolinho de Abóbora com Frango",
+      "erro": "Receita já existe com ID: 82546f82-e7d3-40e3-adc5-43fb24b08ca5"
+    },
+    {
+      "titulo": "🌯 Wrap de Frango com Queijo Derretido",
+      "erro": "Receita já existe com ID: 395ea7b2-9ff5-4dd3-89ce-7ac6eb9fa81c"
+    },
+    {
+      "titulo": "🥞 Panquecas sem Glúten com Cobertura Proteica",
+      "erro": "Receita já existe com ID: c999493f-de69-4448-ab7f-86b85d2fd40e"
+    },
+    {
+      "titulo": "🍫 Barrinhas de Proteína Caseiras (sem forno)",
+      "erro": "Receita já existe com ID: e14a887c-ba75-4bb9-8c4a-4fd19dfbfb26"
+    },
+    {
+      "titulo": "🍫 Docinho Cremoso de Maracujá com Chocolate",
+      "erro": "Receita já existe com ID: affe0450-ea06-4298-8211-ddeb7b8708f8"
+    },
+    {
+      "titulo": "🧇 Waffle de Aipim com Queijo e Frango (Proteico)",
+      "erro": "Receita já existe com ID: 63f5daf5-ad66-44db-bf81-bcc3187f0859"
+    }
+  ]
+}

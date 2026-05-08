@@ -1,0 +1,15 @@
+{
+  "sucesso": [],
+  "erro": [
+    {
+      "titulo": "🍔 Hambúrguer Caseiro da Dai",
+      "erro": {
+        "message": [
+          "property ativa should not exist"
+        ],
+        "error": "Bad Request",
+        "statusCode": 400
+      }
+    }
+  ]
+}

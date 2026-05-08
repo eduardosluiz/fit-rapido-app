@@ -1,0 +1,134 @@
+/* Estilos forçados para imagens de preview em formulários */
+.file-upload-preview img,
+.file-upload-preview video {
+  width: 280px !important;
+  max-width: 280px !important;
+  height: 120px !important;
+  object-fit: cover !important;
+  display: block !important;
+}
+
+.file-upload-preview {
+  max-width: 280px !important;
+  width: 100% !important;
+  display: block !important;
+}
+
+/* Garantir que labels sejam visíveis */
+.form-label {
+  font-weight: 600 !important;
+  font-size: 14px !important;
+  color: #1f2937 !important;
+  margin-bottom: 10px !important;
+  display: block !important;
+}
+
+/* Garantir que inputs e textareas sejam claramente identificáveis */
+input[type="text"],
+input[type="number"],
+input[type="url"],
+textarea {
+  border: 2px solid #d1d5db !important;
+  border-radius: 8px !important;
+  padding: 10px 16px !important;
+  background-color: #ffffff !important;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important;
+  cursor: text !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  color: #111827 !important;
+  transition: all 0.2s ease !important;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus,
+input[type="url"]:focus,
+textarea:focus {
+  outline: none !important;
+  border-color: #c8921a !important;
+  box-shadow: 0 0 0 3px rgba(200, 146, 26, 0.1) !important;
+}
+
+input[type="text"]:hover,
+input[type="number"]:hover,
+input[type="url"]:hover,
+textarea:hover {
+  border-color: #9ca3af !important;
+}
+
+/* Garantir que botões sejam visíveis */
+button[type="submit"],
+button[type="button"],
+a[class*="inline-flex"] {
+  border: 2px solid !important;
+  border-radius: 8px !important;
+  padding: 10px 20px !important;
+  font-weight: 700 !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1) !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+}
+
+button[type="submit"]:hover,
+button[type="button"]:hover:not(:disabled),
+a[class*="inline-flex"]:hover {
+  transform: translateY(-1px) !important;
+  box-shadow: 0 6px 8px -1px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* Garantir que selects sejam visíveis */
+select {
+  border: 2px solid #d1d5db !important;
+  border-radius: 8px !important;
+  padding: 10px 16px !important;
+  background-color: #ffffff !important;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important;
+  cursor: pointer !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  color: #111827 !important;
+}
+
+select:focus {
+  outline: none !important;
+  border-color: #c8921a !important;
+  box-shadow: 0 0 0 3px rgba(200, 146, 26, 0.1) !important;
+}
+
+/* Garantir que checkboxes sejam visíveis */
+input[type="checkbox"] {
+  width: 18px !important;
+  height: 18px !important;
+  cursor: pointer !important;
+  accent-color: #c8921a !important;
+}
+
+/* Melhorar aparência dos ícones */
+i[class*="bx"] {
+  display: inline-block !important;
+  vertical-align: middle !important;
+  line-height: 1 !important;
+}
+
+/* Ícones de seção - mais elegantes */
+h3 i[class*="bx"] {
+  opacity: 0.9 !important;
+  transition: opacity 0.2s ease !important;
+}
+
+h3:hover i[class*="bx"] {
+  opacity: 1 !important;
+}
+
+/* Ícone do dropdown - mais suave */
+select + div i[class*="bx-chevron"] {
+  transition: transform 0.2s ease !important;
+}
+
+select:focus + div i[class*="bx-chevron"] {
+  transform: rotate(180deg) !important;
+}
+

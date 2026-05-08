@@ -1,0 +1,190 @@
+{
+  "sucesso": [],
+  "erro": [
+    {
+      "titulo": "🥥 Leite de Coco Caseiro",
+      "erro": {
+        "message": [
+          "property calorias should not exist",
+          "property proteinas should not exist",
+          "property carboidratos should not exist",
+          "property gorduras should not exist"
+        ],
+        "error": "Bad Request",
+        "statusCode": 400
+      }
+    },
+    {
+      "titulo": "🧀 Melhor Pão de Queijo de Todos – 12 Unidades",
+      "erro": {
+        "message": [
+          "property calorias should not exist",
+          "property proteinas should not exist",
+          "property carboidratos should not exist",
+          "property gorduras should not exist"
+        ],
+        "error": "Bad Request",
+        "statusCode": 400
+      }
+    },
+    {
+      "titulo": "🍅 Molho de Tomate Fit com Cenoura e Beterraba Assados",
+      "erro": {
+        "message": [
+          "property calorias should not exist",
+          "property proteinas should not exist",
+          "property carboidratos should not exist",
+          "property gorduras should not exist",
+          "property fibras should not exist"
+        ],
+        "error": "Bad Request",
+        "statusCode": 400
+      }
+    },
+    {
+      "titulo": "🥜 Creme de Castanhas (Substituto Vegetal do Creme de Leite)",
+      "erro": {
+        "message": [
+          "property calorias should not exist",
+          "property proteinas should not exist",
+          "property carboidratos should not exist",
+          "property gorduras should not exist",
+          "property fibras should not exist"
+        ],
+        "error": "Bad Request",
+        "statusCode": 400
+      }
+    },
+    {
+      "titulo": "🥥 Doce de Leite de Coco",
+      "erro": {
+        "message": [
+          "property calorias should not exist",
+          "property proteinas should not exist",
+          "property carboidratos should not exist",
+          "property gorduras should not exist",
+          "property fibras should not exist"
+        ],
+        "error": "Bad Request",
+        "statusCode": 400
+      }
+    },
+    {
+      "titulo": "🐔 Coxinha Fit Proteica (4 unidades – 20 g de proteína cada)",
+      "erro": {
+        "message": [
+          "property calorias should not exist",
+          "property proteinas should not exist",
+          "property carboidratos should not exist",
+          "property gorduras should not exist",
+          "property fibras should not exist"
+        ],
+        "error": "Bad Request",
+        "statusCode": 400
+      }
+    },
+    {
+      "titulo": "🥦 Bolinho de Brócolis com Frango",
+      "erro": {
+        "message": [
+          "property calorias should not exist",
+          "property proteinas should not exist",
+          "property carboidratos should not exist",
+          "property gorduras should not exist",
+          "property fibras should not exist"
+        ],
+        "error": "Bad Request",
+        "statusCode": 400
+      }
+    },
+    {
+      "titulo": "🍊 Bolo de Laranja Sem Glúten (com Calda)",
+      "erro": {
+        "message": [
+          "property calorias should not exist",
+          "property proteinas should not exist",
+          "property carboidratos should not exist",
+          "property gorduras should not exist"
+        ],
+        "error": "Bad Request",
+        "statusCode": 400
+      }
+    },
+    {
+      "titulo": "🍌 Banana Dourada com Creme Proteico e Toque de Chocolate",
+      "erro": {
+        "message": [
+          "property calorias should not exist",
+          "property proteinas should not exist",
+          "property carboidratos should not exist",
+          "property gorduras should not exist"
+        ],
+        "error": "Bad Request",
+        "statusCode": 400
+      }
+    },
+    {
+      "titulo": "🍫 Chocolate com Grão-de-Bico Crocante",
+      "erro": {
+        "message": [
+          "property calorias should not exist",
+          "property proteinas should not exist",
+          "property carboidratos should not exist",
+          "property gorduras should not exist"
+        ],
+        "error": "Bad Request",
+        "statusCode": 400
+      }
+    }
+  ],
+  "duplicatas": [
+    {
+      "titulo": "🍬 Bala de Doce de Leite Proteica",
+      "erro": "Receita já existe com ID: c2e1b2dc-80a6-4127-9bcf-233b999ddb19"
+    },
+    {
+      "titulo": "🍞 Pão Fit de Claras e Cottage",
+      "erro": "Receita já existe com ID: 80a01dc7-bfdd-4d43-85f2-bd9b5d5588ad"
+    },
+    {
+      "titulo": "🍮 Pudim Rápido na Airfryer",
+      "erro": "Receita já existe com ID: 9d4ca10b-445e-41d5-aee0-7b34e6c8f196"
+    },
+    {
+      "titulo": "🍝 Strogonoff Sem Lactose",
+      "erro": "Receita já existe com ID: 1332c8f6-4c8a-4a6d-9056-b017a5d9011c"
+    },
+    {
+      "titulo": "💡 Conservação de Alimentos – Vácuo Caseiro",
+      "erro": "Receita já existe com ID: 15f7ead7-2493-4288-9405-375a260ffd71"
+    },
+    {
+      "titulo": "🍞 Torrada com Pastinha de Ovos e Queijo",
+      "erro": "Receita já existe com ID: e22100d7-70ca-4fb8-9a93-86c437174f18"
+    },
+    {
+      "titulo": "🥧 Bolinho de Abóbora com Frango",
+      "erro": "Receita já existe com ID: 82546f82-e7d3-40e3-adc5-43fb24b08ca5"
+    },
+    {
+      "titulo": "🌯 Wrap de Frango com Queijo Derretido",
+      "erro": "Receita já existe com ID: 395ea7b2-9ff5-4dd3-89ce-7ac6eb9fa81c"
+    },
+    {
+      "titulo": "🥞 Panquecas sem Glúten com Cobertura Proteica",
+      "erro": "Receita já existe com ID: c999493f-de69-4448-ab7f-86b85d2fd40e"
+    },
+    {
+      "titulo": "🍫 Barrinhas de Proteína Caseiras (sem forno)",
+      "erro": "Receita já existe com ID: e14a887c-ba75-4bb9-8c4a-4fd19dfbfb26"
+    },
+    {
+      "titulo": "🍫 Docinho Cremoso de Maracujá com Chocolate",
+      "erro": "Receita já existe com ID: affe0450-ea06-4298-8211-ddeb7b8708f8"
+    },
+    {
+      "titulo": "🧇 Waffle de Aipim com Queijo e Frango (Proteico)",
+      "erro": "Receita já existe com ID: 63f5daf5-ad66-44db-bf81-bcc3187f0859"
+    }
+  ]
+}

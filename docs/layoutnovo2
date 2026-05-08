@@ -1,0 +1,233 @@
+1. TOKENS (Design System base)
+
+Crie um arquivo:
+theme/tokens.ts
+
+export const colors = {
+  background: "#1C1B1E",        // base principal
+  backgroundSoft: "#232129",    // variação para cards / inputs
+  backgroundElevated: "#2A2830",
+
+  primary: "#FFD26F",           // dourado principal
+  primarySoft: "#C9A24A",
+
+  textPrimary: "#F5F5F7",
+  textSecondary: "#B8B8C0",
+  textMuted: "#8A8892",
+
+  border: "#2F2D35",
+  divider: "#2A2830",
+
+  success: "#4CAF50",
+  warning: "#FFB020",
+};
+
+
+
+🌫️ 2. FUNDO DA TELA (A PARTE MAIS IMPORTANTE)
+
+O fundo NÃO é uma cor sólida — ele tem 3 camadas:
+
+✔️ Características do fundo:
+Base: #1C1B1E (quase preto quente)
+Textura leve (tipo noise/grain)
+Vinheta (bordas mais escuras)
+Glow quente suave no centro (marrom/dourado bem sutil)
+📦 Implementação no React Native
+
+Instale:
+
+expo install expo-linear-gradient
+expo install expo-blur
+
+
+
+🔥 Componente de Background
+
+components/AppBackground.tsx
+import React from "react";
+import { View, StyleSheet, Image } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
+
+export default function AppBackground({ children }: any) {
+  return (
+    <View style={styles.container}>
+      
+      {/* Base */}
+      <View style={styles.base} />
+
+      {/* Glow quente central */}
+      <LinearGradient
+        colors={["rgba(120, 90, 40, 0.25)", "transparent"]}
+        style={styles.glow}
+      />
+
+      {/* Vinheta (bordas escuras) */}
+      <LinearGradient
+        colors={["rgba(0,0,0,0.6)", "transparent", "rgba(0,0,0,0.7)"]}
+        style={styles.vignette}
+      />
+
+      {/* Textura (grain/noise) */}
+      <Image
+        source={require("../assets/noise.png")} // textura PNG leve
+        style={styles.noise}
+        resizeMode="repeat"
+      />
+
+      {children}
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+
+  base: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: "#1C1B1E",
+  },
+
+  glow: {
+    ...StyleSheet.absoluteFillObject,
+    opacity: 0.4,
+  },
+
+  vignette: {
+    ...StyleSheet.absoluteFillObject,
+  },
+
+  noise: {
+    ...StyleSheet.absoluteFillObject,
+    opacity: 0.06,
+  },
+});
+
+
+
+🧠 Dica profissional (importante)
+
+Se quiser deixar nível app premium mesmo, use:
+
+textura .png com ruído bem leve (tipo 200x200)
+opacidade entre 0.04 ~ 0.08
+isso evita banding no gradiente
+🔤 3. TIPOGRAFIA
+
+theme/typography.ts
+
+export const typography = {
+  h1: {
+    fontSize: 28,
+    fontWeight: "600",
+    color: "#F5F5F7",
+  },
+
+  h2: {
+    fontSize: 20,
+    fontWeight: "600",
+    color: "#F5F5F7",
+  },
+
+  body: {
+    fontSize: 14,
+    color: "#B8B8C0",
+  },
+
+  caption: {
+    fontSize: 12,
+    color: "#8A8892",
+  },
+};
+
+
+
+
+
+📏 4. ESPAÇAMENTO
+export const spacing = {
+  xs: 4,
+  sm: 8,
+  md: 12,
+  lg: 16,
+  xl: 24,
+  xxl: 32,
+};
+🔲 5. BORDAS E SOMBRA
+export const radius = {
+  sm: 8,
+  md: 12,
+  lg: 16,
+  xl: 20,
+};
+
+export const shadows = {
+  card: {
+    shadowColor: "#000",
+    shadowOpacity: 0.3,
+    shadowRadius: 10,
+    elevation: 5,
+  },
+};
+🧩 6. COMPONENTES
+🔍 Search Bar
+<View style={{
+  backgroundColor: "#232129",
+  borderRadius: 14,
+  padding: 14,
+  borderWidth: 1,
+  borderColor: "#2F2D35"
+}} />
+🏷️ Chip (categoria)
+<View style={{
+  paddingHorizontal: 14,
+  paddingVertical: 8,
+  borderRadius: 20,
+  backgroundColor: "#232129",
+  borderWidth: 1,
+  borderColor: "#2F2D35"
+}} />
+
+
+
+🧾 Card de receita
+<View style={{
+  backgroundColor: "#232129",
+  borderRadius: 16,
+  overflow: "hidden",
+  borderWidth: 1,
+  borderColor: "#2F2D35"
+}} />
+⭐ Badge dourada
+<View style={{
+  backgroundColor: "#FFD26F",
+  paddingHorizontal: 10,
+  paddingVertical: 4,
+  borderRadius: 8,
+}} />
+🧭 7. TAB BAR
+<View style={{
+  height: 70,
+  backgroundColor: "#1C1B1E",
+  borderTopWidth: 1,
+  borderColor: "#2F2D35"
+}} />
+
+Item ativo:
+
+color: "#FFD26F"
+
+Item inativo:
+
+color: "#8A8892"
+🧠 RESUMO DO FUNDO (o segredo do design)
+
+👉 O visual premium vem da combinação:
+
+Base escura quente (#1C1B1E)
+Glow marrom/dourado MUITO sutil
+Vinheta escura nas bordas
+Textura noise leve
+Baixo contraste + tons quentes

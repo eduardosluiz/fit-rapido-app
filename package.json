@@ -1,0 +1,11 @@
+{
+  "name": "fit-rapido-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "install:admin": "cd admin && npm install",
+    "install:api": "cd api && npm install",
+    "build:admin": "cd admin && npm run build",
+    "build:api": "cd api && npm run build"
+  }
+}

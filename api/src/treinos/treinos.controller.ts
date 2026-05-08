@@ -1,0 +1,88 @@
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  Query,
+  UseGuards,
+  HttpCode,
+  HttpStatus,
+  Request,
+} from '@nestjs/common';
+import { TreinosService } from './treinos.service';
+import { CreateTreinoDto, UpdateTreinoDto } from './dto/treino.dto';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { JwtOptionalGuard } from '../auth/guards/jwt-optional.guard';
+import { AuthService } from '../auth/auth.service';
+
+@Controller('treinos')
+export class TreinosController {
+  constructor(
+    private readonly treinosService: TreinosService,
+    private readonly authService: AuthService,
+  ) {}
+
+  @Post()
+  @UseGuards(JwtAuthGuard)
+  create(@Body() createTreinoDto: CreateTreinoDto) {
+    return this.treinosService.create(createTreinoDto);
+  }
+
+  @Get()
+  @UseGuards(JwtOptionalGuard) // Guard opcional: valida token se presente, mas não bloqueia se não houver
+  async findAll(
+    @Request() req: any,
+    @Query('categoria') categoriaId?: string,
+    @Query('modalidade_id') modalidadeId?: string,
+    @Query('search') search?: string,
+    @Query('premium') premium?: string,
+    @Query('nivel') nivel?: string,
+    @Query('incluirInativas') incluirInativas?: string,
+    @Query('tipoTreino') tipoTreino?: 'ponto_partida' | 'academia' | 'casa',
+    @Query('tipoDica') tipoDica?: 'ajuste_carga' | 'mobilidade' | 'cardio',
+    @Query('tipoEquipamentoCasa') tipoEquipamentoCasa?: 'sem_equipamentos' | 'com_halteres' | 'rapido',
+    @Query('mostrarPontoPartida') mostrarPontoPartida?: string,
+  ) {
+    // Buscar usuário se autenticado
+    let user = null;
+    if (req.user?.sub) {
+      user = await this.authService.findById(req.user.sub);
+    }
+
+    return this.treinosService.findAll(
+      categoriaId,
+      modalidadeId,
+      search,
+      premium === 'true' ? true : premium === 'false' ? false : undefined,
+      nivel,
+      incluirInativas === 'true',
+      user || undefined,
+      tipoTreino,
+      tipoDica,
+      tipoEquipamentoCasa,
+      mostrarPontoPartida === 'true' ? true : mostrarPontoPartida === 'false' ? false : undefined,
+    );
+  }
+
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.treinosService.findOne(id);
+  }
+
+  @Patch(':id')
+  @UseGuards(JwtAuthGuard)
+  update(@Param('id') id: string, @Body() updateTreinoDto: UpdateTreinoDto) {
+    return this.treinosService.update(id, updateTreinoDto);
+  }
+
+  @Delete(':id')
+  @UseGuards(JwtAuthGuard)
+  @HttpCode(HttpStatus.NO_CONTENT)
+  async remove(@Param('id') id: string) {
+    await this.treinosService.remove(id);
+  }
+}
+

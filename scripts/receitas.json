@@ -1,0 +1,3020 @@
+[
+  {
+    "titulo": "🍬 Bala de Doce de Leite Proteica",
+    "descricao": "Rápida, prática e deliciosa! Uma opção doce com proteína para lanches ou sobremesas.",
+    "ingredientes": [
+      "3 colheres bem cheias de doce de leite sem açúcar (aprox. 90 g)",
+      "2 scoops de whey sabor baunilha (aprox. 30 g)",
+      "Leite em pó suficiente para dar ponto, até a massa não grudar nas mãos"
+    ],
+    "modo_preparo": [
+      "Misture bem todos os ingredientes em uma tigela até formar uma massa homogênea",
+      "Coloque a massa em um saco plástico limpo e abra com um rolo, deixando bem fininha",
+      "Leve à geladeira para firmar (aprox. 30–60 min)",
+      "Depois de gelada, corte em quadradinhos e aproveite!"
+    ],
+    "tempo_preparo": 55,
+    "porcoes": 13,
+    "dificuldade": "facil",
+    "tipo_refeicao": "snacks",
+    "tags": [
+      "bala",
+      "doce de leite",
+      "proteína",
+      "whey",
+      "snack",
+      "doce fit"
+    ],
+    "is_premium": false,
+    "is_free": true,
+    "calorias": 60,
+    "proteinas": 5,
+    "carboidratos": 6,
+    "gorduras": 2
+  },
+  {
+    "titulo": "🥥 Leite de Coco Caseiro",
+    "descricao": "Natural, cremoso e livre de conservantes! Ótimo para receitas doces, salgadas ou drinks.",
+    "ingredientes": [
+      "1 coco seco",
+      "450 ml de água quente (não fervendo)"
+    ],
+    "modo_preparo": [
+      "Quebre o coco e retire a polpa",
+      "Corte a polpa em pedaços menores",
+      "Coloque no liquidificador junto com a água quente",
+      "Bata bem por cerca de 2–3 minutos, até formar um creme homogêneo",
+      "Coe usando um pano limpo, voal ou peneira fina, espremendo bem para extrair todo o líquido"
+    ],
+    "tempo_preparo": 13,
+    "porcoes": 5,
+    "dificuldade": "facil",
+    "tipo_refeicao": "drinks",
+    "tags": [
+      "leite de coco",
+      "caseiro",
+      "natural",
+      "bebida",
+      "sem conservantes"
+    ],
+    "is_premium": false,
+    "is_free": true,
+    "calorias": 45,
+    "proteinas": 0.5,
+    "carboidratos": 2,
+    "gorduras": 4
+  },
+  {
+    "titulo": "🧀 Melhor Pão de Queijo de Todos – 12 Unidades",
+    "descricao": "Crocante por fora, macio por dentro e super saboroso! Ideal para café da manhã, lanche ou qualquer hora do dia.",
+    "ingredientes": [
+      "125 g de polvilho doce",
+      "75 ml de leite",
+      "60 ml de óleo de girassol",
+      "1 ovo",
+      "Sal a gosto",
+      "Mussarela ralada a gosto (aprox. 90 g, ajuste conforme preferência)"
+    ],
+    "modo_preparo": [
+      "Preaqueça o forno a 210 °C",
+      "No liquidificador, bata o leite, o óleo, o ovo, o sal e o polvilho doce até obter uma mistura homogênea",
+      "Transfira a massa para uma tigela e adicione a mussarela ralada. Misture bem até incorporar",
+      "Distribua a massa em forminhas de empada ou cupcake, preenchendo até ¾ da capacidade",
+      "Leve ao forno preaquecido por cerca de 25 minutos, ou até os pães de queijo crescerem e dourarem"
+    ],
+    "tempo_preparo": 35,
+    "porcoes": 12,
+    "dificuldade": "facil",
+    "tipo_refeicao": "snacks",
+    "tags": [
+      "pão de queijo",
+      "polvilho",
+      "mussarela",
+      "snack",
+      "café da manhã"
+    ],
+    "is_premium": false,
+    "is_free": true,
+    "calorias": 82,
+    "proteinas": 3.5,
+    "carboidratos": 6,
+    "gorduras": 4.5
+  },
+  {
+    "titulo": "🍅 Molho de Tomate Fit com Cenoura e Beterraba Assados",
+    "descricao": "Sem açúcar, sem óleo refinado e cheio de nutrientes! Ideal para massas, pizzas, molhos de proteína ou como base de receitas saudáveis.",
+    "ingredientes": [
+      "8 tomates maduros (italiano ou Débora), cortados ao meio",
+      "1 cenoura pequena em rodelas",
+      "1 beterraba pequena em cubos",
+      "1 cebola pequena em pétalas",
+      "3 dentes de alho com casca",
+      "1 colher (sopa) de azeite de oliva extra virgem",
+      "Sal rosa ou marinho a gosto",
+      "Pimenta-do-reino e orégano a gosto",
+      "Manjericão fresco para finalizar (opcional)"
+    ],
+    "modo_preparo": [
+      "Preaqueça o forno a 200 °C",
+      "Em uma assadeira, distribua os tomates, a cenoura, a beterraba, a cebola e os dentes de alho (com casca)",
+      "Regue com azeite, salpique sal, pimenta e orégano",
+      "Asse por 40 minutos, até tudo estar bem macio e levemente caramelizado",
+      "Retire os alhos da casca e coloque todos os ingredientes no liquidificador. Bata até obter um molho liso",
+      "Se necessário, adicione um pouco de água filtrada para ajustar a consistência",
+      "Finalize com manjericão fresco e ajuste o sal, se necessário"
+    ],
+    "tempo_preparo": 55,
+    "porcoes": 6,
+    "dificuldade": "medio",
+    "tipo_refeicao": "sides",
+    "tags": [
+      "molho de tomate",
+      "cenoura",
+      "beterraba",
+      "assado",
+      "fit",
+      "sem açúcar"
+    ],
+    "is_premium": false,
+    "is_free": true,
+    "calorias": 45,
+    "proteinas": 1.5,
+    "carboidratos": 8,
+    "gorduras": 2,
+    "fibras": 2
+  },
+  {
+    "titulo": "🍞 Pão Fit de Claras e Cottage",
+    "descricao": "Um pão leve, rico em proteínas e sem glúten, perfeito para lanches ou café da manhã.",
+    "ingredientes": [
+      "15 g de fermento biológico seco",
+      "250 ml de água morna",
+      "1 colher de chá de açúcar (opcional, para ativar o fermento)",
+      "200 ml de claras (aprox. 4 ovos grandes ou 6 pequenos)",
+      "200 g de cottage",
+      "250 g de farinha de arroz",
+      "100 g de polvilho doce",
+      "125 g de fécula de batata",
+      "1 colher de sopa rasa de psyllium (aprox. 10 g)",
+      "1 colher de chá de sal (ou ajuste a gosto)"
+    ],
+    "modo_preparo": [
+      "Ative o fermento com a água morna e o açúcar. Deixe espumar por 5–10 minutos",
+      "Bata as claras com o cottage até obter uma mistura homogênea",
+      "Misture os ingredientes secos: farinha de arroz, polvilho doce, fécula de batata, psyllium e sal",
+      "Junte os líquidos aos secos e mexa bem até formar uma massa firme e elástica",
+      "Ajuste o sal, se necessário",
+      "Deixe a massa crescer em local morno por 30–60 minutos",
+      "Asse em forno preaquecido a 180 °C por 35–45 minutos, até dourar e assar por completo"
+    ],
+    "tempo_preparo": 85,
+    "porcoes": 12,
+    "dificuldade": "medio",
+    "tipo_refeicao": "breakfast",
+    "tags": [
+      "pão",
+      "sem glúten",
+      "claras",
+      "cottage",
+      "proteína",
+      "fit"
+    ],
+    "is_premium": false,
+    "is_free": true,
+    "calorias": 110,
+    "proteinas": 7,
+    "carboidratos": 15,
+    "gorduras": 2,
+    "fibras": 2
+  },
+  {
+    "titulo": "🍮 Pudim Rápido na Airfryer",
+    "descricao": "Delicioso, fácil e pronto em apenas 12 minutos! Ideal para um lanche ou sobremesa rápida.",
+    "ingredientes": [
+      "1 ovo",
+      "2 colheres de sopa de leite em pó",
+      "1 colher de chá de adoçante (ou a gosto)",
+      "50 ml de leite (pode ser vegetal ou sem lactose)",
+      "Calda opcional: tâmaras, mel ou tradicional"
+    ],
+    "modo_preparo": [
+      "Bata todos os ingredientes no mixer ou liquidificador até a mistura ficar bem lisa",
+      "Despeje em uma forminha untada com calda (tâmaras, mel ou tradicional)",
+      "Leve direto à airfryer e asse a 180 °C por 12 minutos",
+      "Retire com cuidado e deixe esfriar completamente antes de desenformar",
+      "Para um pudim mais firme e geladinho, leve à geladeira antes de servir"
+    ],
+    "tempo_preparo": 30,
+    "porcoes": 1,
+    "dificuldade": "facil",
+    "tipo_refeicao": "snacks",
+    "tags": [
+      "pudim",
+      "airfryer",
+      "sobremesa",
+      "fit",
+      "snack",
+      "rápido",
+      "doce fit"
+    ],
+    "is_premium": false,
+    "is_free": true,
+    "calorias": 95,
+    "proteinas": 7,
+    "carboidratos": 6,
+    "gorduras": 5
+  },
+  {
+    "titulo": "🥜 Creme de Castanhas (Substituto Vegetal do Creme de Leite)",
+    "descricao": "Cremoso, versátil e 100% vegetal. Ideal para molhos salgados, doces ou patês.",
+    "ingredientes": [
+      "1 xícara de castanhas-de-caju cruas (de molho por pelo menos 4h ou fervidas por 10 min)",
+      "½ xícara de água (ou um pouco mais, conforme a textura desejada)",
+      "1 pitada de sal",
+      "Opcional: 1 colher de sopa de azeite de oliva (para mais cremosidade)"
+    ],
+    "modo_preparo": [
+      "Escorra as castanhas e coloque no liquidificador",
+      "Adicione a água, o sal e o azeite (se for usar)",
+      "Bata até obter um creme bem liso. Se necessário, adicione mais água aos poucos até atingir a consistência desejada",
+      "Guarde na geladeira em pote bem fechado"
+    ],
+    "tempo_preparo": 10,
+    "porcoes": 8,
+    "dificuldade": "facil",
+    "tipo_refeicao": "sides",
+    "tags": [
+      "creme de castanhas",
+      "vegetal",
+      "substituto",
+      "creme de leite",
+      "vegano",
+      "molho",
+      "patê",
+      "fit"
+    ],
+    "is_premium": false,
+    "is_free": true,
+    "calorias": 80,
+    "proteinas": 2,
+    "carboidratos": 3,
+    "gorduras": 7,
+    "fibras": 1
+  },
+  {
+    "titulo": "🥥 Doce de Leite de Coco",
+    "descricao": "Cremoso, delicioso e sem lactose. Perfeito para passar no pão, rechear bolos ou comer de colher!",
+    "ingredientes": [
+      "2 cocos secos (polpa branca ralada ou em pedaços)",
+      "900 ml de água filtrada",
+      "180 g de açúcar demerara",
+      "1 colher de chá de essência de baunilha",
+      "1 pitada de sal"
+    ],
+    "modo_preparo": [
+      "Bata os pedaços de coco com a água quente no liquidificador até ficar homogêneo. Coe com pano de voal ou peneira fina e reserve o leite",
+      "Coloque o açúcar demerara em uma panela e leve ao fogo médio até derreter e formar um caramelo dourado. Mexa com cuidado",
+      "Com cuidado, despeje o leite de coco no caramelo. Vai borbulhar — é normal! Misture bem com um fouet",
+      "Cozinhe em fogo médio-alto por 25–30 minutos, mexendo de vez em quando, até reduzir e engrossar levemente",
+      "Adicione a essência de baunilha e o sal, misturando bem",
+      "Transfira para um pote de vidro e leve à geladeira. O doce vai engrossar ainda mais ao esfriar",
+      "Para textura mais lisa e cremosa, bata no processador ou mixer após gelar"
+    ],
+    "tempo_preparo": 40,
+    "porcoes": 8,
+    "dificuldade": "facil",
+    "tipo_refeicao": "snacks",
+    "tags": [
+      "doce de leite",
+      "coco",
+      "sem lactose",
+      "sobremesa",
+      "fit",
+      "vegano",
+      "doce fit"
+    ],
+    "is_premium": false,
+    "is_free": true,
+    "calorias": 150,
+    "proteinas": 1,
+    "carboidratos": 18,
+    "gorduras": 8,
+    "fibras": 1
+  },
+  {
+    "titulo": "🍝 Strogonoff Sem Lactose",
+    "descricao": "Cremoso, saboroso e sem lactose — perfeito para uma refeição prática e nutritiva!",
+    "ingredientes": [
+      "500 g de filé mignon em tiras",
+      "1/2 cebola grande picada",
+      "1 dente de alho picado",
+      "3 colheres de sopa de molho de tomate",
+      "1 colher de sopa de mostarda",
+      "1 colher de sopa de ketchup",
+      "Sal, pimenta-do-reino e páprica a gosto",
+      "Azeite para refogar",
+      "Molho cremoso de castanhas: meia receita (aprox. 120 ml)"
+    ],
+    "modo_preparo": [
+      "Aqueça um fio de azeite em uma panela e refogue o alho e a cebola até dourarem",
+      "Adicione o filé mignon e sele bem todos os lados da carne",
+      "Tempere com sal, pimenta-do-reino e páprica a gosto",
+      "Acrescente o molho de tomate e misture bem",
+      "Adicione a mostarda e o ketchup, incorporando tudo",
+      "Por fim, junte o molho cremoso de castanhas e misture até ficar homogêneo",
+      "Quando tudo estiver bem incorporado e cremoso, desligue o fogo",
+      "Sirva com arroz, purê ou legumes grelhados"
+    ],
+    "tempo_preparo": 30,
+    "porcoes": 4,
+    "dificuldade": "facil",
+    "tipo_refeicao": "dinner",
+    "tags": [
+      "strogonoff",
+      "sem lactose",
+      "carne",
+      "cremoso",
+      "jantar",
+      "almoço",
+      "fit"
+    ],
+    "is_premium": false,
+    "is_free": true,
+    "calorias": 290,
+    "proteinas": 33,
+    "carboidratos": 8,
+    "gorduras": 14
+  },
+  {
+    "titulo": "🐔 Coxinha Fit Proteica (4 unidades – 20 g de proteína cada)",
+    "descricao": "Saborosa, prática e altamente proteica. Ideal para lanches ou refeições pós-treino!",
+    "ingredientes": [
+      "Massa:",
+      "1/3 xícara de batata inglesa cozida e amassada (ou batata-doce/mandioquinha)",
+      "2 colheres de sopa de polvilho (doce + azedo)",
+      "Temperos a gosto: sal, pimenta, cúrcuma ou páprica",
+      "Recheio Proteico:",
+      "200 g de peito de frango desfiado e temperado",
+      "2 colheres de sopa de cottage ou requeijão light (opcional para cremosidade)",
+      "Para empanar:",
+      "1 clara de ovo (ou pasta de linhaça/azeite)",
+      "2 colheres de sopa de farinha para empanar (amêndoas, psyllium com parmesão, ou outro)",
+      "Extras opcionais: chia, linhaça ou gergelim"
+    ],
+    "modo_preparo": [
+      "Misture os ingredientes da massa até formar uma massa homogênea e modelável",
+      "Pegue porções da massa, recheie com o frango e molde em formato de coxinha",
+      "Passe na clara de ovo (ou substituto) e depois na farinha para empanar",
+      "Leve ao forno pré-aquecido a 180°C ou airfryer até dourar (aprox. 20–25 min)"
+    ],
+    "tempo_preparo": 45,
+    "porcoes": 4,
+    "dificuldade": "facil",
+    "tipo_refeicao": "snacks",
+    "tags": [
+      "coxinha",
+      "fit",
+      "proteica",
+      "frango",
+      "lanche",
+      "pós-treino",
+      "snack"
+    ],
+    "is_premium": false,
+    "is_free": true,
+    "calorias": 180,
+    "proteinas": 17,
+    "carboidratos": 10,
+    "gorduras": 5,
+    "fibras": 1.5
+  },
+  {
+    "titulo": "💡 Conservação de Alimentos – Vácuo Caseiro",
+    "descricao": "Organização, praticidade e durabilidade na cozinha! Fazer vácuo nos alimentos é uma dica simples e ótima para conservar melhor e evitar desperdícios.",
+    "ingredientes": [
+      "Saquinhos próprios para alimentos",
+      "Canudo",
+      "Alimentos a serem conservados"
+    ],
+    "modo_preparo": [
+      "Coloque o alimento no saquinho. Use saquinhos próprios para alimentos e coloque a porção desejada, deixando espaço para fechar",
+      "Insira um canudo na ponta do saquinho. Deixe um pequeno espaço aberto e coloque o canudo, sem deixar muito aberto para não entrar ar",
+      "Retire o ar com a boca. Suque o ar do saquinho usando o canudo até que fique bem \"coladinho\" no alimento",
+      "Feche o saquinho rapidamente. Assim que terminar, feche bem com lacre ou zíper para manter o vácuo",
+      "Pronto! Agora é só guardar na geladeira ou freezer. Seu alimento vai durar mais e ocupar menos espaço!"
+    ],
+    "tempo_preparo": 5,
+    "porcoes": 1,
+    "dificuldade": "facil",
+    "tipo_refeicao": "sides",
+    "tags": [
+      "conservação",
+      "vácuo",
+      "dica",
+      "organização",
+      "praticidade",
+      "desperdício zero"
+    ],
+    "is_premium": false,
+    "is_free": true
+  },
+  {
+    "titulo": "🍞 Torrada com Pastinha de Ovos e Queijo",
+    "descricao": "Lanche rápido, saboroso e rico em proteína!",
+    "ingredientes": [
+      "Pastinha de ovos:",
+      "2 ovos cozidos e picados",
+      "½ tomate pequeno picado (sem sementes)",
+      "1 colher de sobremesa de requeijão",
+      "Salsa picada a gosto",
+      "Sal a gosto",
+      "Torrada:",
+      "1 fatia de pão de sua preferência",
+      "1 fatia de queijo muçarela, prato ou minas padrão (~30 g)"
+    ],
+    "modo_preparo": [
+      "Amasse os ovos cozidos com um garfo",
+      "Adicione o tomate picado, a salsa e o sal",
+      "Misture bem e acrescente o requeijão para dar cremosidade",
+      "Mexa até formar uma pastinha homogênea",
+      "Espalhe a pastinha de ovos sobre a fatia de pão",
+      "Cubra com a fatia de queijo",
+      "Leve à airfryer a 180°C por 5–7 minutos, ou até o queijo derreter e dourar levemente",
+      "Sirva ainda quente. Opcional: finalize com pimenta-do-reino ou orégano"
+    ],
+    "tempo_preparo": 10,
+    "porcoes": 1,
+    "dificuldade": "facil",
+    "tipo_refeicao": "snacks",
+    "tags": [
+      "torrada",
+      "ovos",
+      "queijo",
+      "lanche",
+      "proteína",
+      "rápido",
+      "airfryer"
+    ],
+    "is_premium": false,
+    "is_free": true,
+    "calorias": 260,
+    "proteinas": 19,
+    "carboidratos": 18,
+    "gorduras": 12,
+    "fibras": 2
+  },
+  {
+    "titulo": "🥧 Bolinho de Abóbora com Frango",
+    "descricao": "Lanche ou refeição rápida, saborosa e rica em proteína!",
+    "ingredientes": [
+      "Massa:",
+      "350g de frango cozido e temperado (desfiado ou processado)",
+      "200g de abóbora cabotiá cozida e amassada",
+      "30g de farinha de amêndoas",
+      "Temperos a gosto (sal, pimenta-do-reino, páprica)",
+      "Para empanar:",
+      "1 ovo batido",
+      "1 colher (sopa) de chia",
+      "1 colher (sopa) de linhaça",
+      "Queijo parmesão ralado a gosto",
+      "Farinha de amêndoas (para dar liga)",
+      "Panko opcional (para crocância)",
+      "Azeite de oliva spray (para finalizar)"
+    ],
+    "modo_preparo": [
+      "Prepare a massa: Misture o frango desfiado, a abóbora amassada, a farinha de amêndoas e os temperos até formar uma massa homogênea",
+      "Modele os bolinhos: Faça bolinhos de aproximadamente 100 g cada",
+      "Prepare a mistura para empanar: Em um prato, misture chia, linhaça, parmesão, farinha de amêndoas e panko (se usar)",
+      "Empane os bolinhos: Passe cada bolinho no ovo batido e depois na mistura seca",
+      "Asse na airfryer: Coloque os bolinhos na airfryer, borrife com azeite de oliva em spray e asse a 200°C até dourar (aprox. 15–20 min)"
+    ],
+    "tempo_preparo": 30,
+    "porcoes": 4,
+    "dificuldade": "facil",
+    "tipo_refeicao": "snacks",
+    "tags": [
+      "bolinho",
+      "abóbora",
+      "frango",
+      "proteína",
+      "lanche",
+      "airfryer",
+      "fit"
+    ],
+    "is_premium": false,
+    "is_free": true,
+    "calorias": 180,
+    "proteinas": 20,
+    "carboidratos": 6,
+    "gorduras": 8,
+    "fibras": 3
+  },
+  {
+    "titulo": "🥦 Bolinho de Brócolis com Frango",
+    "descricao": "Lanche ou refeição rápida, rico em proteína e sabor!",
+    "ingredientes": [
+      "Massa:",
+      "300g de frango cozido e temperado",
+      "200g de brócolis cozido",
+      "2 colheres de sopa de farelo de aveia",
+      "1 ovo",
+      "Temperos a gosto: sal, páprica, cúrcuma, pimenta-do-reino",
+      "Para empanar:",
+      "1 ovo batido",
+      "Queijo parmesão ralado a gosto",
+      "Sementes de linhaça e chia a gosto"
+    ],
+    "modo_preparo": [
+      "Prepare a massa: No processador, bata rapidamente o frango, o brócolis, o farelo de aveia, o ovo e os temperos até obter uma massa homogênea",
+      "Modele os bolinhos: Faça bolinhos de aproximadamente 100 g cada",
+      "Recheio (opcional): Se quiser, adicione cubinhos de queijo ou um pouco de requeijão no centro do bolinho",
+      "Empane os bolinhos: Passe cada bolinho no ovo batido e depois na mistura de parmesão, linhaça e chia",
+      "Asse: Leve ao forno preaquecido a 200°C por cerca de 25–30 minutos, ou até dourar"
+    ],
+    "tempo_preparo": 40,
+    "porcoes": 3,
+    "dificuldade": "facil",
+    "tipo_refeicao": "snacks",
+    "tags": [
+      "bolinho",
+      "brócolis",
+      "frango",
+      "proteína",
+      "lanche",
+      "fit"
+    ],
+    "is_premium": false,
+    "is_free": true,
+    "calorias": 170,
+    "proteinas": 20,
+    "carboidratos": 5,
+    "gorduras": 6,
+    "fibras": 2
+  },
+  {
+    "titulo": "🌯 Wrap de Frango com Queijo Derretido",
+    "descricao": "Lanche rápido, prático e super proteico — pronto em poucos minutos!",
+    "ingredientes": [
+      "80 g de frango cozido e temperado",
+      "1 folha de wrap",
+      "2 colheres de sopa de cenoura ralada crua",
+      "Folhas de rúcula ou alface a gosto",
+      "1 colher de sobremesa de requeijão (usei de búfala)",
+      "20 g de queijo (muçarela, prato, minas ou o de sua preferência)"
+    ],
+    "modo_preparo": [
+      "Aqueça uma frigideira em fogo médio",
+      "Coloque a folha de wrap na frigideira",
+      "Distribua o queijo sobre metade do wrap",
+      "Dobre ao meio e deixe dourar dos dois lados, até o queijo derreter",
+      "Retire da frigideira e abra com cuidado",
+      "Recheie com o frango, a cenoura ralada, as folhas verdes e o requeijão",
+      "Feche e sirva ainda quentinho"
+    ],
+    "tempo_preparo": 15,
+    "porcoes": 1,
+    "dificuldade": "facil",
+    "tipo_refeicao": "snacks",
+    "tags": [
+      "wrap",
+      "frango",
+      "queijo",
+      "lanche",
+      "proteína",
+      "rápido",
+      "prático"
+    ],
+    "is_premium": false,
+    "is_free": true,
+    "calorias": 320,
+    "proteinas": 29,
+    "carboidratos": 28,
+    "gorduras": 11
+  },
+  {
+    "titulo": "🥞 Panquecas sem Glúten com Cobertura Proteica",
+    "descricao": "Lanche rápido, nutritivo e ideal para café da manhã ou pós-treino!",
+    "ingredientes": [
+      "Massa:",
+      "2 colheres de sopa de farinha de aveia sem glúten",
+      "1 ovo",
+      "1 colher de sobremesa de adoçante",
+      "30 ml de leite de amêndoas",
+      "1 colher de café de essência de baunilha",
+      "1/2 colher de chá de canela",
+      "Gotas de chocolate 70% a gosto",
+      "1/2 colher de chá de fermento em pó",
+      "Cobertura proteica (opcional):",
+      "Iogurte grego natural ou cottage",
+      "Whey protein (sabor baunilha ou neutro)",
+      "Um pouquinho de leite vegetal ou água para ajustar a textura"
+    ],
+    "modo_preparo": [
+      "Em um bowl, misture todos os ingredientes da massa até ficar homogêneo",
+      "Aqueça uma frigideira antiaderente em fogo médio",
+      "Divida a massa em pequenas porções e despeje na frigideira",
+      "Doure dos dois lados até as panquecas ficarem macias e levemente douradas",
+      "Para a cobertura, misture o iogurte (ou cottage) com o whey e ajuste a textura",
+      "Sirva as panquecas com a cobertura proteica por cima"
+    ],
+    "tempo_preparo": 12,
+    "porcoes": 1,
+    "dificuldade": "facil",
+    "tipo_refeicao": "breakfast",
+    "tags": [
+      "panqueca",
+      "sem glúten",
+      "proteína",
+      "café da manhã",
+      "pós-treino",
+      "whey",
+      "fit"
+    ],
+    "is_premium": false,
+    "is_free": true,
+    "calorias": 220,
+    "proteinas": 14,
+    "carboidratos": 22,
+    "gorduras": 7
+  },
+  {
+    "titulo": "🍫 Barrinhas de Proteína Caseiras (sem forno)",
+    "descricao": "Práticas, proteicas e ideais para deixar prontas na geladeira!",
+    "ingredientes": [
+      "5 scoops de proteína sabor baunilha (usei whey com 24 g de proteína por scoop)",
+      "1/4 de xícara de farinha de coco",
+      "1/4 de xícara de néctar de coco",
+      "1/4 de xícara de pasta de amendoim",
+      "4 colheres de sopa de água (adicionar aos poucos)",
+      "2 colheres de sopa de pistache picado (opcional)"
+    ],
+    "modo_preparo": [
+      "Em um bowl, misture todos os ingredientes secos",
+      "Acrescente a pasta de amendoim, o néctar de coco e a água aos poucos, até formar uma massa uniforme e modelável",
+      "Pressione a massa em um recipiente forrado com papel manteiga ou silicone",
+      "Leve à geladeira por pelo menos 4 horas",
+      "Retire, desenforme e divida em 5 barrinhas",
+      "Manter na geladeira por até 5 dias, em pote bem fechado"
+    ],
+    "tempo_preparo": 10,
+    "porcoes": 5,
+    "dificuldade": "facil",
+    "tipo_refeicao": "snacks",
+    "tags": [
+      "barrinha",
+      "proteína",
+      "caseira",
+      "sem forno",
+      "pós-treino",
+      "lanche",
+      "whey",
+      "fit"
+    ],
+    "is_premium": false,
+    "is_free": true,
+    "calorias": 250,
+    "proteinas": 28
+  },
+  {
+    "titulo": "🍫 Docinho Cremoso de Maracujá com Chocolate",
+    "descricao": "Cremoso, equilibrando o azedinho do maracujá com o chocolate… e ainda salvando frutas maduras da geladeira!",
+    "ingredientes": [
+      "Creme de maracujá:",
+      "2 maracujás maduros (polpa com sementes)",
+      "Leite em pó (quanto baste para dar ponto cremoso)",
+      "Ganache de chocolate:",
+      "1 barra de chocolate 70% cacau",
+      "2 a 3 colheres de sopa de creme de amêndoas (ou creme de leite)",
+      "Finalização:",
+      "Chocolate branco sem açúcar (derretido)"
+    ],
+    "modo_preparo": [
+      "Creme de maracujá: Em um bowl, misture a polpa dos maracujás com leite em pó aos poucos, até formar um creme mais encorpado e cremoso. Leve à geladeira para firmar",
+      "Ganache de chocolate: Derreta o chocolate 70% e misture com o creme de amêndoas (ou creme de leite) até ficar homogêneo. Leve à geladeira até atingir ponto de enrolar",
+      "Montagem dos docinhos: Modele bolinhas com a ganache de chocolate",
+      "Envolva cada bolinha com o creme de maracujá",
+      "Finalize com chocolate branco sem açúcar derretido por cima",
+      "Leve à geladeira novamente até firmar bem antes de servir"
+    ],
+    "tempo_preparo": 15,
+    "porcoes": 9,
+    "dificuldade": "facil",
+    "tipo_refeicao": "snacks",
+    "tags": [
+      "docinho",
+      "maracujá",
+      "chocolate",
+      "cremoso",
+      "sobremesa",
+      "fit",
+      "doce fit"
+    ],
+    "is_premium": false,
+    "is_free": true
+  },
+  {
+    "titulo": "🍊 Bolo de Laranja Sem Glúten (com Calda)",
+    "descricao": "Fofinho, aromático e perfeito para café da tarde ou lanche.",
+    "ingredientes": [
+      "Massa:",
+      "4 ovos",
+      "1½ xícara de stevia culinária (ou outro adoçante próprio para forno)",
+      "Suco de 2 laranjas",
+      "Raspas da casca de 1 laranja",
+      "Essência de baunilha a gosto",
+      "120 g de farinha de arroz",
+      "50 g de fécula de batata",
+      "30 g de amido de milho",
+      "50 g de polvilho doce",
+      "1 colher (sopa) de fermento químico",
+      "Calda (opcional – usar a que você preferir ou costuma fazer)"
+    ],
+    "modo_preparo": [
+      "Pré-aqueça o forno a 180 °C",
+      "Em uma tigela, bata os ovos com a stevia até ficar homogêneo",
+      "Acrescente o suco das laranjas, as raspas e a essência de baunilha",
+      "Adicione as farinhas (ou o mix) e misture até obter uma massa lisa",
+      "Incorpore o fermento delicadamente",
+      "Despeje a massa em forma untada",
+      "Leve ao forno por cerca de 45 minutos, ou até dourar e passar no teste do palito"
+    ],
+    "tempo_preparo": 60,
+    "porcoes": 11,
+    "dificuldade": "facil",
+    "tipo_refeicao": "snacks",
+    "tags": [
+      "bolo",
+      "laranja",
+      "sem glúten",
+      "café da tarde",
+      "lanche",
+      "fit",
+      "doce fit"
+    ],
+    "is_premium": false,
+    "is_free": true,
+    "calorias": 160,
+    "proteinas": 4.5,
+    "carboidratos": 26.5,
+    "gorduras": 3.5
+  },
+  {
+    "titulo": "🍌 Banana Dourada com Creme Proteico e Toque de Chocolate",
+    "descricao": "Doce equilibrado, cremoso e nutritivo — ideal para snack, lanche ou pós-treino.",
+    "ingredientes": [
+      "Banana dourada:",
+      "1 banana em rodelas",
+      "1 colher de sopa de aveia em flocos",
+      "Canela a gosto",
+      "~1 colher de sopa de calda de coco",
+      "Creme proteico:",
+      "1 pote de iogurte natural",
+      "1 scoop de whey protein (sugestão: sabor baunilha)",
+      "Finalização:",
+      "Chocolate 70% derretido (opcional)"
+    ],
+    "modo_preparo": [
+      "Corte a banana em rodelas",
+      "Doure dos dois lados em frigideira antiaderente",
+      "Adicione a calda de coco e sacuda levemente a frigideira para envolver as bananas",
+      "Acrescente a aveia e a canela, misturando com cuidado. Reserve",
+      "Em um bowl, misture o iogurte com o whey até formar um creme homogêneo",
+      "Disponha as bananas douradas sobre o creme proteico",
+      "Finalize com um fio de chocolate 70% derretido"
+    ],
+    "tempo_preparo": 10,
+    "porcoes": 1,
+    "dificuldade": "facil",
+    "tipo_refeicao": "snacks",
+    "tags": [
+      "banana",
+      "proteína",
+      "whey",
+      "lanche",
+      "pós-treino",
+      "snack",
+      "chocolate",
+      "fit"
+    ],
+    "is_premium": false,
+    "is_free": true,
+    "calorias": 330,
+    "proteinas": 26,
+    "carboidratos": 38,
+    "gorduras": 9
+  },
+  {
+    "titulo": "🧇 Waffle de Aipim com Queijo e Frango (Proteico)",
+    "descricao": "Crocante por fora, macio por dentro e ótimo para um lanche ou refeição rápida!",
+    "ingredientes": [
+      "100 g de aipim cozido e amassado",
+      "30 g de muçarela de búfala ralada (ou em pedacinhos)",
+      "50 g de frango desfiado e temperado (para finalizar por cima)"
+    ],
+    "modo_preparo": [
+      "Pré-aqueça a máquina de waffle",
+      "Unte levemente com azeite, se necessário",
+      "Misture o aipim com o queijo e coloque a massa na máquina, espalhando bem com uma colher",
+      "Feche e deixe assar até dourar, por cerca de 5 a 7 minutos (o tempo pode variar conforme a máquina)",
+      "Retire com cuidado e transfira para um prato",
+      "Finalize com o frango desfiado e temperado, já aquecido"
+    ],
+    "tempo_preparo": 12,
+    "porcoes": 1,
+    "dificuldade": "facil",
+    "tipo_refeicao": "snacks",
+    "tags": [
+      "waffle",
+      "aipim",
+      "queijo",
+      "frango",
+      "proteico",
+      "lanche",
+      "fit"
+    ],
+    "is_premium": false,
+    "is_free": true,
+    "calorias": 297,
+    "proteinas": 22,
+    "carboidratos": 31
+  },
+  {
+    "titulo": "🍫 Chocolate com Grão-de-Bico Crocante",
+    "descricao": "Crocante, intenso e surpreendente. Um snack doce diferente, com textura e muito sabor.",
+    "ingredientes": [
+      "1 xícara de grão-de-bico cru",
+      "200 g de chocolate sem açúcar",
+      "Pitada de flor de sal (opcional)",
+      "Canela em pó (opcional)",
+      "Nibs de cacau (opcional)",
+      "Coco ralado sem açúcar (opcional)"
+    ],
+    "modo_preparo": [
+      "Deixe o grão-de-bico de molho por 24 horas em água filtrada, trocando a água 1 a 2 vezes nesse período",
+      "Escorra, lave bem e cozinhe por 5 a 8 minutos após levantar fervura. O grão deve ficar firme, não macio",
+      "Escorra novamente e seque muito bem com pano limpo ou papel-toalha. Grão-de-bico úmido não fica crocante",
+      "Distribua em uma assadeira, sem sobrepor os grãos. Leve ao forno pré-aquecido a 180 °C por 45 a 60 minutos, mexendo a cada 15 minutos. Quando estiver dourado e fazendo o barulhinho de \"toc-toc\", está pronto",
+      "Dica extra: desligue o forno e deixe a assadeira lá dentro com a porta entreaberta por 10 a 15 minutos para garantir ainda mais crocância",
+      "Derreta o chocolate em banho-maria ou no micro-ondas (potência média, mexendo a cada 30 segundos)",
+      "Misture o grão-de-bico crocante ao chocolate derretido até envolver bem",
+      "Espalhe sobre papel manteiga em uma camada fina",
+      "Leve à geladeira até firmar. Quebre em pedacinhos e guarde em pote fechado"
+    ],
+    "tempo_preparo": 95,
+    "porcoes": 11,
+    "dificuldade": "facil",
+    "tipo_refeicao": "snacks",
+    "tags": [
+      "chocolate",
+      "grão-de-bico",
+      "crocante",
+      "snack",
+      "doce fit",
+      "sem açúcar",
+      "vegano"
+    ],
+    "is_premium": false,
+    "is_free": true,
+    "calorias": 102.5,
+    "proteinas": 2.5,
+    "carboidratos": 9.5,
+    "gorduras": 6.5,
+    "informacoes_nutricionais": "Por porção (≈20 g): Calorias: ~95–110 kcal | Carboidratos: ~8–11 g | Proteínas: ~2–3 g | Gorduras: ~6–7 g. Os valores podem variar conforme o tipo de chocolate utilizado, tamanho dos pedaços e adição de extras. Snack doce para consumo pontual. Ideal para matar a vontade de chocolate com mais textura e saciedade. Valores de macros calculados via aplicativo e servem apenas como estimativa. Não substituem orientação nutricional profissional."
+  },
+  {
+    "titulo": "Disquinhos de Cenoura com Parmesão (sem farinha)",
+    "descricao": "Leves, práticos e cheios de sabor, com poucos ingredientes.",
+    "ingredientes": [
+      "1 cenoura média ralada fina",
+      "1 ovo",
+      "3 colheres de sopa de parmesão ralado",
+      "Pitada de sal",
+      "Pimenta-do-reino a gosto"
+    ],
+    "modo_preparo": [
+      "Misture todos os ingredientes até formar uma massa uniforme",
+      "Modele 2 disquinhos do mesmo tamanho",
+      "Leve ao forno pré-aquecido a 180 °C por 20 minutos, virando na metade do tempo. Opção: grelhe em frigideira antiaderente até dourar dos dois lados"
+    ],
+    "tempo_preparo": 30,
+    "porcoes": 1,
+    "dificuldade": "facil",
+    "tipo_refeicao": "snacks",
+    "tags": [
+      "disquinhos",
+      "cenoura",
+      "parmesão",
+      "sem farinha",
+      "lanche",
+      "sanduíche",
+      "fit",
+      "sem glúten"
+    ],
+    "is_premium": false,
+    "is_free": true,
+    "calorias": 207.5,
+    "proteinas": 12,
+    "carboidratos": 11,
+    "gorduras": 15,
+    "informacoes_nutricionais": "Receita inteira (2 disquinhos – 1 sanduíche): Calorias: ~200–215 kcal | Carboidratos: ~10–12 g | Proteínas: ~11–13 g | Gorduras: ~14–16 g. Valores podem variar conforme o tipo de parmesão, tamanho da cenoura e método de preparo. Use como base de sanduíche com frango desfiado, atum, ovos mexidos ou ricota temperada. Valores de macros calculados via aplicativo e servem apenas como estimativa. Não substituem orientação nutricional profissional."
+  },
+  {
+    "titulo": "🍨 Sorvete Cremoso de Maracujá com Creme de Amêndoas",
+    "descricao": "Cremoso, refrescante e nutritivo. Ideal para lanche, sobremesa leve ou pós-treino (dependendo da versão).",
+    "ingredientes": [
+      "1 banana prata congelada",
+      "1 maracujá (polpa)",
+      "3 cubos de creme de amêndoas (ou iogurte natural ou leite de coco)",
+      "Versão 1: 2 colheres de sopa de leite em pó",
+      "OU Versão 2: 1 dose de whey protein sabor baunilha (30 g)",
+      "1 a 2 colheres de sopa de água ou leite vegetal (apenas se necessário para bater)",
+      "(Opcional) Gotas de essência de baunilha ou raspas de limão"
+    ],
+    "modo_preparo": [
+      "Coloque todos os ingredientes no processador ou liquidificador potente",
+      "Bata até formar um creme liso, denso e bem cremoso. Se necessário, adicione o líquido aos poucos",
+      "Sirva na hora como sorvete tipo soft ou leve ao congelador por 30 minutos para firmar mais",
+      "Finalize como preferir (fio de mel, nibs de cacau, coco ralado ou granola)"
+    ],
+    "tempo_preparo": 5,
+    "porcoes": 1,
+    "dificuldade": "facil",
+    "tipo_refeicao": "snacks",
+    "tags": [
+      "sorvete",
+      "maracujá",
+      "creme de amêndoas",
+      "banana",
+      "sobremesa",
+      "pós-treino",
+      "fit",
+      "doce fit",
+      "sem lactose"
+    ],
+    "is_premium": false,
+    "is_free": true,
+    "calorias": 290,
+    "proteinas": 9,
+    "carboidratos": 42,
+    "gorduras": 10,
+    "informacoes_nutricionais": "Versão 1 – com leite em pó (1 porção): Calorias: ~280–300 kcal | Carboidratos: ~40–44 g | Proteínas: ~8–10 g | Gorduras: ~9–11 g. Versão 2 – com whey protein (1 porção): Calorias: ~250–270 kcal | Carboidratos: ~32–36 g | Proteínas: ~20–23 g | Gorduras: ~7–9 g. Valores podem variar conforme o tipo de creme de amêndoas ou substituição, marca do whey ou leite em pó, e tamanho da banana. A versão com whey é ótima para pós-treino. A versão com leite em pó funciona bem como lanche ou sobremesa nutritiva. Valores de macros calculados via aplicativo e servem apenas como estimativa. Não substituem orientação nutricional profissional."
+  },
+  {
+    "titulo": "🥞 Panqueca sem Glúten (doce ou salgada)",
+    "descricao": "Versátil, rápida e perfeita para lanche ou refeição leve.",
+    "ingredientes": [
+      "Massa:",
+      "1 ovo",
+      "1 colher de sopa de farinha de arroz",
+      "1 colher de sopa de iogurte natural",
+      "1/2 colher de chá de fermento químico",
+      "Recheio (escolha 1 opção):",
+      "🍫 Doce: 2 quadradinhos de chocolate 70% cacau",
+      "🧀 Salgada: 50 g de queijo muçarela"
+    ],
+    "modo_preparo": [
+      "Misture todos os ingredientes da massa até ficar homogêneo",
+      "Divida a massa em duas partes iguais",
+      "Aqueça uma frigideira antiaderente em fogo baixo",
+      "Coloque metade da massa, adicione metade do recheio no centro e cubra com um pouco mais de massa",
+      "Tampe a frigideira e deixe dourar lentamente",
+      "Vire com cuidado e doure do outro lado",
+      "Repita o processo com a outra metade da massa"
+    ],
+    "tempo_preparo": 10,
+    "porcoes": 2,
+    "dificuldade": "facil",
+    "tipo_refeicao": "snacks",
+    "tags": [
+      "panqueca",
+      "sem glúten",
+      "doce",
+      "salgada",
+      "lanche",
+      "refeição leve",
+      "fit",
+      "versátil"
+    ],
+    "is_premium": false,
+    "is_free": true,
+    "calorias": 310,
+    "proteinas": 14,
+    "carboidratos": 20,
+    "gorduras": 21,
+    "informacoes_nutricionais": "Versão doce – chocolate 70% (receita inteira / 2 panquecas): Calorias: ~300–320 kcal | Carboidratos: ~18–22 g | Proteínas: ~13–15 g | Gorduras: ~20–22 g. Versão salgada – muçarela (receita inteira / 2 panquecas): Calorias: ~350–370 kcal | Carboidratos: ~14–17 g | Proteínas: ~18–20 g | Gorduras: ~24–26 g. Valores podem variar conforme a marca do iogurte, tipo de chocolate ou queijo, e tamanho do ovo. A versão salgada pode virar refeição leve se combinada com salada. A versão doce funciona bem como lanche ou café da manhã. Valores de macros calculados via aplicativo e servem apenas como estimativa. Não substituem orientação nutricional profissional."
+  },
+  {
+    "titulo": "🥧 Torta de Frango sem Glúten",
+    "descricao": "Massa leve, estruturada e versátil, perfeita para refeições do dia a dia.",
+    "ingredientes": [
+      "Massa:",
+      "1 xícara de farinha de arroz",
+      "1/2 xícara de polvilho doce",
+      "70 g de manteiga ou azeite",
+      "3 ovos",
+      "1 colher de chá de sal",
+      "1 colher de sopa de psyllium (opcional)",
+      "1 a 2 colheres de sopa de água gelada (se necessário)",
+      "(Recheio de frango a gosto – não incluso nos macros)"
+    ],
+    "modo_preparo": [
+      "Em uma tigela, misture a farinha de arroz, o polvilho e o sal",
+      "Adicione a manteiga (ou azeite) e misture com as mãos até formar uma farofa úmida",
+      "Acrescente os ovos e amasse até obter uma massa lisa. Se necessário, adicione água gelada aos poucos",
+      "Envolva a massa em filme plástico e leve à geladeira por 20 a 30 minutos",
+      "Modele a massa em uma forma, adicione o recheio de frango, cubra com o restante da massa",
+      "Leve ao forno pré-aquecido a 180–200 °C até dourar"
+    ],
+    "tempo_preparo": 90,
+    "porcoes": 6,
+    "dificuldade": "medio",
+    "tipo_refeicao": "dinner",
+    "tags": [
+      "torta",
+      "frango",
+      "sem glúten",
+      "massa",
+      "refeição principal",
+      "jantar",
+      "almoço",
+      "fit"
+    ],
+    "is_premium": false,
+    "is_free": true,
+    "calorias": 222.5,
+    "proteinas": 7,
+    "carboidratos": 24,
+    "gorduras": 11,
+    "informacoes_nutricionais": "Receita inteira – massa (sem recheio): Calorias: ~1.300–1.380 kcal | Carboidratos: ~140–150 g | Proteínas: ~40–45 g | Gorduras: ~65–70 g. Por fatia (1/6 da massa, sem recheio): Calorias: ~215–230 kcal. Valores podem variar conforme o uso de manteiga ou azeite, tamanho dos ovos, e inclusão ou não do psyllium. Combine com recheio de frango, legumes e um pouco de gordura boa para uma refeição completa e equilibrada. Valores de macros calculados via aplicativo e servem apenas como estimativa. Não substituem orientação nutricional profissional."
+  },
+  {
+    "titulo": "☕🍫 Chocolate Quente Proteico",
+    "descricao": "Cremoso, intenso e reconfortante, com alto aporte proteico.",
+    "ingredientes": [
+      "350 ml de leite vegetal",
+      "2 colheres de sopa de cacau em pó",
+      "1 colher de sopa de calda de tâmaras (ou outro adoçante a gosto)",
+      "70 g de chocolate sem açúcar, picado",
+      "1 colher de chá de canela em pó",
+      "2 colheres de sopa de creme de castanhas",
+      "2 doses de whey protein sabor chocolate"
+    ],
+    "modo_preparo": [
+      "Em uma panela, adicione o leite vegetal, o cacau, a calda de tâmaras, o chocolate picado, a canela e o creme de castanhas",
+      "Leve ao fogo baixo, mexendo sempre, até o chocolate derreter completamente e a mistura ficar bem cremosa",
+      "Desligue o fogo e acrescente o whey protein",
+      "Bata com mixer ou no liquidificador para incorporar bem e deixar aerado",
+      "Sirva quentinho"
+    ],
+    "tempo_preparo": 10,
+    "porcoes": 2,
+    "dificuldade": "facil",
+    "tipo_refeicao": "drinks",
+    "tags": [
+      "chocolate quente",
+      "proteico",
+      "whey",
+      "bebida quente",
+      "pós-treino",
+      "lanche",
+      "fit",
+      "sem lactose"
+    ],
+    "is_premium": false,
+    "is_free": true,
+    "calorias": 270,
+    "proteinas": 47.5,
+    "carboidratos": 33,
+    "gorduras": 28,
+    "informacoes_nutricionais": "Receita inteira: Calorias: ~520–560 kcal | Carboidratos: ~30–36 g | Proteínas: ~45–50 g | Gorduras: ~26–30 g. Por porção (1/2 receita): Calorias: ~260–280 kcal. Valores podem variar conforme o tipo de leite vegetal, marca do whey e do chocolate, e tipo de adoçante utilizado. Ideal para dias frios, como pós-treino noturno ou lanche com alto teor proteico e boa saciedade. Valores de macros calculados via aplicativo e servem apenas como estimativa. Não substituem orientação nutricional profissional."
+  },
+  {
+    "titulo": "🥙 Sanduíche Prensado de Carne no Pão Árabe com Molho Cremoso",
+    "descricao": "Crocante por fora, suculento por dentro e equilibrado para uma refeição completa.",
+    "ingredientes": [
+      "Recheio:",
+      "100 g de carne moída magra (patinho ou coxão mole)",
+      "1/4 de cebola ralada ou bem picadinha",
+      "Sal, pimenta-do-reino e páprica a gosto",
+      "Cebolinha e salsa picadas a gosto",
+      "Molho cremoso:",
+      "2 colheres de sopa de iogurte natural",
+      "1 colher de chá de mostarda",
+      "1 dente de alho pequeno ralado ou espremido",
+      "1 colher de chá de shoyu",
+      "Sal e pimenta a gosto",
+      "Cebolinha e salsa a gosto",
+      "Montagem:",
+      "1 folha média de pão árabe",
+      "Rúcula a gosto",
+      "Cebola fatiada fina (roxa ou branca)"
+    ],
+    "modo_preparo": [
+      "Tempere a carne: Misture a carne moída crua com a cebola, os temperos, a cebolinha e a salsa. Espalhe a carne em camada fina e uniforme sobre metade da folha de pão árabe aberta",
+      "Feche e prense: Dobre o pão ao meio e leve à sanduicheira ou grill até dourar bem por fora e a carne ficar totalmente cozida",
+      "Prepare o molho: Misture todos os ingredientes do molho até formar um creme homogêneo. Ajuste os temperos",
+      "Finalize: Com o sanduíche ainda quente, espalhe o molho por cima e finalize com rúcula e cebola fatiada. Sirva imediatamente"
+    ],
+    "tempo_preparo": 15,
+    "porcoes": 1,
+    "dificuldade": "facil",
+    "tipo_refeicao": "lunch",
+    "tags": [
+      "sanduíche",
+      "carne",
+      "pão árabe",
+      "prensado",
+      "molho cremoso",
+      "refeição principal",
+      "lanche reforçado",
+      "fit"
+    ],
+    "is_premium": false,
+    "is_free": true,
+    "calorias": 415,
+    "proteinas": 32,
+    "carboidratos": 37.5,
+    "gorduras": 16,
+    "informacoes_nutricionais": "Receita inteira (1 sanduíche): Calorias: ~400–430 kcal | Carboidratos: ~35–40 g | Proteínas: ~30–34 g | Gorduras: ~14–18 g. Valores podem variar conforme o tamanho do pão árabe, teor de gordura da carne, e quantidade de molho. Para reduzir ainda mais as calorias, use metade do pão árabe ou diminua o molho. Para versão mais proteica, aumente a carne para 120 g. Valores de macros calculados via aplicativo e servem apenas como estimativa. Não substituem orientação nutricional profissional."
+  },
+  {
+    "titulo": "🍍🥭 Pós-treino Delícia: Sorvete Proteico Tropical",
+    "descricao": "Refrescante, leve e perfeito para recuperar energia após o treino.",
+    "ingredientes": [
+      "120 g de manga congelada",
+      "50 g de abacaxi congelado",
+      "1 scoop (30 g) de whey protein sabor baunilha",
+      "1 colher de sopa de chia",
+      "Folhas de hortelã a gosto",
+      "Raspas de limão a gosto para finalizar",
+      "2 colheres de sopa de iogurte grego ou leite vegetal (usar apenas se necessário para bater)"
+    ],
+    "modo_preparo": [
+      "Coloque todos os ingredientes no liquidificador ou processador",
+      "Bata até formar um creme bem liso e cremoso. Se necessário, adicione o iogurte ou leite vegetal aos poucos",
+      "Consuma na hora como sorvete tipo soft",
+      "Finalize com raspas de limão ou folhas de hortelã"
+    ],
+    "tempo_preparo": 5,
+    "porcoes": 1,
+    "dificuldade": "facil",
+    "tipo_refeicao": "snacks",
+    "tags": [
+      "sorvete",
+      "proteico",
+      "tropical",
+      "manga",
+      "abacaxi",
+      "whey",
+      "pós-treino",
+      "snack proteico",
+      "fit"
+    ],
+    "is_premium": false,
+    "is_free": true,
+    "calorias": 270,
+    "proteinas": 23,
+    "carboidratos": 30,
+    "gorduras": 6,
+    "informacoes_nutricionais": "Receita inteira (1 porção): Calorias: ~260–280 kcal | Carboidratos: ~28–32 g | Proteínas: ~22–24 g | Gorduras: ~5–7 g. Valores podem variar conforme a marca do whey, uso de iogurte grego ou leite vegetal, e maturação das frutas. Combinação ideal de carboidratos naturais + proteína, auxiliando na recuperação muscular e reposição de energia no pós-treino. Valores de macros calculados via aplicativo e servem apenas como estimativa. Não substituem orientação nutricional profissional."
+  },
+  {
+    "titulo": "🍓🍋 Sorbet de Frutas Vermelhas com Limão e Calda de Coco",
+    "descricao": "Refrescante, leve e naturalmente doce, com opção de cobertura proteica.",
+    "ingredientes": [
+      "Sorbet:",
+      "2 xícaras de frutas vermelhas congeladas",
+      "Suco de 1 limão siciliano",
+      "1 a 2 colheres de sopa de calda de coco ou mel",
+      "Cobertura opcional (proteica):",
+      "15 g de whey protein (baunilha ou chocolate branco)",
+      "1 colher de sobremesa de pasta de amendoim",
+      "15 ml de água (ou quanto baste para dar ponto cremoso)"
+    ],
+    "modo_preparo": [
+      "Bata as frutas vermelhas congeladas, o suco de limão e a calda até formar um creme gelado, firme e homogêneo (sorbet)",
+      "Em um bowl, misture o whey com a pasta de amendoim, adicionando a água aos poucos até obter um creme liso",
+      "Sirva o sorbet em uma tigela e finalize com a cobertura por cima"
+    ],
+    "tempo_preparo": 8,
+    "porcoes": 1,
+    "dificuldade": "facil",
+    "tipo_refeicao": "snacks",
+    "tags": [
+      "sorbet",
+      "frutas vermelhas",
+      "limão",
+      "calda de coco",
+      "sobremesa",
+      "snack doce",
+      "whey",
+      "pós-treino",
+      "fit"
+    ],
+    "is_premium": false,
+    "is_free": true,
+    "calorias": 200,
+    "proteinas": 3.5,
+    "carboidratos": 42.5,
+    "gorduras": 1.5,
+    "informacoes_nutricionais": "Sem cobertura (1 porção): Calorias: ~190–210 kcal | Carboidratos: ~40–45 g | Proteínas: ~3–4 g | Gorduras: ~1–2 g. Com cobertura proteica (1 porção): Calorias: ~270–290 kcal | Carboidratos: ~42–46 g | Proteínas: ~14–16 g | Gorduras: ~6–8 g. Valores podem variar conforme o tipo de fruta vermelha utilizada, quantidade de calda ou mel, e marca do whey e da pasta de amendoim. Sem a cobertura, é ideal como sobremesa leve. Com a cobertura proteica, vira um snack mais completo e saciante. Valores de macros calculados via aplicativo e servem apenas como estimativa. Não substituem orientação nutricional profissional."
+  },
+  {
+    "titulo": "🍫🥜 Charge Proteico (versão saudável)",
+    "descricao": "Doce intenso, crocante e com alto teor proteico, inspirado no clássico Charge.",
+    "ingredientes": [
+      "6 tâmaras jumbo sem caroço",
+      "1 colher de sopa bem generosa de pasta de amendoim",
+      "3 scoops de whey protein sabor baunilha",
+      "50 ml de água (ou quanto baste para dar ponto)",
+      "140 g de chocolate sem açúcar (70% cacau ou mais)",
+      "Amendoim torrado inteiro ou picado a gosto"
+    ],
+    "modo_preparo": [
+      "Prepare as tâmaras: retire os caroços e amasse levemente cada tâmara, acomodando no fundo de uma forma pequena ou forminhas individuais",
+      "Recheio proteico: misture o whey protein com a pasta de amendoim, adicionando a água aos poucos até formar uma pasta cremosa e consistente",
+      "Montagem: sobre cada tâmara, coloque uma porção do recheio proteico e finalize com amendoim torrado",
+      "Cobertura: derreta o chocolate sem açúcar em banho-maria ou no micro-ondas e cubra completamente cada unidade",
+      "Finalização: leve à geladeira por cerca de 30 minutos, ou até o chocolate firmar",
+      "Sirva gelado"
+    ],
+    "tempo_preparo": 20,
+    "porcoes": 6,
+    "dificuldade": "facil",
+    "tipo_refeicao": "snacks",
+    "tags": [
+      "charge",
+      "proteico",
+      "tâmara",
+      "chocolate",
+      "amendoim",
+      "whey",
+      "snack doce",
+      "pré-treino",
+      "pós-treino",
+      "fit"
+    ],
+    "is_premium": false,
+    "is_free": true,
+    "calorias": 180,
+    "proteinas": 11,
+    "carboidratos": 15,
+    "gorduras": 10,
+    "informacoes_nutricionais": "Por unidade (1 Charge proteico): Calorias: ~170–190 kcal | Carboidratos: ~14–16 g | Proteínas: ~10–12 g | Gorduras: ~9–11 g. Receita inteira (6 unidades): Calorias: ~1.020–1.140 kcal. Valores podem variar conforme o tamanho das tâmaras, marca do whey e do chocolate, e quantidade de amendoim utilizada. Ideal para matar a vontade de doce com mais saciedade. Uma unidade já atende bem como snack ou pré-treino. Valores de macros calculados via aplicativo e servem apenas como estimativa. Não substituem orientação nutricional profissional."
+  },
+  {
+    "titulo": "🍓🥥 Bombom de Morango com Coco",
+    "descricao": "Cremoso por dentro, refrescante e com casquinha de chocolate. Um doce elegante e fácil para matar a vontade de sobremesa.",
+    "ingredientes": [
+      "5 morangos grandes",
+      "6 colheres de sopa de leite em pó (opcional: substituir metade por whey sabor baunilha)",
+      "3 colheres de sopa de coco ralado",
+      "Leite de coco (adicionar aos poucos até dar ponto)",
+      "Chocolate da sua preferência para cobertura (usei chocolate branco sem açúcar à base de leite de coco)"
+    ],
+    "modo_preparo": [
+      "Em uma tigela, misture o leite em pó com o coco ralado",
+      "Acrescente o leite de coco aos poucos, mexendo até formar uma massa firme e modelável",
+      "Pegue pequenas porções da massa, abra na mão e envolva cada morango",
+      "Derreta o chocolate escolhido e banhe os bombons",
+      "Leve à geladeira até o chocolate firmar"
+    ],
+    "tempo_preparo": 20,
+    "porcoes": 5,
+    "dificuldade": "facil",
+    "tipo_refeicao": "snacks",
+    "tags": [
+      "bombom",
+      "morango",
+      "coco",
+      "chocolate",
+      "sobremesa",
+      "snack doce",
+      "sobremesa funcional",
+      "fit",
+      "doce fit"
+    ],
+    "is_premium": false,
+    "is_free": true,
+    "calorias": 130,
+    "proteinas": 4.5,
+    "carboidratos": 11,
+    "gorduras": 8,
+    "informacoes_nutricionais": "Por unidade (1 bombom): Calorias: ~120–140 kcal | Carboidratos: ~10–12 g | Proteínas: ~4–5 g | Gorduras: ~7–9 g. Valores podem variar conforme o tipo de chocolate utilizado, quantidade de leite de coco, e uso ou não de whey protein. Ótima opção de doce individual, ajuda no controle de porções e combina carboidrato, gordura e um pouco de proteína, aumentando a saciedade. Valores de macros calculados via aplicativo e servem apenas como estimativa. Não substituem orientação nutricional profissional."
+  },
+  {
+    "titulo": "🥔🍳 Omelete de Batata na Frigideira",
+    "descricao": "Simples, nutritivo e versátil — perfeito para café da manhã reforçado, almoço leve ou jantar rápido.",
+    "ingredientes": [
+      "1 batata média (doce ou inglesa) em fatias bem finas",
+      "2 ovos",
+      "Sal a gosto",
+      "Pimenta-do-reino a gosto",
+      "30 g de queijo muçarela",
+      "Rúcula, tomate ou cenoura ralada a gosto",
+      "Queijo de búfala em pedacinhos (opcional)",
+      "Azeite de oliva para finalizar",
+      "Manteiga, óleo ou azeite para untar a frigideira"
+    ],
+    "modo_preparo": [
+      "Corte a batata em fatias bem finas (quanto mais finas, melhor a textura)",
+      "Aqueça uma frigideira antiaderente e unte levemente",
+      "Disponha as fatias de batata lado a lado e deixe dourar levemente dos dois lados",
+      "Bata os ovos com sal e pimenta e despeje sobre as batatas",
+      "Distribua a muçarela por cima",
+      "Tampe a frigideira e cozinhe em fogo baixo até os ovos firmarem e o queijo derreter",
+      "Finalize com rúcula, tomate ou cenoura ralada, queijo de búfala (se usar) e um fio de azeite"
+    ],
+    "tempo_preparo": 20,
+    "porcoes": 1,
+    "dificuldade": "facil",
+    "tipo_refeicao": "breakfast",
+    "tags": [
+      "omelete",
+      "batata",
+      "ovos",
+      "queijo",
+      "café da manhã",
+      "refeição prática",
+      "almoço",
+      "jantar",
+      "fit"
+    ],
+    "is_premium": false,
+    "is_free": true,
+    "calorias": 435,
+    "proteinas": 23.5,
+    "carboidratos": 32.5,
+    "gorduras": 23.5,
+    "informacoes_nutricionais": "Receita inteira – 1 porção (considerando: batata média, 2 ovos, 30 g de muçarela e 1 fio de azeite): Calorias: ~420–450 kcal | Proteínas: ~22–25 g | Carboidratos: ~30–35 g | Gorduras: ~22–25 g. Pode variar conforme o tipo de batata, quantidade de queijo, e uso de manteiga ou azeite. Ótima opção de refeição completa e prática, com boa saciedade. Combina muito bem com uma salada fresca ou legumes grelhados. Valores de macros calculados via aplicativo e servem apenas como estimativa. Não substituem orientação nutricional profissional."
+  },
+  {
+    "titulo": "🍌🍓🍫 Cestinhas de Banana com Morango, Chia e Chocolate 70%",
+    "descricao": "Docinho funcional, sem açúcar refinado, com fibras, antioxidantes e aquele toque de chocolate que faz toda diferença.",
+    "ingredientes": [
+      "1 banana grande ou 2 pequenas (bem maduras)",
+      "2 a 3 colheres de sopa de aveia em flocos",
+      "4 morangos grandes",
+      "1 colher de sopa de chia",
+      "40 g de chocolate 70% cacau"
+    ],
+    "modo_preparo": [
+      "Amasse bem a banana e misture com a aveia até formar uma massa moldável",
+      "Distribua a massa em forminhas, pressionando no fundo e laterais para formar cestinhas",
+      "Leve à airfryer a 180 °C por cerca de 10 minutos, até dourar. Retire das forminhas e, se necessário, volte à airfryer por mais alguns minutos para dourar o fundo",
+      "Amasse os morangos e misture com a chia (deixe hidratar por alguns minutos)",
+      "Recheie as cestinhas com a mistura de morango e chia",
+      "Derreta o chocolate 70% e finalize por cima",
+      "Leve à geladeira até firmar"
+    ],
+    "tempo_preparo": 20,
+    "porcoes": 3,
+    "dificuldade": "facil",
+    "tipo_refeicao": "snacks",
+    "tags": [
+      "cestinhas",
+      "banana",
+      "morango",
+      "chia",
+      "chocolate",
+      "sobremesa",
+      "snack doce",
+      "sobremesa funcional",
+      "fit",
+      "sem açúcar"
+    ],
+    "is_premium": true,
+    "is_free": false,
+    "calorias": 145,
+    "proteinas": 10,
+    "carboidratos": 47.5,
+    "gorduras": 23.5,
+    "fibras": 11,
+    "informacoes_nutricionais": "Receita inteira (considerando: 1 banana grande, 2 colheres de aveia, 40 g de chocolate 70%): Calorias: ~420–450 kcal | Carboidratos: ~45–50 g | Proteínas: ~9–11 g | Gorduras: ~22–25 g | Fibras: ~10–12 g. Por unidade (3 cestinhas): Calorias: ~140–150 kcal. Valores podem variar conforme a quantidade de aveia, tipo de chocolate, e tamanho da banana. Excelente como snack doce funcional, sobremesa leve ou lanche da tarde. Rico em fibras, ajuda na saciedade e no controle da vontade por doces. Valores de macros calculados via aplicativo e servem apenas como estimativa. Não substituem orientação nutricional profissional."
+  },
+  {
+    "titulo": "🥕🌸 Suco Detox Rosa",
+    "descricao": "Refrescante, funcional e cheio de micronutrientes — ótimo para começar o dia ou hidratar pós-treino leve.",
+    "ingredientes": [
+      "1 cenoura pequena",
+      "1 beterraba pequena",
+      "1 folha de couve",
+      "1 pedaço pequeno de gengibre",
+      "Suco de 1 limão",
+      "200 ml de água",
+      "Gelo a gosto",
+      "(Opcional) 1 scoop de whey protein sabor baunilha (30 g)"
+    ],
+    "modo_preparo": [
+      "Coloque todos os ingredientes no liquidificador",
+      "Bata até ficar bem homogêneo",
+      "Sirva imediatamente, bem gelado"
+    ],
+    "tempo_preparo": 5,
+    "porcoes": 1,
+    "dificuldade": "facil",
+    "tipo_refeicao": "drinks",
+    "tags": [
+      "suco",
+      "detox",
+      "cenoura",
+      "beterraba",
+      "couve",
+      "gengibre",
+      "limão",
+      "funcional",
+      "lanche leve",
+      "fit"
+    ],
+    "is_premium": true,
+    "is_free": false,
+    "calorias": 90,
+    "proteinas": 2.5,
+    "carboidratos": 19,
+    "gorduras": 0.5,
+    "fibras": 4.5,
+    "informacoes_nutricionais": "Versão sem whey: Calorias: ~85–95 kcal | Carboidratos: ~18–20 g | Proteínas: ~2–3 g | Gorduras: ~0–1 g | Fibras: ~4–5 g. Versão com whey (30 g): Calorias: ~185–200 kcal | Carboidratos: ~20–22 g | Proteínas: ~23–25 g | Gorduras: ~1–2 g. Valores podem variar conforme o tamanho dos vegetais, marca do whey, e quantidade de gengibre. Ideal para hidratação, aporte de antioxidantes e estímulo digestivo. Com whey, pode ser usado como lanche leve proteico. Valores de macros calculados via aplicativo e servem apenas como estimativa. Não substituem orientação nutricional profissional."
+  },
+  {
+    "titulo": "Petit Gateau de Doce de Leite Sem Glúten Cremoso por dentro",
+    "descricao": "rápido de fazer e perfeito para matar a vontade de doce com poucos ingredientes — ideal para air fryer.",
+    "ingredientes": [
+      "150 g de doce de leite sem açúcar",
+      "30 g de óleo de coco",
+      "1 ovo",
+      "1 colher de chá de essência de baunilha",
+      "30 g de farinha de aveia sem glúten"
+    ],
+    "modo_preparo": [
+      "Em uma tigela, misture o doce de leite com o óleo de coco e leve ao micro-ondas por 40 segundos.",
+      "Mexa bem até ficar homogêneo.",
+      "Adicione o ovo e a essência de baunilha, misturando bem.",
+      "Acrescente a farinha de aveia peneirada e mexa até formar uma massa lisa.",
+      "Distribua a massa em forminhas untadas, se necessário.",
+      "Leve à air fryer pré-aquecida a 160 °C por 6 a 7 minutos.",
+      "Retire, espere 1 minutinho e desenforme com cuidado.",
+      "Dica: Sirva ainda morno para garantir o centro cremoso ou acompanhe com frutas frescas."
+    ],
+    "substituicoes_ingredientes": {
+      "Farinha de aveia": "farinha de amêndoas ou mix sem glúten",
+      "Óleo de coco": "manteiga ghee",
+      "Doce de leite sem açúcar": "versão zero lactose ou funcional de sua preferência"
+    },
+    "tempo_preparo": 7,
+    "porcoes": 2,
+    "dificuldade": "medio",
+    "tipo_refeicao": "snacks",
+    "tags": [
+      "Sobremesa",
+      "Funcional",
+      "Sem glúten",
+      "Sem açúcar refinado",
+      "Mais saudável"
+    ],
+    "is_premium": true,
+    "is_free": false,
+    "informacoes_nutricionais": "Calorias: ~180–220 kcal\nProteínas: ~5–6 g\nGorduras: ~10–12 g\nCarboidratos: ~15–18 g\nValores podem variar conforme as marcas e substituições utilizadas.",
+    "aviso_nutricional": "Valores nutricionais estimados via aplicativo e não substituem orientação nutricional profissional.",
+    "calorias": 180,
+    "proteinas": 5,
+    "carboidratos": 15,
+    "gorduras": 10
+  },
+  {
+    "titulo": "Petit Gateau de Doce de Leite Sem Glúten",
+    "descricao": "Cremoso por dentro, rápido de fazer e perfeito para matar a vontade de doce com poucos ingredientes — ideal para air fryer. Petit gateau com casquinha delicada por fora e centro cremoso e irresistível.",
+    "ingredientes": [
+      "150 g de doce de leite sem açúcar",
+      "30 g de óleo de coco",
+      "1 ovo",
+      "1 colher de chá de essência de baunilha",
+      "30 g de farinha de aveia sem glúten"
+    ],
+    "modo_preparo": [
+      "Em uma tigela, misture o doce de leite com o óleo de coco e leve ao micro-ondas por 40 segundos.",
+      "Mexa bem até ficar homogêneo.",
+      "Adicione o ovo e a essência de baunilha, misturando bem.",
+      "Acrescente a farinha de aveia peneirada e mexa até formar uma massa lisa.",
+      "Distribua a massa em forminhas untadas, se necessário.",
+      "Leve à air fryer pré-aquecida a 160 °C por 6 a 7 minutos.",
+      "Retire, espere 1 minutinho e desenforme com cuidado.",
+      "Dica: Sirva ainda morno para garantir o centro cremoso ou acompanhe com frutas frescas."
+    ],
+    "substituicoes_ingredientes": {
+      "Farinha de aveia": "farinha de amêndoas ou mix sem glúten",
+      "Óleo de coco": "manteiga ghee",
+      "Doce de leite sem açúcar": "versão zero lactose ou funcional de sua preferência"
+    },
+    "tempo_preparo": 5,
+    "porcoes": 2,
+    "dificuldade": "medio",
+    "tipo_refeicao": "snacks",
+    "tags": [
+      "Sobremesa",
+      "Funcional",
+      "Sem glúten",
+      "Sem açúcar refinado",
+      "Mais saudável"
+    ],
+    "is_premium": true,
+    "is_free": false,
+    "informacoes_nutricionais": "Calorias: ~180–220 kcal\nProteínas: ~5–6 g\nGorduras: ~10–12 g\nCarboidratos: ~15–18 g\nValores podem variar conforme as marcas e substituições utilizadas.",
+    "aviso_nutricional": "Valores nutricionais estimados via aplicativo e não substituem orientação nutricional profissional.",
+    "calorias": 180,
+    "proteinas": 5,
+    "carboidratos": 15,
+    "gorduras": 10
+  },
+  {
+    "titulo": "",
+    "descricao": "",
+    "ingredientes": [
+      "200 g de manga picada (Palmer ou outra de sua preferência)",
+      "3 colheres de sopa de leite de coco em pó",
+      "Suco de ½ limão pequeno"
+    ],
+    "modo_preparo": [
+      "Descasque e corte a manga em pedaços pequenos.",
+      "No liquidificador, adicione a manga, o leite de coco em pó e o suco de limão.",
+      "Bata até obter uma mistura bem cremosa e homogênea.",
+      "Distribua a mistura nas formas de picolé e insira os palitos.",
+      "Leve ao congelador por, no mínimo, 4 horas ou até ficarem completamente firmes.",
+      "Dica: Para desenformar com facilidade, passe rapidamente as formas em água corrente antes de servir."
+    ],
+    "substituicoes_ingredientes": {
+      "Manga": "banana + manga ou abacaxi para variar o sabor",
+      "Leite de coco em pó": "leite de coco líquido (⅓ de xícara)",
+      "Limão": "pode ser substituído por maracujá para um toque ácido"
+    },
+    "tempo_preparo": 5,
+    "porcoes": 4,
+    "dificuldade": "medio",
+    "tipo_refeicao": "snacks",
+    "tags": [
+      "Sobremesa",
+      "Funcional",
+      "Refrescante",
+      "Sem glúten",
+      "Sem açúcar refinado",
+      "Vegana"
+    ],
+    "is_premium": true,
+    "is_free": false,
+    "informacoes_nutricionais": "Calorias: ~70–90 kcal\nProteínas: ~1 g\nGorduras: ~3–4 g\nCarboidratos: ~10–14 g\nValores podem variar conforme os ingredientes utilizados.",
+    "aviso_nutricional": "Valores nutricionais estimados via aplicativo e não substituem orientação nutricional profissional",
+    "calorias": 70,
+    "proteinas": 1,
+    "carboidratos": 10,
+    "gorduras": 3
+  },
+  {
+    "titulo": "Picolé Cremoso de Manga com Leite de Coco",
+    "descricao": "Refrescante, naturalmente doce e super cremoso, feito apenas com frutas e ingredientes simples — perfeito para os dias quentes.",
+    "ingredientes": [
+      "200 g de manga picada (Palmer ou outra de sua preferência)",
+      "3 colheres de sopa de leite de coco em pó",
+      "Suco de ½ limão pequeno"
+    ],
+    "modo_preparo": [
+      "Descasque e corte a manga em pedaços pequenos.",
+      "No liquidificador, adicione a manga, o leite de coco em pó e o suco de limão.",
+      "Bata até obter uma mistura bem cremosa e homogênea.",
+      "Distribua a mistura nas formas de picolé e insira os palitos.",
+      "Leve ao congelador por, no mínimo, 4 horas ou até ficarem completamente firmes.",
+      "Dica: Para desenformar com facilidade, passe rapidamente as formas em água corrente antes de servir."
+    ],
+    "substituicoes_ingredientes": {
+      "Manga": "banana + manga ou abacaxi para variar o sabor",
+      "Leite de coco em pó": "leite de coco líquido (⅓ de xícara)",
+      "Limão": "pode ser substituído por maracujá para um toque ácido"
+    },
+    "tempo_preparo": 5,
+    "porcoes": 4,
+    "dificuldade": "medio",
+    "tipo_refeicao": "snacks",
+    "tags": [
+      "Sobremesa",
+      "Funcional",
+      "Refrescante",
+      "Sem glúten",
+      "Sem açúcar refinado",
+      "Vegana"
+    ],
+    "is_premium": true,
+    "is_free": false,
+    "informacoes_nutricionais": "Calorias: ~70–90 kcal\nProteínas: ~1 g\nGorduras: ~3–4 g\nCarboidratos: ~10–14 g\nValores podem variar conforme os ingredientes utilizados.",
+    "aviso_nutricional": "Valores nutricionais estimados via aplicativo e não substituem orientação nutricional profissional",
+    "calorias": 70,
+    "proteinas": 1,
+    "carboidratos": 10,
+    "gorduras": 3
+  },
+  {
+    "titulo": "🥭🥥 Picolé Cremoso de Manga com Leite de Coco",
+    "descricao": "Refrescante, naturalmente doce e super cremoso, feito apenas com frutas e ingredientes simples — perfeito para os dias quentes.",
+    "ingredientes": [
+      "200 g de manga picada (Palmer ou outra de sua preferência)",
+      "3 colheres de sopa de leite de coco em pó",
+      "Suco de ½ limão pequeno"
+    ],
+    "modo_preparo": [
+      "Descasque e corte a manga em pedaços pequenos.",
+      "No liquidificador, adicione a manga, o leite de coco em pó e o suco de limão.",
+      "Bata até obter uma mistura bem cremosa e homogênea.",
+      "Distribua a mistura nas formas de picolé e insira os palitos.",
+      "Leve ao congelador por, no mínimo, 4 horas ou até ficarem completamente firmes.",
+      "Dica: Para desenformar com facilidade, passe rapidamente as formas em água corrente antes de servir."
+    ],
+    "substituicoes_ingredientes": {
+      "Manga": "banana + manga ou abacaxi para variar o sabor",
+      "Leite de coco em pó": "leite de coco líquido (⅓ de xícara)",
+      "Limão": "pode ser substituído por maracujá para um toque ácido"
+    },
+    "tempo_preparo": 5,
+    "porcoes": 4,
+    "dificuldade": "medio",
+    "tipo_refeicao": "snacks",
+    "tags": [
+      "Sobremesa",
+      "Funcional",
+      "Refrescante",
+      "Sem glúten",
+      "Sem açúcar refinado",
+      "Vegana"
+    ],
+    "is_premium": true,
+    "is_free": false,
+    "informacoes_nutricionais": "Calorias: ~70–90 kcal\nProteínas: ~1 g\nGorduras: ~3–4 g\nCarboidratos: ~10–14 g",
+    "aviso_nutricional": "Valores podem variar conforme os ingredientes utilizados..  Valores nutricionais estimados via aplicativo e não substituem orientação nutricional profissional",
+    "calorias": 70,
+    "proteinas": 1,
+    "carboidratos": 10,
+    "gorduras": 3
+  },
+  {
+    "titulo": "🍫🍈 Bombom de Maracujá com Chocolate 70%",
+    "descricao": "Casquinha crocante por fora e recheio cremoso e levemente ácido por dentro — combinação perfeita de doce e frescor.",
+    "ingredientes": [
+      "1 maracujá (polpa com sementes)",
+      "30 g de leite em pó",
+      "80 g de chocolate 70% sem açúcar"
+    ],
+    "modo_preparo": [
+      "Em uma tigela, misture a polpa do maracujá com o leite em pó até obter um creme homogêneo. Reserve.",
+      "Derreta o chocolate 70% em banho-maria ou no micro-ondas, mexendo até ficar completamente liso.",
+      "Distribua metade do chocolate derretido nas forminhas de silicone, espalhando bem.",
+      "Leve ao congelador por cerca de 10 minutos, até o chocolate começar a firmar.",
+      "Retire do congelador e coloque a mistura de maracujá no centro de cada forminha.",
+      "Cubra com o restante do chocolate derretido, selando bem.",
+      "Retorne ao congelador por mais 20 a 30 minutos, ou até ficarem completamente firmes.",
+      "Desenforme e aproveite.",
+      "Dica: Guarde na geladeira para uma textura mais macia ou no congelador para um efeito mais trufado."
+    ],
+    "substituicoes_ingredientes": {
+      "Leite em pó": "leite em pó zero lactose ou leite de coco em pó",
+      "Chocolate 70%": "chocolate 85% para menos carboidrato",
+      "Maracujá": "limão siciliano ou morango amassado"
+    },
+    "tempo_preparo": 10,
+    "porcoes": 6,
+    "dificuldade": "medio",
+    "tipo_refeicao": "snacks",
+    "tags": [
+      "Sobremesa",
+      "Funcional",
+      "Sem glúten",
+      "Sem açúcar refinado",
+      "Mais saudável"
+    ],
+    "is_premium": true,
+    "is_free": false,
+    "informacoes_nutricionais": "Calorias: ~90–110 kcal\nProteínas: ~2 g\nGorduras: ~6–8 g\nCarboidratos: ~6–9 g",
+    "aviso_nutricional": "Valores podem variar conforme os ingredientes utilizados..  Valores nutricionais estimados via aplicativo e não substituem orientação nutricional profissional.",
+    "calorias": 90,
+    "proteinas": 2,
+    "carboidratos": 6,
+    "gorduras": 6
+  },
+  {
+    "titulo": "🍍🌿 Suco de Abacaxi com Gengibre",
+    "descricao": "Refrescante, leve e naturalmente saboroso, combina ingredientes que ajudam na digestão, hidratação e sensação de bem-estar — perfeito para os dias quentes.",
+    "ingredientes": [
+      "1 fatia grossa de abacaxi",
+      "Suco de 1 limão",
+      "1 pedaço pequeno de gengibre",
+      "200 ml de água de coco gelada",
+      "Folhas de hortelã a gosto",
+      "1 colher de chá de chia (opcional)",
+      "Gelo a gosto"
+    ],
+    "modo_preparo": [
+      "Coloque todos os ingredientes no liquidificador.",
+      "Bata até obter uma bebida homogênea.",
+      "Sirva imediatamente em um copo com gelo, se preferir.",
+      "Dica: Ideal para consumir pela manhã ou após exageros alimentares, ajudando na digestão e na retenção de líquidos."
+    ],
+    "substituicoes_ingredientes": {
+      "Água de coco": "água gelada ou água com gás",
+      "Chia": "linhaça dourada",
+      "Abacaxi": "melão ou manga para variar o sabor"
+    },
+    "tempo_preparo": 5,
+    "porcoes": 1,
+    "dificuldade": "medio",
+    "tipo_refeicao": "snacks",
+    "tags": [
+      "Bebida",
+      "Funcional",
+      "Refrescante",
+      "Detox",
+      "Sem glúten",
+      "Sem açúcar refinado",
+      "Vegana"
+    ],
+    "is_premium": true,
+    "is_free": false,
+    "informacoes_nutricionais": "Calorias: ~70–90 kcal\nProteínas: ~1 g\nGorduras: ~1–2 g\nCarboidratos: ~15–18 g",
+    "aviso_nutricional": "Valores podem variar conforme os ingredientes utilizados..  Valores nutricionais estimados via aplicativo e não substituem orientação nutricional profissional.",
+    "calorias": 70,
+    "proteinas": 1,
+    "carboidratos": 15,
+    "gorduras": 1
+  },
+  {
+    "titulo": "🌯🥬 Wrap Smash de Frango com Molho Caesar",
+    "descricao": "Crocante por fora, suculento por dentro e cheio de sabor, esse wrap é uma versão prática e proteica inspirada no clássico Caesar.",
+    "ingredientes": [
+      "1 disco de wrap (integral ou tradicional)",
+      "100 g de frango moído",
+      "Folhas de alface (preferencialmente romana)",
+      "Queijo parmesão ralado a gosto",
+      "Bacon crocante (opcional)",
+      "Para o molho Caesar:",
+      "2 colheres (sopa) de iogurte natural cremoso",
+      "Suco de ½ limão",
+      "1 dente de alho bem picado ou ralado",
+      "Pimenta-do-reino a gosto",
+      "Sal a gosto"
+    ],
+    "modo_preparo": [
+      "Prepare o frango smash: tempere o frango moído com sal e pimenta. Espalhe-o em camada fina sobre um dos lados do wrap, pressionando bem para grudar.",
+      "Doure o wrap: aqueça uma frigideira antiaderente em fogo médio. Coloque o wrap com o lado do frango para baixo e deixe dourar até o frango ficar bem cozido e levemente crocante.",
+      "Vire o wrap apenas para aquecer rapidamente o outro lado e retire da frigideira.",
+      "Prepare o molho Caesar: misture o iogurte, o suco de limão, o alho, a pimenta e o sal até obter um molho cremoso.",
+      "Monte: no lado sem frango, adicione as folhas de alface, o parmesão ralado e o bacon (se usar).",
+      "Finalize com o molho Caesar e dobre ao meio, formando um taco.",
+      "Dica: Sirva imediatamente para manter a crocância ou finalize com gotas de limão para um toque extra de frescor."
+    ],
+    "substituicoes_ingredientes": {
+      "Wrap tradicional": "wrap integral ou sem glúten",
+      "Frango moído": "carne moída magra ou patinho",
+      "Iogurte natural": "iogurte grego light ou versão zero lactose",
+      "Bacon": "frango desfiado crocante ou cogumelos salteados"
+    },
+    "tempo_preparo": 10,
+    "porcoes": 1,
+    "dificuldade": "medio",
+    "tipo_refeicao": "snacks",
+    "tags": [
+      "Refeição principal",
+      "Proteica",
+      "Prática",
+      "Sem açúcar refinado",
+      "Mais saudável"
+    ],
+    "is_premium": true,
+    "is_free": false,
+    "informacoes_nutricionais": "Calorias: ~380–420 kcal\nProteínas: ~28–32 g\nGorduras: ~15–18 g\nCarboidratos: ~30–35 g",
+    "aviso_nutricional": "Valores podem variar conforme os ingredientes utilizados..  Valores nutricionais estimados via aplicativo e não substituem orientação nutricional profissional.",
+    "calorias": 380,
+    "proteinas": 28,
+    "carboidratos": 30,
+    "gorduras": 15
+  },
+  {
+    "titulo": "🍓🥣 Smoothie Bowl de Açaí Proteico",
+    "descricao": "Cremoso, nutritivo e refrescante, ideal para começar o dia ou repor energia no pós-treino. Smoothie bowl encorpado, refrescante e equilibrado entre carboidratos, fibras e proteínas.",
+    "ingredientes": [
+      "1 polpa de açaí (100 g)",
+      "1 banana congelada",
+      "Framboesas congeladas (opcional)",
+      "1 scoop de whey protein (sabor de sua preferência)",
+      "1 colher de sopa de chia"
+    ],
+    "modo_preparo": [
+      "Coloque todos os ingredientes no liquidificador ou processador.",
+      "Bata até obter uma mistura bem cremosa e homogênea.",
+      "Sirva imediatamente em uma tigela.",
+      "Dica: Para mais cremosidade, bata usando o mínimo de líquido possível ou utilize apenas frutas bem congeladas."
+    ],
+    "substituicoes_ingredientes": {
+      "Whey": "proteína vegetal ou colágeno",
+      "Banana": "manga ou morango congelado",
+      "Framboesa": "mirtilo ou amora"
+    },
+    "tempo_preparo": 5,
+    "porcoes": 1,
+    "dificuldade": "medio",
+    "tipo_refeicao": "snacks",
+    "tags": [
+      "Café da manhã",
+      "Lanche",
+      "Funcional",
+      "Proteico",
+      "Sem glúten",
+      "Sem açúcar refinado"
+    ],
+    "is_premium": true,
+    "is_free": false,
+    "informacoes_nutricionais": "Calorias: ~280–330 kcal\nProteínas: ~20–25 g\nGorduras: ~8–10 g\nCarboidratos: ~30–35 g",
+    "aviso_nutricional": "Valores podem variar conforme os ingredientes utilizados..  Valores nutricionais estimados via aplicativo e não substituem orientação nutricional profissional.",
+    "calorias": 280,
+    "proteinas": 20,
+    "carboidratos": 30,
+    "gorduras": 8
+  },
+  {
+    "titulo": "🍌🍮 Banoffee Fit de Airfryer",
+    "descricao": "Base macia de banana e aveia, recheio cremoso e finalização leve — uma versão prática e equilibrada do clássico banoffee.",
+    "ingredientes": [
+      "1 banana madura",
+      "2 colheres de sopa de aveia",
+      "Canela a gosto",
+      "3 colheres de chá de doce de leite sem açúcar",
+      "2 colheres de sopa de iogurte natural",
+      "1 colher de sopa de whey sabor baunilha (opcional)"
+    ],
+    "modo_preparo": [
+      "Amasse a banana e misture com a aveia e a canela até formar uma massa homogênea.",
+      "Divida a massa em três partes e modele em forminhas pequenas, formando a base.",
+      "Leve à airfryer a 180 °C por 7 a 8 minutos, até dourar levemente.",
+      "Retire da airfryer e adicione 1 colher de chá de doce de leite e uma rodela de banana sobre cada base.",
+      "Misture o iogurte com o whey até formar um creme homogêneo.",
+      "Distribua o creme sobre as banoffees e finalize polvilhando canela.",
+      "Dica: Sirva morna para uma textura mais macia ou leve à geladeira por alguns minutos para uma versão mais firme."
+    ],
+    "substituicoes_ingredientes": {
+      "Aveia": "farinha de aveia ou mix sem glúten",
+      "Doce de leite": "pasta de tâmaras ou creme de amendoim",
+      "Iogurte natural": "iogurte grego light ou versão zero lactose",
+      "Whey": "colágeno ou proteína vegetal"
+    },
+    "tempo_preparo": 10,
+    "porcoes": 3,
+    "dificuldade": "medio",
+    "tipo_refeicao": "snacks",
+    "tags": [
+      "Sobremesa",
+      "Funcional",
+      "Sem açúcar refinado",
+      "Mais saudável"
+    ],
+    "is_premium": true,
+    "is_free": false,
+    "informacoes_nutricionais": "Calorias: ~120–150 kcal\nProteínas: ~5–7 g\nGorduras: ~3–4 g\nCarboidratos: ~18–22 g",
+    "aviso_nutricional": "Valores podem variar conforme os ingredientes utilizados..  Valores nutricionais estimados via aplicativo e não substituem orientação nutricional profissional.",
+    "calorias": 120,
+    "proteinas": 5,
+    "carboidratos": 18,
+    "gorduras": 3
+  },
+  {
+    "titulo": "🍨🥭 Sorvete Tropical Proteico de Manga",
+    "descricao": "Maracujá e Coco Sorvete proteico, refrescante e naturalmente doce, com textura cremosa e leve.",
+    "ingredientes": [
+      "4 cubos de leite de coco congelado (leite de coco de garrafinha)",
+      "½ manga Palmer congelada",
+      "½ maracujá (polpa)",
+      "1 dose de whey protein sabor coco ou baunilha"
+    ],
+    "modo_preparo": [
+      "Coloque todos os ingredientes no processador ou liquidificador.",
+      "Bata usando o mínimo de líquido possível, parando para mexer se necessário.",
+      "Bata até obter uma mistura bem cremosa, com textura de sorvete.",
+      "Sirva imediatamente ou leve ao congelador por 10 minutos para mais firmeza.",
+      "Dica: Quanto mais congelados os ingredientes e menos líquido usado, mais firme e com cara de sorvete ele fica."
+    ],
+    "substituicoes_ingredientes": {
+      "Whey": "proteína vegetal ou colágeno",
+      "Manga": "abacaxi ou banana congelada",
+      "Leite de coco": "iogurte natural  congelada (versão mais leve)"
+    },
+    "tempo_preparo": 5,
+    "porcoes": 1,
+    "dificuldade": "medio",
+    "tipo_refeicao": "snacks",
+    "tags": [
+      "Sobremesa gelada",
+      "Funcional",
+      "Proteica",
+      "Tipo sorvete",
+      "Sem glúten",
+      "Sem açúcar refinado"
+    ],
+    "is_premium": true,
+    "is_free": false,
+    "informacoes_nutricionais": "Calorias: ~250–300 kcal\nProteínas: ~20–25 g\nGorduras: ~8–10 g\nCarboidratos: ~20–25 g",
+    "aviso_nutricional": "Valores podem variar conforme os ingredientes utilizados..  Valores nutricionais estimados via aplicativo e não substituem orientação nutricional profissional.",
+    "calorias": 250,
+    "proteinas": 20,
+    "carboidratos": 20,
+    "gorduras": 8
+  },
+  {
+    "titulo": "🍍🥥 Sorvete Proteico de Abacaxi com Coco e Baunilha",
+    "descricao": "Refrescante, cremoso e fácil, perfeito para matar a fome e a vontade de doce ao mesmo tempo.",
+    "ingredientes": [
+      "1 fatia grande ou 2 pequenas de abacaxi congelado",
+      "100 ml de leite de coco bem gelado",
+      "1 scoop de whey protein sabor baunilha"
+    ],
+    "modo_preparo": [
+      "Coloque todos os ingredientes no liquidificador ou processador.",
+      "Bata usando o mínimo de líquido possível até obter uma mistura cremosa, tipo sorvete.",
+      "Sirva imediatamente ou leve ao congelador por 10 minutos para mais firmeza.",
+      "Dica: Quanto mais congelado o abacaxi e menos líquido, mais consistente e com cara de sorvete fica."
+    ],
+    "substituicoes_ingredientes": {
+      "Whey": "proteína vegetal ou colágeno",
+      "Leite de coco": "iogurte natural",
+      "Abacaxi": "manga congelada ou banana congelada"
+    },
+    "tempo_preparo": 5,
+    "porcoes": 1,
+    "dificuldade": "medio",
+    "tipo_refeicao": "snacks",
+    "tags": [
+      "Lanche",
+      "Sobremesa gelada",
+      "Funcional",
+      "Proteica",
+      "Tipo sorvete",
+      "Sem glúten",
+      "Sem açúcar refinado"
+    ],
+    "is_premium": true,
+    "is_free": false,
+    "informacoes_nutricionais": "Calorias: ~220–260 kcal\nProteínas: ~20–25 g\nGorduras: ~8–10 g\nCarboidratos: ~15–20 g",
+    "aviso_nutricional": "Valores podem variar conforme os ingredientes utilizados..  Valores nutricionais estimados via aplicativo e não substituem orientação nutricional profissional.",
+    "calorias": 220,
+    "proteinas": 20,
+    "carboidratos": 15,
+    "gorduras": 8
+  },
+  {
+    "titulo": "🍔🥩 Disco de Carne ou Frango Congelável com Molho Cremoso",
+    "descricao": "Prático, versátil e perfeito para ter sempre pronto no freezer — salva qualquer refeição com muito sabor e proteína.",
+    "ingredientes": [
+      "100 g de carne moída ou frango moído por disco",
+      "Sal e pimenta-do-reino a gosto",
+      "Picles, cebola roxa e alface para finalizar",
+      "1 ovo cozido",
+      "30 g de iogurte grego natural (≈15 g de proteína)",
+      "1 dente de alho",
+      "Salsinha a gosto",
+      "1 pitada de sal"
+    ],
+    "modo_preparo": [
+      "Coloque o ovo cozido, o iogurte grego, o alho, a salsinha e o sal no liquidificador ou processador.",
+      "Bata até obter um creme homogêneo e bem cremoso.",
+      "Reserve na geladeira.",
+      "Modele a carne ou o frango em discos de aproximadamente 100 g.",
+      "Embale bem e congele, se desejar preparar para a semana.",
+      "Aqueça bem uma frigideira antiaderente.",
+      "Coloque o disco de carne ou frango e deixe dourar bem um lado antes de virar.",
+      "Vire apenas quando estiver bem selado.",
+      "Tempere com sal e pimenta-do-reino.",
+      "Retire do fogo e finalize com picles, cebola roxa, alface e o molho cremoso.",
+      "Dica: Deixe os discos já porcionados no freezer: é só tirar, grelhar e montar — prático, rápido e sempre pronto para salvar o dia."
+    ],
+    "substituicoes_ingredientes": {
+      "Carne": "frango moído ou patinho",
+      "Molho caseiro": "ketchup + mostarda + um pouco de maionese vegana",
+      "Iogurte grego": "iogurte natural zero lactose"
+    },
+    "tempo_preparo": 10,
+    "porcoes": 1,
+    "dificuldade": "medio",
+    "tipo_refeicao": "snacks",
+    "tags": [
+      "Lanche",
+      "Refeição prática",
+      "praticidade para o dia a dia Proteica",
+      "Congelável",
+      "Sem açúcar refinado",
+      "Mais saudável"
+    ],
+    "is_premium": true,
+    "is_free": false,
+    "informacoes_nutricionais": "Calorias: ~280–330 kcal\nProteínas: ~28–32 g\nGorduras: ~15–18 g\nCarboidratos: ~5–8 g",
+    "aviso_nutricional": "Valores podem variar conforme ingredientes e acompanhamentos..  Valores nutricionais estimados via aplicativo e não substituem orientação nutricional profissional",
+    "calorias": 280,
+    "proteinas": 28,
+    "carboidratos": 5,
+    "gorduras": 15
+  },
+  {
+    "titulo": "🥜💪 Pasta de Amêndoas Proteica",
+    "descricao": "Cremosa, nutritiva e versátil, perfeita para lanches, pré ou pós-treino e para enriquecer receitas.",
+    "ingredientes": [
+      "200 g de amêndoas torradas sem sal",
+      "1 scoop de whey protein sabor baunilha ou neutro",
+      "1 colher de sopa de óleo de coco (opcional, para mais cremosidade)",
+      "1 colher de chá de extrato de baunilha (opcional)",
+      "1 pitada de sal",
+      "Adoçante a gosto (eritritol, stévia ou mel, se preferir mais doce)"
+    ],
+    "modo_preparo": [
+      "Coloque as amêndoas no processador e bata por 5 a 10 minutos, parando para raspar as laterais quando necessário, até formar uma pasta cremosa.",
+      "Adicione o whey protein, o óleo de coco (se a pasta estiver muito espessa), a baunilha e o sal.",
+      "Bata novamente até ficar homogêneo.",
+      "Prove e ajuste a doçura, se necessário.",
+      "Transfira para um pote de vidro com tampa.",
+      "Dica: Se a pasta ficar muito espessa, adicione mais óleo de coco aos poucos até atingir a textura desejada."
+    ],
+    "substituicoes_ingredientes": {
+      "Whey": "proteína vegetal ou colágeno",
+      "Amêndoas": "castanha-de-caju ou amendoim",
+      "Óleo de coco": "óleo de amêndoas"
+    },
+    "tempo_preparo": 15,
+    "porcoes": 1,
+    "dificuldade": "medio",
+    "tipo_refeicao": "snacks",
+    "tags": [
+      "Base",
+      "Funcional",
+      "Proteica",
+      "Sem glúten",
+      "Sem açúcar refinado",
+      "inédita/ não tem no Instagram/Mais saudável"
+    ],
+    "is_premium": true,
+    "is_free": false,
+    "informacoes_nutricionais": "Calorias: ~90–110 kcal\nProteínas: ~4–6 g\nGorduras: ~8–9 g\nCarboidratos: ~2–4 g",
+    "aviso_nutricional": "Valores podem variar conforme os ingredientes utilizados..  Valores nutricionais estimados via aplicativo e não substituem orientação nutricional profissional.",
+    "calorias": 90,
+    "proteinas": 4,
+    "carboidratos": 2,
+    "gorduras": 8
+  },
+  {
+    "titulo": "🍞🌱 Pão de Lentilha Sem Glúten",
+    "descricao": "Nutritivo, macio e funcional, feito à base de lentilha e sementes — ideal para quem busca um pão sem farinha e com mais saciedade.",
+    "ingredientes": [
+      "250 g de lentilha crua",
+      "100 ml de água quente",
+      "Sal a gosto",
+      "30 ml de azeite de oliva",
+      "1 colher de sopa de mel (para ativar o fermento)",
+      "1 colher de sobremesa de goma xantana",
+      "10 g de fermento biológico",
+      "Sementes para finalizar (abóbora, linhaça e gergelim)"
+    ],
+    "modo_preparo": [
+      "Preparação da lentilha",
+      "Deixe a lentilha de molho em água por, no mínimo, 12 horas.",
+      "No dia seguinte, escorra e lave bem.",
+      "Preparação da massa",
+      "No liquidificador, coloque a lentilha, a água quente, o sal, o azeite, o mel e a goma xantana.",
+      "Bata até obter uma mistura bem homogênea.",
+      "Adição do fermento",
+      "Acrescente o fermento biológico e bata rapidamente apenas para misturar.",
+      "Descanso e finalização",
+      "Transfira a massa para uma forma untada.",
+      "Deixe crescer por 30 minutos em local abafado.",
+      "Finalize com sementes de abóbora, linhaça e gergelim por cima.",
+      "Assar",
+      "Leve ao forno preaquecido a 180 °C por 30 a 35 minutos, ou até dourar e firmar.",
+      "Dica: As sementes são ricas em ômega-3, fibras e proteínas, promovendo saciedade e auxiliando na saúde intestinal e cardiovascular."
+    ],
+    "substituicoes_ingredientes": {
+      "Mel": "açúcar de coco ou melado",
+      "Goma xantana": "psyllium (mesma medida)",
+      "Azeite": "óleo de abacate ou óleo de coco"
+    },
+    "tempo_preparo": 15,
+    "porcoes": 1,
+    "dificuldade": "medio",
+    "tipo_refeicao": "snacks",
+    "tags": [
+      "Pães",
+      "Funcional",
+      "Proteico vegetal",
+      "Sem glúten",
+      "Mais saudável",
+      "Rico em fibras"
+    ],
+    "is_premium": true,
+    "is_free": false,
+    "informacoes_nutricionais": "Calorias: ~120–150 kcal\nProteínas: ~6–8 g\nGorduras: ~4–6 g\nCarboidratos: ~15–18 g\nFibras: ~4–5 g",
+    "aviso_nutricional": "Valores podem variar conforme os ingredientes utilizados..  Valores nutricionais estimados via aplicativo e não substituem orientação nutricional profissional.",
+    "calorias": 120,
+    "proteinas": 6,
+    "carboidratos": 15,
+    "gorduras": 4
+  },
+  {
+    "titulo": "🍫🍞 Panetone Funcional de Amêndoas",
+    "descricao": "Macio, aromático e com sabor clássico de Natal, feito sem farinha de trigo e com adoçante — perfeito para quem busca uma versão mais leve.",
+    "ingredientes": [
+      "250 g de farinha de amêndoas",
+      "6 ovos",
+      "150 g de xilitol",
+      "2 colheres de sopa de fermento em pó",
+      "1 colher de chá de goma xantana",
+      "1 colher de sopa de essência de panetone",
+      "Chocolate amargo picado ou uva-passa a gosto"
+    ],
+    "modo_preparo": [
+      "Bata os ovos até ficarem levemente espumosos.",
+      "Adicione o xilitol, a goma xantana e o fermento em pó. Misture bem.",
+      "Acrescente a farinha de amêndoas e a essência de panetone, misturando até obter uma massa homogênea.",
+      "Incorpore o chocolate picado ou a uva-passa.",
+      "Transfira a massa para uma forma grande de panetone ou distribua em formas menores.",
+      "Leve ao forno preaquecido a 200 °C até crescer.",
+      "Assim que crescer, abaixe a temperatura para 160 °C e asse por 15 a 20 minutos.",
+      "Faça o teste do palito antes de retirar do forno.",
+      "Dica: Se quiser mais umidade, acrescente 1 colher de sopa de óleo de coco ou manteiga ghee à massa."
+    ],
+    "substituicoes_ingredientes": {
+      "Xilitol": "eritritol ou blend culinário",
+      "Farinha de amêndoas": "farinha de castanha-de-caju",
+      "Chocolate": "frutas secas sem açúcar"
+    },
+    "tempo_preparo": 15,
+    "porcoes": 1,
+    "dificuldade": "medio",
+    "tipo_refeicao": "snacks",
+    "tags": [
+      "Sobremesa",
+      "Funcional",
+      "Sem glúten",
+      "Sem açúcar refinado",
+      "Low carb"
+    ],
+    "is_premium": true,
+    "is_free": false,
+    "informacoes_nutricionais": "Calorias: ~220–260 kcal\nProteínas: ~8–10 g\nGorduras: ~18–20 g\nCarboidratos: ~6–8 g",
+    "aviso_nutricional": "Valores podem variar conforme os ingredientes utilizados..  Valores nutricionais estimados via aplicativo e não substituem orientação nutricional profissional.",
+    "calorias": 220,
+    "proteinas": 8,
+    "carboidratos": 6,
+    "gorduras": 18
+  },
+  {
+    "titulo": "🐟🥛 Tilápia ao Molho Cremoso de Amêndoas",
+    "descricao": "Filés suculentos com molho leve, cremoso e aromático — uma opção elegante, nutritiva e fácil para o dia a dia.",
+    "ingredientes": [
+      "3 filés de tilápia",
+      "Sal a gosto",
+      "Pimenta-do-reino a gosto",
+      "½ colher de chá de cúrcuma",
+      "1 colher de sopa de azeite de oliva",
+      "1 colher de sopa de azeite de oliva",
+      "2 dentes de alho picados",
+      "1 caixinha de creme de amêndoas",
+      "Aproximadamente 30 ml de leite de amêndoas (ajuste a textura)",
+      "Sal e pimenta-do-reino a gosto",
+      "Salsa picada para finalizar"
+    ],
+    "modo_preparo": [
+      "Tempere os filés de tilápia com sal, pimenta-do-reino e cúrcuma.",
+      "Aqueça o azeite em uma frigideira em fogo médio-alto e grelhe os filés por 3 a 4 minutos de cada lado, até dourarem. Reserve.",
+      "Na mesma frigideira, adicione o azeite e refogue o alho até dourar levemente.",
+      "Acrescente o creme de amêndoas e o leite de amêndoas, mexendo até formar um molho homogêneo.",
+      "Tempere com sal e pimenta e cozinhe por cerca de 2 minutos, até engrossar levemente.",
+      "Volte os filés para a frigideira, envolvendo-os no molho por alguns instantes.",
+      "Finalize com salsa picada e sirva imediatamente.",
+      "Dica: Sirva com legumes grelhados ou arroz de couve-flor para uma refeição completa e equilibrada."
+    ],
+    "substituicoes_ingredientes": {
+      "Tilápia": "pescada ou linguado",
+      "Creme de amêndoas": "creme de castanha-de-caju, creme de leite",
+      "Leite de amêndoas": "leite de coco light"
+    },
+    "tempo_preparo": 10,
+    "porcoes": 2,
+    "dificuldade": "medio",
+    "tipo_refeicao": "snacks",
+    "tags": [
+      "Refeição principal",
+      "Proteica",
+      "Funcional",
+      "Sem glúten",
+      "Low carb",
+      "Sem açúcar refinado"
+    ],
+    "is_premium": true,
+    "is_free": false,
+    "informacoes_nutricionais": "Calorias: ~280–330 kcal\nProteínas: ~30–35 g\nGorduras: ~18–20 g\nCarboidratos: ~4–6 g",
+    "aviso_nutricional": "Valores podem variar conforme os ingredientes utilizados..  Valores nutricionais estimados via aplicativo e não substituem orientação nutricional profissional.",
+    "calorias": 280,
+    "proteinas": 30,
+    "carboidratos": 4,
+    "gorduras": 18
+  },
+  {
+    "titulo": "🥙🍳 Massa Leve e Sem Glúten (de Frigideira)",
+    "descricao": "Uma massa prática, macia e neutra, perfeita para wraps, mini pizzas ou pães achatados — pronta em minutos.",
+    "ingredientes": [
+      "2 colheres de sopa de cottage",
+      "2 colheres de sopa de farinha sem glúten",
+      "1 pitada de sal",
+      "Opcional: 1 colher de chá de azeite de oliva (para mais maciez e elasticidade)"
+    ],
+    "modo_preparo": [
+      "Em um recipiente, misture a farinha sem glúten, o cottage e o sal.",
+      "Amasse bem até formar uma massa homogênea que não grude nas mãos.",
+      "Em uma superfície levemente enfarinhada, abra a massa com um rolo até ficar bem fina.",
+      "Para um formato uniforme, use um prato ou tampa como molde e corte as bordas.",
+      "Aqueça uma frigideira em fogo médio e coloque a massa.",
+      "Doure por cerca de 2 minutos de cada lado, até ficar levemente crocante e firme.",
+      "Retire do fogo e finalize como preferir.",
+      "Dica: Se quiser uma versão mais crocante, deixe dourar um pouco mais em fogo baixo. Para versão mais macia, tampe a frigideira por 30 segundos."
+    ],
+    "substituicoes_ingredientes": {
+      "Cottage": "ricota amassada ou iogurte natural firme",
+      "Farinha sem glúten": "farinha de arroz, mix sem glúten ou farinha de aveia sem glúten"
+    },
+    "tempo_preparo": 5,
+    "porcoes": 1,
+    "dificuldade": "medio",
+    "tipo_refeicao": "snacks",
+    "tags": [
+      "Base versátil",
+      "Funcional",
+      "Sem glúten",
+      "Low carb",
+      "Rápida",
+      "Proteica"
+    ],
+    "is_premium": true,
+    "is_free": false,
+    "informacoes_nutricionais": "Calorias: ~120–150 kcal\nProteínas: ~8–10 g\nGorduras: ~4–6 g\nCarboidratos: ~10–14 g",
+    "aviso_nutricional": "Valores podem variar conforme a farinha utilizada.. Aviso Valores nutricionais estimados via aplicativo e não substituem orientação nutricional profissional.",
+    "calorias": 120,
+    "proteinas": 8,
+    "carboidratos": 10,
+    "gorduras": 4
+  },
+  {
+    "titulo": "🥧🍗 Torta de Frango Sem Farinha",
+    "descricao": "Leve, nutritiva e extremamente prática, essa torta é perfeita para refeições do dia a dia, marmitas ou lanches completos.",
+    "ingredientes": [
+      "3 ovos",
+      "100 g de abobrinha ralada (bem escorrida)",
+      "100 g de milho",
+      "100 g de cenoura ralada",
+      "100 g de cebola ralada",
+      "1 dente de alho picado",
+      "100 g de tomate picado (sem excesso de líquido)",
+      "300 g de frango cozido e desfiado",
+      "1 colher de sopa de farinha de aveia ou psyllium (opcional, para mais estrutura)",
+      "1 colher de chá de fermento químico",
+      "2 colheres de sopa de azeite de oliva",
+      "Salsa e cebolinha a gosto",
+      "Sal e pimenta-do-reino a gosto",
+      "50 g de queijo parmesão ralado"
+    ],
+    "modo_preparo": [
+      "Em uma tigela, bata os ovos com o azeite, o sal e a pimenta até obter uma mistura homogênea.",
+      "Acrescente a abobrinha, o milho, a cenoura, a cebola, o alho, o tomate e o frango desfiado. Misture bem.",
+      "Se desejar uma textura mais firme, adicione a farinha de aveia ou o psyllium.",
+      "Incorpore o fermento químico delicadamente.",
+      "Transfira a massa para uma travessa untada ou forrada com papel manteiga.",
+      "Finalize com o parmesão ralado por cima.",
+      "Asse em forno preaquecido a 180 °C por 30 a 40 minutos, ou até dourar e firmar.",
+      "Retire do forno e aguarde amornar antes de cortar para melhor estrutura.",
+      "Dica: Para uma versão ainda mais saborosa, acrescente ervas secas, páprica defumada ou cúrcuma à massa."
+    ],
+    "substituicoes_ingredientes": {
+      "Frango": "atum, carne moída refogada ou legumes salteados",
+      "Parmesão": "muçarela, meia cura ou queijo vegano",
+      "Farinha/psyllium": "pode ser omitido para versão ainda mais leve"
+    },
+    "tempo_preparo": 15,
+    "porcoes": 6,
+    "dificuldade": "medio",
+    "tipo_refeicao": "snacks",
+    "tags": [
+      "Refeição principal",
+      "Proteica",
+      "Sem farinha",
+      "Sem glúten",
+      "Completa",
+      "Funcional"
+    ],
+    "is_premium": true,
+    "is_free": false,
+    "informacoes_nutricionais": "Calorias: ~180–220 kcal\nProteínas: ~18–22 g\nGorduras: ~9–11 g\nCarboidratos: ~6–10 g",
+    "aviso_nutricional": "Valores podem variar conforme os ingredientes utilizados.. Aviso Valores nutricionais estimados via aplicativo e não substituem orientação nutricional profissional.",
+    "calorias": 180,
+    "proteinas": 18,
+    "carboidratos": 6,
+    "gorduras": 9
+  },
+  {
+    "titulo": "🍕🥦 Pizza Low Carb de Couve-Flor ou Brócolis",
+    "descricao": "Uma alternativa leve, nutritiva e deliciosa à pizza tradicional, com base vegetal, alto poder de saciedade e sabor incrível.",
+    "ingredientes": [
+      "200 g de couve-flor ou brócolis ralado",
+      "100 g de queijo parmesão ralado",
+      "1 ovo",
+      "2 colheres de sopa de farinha de amêndoas",
+      "Pitada de sal",
+      "Pimenta-do-reino a gosto (opcional)"
+    ],
+    "modo_preparo": [
+      "Aqueça uma frigideira em fogo médio e adicione a couve-flor ou o brócolis ralado.",
+      "Refogue por alguns minutos, mexendo sempre, até liberar e evaporar toda a umidade.",
+      "Com o vegetal ainda quente, adicione o parmesão e misture bem até incorporar.",
+      "Transfira a mistura para uma tigela e deixe amornar.",
+      "Acrescente o ovo, a farinha de amêndoas, o sal e a pimenta, misturando até formar uma massa homogênea.",
+      "Unte uma forma ou forre com papel manteiga. Espalhe a massa, pressionando bem para deixá-la fina e uniforme.",
+      "Leve ao forno preaquecido a 200 °C por cerca de 15 minutos, ou até a base ficar firme e levemente dourada.",
+      "Retire do forno, adicione a cobertura de sua preferência e volte ao forno até o queijo derreter e dourar."
+    ],
+    "substituicoes_ingredientes": {
+      "Parmesão": "muçarela ralada ou queijo meia-cura",
+      "Farinha de amêndoas": "farinha de linhaça ou de castanhas",
+      "Ovo": "1 colher de sopa de psyllium + 2 colheres de sopa de água (versão sem ovo)"
+    },
+    "tempo_preparo": 15,
+    "porcoes": 1,
+    "dificuldade": "medio",
+    "tipo_refeicao": "snacks",
+    "tags": [
+      "Refeição principal",
+      "Low carb",
+      "Sem glúten",
+      "Rica em fibras",
+      "Funcional"
+    ],
+    "is_premium": true,
+    "is_free": false,
+    "informacoes_nutricionais": "Calorias: ~230–260 kcal\nProteínas: ~14–18 g\nGorduras: ~15–18 g\nCarboidratos: ~6–9 g",
+    "aviso_nutricional": "Valores podem variar conforme ingredientes e coberturas escolhidas.. Aviso Valores nutricionais estimados e não substituem acompanhamento profissional.",
+    "calorias": 230,
+    "proteinas": 14,
+    "carboidratos": 6,
+    "gorduras": 15
+  },
+  {
+    "titulo": "🍫🥜 Barrinhas Proteicas de Chocolate (sem forno)",
+    "descricao": "Uma opção nutritiva, prática e deliciosa para o dia a dia. Ideal para lanches rápidos, pré ou pós-treino.",
+    "ingredientes": [
+      "1/2 xícara de aveia em flocos",
+      "2 colheres de sopa de chia",
+      "1/3 de xícara de pepitas de girassol",
+      "1/2 xícara de gotas de chocolate 70% sem açúcar",
+      "2 scoops de proteína sabor chocolate",
+      "1/2 xícara de pasta de amendoim",
+      "3 colheres de sopa de xarope de bordo",
+      "(pode substituir por agave ou calda de tâmaras)",
+      "Aproximadamente 70 ml de água (adicione aos poucos)"
+    ],
+    "modo_preparo": [
+      "Em um bowl, misture todos os ingredientes secos.",
+      "Acrescente a pasta de amendoim e o xarope de bordo, misturando bem.",
+      "Adicione a água aos poucos até formar uma massa firme, homogênea e que não grude nas mãos.",
+      "Forre uma bancada com plástico-filme, coloque a massa e cubra com mais plástico.",
+      "Abra com um rolo, prensando bem até a espessura desejada.",
+      "Leve à geladeira por aproximadamente 3 horas, até firmar bem.",
+      "Corte em barrinhas e conserve refrigerado.",
+      "Dica: Guarde na geladeira por até 7 dias ou congele por até 30 dias para ter sempre um lanche pronto."
+    ],
+    "substituicoes_ingredientes": {
+      "Aveia": "flocos de arroz ou quinoa em flocos",
+      "Pasta de amendoim": "pasta de amêndoas ou castanha-de-caju",
+      "Xarope de bordo": "agave, mel ou calda de tâmaras",
+      "Pepitas de girassol": "castanhas picadas ou coco em flocos"
+    },
+    "tempo_preparo": 10,
+    "porcoes": 5,
+    "dificuldade": "medio",
+    "tipo_refeicao": "snacks",
+    "tags": [
+      "Lanche",
+      "Funcional",
+      "Proteico",
+      "Sem glúten",
+      "Sem açúcar refinado",
+      "Prático"
+    ],
+    "is_premium": true,
+    "is_free": false,
+    "informacoes_nutricionais": "Calorias: ~180–220 kcal\nProteínas: ~10–14 g\nGorduras: ~10–13 g\nCarboidratos: ~12–18 g",
+    "aviso_nutricional": "Valores podem variar conforme marcas e substituições..  Valores nutricionais estimados via aplicativo e não substituem orientação nutricional profissional.",
+    "calorias": 180,
+    "proteinas": 10,
+    "carboidratos": 12,
+    "gorduras": 10
+  },
+  {
+    "titulo": "🥛🍯 Doce de Leite Fit (sem lactose)",
+    "descricao": "Cremoso, prático e com sabor clássico de doce de leite, feito com poucos ingredientes e sem açúcar refinado.",
+    "ingredientes": [
+      "2 xícaras de leite em pó sem lactose",
+      "150 ml de água quente",
+      "1/4 de xícara de adoçante culinário de sua preferência",
+      "(xilitol, eritritol ou blend)"
+    ],
+    "modo_preparo": [
+      "No liquidificador, bata o leite em pó, a água quente e o adoçante por cerca de 3 minutos, até obter uma mistura lisa e homogênea.",
+      "Transfira para um pote de vidro com tampa hermética bem vedada.",
+      "Envolva o pote com um pano de prato para evitar atrito durante o cozimento.",
+      "Coloque o pote na panela de pressão e cubra completamente com água.",
+      "Tampe a panela e leve ao fogo médio. Assim que pegar pressão, conte:",
+      "Desligue o fogo e deixe a pressão sair naturalmente.",
+      "Retire o pote com cuidado e espere esfriar completamente antes de abrir.",
+      "Bata novamente no liquidificador para garantir uma textura ainda mais cremosa.",
+      "Dica: Guarde na geladeira por até 7 dias."
+    ],
+    "substituicoes_ingredientes": {
+      "Leite em pó sem lactose": "leite em pó integral ou desnatado",
+      "Adoçante culinário": "açúcar de coco ou mascavo (deixa de ser fit)"
+    },
+    "tempo_preparo": 5,
+    "porcoes": 2,
+    "dificuldade": "medio",
+    "tipo_refeicao": "snacks",
+    "tags": [
+      "Sobremesa",
+      "Funcional",
+      "Sem glúten",
+      "Sem açúcar refinado",
+      "Mais saudável"
+    ],
+    "is_premium": true,
+    "is_free": false,
+    "informacoes_nutricionais": "Calorias: ~45–60 kcal\nProteínas: ~2–3 g\nGorduras: ~1–2 g\nCarboidratos: ~6–8 g",
+    "aviso_nutricional": "Valores podem variar conforme o adoçante e a marca do leite em pó utilizados..  Valores nutricionais estimados via aplicativo e não substituem orientação nutricional profissional.",
+    "calorias": 45,
+    "proteinas": 2,
+    "carboidratos": 6,
+    "gorduras": 1
+  },
+  {
+    "titulo": "🍌✨ Banana Chips na Airfryer",
+    "descricao": "Crocantes, práticas e feitas com poucos ingredientes. Uma ótima alternativa saudável aos snacks industrializados.",
+    "ingredientes": [
+      "5 bananas verdes",
+      "1 colher de sopa de óleo de coco",
+      "1/2 colher de chá de sal"
+    ],
+    "modo_preparo": [
+      "Descasque as bananas verdes.",
+      "Corte em fatias bem finas e uniformes.",
+      "Coloque as fatias em um bowl, adicione o óleo de coco e o sal, misturando bem para envolver todas as bananas.",
+      "Disponha as fatias na cesta da airfryer, uma ao lado da outra, sem sobrepor.",
+      "Leve à airfryer preaquecida a 180 °C por 3 minutos.",
+      "Abra a airfryer, solte as fatias que possam ter grudado e mexa levemente.",
+      "Feche novamente e asse por mais 4 a 5 minutos, até ficarem douradas e crocantes.",
+      "Retire e deixe esfriar — elas ficam ainda mais crocantes após esfriar.",
+      "Dica: Para versão doce, substitua o sal por canela ou páprica doce."
+    ],
+    "substituicoes_ingredientes": {
+      "Óleo de coco": "azeite de oliva ou óleo de abacate",
+      "Sal": "sal rosa, marinho ou temperos naturais a gosto"
+    },
+    "tempo_preparo": 10,
+    "porcoes": 1,
+    "dificuldade": "medio",
+    "tipo_refeicao": "snacks",
+    "tags": [
+      "Snack",
+      "Natural",
+      "Funcional",
+      "Sem glúten",
+      "Vegano",
+      "Crocante"
+    ],
+    "is_premium": true,
+    "is_free": false,
+    "informacoes_nutricionais": "Calorias: ~120–150 kcal\nCarboidratos: ~25–30 g\nGorduras: ~4–6 g\nFibras: ~3–4 g",
+    "aviso_nutricional": "Valores podem variar conforme o tamanho das bananas e o óleo utilizado..  Valores nutricionais estimados via aplicativo e não substituem orientação nutricional profissional.",
+    "calorias": 120,
+    "carboidratos": 25,
+    "gorduras": 4
+  },
+  {
+    "titulo": "🍓🥛 Danoninho Fit Caseiro",
+    "descricao": "Um lanche cremoso, leve e nutritivo, com sabor de infância e muito mais proteína.",
+    "ingredientes": [
+      "1 pote de iogurte natural sem açúcar ou iogurte grego",
+      "8 a 10 morangos",
+      "1 scoop de whey protein sabor baunilha ou morango",
+      "(pode substituir por leite em pó desnatado ou sem lactose)"
+    ],
+    "modo_preparo": [
+      "Coloque todos os ingredientes no liquidificador.",
+      "Bata até obter um creme liso, homogêneo e bem rosado.",
+      "Sirva imediatamente ou transfira para um pote com tampa.",
+      "Dica: Sirva gelado para lembrar ainda mais o sabor do danoninho tradicional — sem açúcar e com mais proteína."
+    ],
+    "substituicoes_ingredientes": {
+      "Whey protein": "leite em pó, proteína vegetal ou colágeno",
+      "Morangos": "framboesa ou mix de frutas vermelhas",
+      "Iogurte": "versão sem lactose ou vegetal"
+    },
+    "tempo_preparo": 5,
+    "porcoes": 2,
+    "dificuldade": "medio",
+    "tipo_refeicao": "snacks",
+    "tags": [
+      "Lanche",
+      "Funcional",
+      "Proteico",
+      "Sem açúcar refinado",
+      "Sem glúten"
+    ],
+    "is_premium": true,
+    "is_free": false,
+    "informacoes_nutricionais": "Calorias: ~90–130 kcal\nProteínas: ~8–12 g\nGorduras: ~2–4 g\nCarboidratos: ~8–12 g",
+    "aviso_nutricional": "Valores podem variar conforme as marcas utilizadas..  Valores nutricionais estimados via aplicativo e não substituem orientação nutricional profissional.",
+    "calorias": 90,
+    "proteinas": 8,
+    "carboidratos": 8,
+    "gorduras": 2
+  },
+  {
+    "titulo": "Bombom Fit de Chocolate 70% com Morango e Granola Uma sobremesa fácil, crocante e refrescante, perfeita para o fim de semana",
+    "descricao": "simples, deliciosa e sem culpa.",
+    "ingredientes": [
+      "100 g de chocolate 70% cacau sem açúcar",
+      "Granola sem açúcar (a gosto)",
+      "Morangos picados (a gosto)"
+    ],
+    "modo_preparo": [
+      "Derreta o chocolate em banho-maria ou no micro-ondas (de 30 em 30 segundos).",
+      "Faça uma camada de chocolate no fundo das forminhas.",
+      "Adicione a granola e os morangos picados.",
+      "Cubra com mais chocolate derretido.",
+      "Finalize com um pouco de granola por cima.",
+      "Leve à geladeira até firmar.",
+      "Dica: Guarde em pote fechado na geladeira e consuma em até 3 dias para manter textura e sabor."
+    ],
+    "substituicoes_ingredientes": {
+      "Chocolate 70%": "chocolate 85% ou chocolate sem açúcar",
+      "Morango": "framboesa, amora ou banana em rodelas",
+      "Granola": "castanhas picadas, coco sem açúcar ou cereal proteico"
+    },
+    "tempo_preparo": 30,
+    "porcoes": 8,
+    "dificuldade": "medio",
+    "tipo_refeicao": "snacks",
+    "is_premium": false,
+    "is_free": true,
+    "informacoes_nutricionais": "",
+    "aviso_nutricional": "Valores nutricionais estimados via aplicativo e não substituem orientação nutricional profissional."
+  },
+  {
+    "titulo": "Bombom Fit de Chocolate 70% com Morango e Granola",
+    "descricao": "Uma sobremesa fácil, crocante e refrescante, perfeita para o fim de semana — simples, deliciosa e sem culpa.",
+    "ingredientes": [
+      "100 g de chocolate 70% cacau sem açúcar",
+      "Granola sem açúcar (a gosto)",
+      "Morangos picados (a gosto)"
+    ],
+    "modo_preparo": [
+      "Derreta o chocolate em banho-maria ou no micro-ondas (de 30 em 30 segundos).",
+      "Faça uma camada de chocolate no fundo das forminhas.",
+      "Adicione a granola e os morangos picados.",
+      "Cubra com mais chocolate derretido.",
+      "Finalize com um pouco de granola por cima.",
+      "Leve à geladeira até firmar.",
+      "Dica: Guarde em pote fechado na geladeira e consuma em até 3 dias para manter textura e sabor."
+    ],
+    "substituicoes_ingredientes": {
+      "Chocolate 70%": "chocolate 85% ou chocolate sem açúcar",
+      "Morango": "framboesa, amora ou banana em rodelas",
+      "Granola": "castanhas picadas, coco sem açúcar ou cereal proteico"
+    },
+    "tempo_preparo": 30,
+    "porcoes": 8,
+    "dificuldade": "medio",
+    "tipo_refeicao": "snacks",
+    "is_premium": false,
+    "is_free": true,
+    "informacoes_nutricionais": "",
+    "aviso_nutricional": "Valores nutricionais estimados via aplicativo e não substituem orientação nutricional profissional."
+  },
+  {
+    "titulo": "🌰🍫 Crocante de Amêndoas com Chocolate ou Morangos Uma base crocante, levemente adocicada e versátil",
+    "descricao": "perfeita para comer pura, com chocolate ou com frutas frescas.",
+    "ingredientes": [
+      "100 g de amêndoas em lascas",
+      "1 clara de ovo",
+      "1 colher (sopa) de adoçante da sua preferência (usei calda de tâmaras)",
+      "Chocolate derretido 70% sem açúcar ou morangos frescos (opcional para finalizar)"
+    ],
+    "modo_preparo": [
+      "Em uma tigela, misture as amêndoas, a clara e o adoçante até tudo ficar bem envolvido.",
+      "Espalhe a mistura em uma forma forrada com papel manteiga, formando uma camada fina.",
+      "Leve ao forno preaquecido a 180 °C por cerca de 20 minutos, ou até dourar levemente.",
+      "Retire do forno e deixe esfriar completamente — é nesse momento que fica bem crocante.",
+      "Finalize com uma camada de chocolate derretido ou sirva com morangos frescos.",
+      "Dica: Depois de frio, quebre em pedaços e guarde em pote fechado por até 5 dias — ótimo para acompanhar iogurte ou frutas."
+    ],
+    "substituicoes_ingredientes": {
+      "Amêndoas": "castanha-de-caju, nozes ou mix de oleaginosas",
+      "Clara de ovo": "aquafaba (versão vegana)",
+      "Calda de tâmaras": "xilitol, eritritol ou mel"
+    },
+    "tempo_preparo": 10,
+    "porcoes": 6,
+    "dificuldade": "medio",
+    "tipo_refeicao": "snacks",
+    "tags": [
+      "Sobremesa",
+      "Funcional",
+      "Crocante",
+      "Sem açúcar refinado",
+      "Sem glúten"
+    ],
+    "is_premium": true,
+    "is_free": false,
+    "informacoes_nutricionais": "Por porção (sem chocolate)\nCalorias: ~120–150 kcal\nProteínas: ~4–5 g\nGorduras: ~9–11 g\nCarboidratos: ~4–6 g",
+    "aviso_nutricional": "Valores podem variar conforme ingredientes e finalização.. Valores nutricionais estimados via aplicativo e não substituem orientação nutricional profissional.",
+    "calorias": 120,
+    "proteinas": 4,
+    "carboidratos": 4,
+    "gorduras": 9
+  },
+  {
+    "titulo": "Não tem no Instagram/ inédita",
+    "descricao": "",
+    "ingredientes": [
+      "1 xícara de farelo de aveia",
+      "3 bananas maduras amassadas",
+      "30 g de whey protein sabor baunilha",
+      "2 colheres (sopa) de coco ralado sem açúcar",
+      "2 colheres (sopa) de óleo de coco",
+      "100 ml de leite vegetal",
+      "1 colher (sobremesa) de fermento químico",
+      "Nozes picadas a gosto",
+      "Canela a gosto",
+      "Doce de leite sem açúcar (opcional, para rechear)"
+    ],
+    "modo_preparo": [
+      "Em uma tigela, amasse bem as bananas.",
+      "Acrescente o farelo de aveia, o whey, o coco ralado, o óleo de coco e o leite vegetal.",
+      "Misture até formar uma massa homogênea.",
+      "Por último, incorpore o fermento delicadamente.",
+      "Distribua a massa em forminhas.",
+      "Se desejar, coloque uma pequena quantidade de doce de leite sem açúcar no centro de cada bolinho.",
+      "Polvilhe canela e finalize com nozes por cima.",
+      "Leve ao forno preaquecido a 180 °C por cerca de 25 minutos.",
+      "Dica: Ficam ótimos congelados: depois de assados e frios, congele por até 30 dias e aqueça antes de consumir."
+    ],
+    "substituicoes_ingredientes": {
+      "Farelo de aveia": "farinha de aveia sem glúten ou mix de farinhas sem glúten",
+      "Whey": "proteína vegetal ou leite em pó sem açúcar",
+      "Leite vegetal": "leite sem lactose",
+      "Óleo de coco": "azeite suave ou manteiga ghee",
+      "Nozes": "castanhas, amêndoas ou chocolate 70%"
+    },
+    "tempo_preparo": 10,
+    "porcoes": 8,
+    "dificuldade": "medio",
+    "tipo_refeicao": "snacks",
+    "tags": [
+      "Bolo",
+      "Funcional",
+      "Proteico",
+      "Sem açúcar refinado",
+      "Pode ser sem glúten*"
+    ],
+    "is_premium": true,
+    "is_free": false,
+    "informacoes_nutricionais": "Por unidade (sem recheio)\nCalorias: ~130–160 kcal\nProteínas: ~6–8 g\nGorduras: ~6–8 g\nCarboidratos: ~14–18 g",
+    "aviso_nutricional": "Valores podem variar conforme marcas e recheio utilizado.. Valores nutricionais estimados via aplicativo e não substituem orientação nutricional profissional.",
+    "calorias": 130,
+    "proteinas": 6,
+    "carboidratos": 14,
+    "gorduras": 6
+  },
+  {
+    "titulo": "🍌🍰 Bolo de Banana com Doce de Leite e Nozes Um bolinho macio, aromático e nutritivo, com sabor de conforto e toque especial de doce de leite.",
+    "descricao": "",
+    "ingredientes": [
+      "1 xícara de farelo de aveia",
+      "3 bananas maduras amassadas",
+      "30 g de whey protein sabor baunilha",
+      "2 colheres (sopa) de coco ralado sem açúcar",
+      "2 colheres (sopa) de óleo de coco",
+      "100 ml de leite vegetal",
+      "1 colher (sobremesa) de fermento químico",
+      "Nozes picadas a gosto",
+      "Canela a gosto",
+      "Doce de leite sem açúcar (opcional, para rechear)"
+    ],
+    "modo_preparo": [
+      "Em uma tigela, amasse bem as bananas.",
+      "Acrescente o farelo de aveia, o whey, o coco ralado, o óleo de coco e o leite vegetal.",
+      "Misture até formar uma massa homogênea.",
+      "Por último, incorpore o fermento delicadamente.",
+      "Distribua a massa em forminhas.",
+      "Se desejar, coloque uma pequena quantidade de doce de leite sem açúcar no centro de cada bolinho.",
+      "Polvilhe canela e finalize com nozes por cima.",
+      "Leve ao forno preaquecido a 180 °C por cerca de 25 minutos.",
+      "Dica: Ficam ótimos congelados: depois de assados e frios, congele por até 30 dias e aqueça antes de consumir."
+    ],
+    "substituicoes_ingredientes": {
+      "Farelo de aveia": "farinha de aveia sem glúten ou mix de farinhas sem glúten",
+      "Whey": "proteína vegetal ou leite em pó sem açúcar",
+      "Leite vegetal": "leite sem lactose",
+      "Óleo de coco": "azeite suave ou manteiga ghee",
+      "Nozes": "castanhas, amêndoas ou chocolate 70%"
+    },
+    "tempo_preparo": 10,
+    "porcoes": 0,
+    "dificuldade": "medio",
+    "tipo_refeicao": "snacks",
+    "tags": [
+      "Bolo",
+      "Funcional",
+      "Proteico",
+      "Sem açúcar refinado",
+      "Pode ser sem glúten*"
+    ],
+    "is_premium": true,
+    "is_free": false,
+    "informacoes_nutricionais": "Por unidade (sem recheio)\nCalorias: ~130–160 kcal\nProteínas: ~6–8 g\nGorduras: ~6–8 g\nCarboidratos: ~14–18 g",
+    "aviso_nutricional": "Valores podem variar conforme marcas e recheio utilizado.. Valores nutricionais estimados via aplicativo e não substituem orientação nutricional profissional.",
+    "calorias": 130,
+    "proteinas": 6,
+    "carboidratos": 14,
+    "gorduras": 6
+  },
+  {
+    "titulo": "🍇❄️ Uvas Geladas Proteicas com Limão Quando a vontade de doce aparece, essa combinação resolve: refrescante, leve, proteica e sem culpa.",
+    "descricao": "",
+    "ingredientes": [
+      "Uvas sem sementes (quantidade a gosto)",
+      "½ scoop de whey protein sabor baunilha",
+      "Raspas de limão a gosto",
+      "Algumas gotas de limão espremido"
+    ],
+    "modo_preparo": [
+      "Coloque as uvas em um pote com tampa.",
+      "Adicione o whey, as raspas e as gotas de limão.",
+      "Feche o pote e sacuda bem até o whey envolver todas as uvas.",
+      "Leve o próprio pote ao freezer até ficarem bem geladas.",
+      "Dica: Consuma direto do freezer ou deixe 2 minutinhos fora para textura tipo sorbet."
+    ],
+    "substituicoes_ingredientes": {
+      "Whey": "proteína vegetal sabor neutro ou baunilha, leite em pó",
+      "Uvas": "morangos, mirtilos ou manga em cubos",
+      "Limão": "raspas de laranja ou maracujá"
+    },
+    "tempo_preparo": 2,
+    "porcoes": 0,
+    "dificuldade": "medio",
+    "tipo_refeicao": "snacks",
+    "tags": [
+      "Sobremesa",
+      "Funcional",
+      "Proteica",
+      "Refrescante",
+      "Sem açúcar refinado",
+      "Sem glúten"
+    ],
+    "is_premium": true,
+    "is_free": false,
+    "informacoes_nutricionais": "Por porção\nCalorias: ~90–120 kcal\nProteínas: ~8–10 g\nGorduras: ~1–2 g\nCarboidratos: ~12–16 g",
+    "aviso_nutricional": "Valores podem variar conforme quantidade e marca do whey.. Valores nutricionais estimados via aplicativo e não substituem orientação nutricional profissional.",
+    "calorias": 90,
+    "proteinas": 8,
+    "carboidratos": 12,
+    "gorduras": 1
+  },
+  {
+    "titulo": "☕❄️ Café Gelado Proteico com TCM Pré-treino simples e eficiente para ligar o foco e dar energia na medida certa.",
+    "descricao": "",
+    "ingredientes": [
+      "200 ml de café passado e frio",
+      "Gelo a gosto",
+      "1 scoop de whey protein sabor baunilha ou neutro",
+      "1 colher (chá) a 1 colher (sopa) de óleo TCM",
+      "Canela a gosto"
+    ],
+    "modo_preparo": [
+      "Coloque todos os ingredientes no liquidificador.",
+      "Bata até obter uma bebida bem cremosa e homogênea.",
+      "Sirva imediatamente.",
+      "Dica: Comece com 1 colher de chá de TCM se não estiver habituada e aumente aos poucos."
+    ],
+    "substituicoes_ingredientes": {
+      "Whey": "proteína vegetal sabor neutro",
+      "TCM": "óleo de coco (sabor mais marcante)",
+      "Café": "café descafeinado (para sensibilidade à cafeína)"
+    },
+    "tempo_preparo": 5,
+    "porcoes": 0,
+    "dificuldade": "medio",
+    "tipo_refeicao": "snacks",
+    "tags": [
+      "Pré-treino",
+      "Funcional",
+      "Proteico",
+      "Energético",
+      "Sem açúcar refinado",
+      "Sem glúten"
+    ],
+    "is_premium": true,
+    "is_free": false,
+    "informacoes_nutricionais": "Por porção\nCalorias: ~120–180 kcal\nProteínas: ~20–24 g\nGorduras: ~5–12 g\nCarboidratos: ~2–4 g",
+    "aviso_nutricional": "Valores podem variar conforme marcas e quantidade de TCM utilizada.. Valores nutricionais estimados via aplicativo e não substituem orientação nutricional profissional.",
+    "calorias": 120,
+    "proteinas": 20,
+    "carboidratos": 2,
+    "gorduras": 5
+  },
+  {
+    "titulo": "🍞🥑 Keto Bread – Pão Cetogênico de Frigideira Pão rápido, macio por dentro e dourado por fora",
+    "descricao": "ideal para quem segue low carb ou cetogênica.",
+    "ingredientes": [
+      "1 ovo",
+      "10 g de azeite de oliva",
+      "6 g de farinha de amêndoas",
+      "6 g de farinha de coco",
+      "½ colher (chá) de fermento químico em pó",
+      "1 pitada de sal"
+    ],
+    "modo_preparo": [
+      "Unte uma frigideira antiaderente de aproximadamente 11 cm com um fio de azeite.",
+      "Em uma travessa pequena, misture todos os ingredientes, exceto o fermento.",
+      "Adicione o fermento, mexa bem e transfira a massa para a frigideira untada.",
+      "Molhe a ponta dos dedos com um pouco de água e pressione a massa para nivelar.",
+      "Leve ao fogo bem baixo, sobre grelha dupla, com a frigideira tampada, por 5 minutos.",
+      "Desligue o fogo e deixe descansar, ainda tampado, por 3 minutos.",
+      "Vire o pão com uma espátula de silicone e asse por mais 3 minutos em fogo baixo, sempre tampado.",
+      "Dica: Corte ao meio e recheie com ovos, abacate ou queijo para um lanche completo e cetogênico."
+    ],
+    "substituicoes_ingredientes": {
+      "Azeite": "óleo de coco ou manteiga ghee",
+      "Farinha de amêndoas": "farinha de castanha-de-caju",
+      "Farinha de coco": "psyllium (ajuste a quantidade)"
+    },
+    "tempo_preparo": 12,
+    "porcoes": 1,
+    "dificuldade": "medio",
+    "tipo_refeicao": "snacks",
+    "tags": [
+      "Pão",
+      "Cetogênico",
+      "Low Carb",
+      "Sem glúten",
+      "Sem açúcar"
+    ],
+    "is_premium": false,
+    "is_free": true,
+    "informacoes_nutricionais": "Por unidade\nCalorias: ~180–220 kcal\nProteínas: ~8–10 g\nGorduras: ~14–16 g\nCarboidratos líquidos: ~2–4 g",
+    "aviso_nutricional": "Valores podem variar conforme marcas e farinhas utilizadas.. Valores nutricionais estimados via aplicativo e não substituem orientação nutricional profissional.",
+    "calorias": 180,
+    "proteinas": 8,
+    "gorduras": 14
+  },
+  {
+    "titulo": "🧀🌽 Palitinhos Crocantes de Flocão com Queijo Receita prática, econômica e deliciosa",
+    "descricao": "ideal para beliscar ou servir com pastinhas.",
+    "ingredientes": [
+      "2 colheres (sopa) de flocão de milho",
+      "40 g de queijo muçarela ralado",
+      "Sal a gosto",
+      "Temperos a gosto (orégano, páprica, alho em pó, pimenta, cúrcuma, etc.)",
+      "Água para hidratar o flocão (aprox. 2 a 3 colheres de sopa)"
+    ],
+    "modo_preparo": [
+      "Em uma tigela, hidrate o flocão de milho com a água até ficar macio.",
+      "Acrescente o queijo ralado, o sal e os temperos. Misture até formar uma massa moldável.",
+      "Modele a massa em formato de palitinhos.",
+      "Disponha em uma assadeira forrada com papel manteiga.",
+      "Leve ao forno preaquecido a 180 °C por 20 a 25 minutos ou até dourar bem.",
+      "Dica: Para mais crocância, deixe esfriar completamente ou finalize com 2–3 minutos de grill."
+    ],
+    "substituicoes_ingredientes": {
+      "Muçarela": "queijo minas padrão, parmesão ou versão sem lactose",
+      "Flocão": "fubá grosso (ajuste a hidratação)",
+      "Temperos": "ervas frescas ou secas de sua preferência"
+    },
+    "tempo_preparo": 25,
+    "porcoes": 1,
+    "dificuldade": "medio",
+    "tipo_refeicao": "snacks",
+    "tags": [
+      "Lanche",
+      "Rápido",
+      "Funcional",
+      "Sem glúten"
+    ],
+    "is_premium": true,
+    "is_free": false,
+    "informacoes_nutricionais": "Por porção\nCalorias: ~160–190 kcal\nProteínas: ~7–9 g\nGorduras: ~7–9 g\nCarboidratos: ~12–15 g",
+    "aviso_nutricional": "Valores podem variar conforme o queijo e temperos utilizados.. Valores nutricionais estimados via aplicativo e não substituem orientação nutricional profissional.",
+    "calorias": 160,
+    "proteinas": 7,
+    "carboidratos": 12,
+    "gorduras": 7
+  },
+  {
+    "titulo": "🍓🥣 Smoothie Bowl de Frutas Vermelhas com Granola Caseira Refrescante, cremoso e nutritivo",
+    "descricao": "perfeito para começar o dia ou para um lanche leve e equilibrado.",
+    "ingredientes": [
+      "1 xícara de frutas vermelhas congeladas",
+      "½ banana ou manga congelada",
+      "½ scoop de whey protein sabor baunilha",
+      "2 colheres (sopa) de iogurte natural",
+      "1 colher (sopa) de granola low carb",
+      "Toppings (opcional):",
+      "Chia",
+      "Coco em lascas",
+      "Morangos fatiados",
+      "Kiwi fatiado"
+    ],
+    "modo_preparo": [
+      "Coloque as frutas congeladas, a banana ou manga, o whey e o iogurte no mixer ou liquidificador.",
+      "Bata até obter um creme bem espesso e homogêneo.",
+      "Transfira para uma tigela larga.",
+      "Finalize com a granola e os toppings organizados lado a lado.",
+      "Dica: Use tudo bem congelado e bata aos poucos para manter a textura firme, tipo sorvete."
+    ],
+    "substituicoes_ingredientes": {
+      "Whey": "proteína vegetal ou colágeno",
+      "Iogurte": "versão sem lactose ou vegetal",
+      "Granola low carb": "granola sem açúcar, sementes ou castanhas picadas",
+      "Banana/manga": "abacate (para versão low carb)"
+    },
+    "tempo_preparo": 5,
+    "porcoes": 1,
+    "dificuldade": "medio",
+    "tipo_refeicao": "snacks",
+    "tags": [
+      "Café da manhã",
+      "Lanche",
+      "Funcional",
+      "Proteico",
+      "Sem açúcar refinado",
+      "Sem glúten"
+    ],
+    "is_premium": true,
+    "is_free": false,
+    "informacoes_nutricionais": "Por porção (sem toppings extras)\nCalorias: ~200–240 kcal\nProteínas: ~12–16 g\nGorduras: ~4–6 g\nCarboidratos: ~25–30 g",
+    "aviso_nutricional": "Valores podem variar conforme frutas e marcas utilizadas.. Valores nutricionais estimados via aplicativo e não substituem orientação nutricional profissional.",
+    "calorias": 200,
+    "proteinas": 12,
+    "carboidratos": 25,
+    "gorduras": 4
+  },
+  {
+    "titulo": "🍫 Barra de Chocolate Fake de Leite em Pó, Whey e Pistache Cremosa, gelada e prática",
+    "descricao": "ideal para matar a vontade de doce de forma funcional e proteica, direto do freezer.",
+    "ingredientes": [
+      "½ xícara de leite em pó",
+      "1 scoop de whey protein (sabor baunilha ou neutro)",
+      "2 a 3 colheres (sopa) de óleo de coco ou TCM",
+      "Adoçante a gosto (xilitol, eritritol ou outro)",
+      "Água aos poucos (até dar ponto de creme espesso)",
+      "Algumas gotas de essência de baunilha",
+      "Pistache picado a gosto para finalizar"
+    ],
+    "modo_preparo": [
+      "Em uma tigela, misture o leite em pó, o whey e o adoçante.",
+      "Acrescente o óleo de coco ou TCM e a essência de baunilha.",
+      "Vá adicionando água aos poucos, mexendo, até formar um creme homogêneo e espesso.",
+      "Forre uma grade com plástico filme ou utilize um tapete de silicone.",
+      "Espalhe a mistura de forma uniforme.",
+      "Finalize com pistache picado, pressionando levemente.",
+      "Leve ao freezer por 1 a 2 horas ou até ficar bem firme.",
+      "Corte nos formatos da grade e mantenha armazenado no freezer.",
+      "Dica: Para textura mais firme, use menos água. Para um toque gourmet, finalize com uma pitada de flor de sal."
+    ],
+    "substituicoes_ingredientes": {
+      "Leite em pó": "sem lactose ou vegetal",
+      "Whey": "proteína vegetal ou colágeno",
+      "Óleo de coco": "TCM (sabor mais neutro)",
+      "Pistache": "amêndoas, castanhas ou nozes"
+    },
+    "tempo_preparo": 10,
+    "porcoes": 1,
+    "dificuldade": "medio",
+    "tipo_refeicao": "snacks",
+    "tags": [
+      "Lanche",
+      "Funcional",
+      "Proteico",
+      "Sem açúcar refinado",
+      "Sem glúten"
+    ],
+    "is_premium": true,
+    "is_free": false,
+    "informacoes_nutricionais": "Por unidade (1/10 da grande )\nCalorias: ~90–100 kcal\nProteínas: ~5,5–6,5 g\nGorduras: ~6–7 g\nCarboidratos: ~2,5–3,5 g",
+    "aviso_nutricional": "Valores podem variar conforme marcas e adoçantes utilizados.. Valores nutricionais estimados via aplicativo e não substituem orientação nutricional profissional.",
+    "calorias": 90,
+    "proteinas": 5,
+    "carboidratos": 2,
+    "gorduras": 6
+  }
+]

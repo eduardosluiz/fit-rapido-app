@@ -1,0 +1,669 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
+@import url('https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+    --primary: 142.1 76.2% 36.3%;
+    --primary-foreground: 355.7 100% 97.3%;
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 142.1 76.2% 36.3%;
+    --radius: 0.5rem;
+  }
+
+  * {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+  }
+
+  html,
+  body {
+    max-width: 100vw;
+    overflow-x: hidden;
+  }
+
+  body {
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+    font-family: 'Poppins', sans-serif;
+  }
+
+  /* Tema Dark para Admin */
+  .dark-theme {
+    --background: 0 0% 6%;
+    --foreground: 0 0% 98%;
+    --card: 0 0% 10%;
+    --card-foreground: 0 0% 98%;
+    --popover: 0 0% 10%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 38 92% 50%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 0 0% 15%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 0 0% 15%;
+    --muted-foreground: 0 0% 64%;
+    --accent: 0 0% 15%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 20%;
+    --input: 0 0% 20%;
+    --ring: 38 92% 50%;
+  }
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Removed dark mode preference to force light theme */
+
+/* Componentes limpos inspirados no app de yoga/fitness */
+.clean-card {
+  background: #ffffff;
+  border-radius: var(--border-radius-lg);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  border: 1px solid #e5e7eb;
+}
+
+.clean-card:hover {
+  box-shadow: 0 8px 25px rgba(16, 185, 129, 0.15);
+  transform: translateY(-2px);
+  border-color: #10b981;
+}
+
+.content-card {
+  background: #ffffff;
+  border-radius: var(--border-radius-lg);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  border: 1px solid #e5e7eb;
+  overflow: hidden;
+}
+
+.content-card:hover {
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
+  transform: translateY(-1px);
+}
+
+.feature-card {
+  background: #ffffff;
+  border-radius: var(--border-radius-lg);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  border: 1px solid #e5e7eb;
+  padding: 1rem;
+  min-height: 120px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.feature-card:hover {
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.15);
+  transform: translateY(-1px);
+  border-color: #10b981;
+}
+
+@media (min-width: 768px) {
+  .feature-card {
+    padding: 1.5rem;
+    min-height: 140px;
+  }
+}
+
+.recipe-image {
+  @apply h-48 bg-cover bg-center relative;
+  min-height: 200px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.recipe-overlay {
+  @apply absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 transition-opacity duration-300;
+}
+
+.recipe-card:hover .recipe-overlay {
+  @apply opacity-100;
+}
+
+.btn-primary {
+  background: #10b981;
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--border-radius);
+  font-weight: 500;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(16, 185, 129, 0.2);
+  border: none;
+}
+
+.btn-primary:hover {
+  background: #059669;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+  transform: translateY(-1px);
+}
+
+.btn-secondary {
+  background: transparent;
+  color: #10b981;
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--border-radius);
+  font-weight: 500;
+  transition: all 0.3s ease;
+  border: 2px solid #10b981;
+}
+
+.btn-secondary:hover {
+  background: #10b981;
+  color: white;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
+  transform: translateY(-1px);
+}
+
+.btn-outline {
+  background: transparent;
+  color: #6b7280;
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--border-radius);
+  font-weight: 500;
+  transition: all 0.3s ease;
+  border: 1px solid #e5e7eb;
+}
+
+.btn-outline:hover {
+  color: #10b981;
+  border-color: #10b981;
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.1);
+}
+
+.animate-on-scroll {
+  @apply opacity-0 translate-y-4 transition-all duration-700;
+}
+
+.animate-on-scroll.visible {
+  @apply opacity-100 translate-y-0;
+}
+
+/* Mobile menu */
+.mobile-menu {
+  @apply fixed top-0 right-0 h-full w-80 bg-white transform translate-x-full transition-transform duration-300 z-50;
+}
+
+.mobile-menu.open {
+  @apply translate-x-0;
+}
+
+/* Video player */
+.video-player {
+  @apply relative w-full bg-black rounded-xl overflow-hidden;
+}
+
+.video-player::before {
+  content: '';
+  @apply absolute inset-0 bg-black/20 z-10;
+}
+
+/* Premium badge */
+.premium-badge {
+  @apply absolute top-2 right-2 bg-gradient-to-r from-green-500 to-green-400 text-white px-2 py-1 rounded-full text-xs font-semibold;
+}
+
+/* Stats cards */
+.stat-card {
+  @apply bg-white border border-orange-200 rounded-xl p-6 text-center transition-all duration-300 hover:shadow-xl hover:-translate-y-1;
+}
+
+.stat-card:hover {
+  @apply border-orange-400;
+}
+
+/* Navigation */
+.nav-link {
+  @apply text-gray-600 hover:text-orange-600 transition-colors duration-300;
+}
+
+.nav-link.active {
+  @apply text-orange-600;
+}
+
+/* Grid responsivo */
+.recipes-grid {
+  @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6;
+}
+
+.workouts-grid {
+  @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6;
+}
+
+/* Hero section */
+.hero-gradient {
+  background: linear-gradient(135deg, rgba(255, 251, 235, 0.95) 0%, rgba(254, 243, 199, 0.95) 100%);
+}
+
+/* Custom scrollbar - Cor dourada do sistema */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f3f4f6;
+  border-radius: 4px;
+}
+
+.dark ::-webkit-scrollbar-track,
+.dark-theme ::-webkit-scrollbar-track {
+  background: #1a1a1a;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c8921a;
+  border-radius: 4px;
+  border: 1px solid #f3f4f6;
+}
+
+.dark ::-webkit-scrollbar-thumb,
+.dark-theme ::-webkit-scrollbar-thumb {
+  border-color: #1a1a1a;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #b88217;
+}
+
+/* Scrollbar para Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #c8921a #f3f4f6;
+}
+
+.dark *,
+.dark-theme * {
+  scrollbar-color: #c8921a #1a1a1a;
+}
+
+/* Scrollbar para elementos com overflow específicos (modais, selects, popovers, dialogs) */
+[data-radix-scroll-area-viewport],
+[data-radix-select-content],
+[data-radix-popover-content],
+[data-radix-dialog-content],
+.overflow-y-auto,
+.overflow-x-auto,
+.overflow-auto {
+  scrollbar-width: thin;
+  scrollbar-color: #c8921a #f3f4f6;
+}
+
+.dark [data-radix-scroll-area-viewport],
+.dark [data-radix-select-content],
+.dark [data-radix-popover-content],
+.dark [data-radix-dialog-content],
+.dark .overflow-y-auto,
+.dark .overflow-x-auto,
+.dark .overflow-auto,
+.dark-theme [data-radix-scroll-area-viewport],
+.dark-theme [data-radix-select-content],
+.dark-theme [data-radix-popover-content],
+.dark-theme [data-radix-dialog-content],
+.dark-theme .overflow-y-auto,
+.dark-theme .overflow-x-auto,
+.dark-theme .overflow-auto {
+  scrollbar-color: #c8921a #1a1a1a;
+}
+
+[data-radix-scroll-area-viewport]::-webkit-scrollbar,
+[data-radix-select-content]::-webkit-scrollbar,
+[data-radix-popover-content]::-webkit-scrollbar,
+[data-radix-dialog-content]::-webkit-scrollbar,
+.overflow-y-auto::-webkit-scrollbar,
+.overflow-x-auto::-webkit-scrollbar,
+.overflow-auto::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+[data-radix-scroll-area-viewport]::-webkit-scrollbar-track,
+[data-radix-select-content]::-webkit-scrollbar-track,
+[data-radix-popover-content]::-webkit-scrollbar-track,
+[data-radix-dialog-content]::-webkit-scrollbar-track,
+.overflow-y-auto::-webkit-scrollbar-track,
+.overflow-x-auto::-webkit-scrollbar-track,
+.overflow-auto::-webkit-scrollbar-track {
+  background: #f3f4f6;
+  border-radius: 4px;
+}
+
+.dark [data-radix-scroll-area-viewport]::-webkit-scrollbar-track,
+.dark [data-radix-select-content]::-webkit-scrollbar-track,
+.dark [data-radix-popover-content]::-webkit-scrollbar-track,
+.dark [data-radix-dialog-content]::-webkit-scrollbar-track,
+.dark .overflow-y-auto::-webkit-scrollbar-track,
+.dark .overflow-x-auto::-webkit-scrollbar-track,
+.dark .overflow-auto::-webkit-scrollbar-track,
+.dark-theme [data-radix-scroll-area-viewport]::-webkit-scrollbar-track,
+.dark-theme [data-radix-select-content]::-webkit-scrollbar-track,
+.dark-theme [data-radix-popover-content]::-webkit-scrollbar-track,
+.dark-theme [data-radix-dialog-content]::-webkit-scrollbar-track,
+.dark-theme .overflow-y-auto::-webkit-scrollbar-track,
+.dark-theme .overflow-x-auto::-webkit-scrollbar-track,
+.dark-theme .overflow-auto::-webkit-scrollbar-track {
+  background: #1a1a1a;
+}
+
+[data-radix-scroll-area-viewport]::-webkit-scrollbar-thumb,
+[data-radix-select-content]::-webkit-scrollbar-thumb,
+[data-radix-popover-content]::-webkit-scrollbar-thumb,
+[data-radix-dialog-content]::-webkit-scrollbar-thumb,
+.overflow-y-auto::-webkit-scrollbar-thumb,
+.overflow-x-auto::-webkit-scrollbar-thumb,
+.overflow-auto::-webkit-scrollbar-thumb {
+  background: #c8921a;
+  border-radius: 4px;
+  border: 1px solid #f3f4f6;
+}
+
+.dark [data-radix-scroll-area-viewport]::-webkit-scrollbar-thumb,
+.dark [data-radix-select-content]::-webkit-scrollbar-thumb,
+.dark [data-radix-popover-content]::-webkit-scrollbar-thumb,
+.dark [data-radix-dialog-content]::-webkit-scrollbar-thumb,
+.dark .overflow-y-auto::-webkit-scrollbar-thumb,
+.dark .overflow-x-auto::-webkit-scrollbar-thumb,
+.dark .overflow-auto::-webkit-scrollbar-thumb,
+.dark-theme [data-radix-scroll-area-viewport]::-webkit-scrollbar-thumb,
+.dark-theme [data-radix-select-content]::-webkit-scrollbar-thumb,
+.dark-theme [data-radix-popover-content]::-webkit-scrollbar-thumb,
+.dark-theme [data-radix-dialog-content]::-webkit-scrollbar-thumb,
+.dark-theme .overflow-y-auto::-webkit-scrollbar-thumb,
+.dark-theme .overflow-x-auto::-webkit-scrollbar-thumb,
+.dark-theme .overflow-auto::-webkit-scrollbar-thumb {
+  background: #c8921a;
+  border-color: #1a1a1a;
+}
+
+[data-radix-scroll-area-viewport]::-webkit-scrollbar-thumb:hover,
+[data-radix-select-content]::-webkit-scrollbar-thumb:hover,
+[data-radix-popover-content]::-webkit-scrollbar-thumb:hover,
+[data-radix-dialog-content]::-webkit-scrollbar-thumb:hover,
+.overflow-y-auto::-webkit-scrollbar-thumb:hover,
+.overflow-x-auto::-webkit-scrollbar-thumb:hover,
+.overflow-auto::-webkit-scrollbar-thumb:hover {
+  background: #b88217;
+}
+
+/* Enhanced animations */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 20px rgba(200, 146, 26, 0.3); }
+  50% { box-shadow: 0 0 30px rgba(200, 146, 26, 0.6); }
+}
+
+@keyframes slide-up {
+  from { 
+    opacity: 0; 
+    transform: translateY(30px); 
+  }
+  to { 
+    opacity: 1; 
+    transform: translateY(0); 
+  }
+}
+
+@keyframes scale-in {
+  from { 
+    opacity: 0; 
+    transform: scale(0.9); 
+  }
+  to { 
+    opacity: 1; 
+    transform: scale(1); 
+  }
+}
+
+/* Enhanced component styles */
+.recipe-card {
+  @apply bg-white border border-orange-200 rounded-2xl overflow-hidden shadow-lg transition-all duration-500 hover:shadow-xl hover:-translate-y-2 hover:scale-105;
+  animation: slide-up 0.6s ease-out;
+}
+
+.recipe-card:hover {
+  @apply border-orange-400;
+  animation: pulse-glow 2s infinite;
+}
+
+.btn-primary {
+  @apply bg-gradient-to-r from-orange-600 to-orange-500 text-white px-6 py-3 rounded-full font-semibold transition-all duration-300 hover:shadow-lg hover:-translate-y-1 hover:scale-105;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-primary::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  transition: left 0.5s;
+}
+
+.btn-primary:hover::before {
+  left: 100%;
+}
+
+.btn-secondary {
+  @apply border-2 border-orange-600 text-orange-600 px-6 py-3 rounded-full font-semibold transition-all duration-300 hover:bg-orange-600 hover:text-white hover:scale-105;
+}
+
+.animate-on-scroll {
+  @apply opacity-0 translate-y-8 transition-all duration-700;
+}
+
+.animate-on-scroll.visible {
+  @apply opacity-100 translate-y-0;
+}
+
+/* Mobile menu enhancements */
+.mobile-menu {
+  @apply fixed top-0 right-0 h-full w-80 bg-white transform translate-x-full transition-transform duration-500 z-50;
+  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.95);
+}
+
+.mobile-menu.open {
+  @apply translate-x-0;
+}
+
+/* Video player enhancements */
+.video-player {
+  @apply relative w-full bg-black rounded-xl overflow-hidden;
+  position: relative;
+}
+
+.video-player::before {
+  content: '';
+  @apply absolute inset-0 bg-gradient-to-t from-black/40 to-transparent z-10;
+}
+
+.video-player:hover::before {
+  @apply bg-gradient-to-t from-black/60 to-transparent;
+}
+
+/* Premium badge enhancements */
+.premium-badge {
+  @apply absolute top-2 right-2 bg-gradient-to-r from-orange-600 to-orange-500 text-white px-3 py-1 rounded-full text-xs font-semibold;
+  animation: float 3s ease-in-out infinite;
+  box-shadow: 0 4px 15px rgba(234, 88, 12, 0.4);
+}
+
+/* Stats cards enhancements */
+.stat-card {
+  @apply bg-white border border-orange-200 rounded-xl p-6 text-center transition-all duration-500 hover:shadow-xl hover:-translate-y-2 hover:scale-105;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.7) 100%);
+  backdrop-filter: blur(10px);
+}
+
+.stat-card:hover {
+  @apply border-orange-400;
+  background: linear-gradient(135deg, rgba(234, 88, 12, 0.1) 0%, rgba(255, 255, 255, 0.9) 100%);
+}
+
+/* Navigation enhancements */
+.nav-link {
+  @apply text-gray-600 hover:text-orange-600 transition-all duration-300 relative;
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #ea580c, #f97316);
+  transition: width 0.3s ease;
+}
+
+.nav-link:hover::after {
+  width: 100%;
+}
+
+.nav-link.active {
+  @apply text-orange-600;
+}
+
+.nav-link.active::after {
+  width: 100%;
+}
+
+/* Grid enhancements */
+.recipes-grid {
+  @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6;
+}
+
+.workouts-grid {
+  @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6;
+}
+
+/* Hero section enhancements */
+.hero-gradient {
+  background: linear-gradient(135deg, rgba(255, 251, 235, 0.95) 0%, rgba(254, 243, 199, 0.95) 100%);
+  position: relative;
+}
+
+.hero-gradient::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at 30% 20%, rgba(234, 88, 12, 0.1) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+/* Loading states */
+.loading-skeleton {
+  @apply bg-gray-200 animate-pulse rounded;
+}
+
+/* Focus states for accessibility */
+.focus-visible {
+  @apply outline-none ring-2 ring-orange-600 ring-offset-2 ring-offset-white;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-4px); }
+  75% { transform: translateX(4px); }
+}
+
+.animate-shake {
+  animation: shake 0.2s ease-in-out 0s 2;
+}
+
+/* Mobile optimizations */
+@media (max-width: 768px) {
+  .recipe-card {
+    @apply hover:scale-100 hover:-translate-y-1;
+  }
+  
+  .stat-card {
+    @apply hover:scale-100 hover:-translate-y-1;
+  }
+  
+  .btn-primary {
+    @apply hover:scale-100;
+  }
+
+  /* Mobile-specific styles */
+  .mobile-menu {
+    @apply w-full;
+  }
+
+  /* Touch-friendly buttons */
+  button, .btn-primary, .btn-secondary {
+    @apply min-h-[44px] min-w-[44px];
+  }
+
+  /* Better mobile spacing */
+  .container {
+    @apply px-4;
+  }
+
+  /* Mobile grid adjustments */
+  .recipes-grid {
+    @apply grid-cols-1 gap-4;
+  }
+
+  .workouts-grid {
+    @apply grid-cols-1 gap-4;
+  }
+}
+
+/* Mobile-first base styles */
+@media (max-width: 640px) {
+  .hero-gradient {
+    @apply py-12;
+  }
+
+  .font-heading {
+    @apply text-3xl;
+  }
+
+  /* Mobile navigation */
+  .nav-link {
+    @apply text-base py-3 px-4;
+  }
+
+  /* Mobile cards */
+  .recipe-card, .stat-card {
+    @apply mx-2;
+  }
+}
