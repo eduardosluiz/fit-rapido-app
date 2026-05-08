@@ -3,14 +3,13 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "build": "npm run install:all && npm run build:admin && npm run build:api",
-    "install:all": "npm run install:admin && npm run install:api",
+    "build": "if [ \"$APP_TYPE\" = \"API\" ]; then npm run build:api; else npm run build:admin; fi",
+    "build:admin": "cd admin && npm install && npm run build",
+    "build:api": "cd api && npm install && npm run build",
+    "postbuild": "if [ \"$APP_TYPE\" != \"API\" ]; then cp -r admin/.next . && cp -r admin/public . && cp admin/package.json . || echo 'Ambiente Windows'; fi",
+    "start": "if [ \"$APP_TYPE\" = \"API\" ]; then node api/dist/main.js; else next start; fi",
     "install:admin": "cd admin && npm install",
-    "install:api": "cd api && npm install",
-    "build:admin": "cd admin && npm run build",
-    "build:api": "cd api && npm run build",
-    "postbuild": "cp -r admin/.next . && cp -r admin/public . && cp admin/package.json . || echo 'Ambiente Windows ou erro na copia'",
-    "start": "if [ \"$APP_TYPE\" = \"API\" ]; then node api/dist/main.js; else next start; fi"
+    "install:api": "cd api && npm install"
   },
   "dependencies": {
     "next": "latest",
