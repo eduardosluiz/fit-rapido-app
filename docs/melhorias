@@ -1,128 +1,26 @@
-🚀 Sistema de Furo de DNS Ativado e Robusto!
-[Nest] 19  - 05/09/2026, 2:33:27 AM     LOG [NestFactory] Starting Nest application...
-🎯 DNS Override: aws-0-sa-east-1.pooler.supabase.com -> 54.94.90.106
-🔌 BANCO CONECTADO EM: postgresql://postgres.occddouiyqvcdhtxpbej:****@aws-0-sa-east-1.pooler.supabase.com:6543/postgres?pgbouncer=true
-🎯 DNS Override: aws-0-sa-east-1.pooler.supabase.com -> 54.94.90.106
-[Nest] 19  - 05/09/2026, 2:33:27 AM     LOG [InstanceLoader] AppModule dependencies initialized +116ms
-[Nest] 19  - 05/09/2026, 2:33:27 AM     LOG [InstanceLoader] TypeOrmModule dependencies initialized +0ms
-[Nest] 19  - 05/09/2026, 2:33:27 AM     LOG [InstanceLoader] PassportModule dependencies initialized +0ms
-[Nest] 19  - 05/09/2026, 2:33:27 AM     LOG [InstanceLoader] ConfigHostModule dependencies initialized +1ms
-[Nest] 19  - 05/09/2026, 2:33:27 AM     LOG [InstanceLoader] ConfigModule dependencies initialized +5ms
-[Nest] 19  - 05/09/2026, 2:33:27 AM     LOG [InstanceLoader] ConfigModule dependencies initialized +1ms
-[Nest] 19  - 05/09/2026, 2:33:27 AM     LOG [InstanceLoader] JwtModule dependencies initialized +4ms
-[Nest] 19  - 05/09/2026, 2:33:27 AM     LOG [InstanceLoader] UploadModule dependencies initialized +1ms
-[Nest] 19  - 05/09/2026, 2:33:27 AM     LOG [InstanceLoader] IAModule dependencies initialized +1ms
-(node:19) Warning: Setting the NODE_TLS_REJECT_UNAUTHORIZED environment variable to '0' makes TLS connections and HTTPS requests insecure by disabling certificate verification.
-(Use `node --trace-warnings ...` to show where the warning was created)
-[Nest] 20  - 05/09/2026, 2:33:27 AM   ERROR [TypeOrmModule] Unable to connect to the database. Retrying (2)...
-error: Tenant or user not found
-    at Parser.parseErrorMessage (/app/node_modules/pg-protocol/dist/parser.js:285:98)
-    at Parser.handlePacket (/app/node_modules/pg-protocol/dist/parser.js:122:29)
-    at Parser.parse (/app/node_modules/pg-protocol/dist/parser.js:35:38)
-    at TLSSocket.<anonymous> (/app/node_modules/pg-protocol/dist/index.js:11:42)
-    at TLSSocket.emit (node:events:518:28)
-    at addChunk (node:internal/streams/readable:561:12)
-    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
-    at Readable.push (node:internal/streams/readable:392:5)
-    at TLSWrap.onStreamRead (node:internal/stream_base_commons:191:23)
-[Nest] 19  - 05/09/2026, 2:33:27 AM   ERROR [TypeOrmModule] Unable to connect to the database. Retrying (1)...
-error: Tenant or user not found
-    at Parser.parseErrorMessage (/app/node_modules/pg-protocol/dist/parser.js:285:98)
-    at Parser.handlePacket (/app/node_modules/pg-protocol/dist/parser.js:122:29)
-    at Parser.parse (/app/node_modules/pg-protocol/dist/parser.js:35:38)
-    at TLSSocket.<anonymous> (/app/node_modules/pg-protocol/dist/index.js:11:42)
-    at TLSSocket.emit (node:events:518:28)
-    at addChunk (node:internal/streams/readable:561:12)
-    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
-    at Readable.push (node:internal/streams/readable:392:5)
-    at TLSWrap.onStreamRead (node:internal/stream_base_commons:191:23)
-npm error path /app
-npm error command failed
-npm error signal SIGTERM
-npm error command sh -c node dist/main
-npm error A complete log of this run can be found in: /root/.npm/_logs/2026-05-09T02_33_21_006Z-debug-0.log
-🎯 DNS Override: aws-0-sa-east-1.pooler.supabase.com -> 54.94.90.106
-[Nest] 19  - 05/09/2026, 2:33:31 AM   ERROR [TypeOrmModule] Unable to connect to the database. Retrying (2)...
-error: Tenant or user not found
-    at Parser.parseErrorMessage (/app/node_modules/pg-protocol/dist/parser.js:285:98)
-    at Parser.handlePacket (/app/node_modules/pg-protocol/dist/parser.js:122:29)
-    at Parser.parse (/app/node_modules/pg-protocol/dist/parser.js:35:38)
-    at TLSSocket.<anonymous> (/app/node_modules/pg-protocol/dist/index.js:11:42)
-    at TLSSocket.emit (node:events:518:28)
-    at addChunk (node:internal/streams/readable:561:12)
-    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
-    at Readable.push (node:internal/streams/readable:392:5)
-    at TLSWrap.onStreamRead (node:internal/stream_base_commons:191:23)
-🎯 DNS Override: aws-0-sa-east-1.pooler.supabase.com -> 54.94.90.106
-[Nest] 19  - 05/09/2026, 2:33:34 AM   ERROR [TypeOrmModule] Unable to connect to the database. Retrying (3)...
-error: Tenant or user not found
-    at Parser.parseErrorMessage (/app/node_modules/pg-protocol/dist/parser.js:285:98)
-    at Parser.handlePacket (/app/node_modules/pg-protocol/dist/parser.js:122:29)
-    at Parser.parse (/app/node_modules/pg-protocol/dist/parser.js:35:38)
-    at TLSSocket.<anonymous> (/app/node_modules/pg-protocol/dist/index.js:11:42)
-    at TLSSocket.emit (node:events:518:28)
-    at addChunk (node:internal/streams/readable:561:12)
-    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
-    at Readable.push (node:internal/streams/readable:392:5)
-    at TLSWrap.onStreamRead (node:internal/stream_base_commons:191:23)
-🎯 DNS Override: aws-0-sa-east-1.pooler.supabase.com -> 54.94.90.106
-[Nest] 19  - 05/09/2026, 2:33:38 AM   ERROR [TypeOrmModule] Unable to connect to the database. Retrying (4)...
-error: Tenant or user not found
-    at Parser.parseErrorMessage (/app/node_modules/pg-protocol/dist/parser.js:285:98)
-    at Parser.handlePacket (/app/node_modules/pg-protocol/dist/parser.js:122:29)
-    at Parser.parse (/app/node_modules/pg-protocol/dist/parser.js:35:38)
-    at TLSSocket.<anonymous> (/app/node_modules/pg-protocol/dist/index.js:11:42)
-    at TLSSocket.emit (node:events:518:28)
-    at addChunk (node:internal/streams/readable:561:12)
-    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
-    at Readable.push (node:internal/streams/readable:392:5)
-    at TLSWrap.onStreamRead (node:internal/stream_base_commons:191:23)
-🎯 DNS Override: aws-0-sa-east-1.pooler.supabase.com -> 54.94.90.106
-[Nest] 19  - 05/09/2026, 2:33:42 AM   ERROR [TypeOrmModule] Unable to connect to the database. Retrying (5)...
-error: Tenant or user not found
-    at Parser.parseErrorMessage (/app/node_modules/pg-protocol/dist/parser.js:285:98)
-    at Parser.handlePacket (/app/node_modules/pg-protocol/dist/parser.js:122:29)
-    at Parser.parse (/app/node_modules/pg-protocol/dist/parser.js:35:38)
-    at TLSSocket.<anonymous> (/app/node_modules/pg-protocol/dist/index.js:11:42)
-    at TLSSocket.emit (node:events:518:28)
-    at addChunk (node:internal/streams/readable:561:12)
-    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
-    at Readable.push (node:internal/streams/readable:392:5)
-    at TLSWrap.onStreamRead (node:internal/stream_base_commons:191:23)
-🎯 DNS Override: aws-0-sa-east-1.pooler.supabase.com -> 54.94.90.106
-[Nest] 19  - 05/09/2026, 2:33:45 AM   ERROR [TypeOrmModule] Unable to connect to the database. Retrying (6)...
-error: Tenant or user not found
-    at Parser.parseErrorMessage (/app/node_modules/pg-protocol/dist/parser.js:285:98)
-    at Parser.handlePacket (/app/node_modules/pg-protocol/dist/parser.js:122:29)
-    at Parser.parse (/app/node_modules/pg-protocol/dist/parser.js:35:38)
-    at TLSSocket.<anonymous> (/app/node_modules/pg-protocol/dist/index.js:11:42)
-    at TLSSocket.emit (node:events:518:28)
-    at addChunk (node:internal/streams/readable:561:12)
-    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
-    at Readable.push (node:internal/streams/readable:392:5)
-    at TLSWrap.onStreamRead (node:internal/stream_base_commons:191:23)
-🎯 DNS Override: aws-0-sa-east-1.pooler.supabase.com -> 54.94.90.106
-[Nest] 19  - 05/09/2026, 2:33:49 AM   ERROR [TypeOrmModule] Unable to connect to the database. Retrying (7)...
-error: Tenant or user not found
-    at Parser.parseErrorMessage (/app/node_modules/pg-protocol/dist/parser.js:285:98)
-    at Parser.handlePacket (/app/node_modules/pg-protocol/dist/parser.js:122:29)
-    at Parser.parse (/app/node_modules/pg-protocol/dist/parser.js:35:38)
-    at TLSSocket.<anonymous> (/app/node_modules/pg-protocol/dist/index.js:11:42)
-    at TLSSocket.emit (node:events:518:28)
-    at addChunk (node:internal/streams/readable:561:12)
-    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
-    at Readable.push (node:internal/streams/readable:392:5)
-    at TLSWrap.onStreamRead (node:internal/stream_base_commons:191:23)
-🎯 DNS Override: aws-0-sa-east-1.pooler.supabase.com -> 54.94.90.106
-[Nest] 19  - 05/09/2026, 2:33:52 AM   ERROR [TypeOrmModule] Unable to connect to the database. Retrying (8)...
-error: Tenant or user not found
-    at Parser.parseErrorMessage (/app/node_modules/pg-protocol/dist/parser.js:285:98)
-    at Parser.handlePacket (/app/node_modules/pg-protocol/dist/parser.js:122:29)
-    at Parser.parse (/app/node_modules/pg-protocol/dist/parser.js:35:38)
-    at TLSSocket.<anonymous> (/app/node_modules/pg-protocol/dist/index.js:11:42)
-    at TLSSocket.emit (node:events:518:28)
-    at addChunk (node:internal/streams/readable:561:12)
-    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
-    at Readable.push (node:internal/streams/readable:392:5)
-    at TLSWrap.onStreamRead (node:internal/stream_base_commons:191:23)
-🎯 DNS Override: aws-0-sa-east-1.pooler.supabase.com -> 54.94.90.106
+PS C:\Users\dude_\fit-rapido-app> node -e "const { Client } = require('pg'); const c = new
+>>      Client('postgresql://postgres.occddouiyqvcdhtxpbej:Fitrapido248622@aws-0-sa-east-1.pooler.supabase.com:5432/postgres'); c.connect().then(() => {
+>>      console.log('✅ CONECTOU!'); process.exit(); }).catch(e => { console.error('❌ ERRO:', e.message); process.exit(); })"
+node:internal/modules/cjs/loader:1228
+  throw err;
+  ^
+
+Error: Cannot find module 'pg'
+Require stack:
+- C:\Users\dude_\fit-rapido-app\[eval]
+    at Function._resolveFilename (node:internal/modules/cjs/loader:1225:15)
+    at Function._load (node:internal/modules/cjs/loader:1055:27)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:220:24)
+    at Module.require (node:internal/modules/cjs/loader:1311:12)
+    at require (node:internal/modules/helpers:136:16)
+    at [eval]:1:20
+    at runScriptInThisContext (node:internal/vm:209:10)
+    at node:internal/process/execution:449:12
+    at [eval]-wrapper:6:24 {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [ 'C:\\Users\\dude_\\fit-rapido-app\\[eval]' ]
+}
+
+Node.js v22.14.0
+PS C:\Users\dude_\fit-rapido-app> 

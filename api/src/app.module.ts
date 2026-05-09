@@ -22,16 +22,27 @@ import { IAModule } from './ia/ia.module';
     }),
     TypeOrmModule.forRootAsync({
       useFactory: () => {
-        const url = process.env.DATABASE_URL || '';
-        const maskedUrl = url.replace(/:([^:@]+)@/, ':****@');
-        console.log(`🔌 BANCO CONECTADO EM: ${maskedUrl}`);
-        
+        // EM PRODUÇÃO: Usamos o IP direto mas avisamos ao SSL qual é o domínio (SNI)
+        const isProd = process.env.NODE_ENV === 'production';
+        const HOST_PROD = '54.94.90.106'; // IP AWS SP (Supabase)
+        const DOMAIN_PROD = 'db.occddouiyqvcdhtxpbej.supabase.co';
+
         return {
           type: 'postgres',
-          url: process.env.DATABASE_URL,
+          // Se for produção, usa IP, se não, usa a variável normal
+          host: isProd ? HOST_PROD : undefined, 
+          url: isProd ? undefined : process.env.DATABASE_URL,
+          // Credenciais explícitas para produção
+          username: isProd ? 'postgres' : undefined,
+          password: isProd ? 'Fitrapido248622' : undefined,
+          port: 5432,
+          database: 'postgres',
           autoLoadEntities: true,
           synchronize: false,
-          ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
+          ssl: isProd ? { 
+            rejectUnauthorized: false,
+            servername: DOMAIN_PROD // ESSENCIAL: Resolve o erro de Tenant not found
+          } : false,
         };
       },
     }),
