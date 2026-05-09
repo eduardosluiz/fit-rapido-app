@@ -1,3 +1,9 @@
+‎docs/melhorias‎
++44
+-4
+Lines changed: 44 additions & 4 deletions
+Original file line number	Diff line number	Diff line change
+@@ -1,21 +1,61 @@
 ‎api/src/main.ts‎
 +1
 -1
@@ -5,7 +11,6 @@ Lines changed: 1 addition & 1 deletion
 Original file line number	Diff line number	Diff line change
 @@ -22,7 +22,7 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
-
   app.enableCors({
     origin: process.env.ALLOWED_ORIGINS?.split(',') || true,
     origin: true, // Permitir todas para teste inicial no Render
@@ -59,5 +64,22 @@ GMT-3
 ==> Cloning from https://github.com/eduardosluiz/fit-rapido-app
 ==> Checking out commit 21276b001be237c6667ff5dbd3c7fbae45e68763 in branch main
 ==> Using Node.js version 24.14.1 (default)
-==> Docs on specifying a Node.js version: https://render.com/docs/node-version
-==> Running build command 'npm install; npm run build'...
+‎package.json‎
++3
+-3
+Lines changed: 3 additions & 3 deletions
+Original file line number	Diff line number	Diff line change
+@@ -6,10 +6,10 @@
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "if pwd | grep -q 'api.daipohlmann'; then npm run build:api; else npm run build:admin; fi",
+    "build": "npm run build:api",
+    "build:admin": "cd admin && npm install && npm run build",
+    "build:api": "cd api && npm install --include=dev && npx nest build",
+    "start": "if [ \"$APP_TYPE\" = \"API\" ]; then node api/dist/main.js; else cd admin && npx next start; fi",
+    "build:api": "cd api && npm install && npm run build",
+    "start": "cd api && npm run start:prod",
+    "install:admin": "cd admin && npm install",
+    "install:api": "cd api && npm install"
+  },
