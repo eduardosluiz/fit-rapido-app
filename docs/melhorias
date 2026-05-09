@@ -1,15 +1,11 @@
-login:1 Access to fetch at 'https://api.daipohlmann.com.br/auth/login' from origin 'https://admin.daipohlmann.com.br' has been blocked by CORS policy: Response to preflight request doesn't pass access control check: No 'Access-Control-Allow-Origin' header is present on the requested resource.
-page-ab4b965c3f67e768.js:1  POST https://api.daipohlmann.com.br/auth/login net::ERR_FAILED
-request @ page-ab4b965c3f67e768.js:1
-login @ page-ab4b965c3f67e768.js:1
-g @ page-ab4b965c3f67e768.js:1
-i8 @ 4bd1b696-f785427dddbba9fb.js:1
-(anonymous) @ 4bd1b696-f785427dddbba9fb.js:1
-nz @ 4bd1b696-f785427dddbba9fb.js:1
-sn @ 4bd1b696-f785427dddbba9fb.js:1
-cc @ 4bd1b696-f785427dddbba9fb.js:1
-ci @ 4bd1b696-f785427dddbba9fb.js:1
-layout-fd126d780dd35f65.js:1 ❌ Erro no login: Error: Não foi possível conectar ao servidor. Verifique se a API está rodando em https://api.daipohlmann.com.br
-    at a.request (page-ab4b965c3f67e768.js:1:1489)
-    at async a.login (page-ab4b965c3f67e768.js:1:1719)
-    at async g (page-ab4b965c3f67e768.js:1:9051)
+
+> fit-rapido-admin@0.1.0 start
+> next start
+
+   ▲ Next.js 15.5.3
+   - Local:        http://localhost:80
+   - Network:      http://10.11.208.180:80
+
+ ✓ Starting...
+ ⚠ "next start" does not work with "output: standalone" configuration. Use "node .next/standalone/server.js" instead.
+ ✓ Ready in 1453ms

@@ -5,8 +5,8 @@
   "scripts": {
     "build": "if pwd | grep -q 'api.daipohlmann'; then npm run build:api; else npm run build:admin; fi",
     "build:admin": "cd admin && npm install && npm run build",
-    "build:api": "cd api && npm install --include=dev && npm run build",
-    "start": "if pwd | grep -q 'api.daipohlmann'; then node api/dist/main.js; else cd admin && npm run start; fi",
+    "build:api": "cd api && npm install --include=dev && npx nest build",
+    "start": "if [ \"$APP_TYPE\" = \"API\" ]; then node api/dist/main.js; else cd admin && npx next start; fi",
     "install:admin": "cd admin && npm install",
     "install:api": "cd api && npm install"
   },
