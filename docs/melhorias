@@ -1,22 +1,20 @@
 > fit-rapido-api@0.1.0 start:prod
 > node dist/main
 
-[Nest] 19  - 05/09/2026, 1:39:36 AM     LOG [NestFactory] Starting Nest application...
-🔌 Tentando conectar ao banco: postgresql://postgres.occddouiyqvcdhtxpbej:****@54.94.90.106:6543/postgres?pgbouncer=true
-🌍 Ambiente: production
-[Nest] 19  - 05/09/2026, 1:39:36 AM     LOG [InstanceLoader] TypeOrmModule dependencies initialized +94ms
-[Nest] 19  - 05/09/2026, 1:39:36 AM     LOG [InstanceLoader] PassportModule dependencies initialized +0ms
-[Nest] 19  - 05/09/2026, 1:39:36 AM     LOG [InstanceLoader] ConfigHostModule dependencies initialized +1ms
-[Nest] 19  - 05/09/2026, 1:39:36 AM     LOG [InstanceLoader] ThrottlerModule dependencies initialized +0ms
-[Nest] 19  - 05/09/2026, 1:39:36 AM     LOG [InstanceLoader] ConfigModule dependencies initialized +4ms
-[Nest] 19  - 05/09/2026, 1:39:36 AM     LOG [InstanceLoader] ConfigModule dependencies initialized +1ms
-[Nest] 19  - 05/09/2026, 1:39:36 AM     LOG [InstanceLoader] AppModule dependencies initialized +0ms
-[Nest] 19  - 05/09/2026, 1:39:36 AM     LOG [InstanceLoader] JwtModule dependencies initialized +2ms
-[Nest] 19  - 05/09/2026, 1:39:36 AM     LOG [InstanceLoader] UploadModule dependencies initialized +1ms
-[Nest] 19  - 05/09/2026, 1:39:36 AM     LOG [InstanceLoader] IAModule dependencies initialized +0ms
-(node:19) Warning: Setting the NODE_TLS_REJECT_UNAUTHORIZED environment variable to '0' makes TLS connections and HTTPS requests insecure by disabling certificate verification.
+[Nest] 20  - 05/09/2026, 2:01:36 AM     LOG [NestFactory] Starting Nest application...
+🔌 BANCO CONECTADO EM: postgresql://postgres.occddouiyqvcdhtxpbej:****@aws-0-sa-east-1.pooler.supabase.com:6543/postgres?pgbouncer=true
+[Nest] 20  - 05/09/2026, 2:01:36 AM     LOG [InstanceLoader] AppModule dependencies initialized +118ms
+[Nest] 20  - 05/09/2026, 2:01:36 AM     LOG [InstanceLoader] TypeOrmModule dependencies initialized +0ms
+[Nest] 20  - 05/09/2026, 2:01:36 AM     LOG [InstanceLoader] PassportModule dependencies initialized +0ms
+[Nest] 20  - 05/09/2026, 2:01:36 AM     LOG [InstanceLoader] ConfigHostModule dependencies initialized +1ms
+[Nest] 20  - 05/09/2026, 2:01:36 AM     LOG [InstanceLoader] ConfigModule dependencies initialized +4ms
+[Nest] 20  - 05/09/2026, 2:01:36 AM     LOG [InstanceLoader] ConfigModule dependencies initialized +0ms
+[Nest] 20  - 05/09/2026, 2:01:36 AM     LOG [InstanceLoader] JwtModule dependencies initialized +3ms
+[Nest] 20  - 05/09/2026, 2:01:36 AM     LOG [InstanceLoader] UploadModule dependencies initialized +1ms
+[Nest] 20  - 05/09/2026, 2:01:36 AM     LOG [InstanceLoader] IAModule dependencies initialized +1ms
+(node:20) Warning: Setting the NODE_TLS_REJECT_UNAUTHORIZED environment variable to '0' makes TLS connections and HTTPS requests insecure by disabling certificate verification.
 (Use `node --trace-warnings ...` to show where the warning was created)
-[Nest] 19  - 05/09/2026, 1:39:36 AM   ERROR [TypeOrmModule] Unable to connect to the database. Retrying (1)...
+[Nest] 20  - 05/09/2026, 2:01:36 AM   ERROR [TypeOrmModule] Unable to connect to the database. Retrying (1)...
 error: Tenant or user not found
     at Parser.parseErrorMessage (/app/node_modules/pg-protocol/dist/parser.js:285:98)
     at Parser.handlePacket (/app/node_modules/pg-protocol/dist/parser.js:122:29)
@@ -27,7 +25,7 @@ error: Tenant or user not found
     at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
     at Readable.push (node:internal/streams/readable:392:5)
     at TLSWrap.onStreamRead (node:internal/stream_base_commons:191:23)
-[Nest] 19  - 05/09/2026, 1:39:40 AM   ERROR [TypeOrmModule] Unable to connect to the database. Retrying (2)...
+[Nest] 20  - 05/09/2026, 2:01:40 AM   ERROR [TypeOrmModule] Unable to connect to the database. Retrying (2)...
 error: Tenant or user not found
     at Parser.parseErrorMessage (/app/node_modules/pg-protocol/dist/parser.js:285:98)
     at Parser.handlePacket (/app/node_modules/pg-protocol/dist/parser.js:122:29)
@@ -38,94 +36,3 @@ error: Tenant or user not found
     at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
     at Readable.push (node:internal/streams/readable:392:5)
     at TLSWrap.onStreamRead (node:internal/stream_base_commons:191:23)
-
-> fit-rapido-api@0.1.0 start:prod
-> node dist/main
-
-[Nest] 19  - 05/09/2026, 1:39:43 AM     LOG [NestFactory] Starting Nest application...
-🔌 Tentando conectar ao banco: postgresql://postgres:****@db.occddouiyqvcdhtxpbej.supabase.co:5432/postgres
-🌍 Ambiente: production
-[Nest] 19  - 05/09/2026, 1:39:43 AM     LOG [InstanceLoader] TypeOrmModule dependencies initialized +100ms
-[Nest] 19  - 05/09/2026, 1:39:43 AM     LOG [InstanceLoader] PassportModule dependencies initialized +1ms
-[Nest] 19  - 05/09/2026, 1:39:43 AM     LOG [InstanceLoader] ConfigHostModule dependencies initialized +0ms
-[Nest] 19  - 05/09/2026, 1:39:43 AM     LOG [InstanceLoader] ThrottlerModule dependencies initialized +0ms
-[Nest] 19  - 05/09/2026, 1:39:43 AM     LOG [InstanceLoader] ConfigModule dependencies initialized +5ms
-[Nest] 19  - 05/09/2026, 1:39:43 AM     LOG [InstanceLoader] ConfigModule dependencies initialized +0ms
-[Nest] 19  - 05/09/2026, 1:39:43 AM     LOG [InstanceLoader] AppModule dependencies initialized +1ms
-[Nest] 19  - 05/09/2026, 1:39:43 AM     LOG [InstanceLoader] JwtModule dependencies initialized +1ms
-[Nest] 19  - 05/09/2026, 1:39:43 AM     LOG [InstanceLoader] UploadModule dependencies initialized +2ms
-[Nest] 19  - 05/09/2026, 1:39:43 AM     LOG [InstanceLoader] IAModule dependencies initialized +0ms
-[Nest] 19  - 05/09/2026, 1:39:43 AM   ERROR [TypeOrmModule] Unable to connect to the database. Retrying (1)...
-Error: getaddrinfo ENOTFOUND db.occddouiyqvcdhtxpbej.supabase.co
-    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:120:26)
-[Nest] 19  - 05/09/2026, 1:39:43 AM   ERROR [TypeOrmModule] Unable to connect to the database. Retrying (3)...
-error: Tenant or user not found
-    at Parser.parseErrorMessage (/app/node_modules/pg-protocol/dist/parser.js:285:98)
-    at Parser.handlePacket (/app/node_modules/pg-protocol/dist/parser.js:122:29)
-    at Parser.parse (/app/node_modules/pg-protocol/dist/parser.js:35:38)
-    at TLSSocket.<anonymous> (/app/node_modules/pg-protocol/dist/index.js:11:42)
-    at TLSSocket.emit (node:events:518:28)
-    at addChunk (node:internal/streams/readable:561:12)
-    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
-    at Readable.push (node:internal/streams/readable:392:5)
-    at TLSWrap.onStreamRead (node:internal/stream_base_commons:191:23)
-npm error path /app
-npm error command failed
-npm error signal SIGTERM
-npm error command sh -c node dist/main
-npm error A complete log of this run can be found in: /root/.npm/_logs/2026-05-09T01_39_34_470Z-debug-0.log
-[Nest] 19  - 05/09/2026, 1:39:46 AM   ERROR [TypeOrmModule] Unable to connect to the database. Retrying (2)...
-Error: getaddrinfo ENOTFOUND db.occddouiyqvcdhtxpbej.supabase.co
-    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:120:26)
-[Nest] 19  - 05/09/2026, 1:39:49 AM   ERROR [TypeOrmModule] Unable to connect to the database. Retrying (3)...
-Error: getaddrinfo ENOTFOUND db.occddouiyqvcdhtxpbej.supabase.co
-    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:120:26)
-[Nest] 19  - 05/09/2026, 1:39:52 AM   ERROR [TypeOrmModule] Unable to connect to the database. Retrying (4)...
-Error: getaddrinfo ENOTFOUND db.occddouiyqvcdhtxpbej.supabase.co
-    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:120:26)
-[Nest] 19  - 05/09/2026, 1:39:55 AM   ERROR [TypeOrmModule] Unable to connect to the database. Retrying (5)...
-Error: getaddrinfo ENOTFOUND db.occddouiyqvcdhtxpbej.supabase.co
-    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:120:26)
-[Nest] 19  - 05/09/2026, 1:39:58 AM   ERROR [TypeOrmModule] Unable to connect to the database. Retrying (6)...
-Error: getaddrinfo ENOTFOUND db.occddouiyqvcdhtxpbej.supabase.co
-    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:120:26)
-[Nest] 19  - 05/09/2026, 1:40:02 AM   ERROR [TypeOrmModule] Unable to connect to the database. Retrying (7)...
-Error: getaddrinfo ENOTFOUND db.occddouiyqvcdhtxpbej.supabase.co
-    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:120:26)
-[Nest] 19  - 05/09/2026, 1:40:05 AM   ERROR [TypeOrmModule] Unable to connect to the database. Retrying (8)...
-Error: getaddrinfo ENOTFOUND db.occddouiyqvcdhtxpbej.supabase.co
-    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:120:26)
-[Nest] 19  - 05/09/2026, 1:40:08 AM   ERROR [TypeOrmModule] Unable to connect to the database. Retrying (9)...
-Error: getaddrinfo ENOTFOUND db.occddouiyqvcdhtxpbej.supabase.co
-    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:120:26)
-[Nest] 19  - 05/09/2026, 1:40:08 AM   ERROR [ExceptionHandler] Error: getaddrinfo ENOTFOUND db.occddouiyqvcdhtxpbej.supabase.co
-    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:120:26) {
-  errno: -3007,
-  code: 'ENOTFOUND',
-  syscall: 'getaddrinfo',
-  hostname: 'db.occddouiyqvcdhtxpbej.supabase.co'
-}
-
-> fit-rapido-api@0.1.0 start:prod
-> node dist/main
-
-[Nest] 19  - 05/09/2026, 1:40:17 AM     LOG [NestFactory] Starting Nest application...
-🔌 Tentando conectar ao banco: postgresql://postgres:****@db.occddouiyqvcdhtxpbej.supabase.co:5432/postgres
-🌍 Ambiente: production
-[Nest] 19  - 05/09/2026, 1:40:17 AM     LOG [InstanceLoader] TypeOrmModule dependencies initialized +99ms
-[Nest] 19  - 05/09/2026, 1:40:17 AM     LOG [InstanceLoader] PassportModule dependencies initialized +0ms
-[Nest] 19  - 05/09/2026, 1:40:17 AM     LOG [InstanceLoader] ConfigHostModule dependencies initialized +0ms
-[Nest] 19  - 05/09/2026, 1:40:17 AM     LOG [InstanceLoader] ThrottlerModule dependencies initialized +0ms
-[Nest] 19  - 05/09/2026, 1:40:17 AM     LOG [InstanceLoader] ConfigModule dependencies initialized +4ms
-[Nest] 19  - 05/09/2026, 1:40:17 AM     LOG [InstanceLoader] ConfigModule dependencies initialized +1ms
-[Nest] 19  - 05/09/2026, 1:40:17 AM     LOG [InstanceLoader] AppModule dependencies initialized +0ms
-[Nest] 19  - 05/09/2026, 1:40:17 AM     LOG [InstanceLoader] JwtModule dependencies initialized +2ms
-[Nest] 19  - 05/09/2026, 1:40:17 AM     LOG [InstanceLoader] UploadModule dependencies initialized +2ms
-[Nest] 19  - 05/09/2026, 1:40:17 AM     LOG [InstanceLoader] IAModule dependencies initialized +0ms
-[Nest] 19  - 05/09/2026, 1:40:17 AM   ERROR [TypeOrmModule] Unable to connect to the database. Retrying (1)...
-Error: getaddrinfo ENOTFOUND db.occddouiyqvcdhtxpbej.supabase.co
-    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:120:26)
-[Nest] 19  - 05/09/2026, 1:40:20 AM   ERROR [TypeOrmModule] Unable to connect to the database. Retrying (2)...
-Error: getaddrinfo ENOTFOUND db.occddouiyqvcdhtxpbej.supabase.co
-    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:120:26)
-[Nest] 19  - 05/09/2026, 1:40:23 AM   ERROR [TypeOrmModule] Unable to co
