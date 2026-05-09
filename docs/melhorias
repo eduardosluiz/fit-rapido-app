@@ -1,23 +1,23 @@
 > fit-rapido-api@0.1.0 start:prod
 > node dist/main
 
-🚀 Sistema de Furo de DNS Ativado!
-[Nest] 20  - 05/09/2026, 2:15:56 AM     LOG [NestFactory] Starting Nest application...
+🚀 Sistema de Furo de DNS Ativado e Corrigido!
+[Nest] 20  - 05/09/2026, 2:25:49 AM     LOG [NestFactory] Starting Nest application...
 🔌 BANCO CONECTADO EM: postgresql://postgres.occddouiyqvcdhtxpbej:****@aws-0-sa-east-1.pooler.supabase.com:6543/postgres?pgbouncer=true
 🎯 DNS Override: Redirecionando aws-0-sa-east-1.pooler.supabase.com para 54.94.90.106
-[Nest] 20  - 05/09/2026, 2:15:56 AM     LOG [InstanceLoader] AppModule dependencies initialized +77ms
-[Nest] 20  - 05/09/2026, 2:15:56 AM     LOG [InstanceLoader] TypeOrmModule dependencies initialized +0ms
-[Nest] 20  - 05/09/2026, 2:15:56 AM     LOG [InstanceLoader] PassportModule dependencies initialized +0ms
-[Nest] 20  - 05/09/2026, 2:15:56 AM     LOG [InstanceLoader] ConfigHostModule dependencies initialized +1ms
-[Nest] 20  - 05/09/2026, 2:15:56 AM     LOG [InstanceLoader] ConfigModule dependencies initialized +4ms
-[Nest] 20  - 05/09/2026, 2:15:56 AM     LOG [InstanceLoader] ConfigModule dependencies initialized +0ms
-[Nest] 20  - 05/09/2026, 2:15:56 AM     LOG [InstanceLoader] JwtModule dependencies initialized +2ms
-[Nest] 20  - 05/09/2026, 2:15:56 AM     LOG [InstanceLoader] UploadModule dependencies initialized +2ms
-[Nest] 20  - 05/09/2026, 2:15:56 AM     LOG [InstanceLoader] IAModule dependencies initialized +0ms
-[Nest] 20  - 05/09/2026, 2:15:56 AM   ERROR [TypeOrmModule] Unable to connect to the database. Retrying (1)...
+[Nest] 20  - 05/09/2026, 2:25:49 AM     LOG [InstanceLoader] AppModule dependencies initialized +113ms
+[Nest] 20  - 05/09/2026, 2:25:49 AM     LOG [InstanceLoader] TypeOrmModule dependencies initialized +2ms
+[Nest] 20  - 05/09/2026, 2:25:49 AM     LOG [InstanceLoader] PassportModule dependencies initialized +2ms
+[Nest] 20  - 05/09/2026, 2:25:49 AM     LOG [InstanceLoader] ConfigHostModule dependencies initialized +2ms
+[Nest] 20  - 05/09/2026, 2:25:49 AM     LOG [InstanceLoader] ConfigModule dependencies initialized +10ms
+[Nest] 20  - 05/09/2026, 2:25:49 AM     LOG [InstanceLoader] ConfigModule dependencies initialized +2ms
+[Nest] 20  - 05/09/2026, 2:25:49 AM     LOG [InstanceLoader] JwtModule dependencies initialized +18ms
+[Nest] 20  - 05/09/2026, 2:25:49 AM     LOG [InstanceLoader] UploadModule dependencies initialized +2ms
+[Nest] 20  - 05/09/2026, 2:25:49 AM     LOG [InstanceLoader] IAModule dependencies initialized +5ms
+[Nest] 20  - 05/09/2026, 2:25:49 AM   ERROR [TypeOrmModule] Unable to connect to the database. Retrying (1)...
 TypeError [ERR_INVALID_IP_ADDRESS]: Invalid IP address: undefined
     at emitLookup (node:net:1469:17)
-    at dns.lookup (/app/dist/dns-override.js:12:20)
+    at dns.lookup (/app/dist/dns-override.js:16:20)
     at emitLookup (node:net:1418:5)
     at defaultTriggerAsyncIdScope (node:internal/async_hooks:464:18)
     at lookupAndConnectMultiple (node:net:1417:3)
@@ -27,10 +27,10 @@ TypeError [ERR_INVALID_IP_ADDRESS]: Invalid IP address: undefined
     at Socket.connect (node:net:1259:5)
     at Connection.connect (/app/node_modules/pg/lib/connection.js:43:17)
 🎯 DNS Override: Redirecionando aws-0-sa-east-1.pooler.supabase.com para 54.94.90.106
-[Nest] 20  - 05/09/2026, 2:15:59 AM   ERROR [TypeOrmModule] Unable to connect to the database. Retrying (2)...
+[Nest] 20  - 05/09/2026, 2:25:52 AM   ERROR [TypeOrmModule] Unable to connect to the database. Retrying (2)...
 TypeError [ERR_INVALID_IP_ADDRESS]: Invalid IP address: undefined
     at emitLookup (node:net:1469:17)
-    at dns.lookup (/app/dist/dns-override.js:12:20)
+    at dns.lookup (/app/dist/dns-override.js:16:20)
     at emitLookup (node:net:1418:5)
     at defaultTriggerAsyncIdScope (node:internal/async_hooks:464:18)
     at lookupAndConnectMultiple (node:net:1417:3)
@@ -40,10 +40,10 @@ TypeError [ERR_INVALID_IP_ADDRESS]: Invalid IP address: undefined
     at Socket.connect (node:net:1259:5)
     at Connection.connect (/app/node_modules/pg/lib/connection.js:43:17)
 🎯 DNS Override: Redirecionando aws-0-sa-east-1.pooler.supabase.com para 54.94.90.106
-[Nest] 20  - 05/09/2026, 2:16:02 AM   ERROR [TypeOrmModule] Unable to connect to the database. Retrying (3)...
+[Nest] 20  - 05/09/2026, 2:25:55 AM   ERROR [TypeOrmModule] Unable to connect to the database. Retrying (3)...
 TypeError [ERR_INVALID_IP_ADDRESS]: Invalid IP address: undefined
     at emitLookup (node:net:1469:17)
-    at dns.lookup (/app/dist/dns-override.js:12:20)
+    at dns.lookup (/app/dist/dns-override.js:16:20)
     at emitLookup (node:net:1418:5)
     at defaultTriggerAsyncIdScope (node:internal/async_hooks:464:18)
     at lookupAndConnectMultiple (node:net:1417:3)
@@ -53,23 +53,10 @@ TypeError [ERR_INVALID_IP_ADDRESS]: Invalid IP address: undefined
     at Socket.connect (node:net:1259:5)
     at Connection.connect (/app/node_modules/pg/lib/connection.js:43:17)
 🎯 DNS Override: Redirecionando aws-0-sa-east-1.pooler.supabase.com para 54.94.90.106
-[Nest] 20  - 05/09/2026, 2:16:05 AM   ERROR [TypeOrmModule] Unable to connect to the database. Retrying (4)...
+[Nest] 20  - 05/09/2026, 2:25:58 AM   ERROR [TypeOrmModule] Unable to connect to the database. Retrying (4)...
 TypeError [ERR_INVALID_IP_ADDRESS]: Invalid IP address: undefined
     at emitLookup (node:net:1469:17)
-    at dns.lookup (/app/dist/dns-override.js:12:20)
-    at emitLookup (node:net:1418:5)
-    at defaultTriggerAsyncIdScope (node:internal/async_hooks:464:18)
-    at lookupAndConnectMultiple (node:net:1417:3)
-    at node:net:1363:7
-    at defaultTriggerAsyncIdScope (node:internal/async_hooks:464:18)
-    at lookupAndConnect (node:net:1362:5)
-    at Socket.connect (node:net:1259:5)
-    at Connection.connect (/app/node_modules/pg/lib/connection.js:43:17)
-[Nest] 20  - 05/09/2026, 2:16:09 AM   ERROR [TypeOrmModule] Unable to connect to the database. Retrying (5)...
-🎯 DNS Override: Redirecionando aws-0-sa-east-1.pooler.supabase.com para 54.94.90.106
-TypeError [ERR_INVALID_IP_ADDRESS]: Invalid IP address: undefined
-    at emitLookup (node:net:1469:17)
-    at dns.lookup (/app/dist/dns-override.js:12:20)
+    at dns.lookup (/app/dist/dns-override.js:16:20)
     at emitLookup (node:net:1418:5)
     at defaultTriggerAsyncIdScope (node:internal/async_hooks:464:18)
     at lookupAndConnectMultiple (node:net:1417:3)
@@ -79,10 +66,22 @@ TypeError [ERR_INVALID_IP_ADDRESS]: Invalid IP address: undefined
     at Socket.connect (node:net:1259:5)
     at Connection.connect (/app/node_modules/pg/lib/connection.js:43:17)
 🎯 DNS Override: Redirecionando aws-0-sa-east-1.pooler.supabase.com para 54.94.90.106
-[Nest] 20  - 05/09/2026, 2:16:12 AM   ERROR [TypeOrmModule] Unable to connect to the database. Retrying (6)...
+[Nest] 20  - 05/09/2026, 2:26:01 AM   ERROR [TypeOrmModule] Unable to connect to the database. Retrying (5)...
 TypeError [ERR_INVALID_IP_ADDRESS]: Invalid IP address: undefined
     at emitLookup (node:net:1469:17)
-    at dns.lookup (/app/dist/dns-override.js:12:20)
+    at dns.lookup (/app/dist/dns-override.js:16:20)
+    at emitLookup (node:net:1418:5)
+    at defaultTriggerAsyncIdScope (node:internal/async_hooks:464:18)
+    at lookupAndConnectMultiple (node:net:1417:3)
+    at node:net:1363:7
+    at defaultTriggerAsyncIdScope (node:internal/async_hooks:464:18)
+    at lookupAndConnect (node:net:1362:5)
+    at Socket.connect (node:net:1259:5)
+    at Connection.connect (/app/node_modules/pg/lib/connection.js:43:17)
+[Nest] 20  - 05/09/2026, 2:26:04 AM   ERROR [TypeOrmModule] Unable to connect to the database. Retrying (6)...
+TypeError [ERR_INVALID_IP_ADDRESS]: Invalid IP address: undefined
+    at emitLookup (node:net:1469:17)
+    at dns.lookup (/app/dist/dns-override.js:16:20)
     at emitLookup (node:net:1418:5)
     at defaultTriggerAsyncIdScope (node:internal/async_hooks:464:18)
     at lookupAndConnectMultiple (node:net:1417:3)
@@ -92,23 +91,11 @@ TypeError [ERR_INVALID_IP_ADDRESS]: Invalid IP address: undefined
     at Socket.connect (node:net:1259:5)
     at Connection.connect (/app/node_modules/pg/lib/connection.js:43:17)
 🎯 DNS Override: Redirecionando aws-0-sa-east-1.pooler.supabase.com para 54.94.90.106
-[Nest] 20  - 05/09/2026, 2:16:15 AM   ERROR [TypeOrmModule] Unable to connect to the database. Retrying (7)...
-TypeError [ERR_INVALID_IP_ADDRESS]: Invalid IP address: undefined
-    at emitLookup (node:net:1469:17)
-    at dns.lookup (/app/dist/dns-override.js:12:20)
-    at emitLookup (node:net:1418:5)
-    at defaultTriggerAsyncIdScope (node:internal/async_hooks:464:18)
-    at lookupAndConnectMultiple (node:net:1417:3)
-    at node:net:1363:7
-    at defaultTriggerAsyncIdScope (node:internal/async_hooks:464:18)
-    at lookupAndConnect (node:net:1362:5)
-    at Socket.connect (node:net:1259:5)
-    at Connection.connect (/app/node_modules/pg/lib/connection.js:43:17)
 🎯 DNS Override: Redirecionando aws-0-sa-east-1.pooler.supabase.com para 54.94.90.106
-[Nest] 20  - 05/09/2026, 2:16:18 AM   ERROR [TypeOrmModule] Unable to connect to the database. Retrying (8)...
+[Nest] 20  - 05/09/2026, 2:26:07 AM   ERROR [TypeOrmModule] Unable to connect to the database. Retrying (7)...
 TypeError [ERR_INVALID_IP_ADDRESS]: Invalid IP address: undefined
     at emitLookup (node:net:1469:17)
-    at dns.lookup (/app/dist/dns-override.js:12:20)
+    at dns.lookup (/app/dist/dns-override.js:16:20)
     at emitLookup (node:net:1418:5)
     at defaultTriggerAsyncIdScope (node:internal/async_hooks:464:18)
     at lookupAndConnectMultiple (node:net:1417:3)
@@ -117,29 +104,3 @@ TypeError [ERR_INVALID_IP_ADDRESS]: Invalid IP address: undefined
     at lookupAndConnect (node:net:1362:5)
     at Socket.connect (node:net:1259:5)
     at Connection.connect (/app/node_modules/pg/lib/connection.js:43:17)
-🎯 DNS Override: Redirecionando aws-0-sa-east-1.pooler.supabase.com para 54.94.90.106
-[Nest] 20  - 05/09/2026, 2:16:21 AM   ERROR [TypeOrmModule] Unable to connect to the database. Retrying (9)...
-TypeError [ERR_INVALID_IP_ADDRESS]: Invalid IP address: undefined
-    at emitLookup (node:net:1469:17)
-    at dns.lookup (/app/dist/dns-override.js:12:20)
-    at emitLookup (node:net:1418:5)
-    at defaultTriggerAsyncIdScope (node:internal/async_hooks:464:18)
-    at lookupAndConnectMultiple (node:net:1417:3)
-    at node:net:1363:7
-    at defaultTriggerAsyncIdScope (node:internal/async_hooks:464:18)
-    at lookupAndConnect (node:net:1362:5)
-    at Socket.connect (node:net:1259:5)
-    at Connection.connect (/app/node_modules/pg/lib/connection.js:43:17)
-[Nest] 20  - 05/09/2026, 2:16:21 AM   ERROR [ExceptionHandler] TypeError [ERR_INVALID_IP_ADDRESS]: Invalid IP address: undefined
-    at emitLookup (node:net:1469:17)
-    at dns.lookup (/app/dist/dns-override.js:12:20)
-    at emitLookup (node:net:1418:5)
-    at defaultTriggerAsyncIdScope (node:internal/async_hooks:464:18)
-    at lookupAndConnectMultiple (node:net:1417:3)
-    at node:net:1363:7
-    at defaultTriggerAsyncIdScope (node:internal/async_hooks:464:18)
-    at lookupAndConnect (node:net:1362:5)
-    at Socket.connect (node:net:1259:5)
-    at Connection.connect (/app/node_modules/pg/lib/connection.js:43:17) {
-  code: 'ERR_INVALID_IP_ADDRESS'
-}
