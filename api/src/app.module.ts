@@ -21,7 +21,7 @@ import { IAModule } from './ia/ia.module';
     // Configuração de variáveis de ambiente
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: '.env',
+      envFilePath: process.env.NODE_ENV === 'production' ? [] : '.env',
     }),
     // Rate Limiting - Proteção contra DDoS e abuso
     ThrottlerModule.forRoot([
