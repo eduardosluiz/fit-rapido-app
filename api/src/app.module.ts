@@ -24,6 +24,24 @@ import { IAModule } from './ia/ia.module';
       envFilePath: process.env.NODE_ENV === 'production' ? [] : '.env',
       cache: true,
     }),
+    // Rate Limiting - Proteção contra DDoS e abuso
+    ThrottlerModule.forRoot([
+      {
+        name: 'short',
+        ttl: 1000,
+        limit: 10,
+      },
+      {
+        name: 'medium',
+        ttl: 60000,
+        limit: 100,
+      },
+      {
+        name: 'long',
+        ttl: 900000,
+        limit: 1000,
+      },
+    ]),
     // Configuração do TypeORM com PostgreSQL
     TypeOrmModule.forRootAsync({
       useFactory: () => {
@@ -42,7 +60,7 @@ import { IAModule } from './ia/ia.module';
         };
       },
     }),
-    // Rate Limiting - Proteção contra DDoS e abuso
+    // Módulos da aplicação
     // Módulos da aplicação
     AuthModule,
     ReceitasModule,

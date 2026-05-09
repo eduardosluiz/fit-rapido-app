@@ -1,108 +1,189 @@
-> fit-rapido-api@0.1.0 start:prod
-> node dist/main
 
-/app/node_modules/@nestjs/typeorm/dist/common/typeorm.utils.js:123
-const generateString = () => crypto.randomUUID();
-                                    ^
+[Nest] 19  - 05/09/2026, 1:28:27 AM     LOG [NestFactory] Starting Nest application...
+🔌 Tentando conectar ao banco: postgresql://postgres.occddouiyqvcdhtxpbej:****@54.94.90.106:6543/postgres?pgbouncer=true
+🌍 Ambiente: production
+[Nest] 19  - 05/09/2026, 1:28:27 AM     LOG [InstanceLoader] TypeOrmModule dependencies initialized +130ms
+[Nest] 19  - 05/09/2026, 1:28:27 AM     LOG [InstanceLoader] PassportModule dependencies initialized +1ms
+[Nest] 19  - 05/09/2026, 1:28:27 AM     LOG [InstanceLoader] ConfigHostModule dependencies initialized +1ms
+[Nest] 19  - 05/09/2026, 1:28:27 AM   ERROR [ExceptionHandler] UnknownDependenciesException [Error]: Nest can't resolve dependencies of the ThrottlerGuard (?, Symbol(ThrottlerStorage), Reflector). Please make sure that the argument "THROTTLER:MODULE_OPTIONS" at index [0] is available in the AppModule context.
 
-ReferenceError: crypto is not defined
-    at generateString (/app/node_modules/@nestjs/typeorm/dist/common/typeorm.utils.js:123:37)
-    at TypeOrmCoreModule.forRootAsync (/app/node_modules/@nestjs/typeorm/dist/typeorm-core.module.js:86:62)
-    at TypeOrmModule.forRootAsync (/app/node_modules/@nestjs/typeorm/dist/typeorm.module.js:35:63)
-    at Object.<anonymous> (/app/dist/app.module.js:38:37)
-    at Module._compile (node:internal/modules/cjs/loader:1364:14)
-    at Module._extensions..js (node:internal/modules/cjs/loader:1422:10)
-    at Module.load (node:internal/modules/cjs/loader:1203:32)
-    at Module._load (node:internal/modules/cjs/loader:1019:12)
-    at Module.require (node:internal/modules/cjs/loader:1231:19)
-    at require (node:internal/modules/helpers:177:18)
+Potential solutions:
+- Is AppModule a valid NestJS module?
+- If "THROTTLER:MODULE_OPTIONS" is a provider, is it part of the current AppModule?
+- If "THROTTLER:MODULE_OPTIONS" is exported from a separate @Module, is that module imported within AppModule?
+  @Module({
+    imports: [ /* the Module containing "THROTTLER:MODULE_OPTIONS" */ ]
+  })
 
-Node.js v18.20.5
-
-> fit-rapido-api@0.1.0 start:prod
-> node dist/main
-
-⚠️  Node.js 18 and below are deprecated and will no longer be supported in future versions of @supabase/supabase-js. Please upgrade to Node.js 20 or later. For more information, visit: https://github.com/orgs/supabase/discussions/37217
-/app/node_modules/@nestjs/typeorm/dist/common/typeorm.utils.js:123
-const generateString = () => crypto.randomUUID();
-                                    ^
-
-ReferenceError: crypto is not defined
-    at generateString (/app/node_modules/@nestjs/typeorm/dist/common/typeorm.utils.js:123:37)
-    at TypeOrmCoreModule.forRootAsync (/app/node_modules/@nestjs/typeorm/dist/typeorm-core.module.js:86:62)
-    at TypeOrmModule.forRootAsync (/app/node_modules/@nestjs/typeorm/dist/typeorm.module.js:35:63)
-    at Object.<anonymous> (/app/dist/app.module.js:38:37)
-    at Module._compile (node:internal/modules/cjs/loader:1364:14)
-    at Module._extensions..js (node:internal/modules/cjs/loader:1422:10)
-    at Module.load (node:internal/modules/cjs/loader:1203:32)
-    at Module._load (node:internal/modules/cjs/loader:1019:12)
-    at Module.require (node:internal/modules/cjs/loader:1231:19)
-    at require (node:internal/modules/helpers:177:18)
-
-Node.js v18.20.5
-
-> fit-rapido-api@0.1.0 start:prod
-> node dist/main
-
-⚠️  Node.js 18 and below are deprecated and will no longer be supported in future versions of @supabase/supabase-js. Please upgrade to Node.js 20 or later. For more information, visit: https://github.com/orgs/supabase/discussions/37217
-/app/node_modules/@nestjs/typeorm/dist/common/typeorm.utils.js:123
-const generateString = () => crypto.randomUUID();
-                                    ^
-
-ReferenceError: crypto is not defined
-    at generateString (/app/node_modules/@nestjs/typeorm/dist/common/typeorm.utils.js:123:37)
-    at TypeOrmCoreModule.forRootAsync (/app/node_modules/@nestjs/typeorm/dist/typeorm-core.module.js:86:62)
-    at TypeOrmModule.forRootAsync (/app/node_modules/@nestjs/typeorm/dist/typeorm.module.js:35:63)
-    at Object.<anonymous> (/app/dist/app.module.js:38:37)
-    at Module._compile (node:internal/modules/cjs/loader:1364:14)
-    at Module._extensions..js (node:internal/modules/cjs/loader:1422:10)
-    at Module.load (node:internal/modules/cjs/loader:1203:32)
-    at Module._load (node:internal/modules/cjs/loader:1019:12)
-    at Module.require (node:internal/modules/cjs/loader:1231:19)
-    at require (node:internal/modules/helpers:177:18)
-
-Node.js v18.20.5
+For more common dependency resolution issues, see: https://docs.nestjs.com/faq/common-errors
+    at Injector.lookupComponentInParentModules (/app/node_modules/@nestjs/core/injector/injector.js:286:19)
+    at async resolveParam (/app/node_modules/@nestjs/core/injector/injector.js:140:38)
+    at async Promise.all (index 0)
+    at async Injector.resolveConstructorParams (/app/node_modules/@nestjs/core/injector/injector.js:169:27)
+    at async Injector.loadInstance (/app/node_modules/@nestjs/core/injector/injector.js:75:13)
+    at async Injector.loadProvider (/app/node_modules/@nestjs/core/injector/injector.js:103:9)
+    at async /app/node_modules/@nestjs/core/injector/instance-loader.js:56:13
+    at async Promise.all (index 3)
+    at async InstanceLoader.createInstancesOfProviders (/app/node_modules/@nestjs/core/injector/instance-loader.js:55:9)
+    at async /app/node_modules/@nestjs/core/injector/instance-loader.js:40:13 {
+  type: 'ThrottlerGuard',
+  context: {
+    index: 0,
+    dependencies: [
+      'THROTTLER:MODULE_OPTIONS',
+      Symbol(ThrottlerStorage),
+      [class Reflector]
+    ],
+    name: 'THROTTLER:MODULE_OPTIONS'
+  },
+  metadata: {
+    id: '23f315a5ee9e2601c9802'
+  },
+  moduleRef: {
+    id: '1565a8fe795ee037efdee'
+  }
+}
 
 > fit-rapido-api@0.1.0 start:prod
 > node dist/main
 
-⚠️  Node.js 18 and below are deprecated and will no longer be supported in future versions of @supabase/supabase-js. Please upgrade to Node.js 20 or later. For more information, visit: https://github.com/orgs/supabase/discussions/37217
-/app/node_modules/@nestjs/typeorm/dist/common/typeorm.utils.js:123
-const generateString = () => crypto.randomUUID();
-                                    ^
+[Nest] 20  - 05/09/2026, 1:28:36 AM     LOG [NestFactory] Starting Nest application...
+🔌 Tentando conectar ao banco: postgresql://postgres.occddouiyqvcdhtxpbej:****@54.94.90.106:6543/postgres?pgbouncer=true
+🌍 Ambiente: production
+[Nest] 20  - 05/09/2026, 1:28:36 AM     LOG [InstanceLoader] TypeOrmModule dependencies initialized +106ms
+[Nest] 20  - 05/09/2026, 1:28:36 AM     LOG [InstanceLoader] PassportModule dependencies initialized +1ms
+[Nest] 20  - 05/09/2026, 1:28:36 AM     LOG [InstanceLoader] ConfigHostModule dependencies initialized +2ms
+[Nest] 20  - 05/09/2026, 1:28:36 AM   ERROR [ExceptionHandler] UnknownDependenciesException [Error]: Nest can't resolve dependencies of the ThrottlerGuard (?, Symbol(ThrottlerStorage), Reflector). Please make sure that the argument "THROTTLER:MODULE_OPTIONS" at index [0] is available in the AppModule context.
 
-ReferenceError: crypto is not defined
-    at generateString (/app/node_modules/@nestjs/typeorm/dist/common/typeorm.utils.js:123:37)
-    at TypeOrmCoreModule.forRootAsync (/app/node_modules/@nestjs/typeorm/dist/typeorm-core.module.js:86:62)
-    at TypeOrmModule.forRootAsync (/app/node_modules/@nestjs/typeorm/dist/typeorm.module.js:35:63)
-    at Object.<anonymous> (/app/dist/app.module.js:38:37)
-    at Module._compile (node:internal/modules/cjs/loader:1364:14)
-    at Module._extensions..js (node:internal/modules/cjs/loader:1422:10)
-    at Module.load (node:internal/modules/cjs/loader:1203:32)
-    at Module._load (node:internal/modules/cjs/loader:1019:12)
-    at Module.require (node:internal/modules/cjs/loader:1231:19)
-    at require (node:internal/modules/helpers:177:18)
+Potential solutions:
+- Is AppModule a valid NestJS module?
+- If "THROTTLER:MODULE_OPTIONS" is a provider, is it part of the current AppModule?
+- If "THROTTLER:MODULE_OPTIONS" is exported from a separate @Module, is that module imported within AppModule?
+  @Module({
+    imports: [ /* the Module containing "THROTTLER:MODULE_OPTIONS" */ ]
+  })
 
-Node.js v18.20.5
+For more common dependency resolution issues, see: https://docs.nestjs.com/faq/common-errors
+    at Injector.lookupComponentInParentModules (/app/node_modules/@nestjs/core/injector/injector.js:286:19)
+    at async resolveParam (/app/node_modules/@nestjs/core/injector/injector.js:140:38)
+    at async Promise.all (index 0)
+    at async Injector.resolveConstructorParams (/app/node_modules/@nestjs/core/injector/injector.js:169:27)
+    at async Injector.loadInstance (/app/node_modules/@nestjs/core/injector/injector.js:75:13)
+    at async Injector.loadProvider (/app/node_modules/@nestjs/core/injector/injector.js:103:9)
+    at async /app/node_modules/@nestjs/core/injector/instance-loader.js:56:13
+    at async Promise.all (index 3)
+    at async InstanceLoader.createInstancesOfProviders (/app/node_modules/@nestjs/core/injector/instance-loader.js:55:9)
+    at async /app/node_modules/@nestjs/core/injector/instance-loader.js:40:13 {
+  type: 'ThrottlerGuard',
+  context: {
+    index: 0,
+    dependencies: [
+      'THROTTLER:MODULE_OPTIONS',
+      Symbol(ThrottlerStorage),
+      [class Reflector]
+    ],
+    name: 'THROTTLER:MODULE_OPTIONS'
+  },
+  metadata: {
+    id: 'd356502b3cfba700f149b'
+  },
+  moduleRef: {
+    id: '3168981f4a7d00e7dd75e'
+  }
+}
 
 > fit-rapido-api@0.1.0 start:prod
 > node dist/main
 
-⚠️  Node.js 18 and below are deprecated and will no longer be supported in future versions of @supabase/supabase-js. Please upgrade to Node.js 20 or later. For more information, visit: https://github.com/orgs/supabase/discussions/37217
-/app/node_modules/@nestjs/typeorm/dist/common/typeorm.utils.js:123
-const generateString = () => crypto.randomUUID();
-                                    ^
+[Nest] 20  - 05/09/2026, 1:28:45 AM     LOG [NestFactory] Starting Nest application...
+🔌 Tentando conectar ao banco: postgresql://postgres.occddouiyqvcdhtxpbej:****@54.94.90.106:6543/postgres?pgbouncer=true
+🌍 Ambiente: production
+[Nest] 20  - 05/09/2026, 1:28:45 AM     LOG [InstanceLoader] TypeOrmModule dependencies initialized +74ms
+[Nest] 20  - 05/09/2026, 1:28:45 AM     LOG [InstanceLoader] PassportModule dependencies initialized +0ms
+[Nest] 20  - 05/09/2026, 1:28:45 AM     LOG [InstanceLoader] ConfigHostModule dependencies initialized +1ms
+[Nest] 20  - 05/09/2026, 1:28:45 AM   ERROR [ExceptionHandler] UnknownDependenciesException [Error]: Nest can't resolve dependencies of the ThrottlerGuard (?, Symbol(ThrottlerStorage), Reflector). Please make sure that the argument "THROTTLER:MODULE_OPTIONS" at index [0] is available in the AppModule context.
 
-ReferenceError: crypto is not defined
-    at generateString (/app/node_modules/@nestjs/typeorm/dist/common/typeorm.utils.js:123:37)
-    at TypeOrmCoreModule.forRootAsync (/app/node_modules/@nestjs/typeorm/dist/typeorm-core.module.js:86:62)
-    at TypeOrmModule.forRootAsync (/app/node_modules/@nestjs/typeorm/dist/typeorm.module.js:35:63)
-    at Object.<anonymous> (/app/dist/app.module.js:38:37)
-    at Module._compile (node:internal/modules/cjs/loader:1364:14)
-    at Module._extensions..js (node:internal/modules/cjs/loader:1422:10)
-    at Module.load (node:internal/modules/cjs/loader:1203:32)
-    at Module._load (node:internal/modules/cjs/loader:1019:12)
-    at Module.require (node:internal/modules/cjs/loader:1231:19)
-    at require (node:internal/modules/helpers:177:18)
+Potential solutions:
+- Is AppModule a valid NestJS module?
+- If "THROTTLER:MODULE_OPTIONS" is a provider, is it part of the current AppModule?
+- If "THROTTLER:MODULE_OPTIONS" is exported from a separate @Module, is that module imported within AppModule?
+  @Module({
+    imports: [ /* the Module containing "THROTTLER:MODULE_OPTIONS" */ ]
+  })
 
-Node.js v18.20.5
+For more common dependency resolution issues, see: https://docs.nestjs.com/faq/common-errors
+    at Injector.lookupComponentInParentModules (/app/node_modules/@nestjs/core/injector/injector.js:286:19)
+    at async resolveParam (/app/node_modules/@nestjs/core/injector/injector.js:140:38)
+    at async Promise.all (index 0)
+    at async Injector.resolveConstructorParams (/app/node_modules/@nestjs/core/injector/injector.js:169:27)
+    at async Injector.loadInstance (/app/node_modules/@nestjs/core/injector/injector.js:75:13)
+    at async Injector.loadProvider (/app/node_modules/@nestjs/core/injector/injector.js:103:9)
+    at async /app/node_modules/@nestjs/core/injector/instance-loader.js:56:13
+    at async Promise.all (index 3)
+    at async InstanceLoader.createInstancesOfProviders (/app/node_modules/@nestjs/core/injector/instance-loader.js:55:9)
+    at async /app/node_modules/@nestjs/core/injector/instance-loader.js:40:13 {
+  type: 'ThrottlerGuard',
+  context: {
+    index: 0,
+    dependencies: [
+      'THROTTLER:MODULE_OPTIONS',
+      Symbol(ThrottlerStorage),
+      [class Reflector]
+    ],
+    name: 'THROTTLER:MODULE_OPTIONS'
+  },
+  metadata: {
+    id: '83366a06f23a6cbccead6'
+  },
+  moduleRef: {
+    id: '01b7c2822a44eab089cc3'
+  }
+}
+
+> fit-rapido-api@0.1.0 start:prod
+> node dist/main
+
+[Nest] 20  - 05/09/2026, 1:28:53 AM     LOG [NestFactory] Starting Nest application...
+🔌 Tentando conectar ao banco: postgresql://postgres.occddouiyqvcdhtxpbej:****@54.94.90.106:6543/postgres?pgbouncer=true
+🌍 Ambiente: production
+[Nest] 20  - 05/09/2026, 1:28:53 AM     LOG [InstanceLoader] TypeOrmModule dependencies initialized +82ms
+[Nest] 20  - 05/09/2026, 1:28:53 AM     LOG [InstanceLoader] PassportModule dependencies initialized +0ms
+[Nest] 20  - 05/09/2026, 1:28:53 AM     LOG [InstanceLoader] ConfigHostModule dependencies initialized +1ms
+[Nest] 20  - 05/09/2026, 1:28:53 AM   ERROR [ExceptionHandler] UnknownDependenciesException [Error]: Nest can't resolve dependencies of the ThrottlerGuard (?, Symbol(ThrottlerStorage), Reflector). Please make sure that the argument "THROTTLER:MODULE_OPTIONS" at index [0] is available in the AppModule context.
+
+Potential solutions:
+- Is AppModule a valid NestJS module?
+- If "THROTTLER:MODULE_OPTIONS" is a provider, is it part of the current AppModule?
+- If "THROTTLER:MODULE_OPTIONS" is exported from a separate @Module, is that module imported within AppModule?
+  @Module({
+    imports: [ /* the Module containing "THROTTLER:MODULE_OPTIONS" */ ]
+  })
+
+For more common dependency resolution issues, see: https://docs.nestjs.com/faq/common-errors
+    at Injector.lookupComponentInParentModules (/app/node_modules/@nestjs/core/injector/injector.js:286:19)
+    at async resolveParam (/app/node_modules/@nestjs/core/injector/injector.js:140:38)
+    at async Promise.all (index 0)
+    at async Injector.resolveConstructorParams (/app/node_modules/@nestjs/core/injector/injector.js:169:27)
+    at async Injector.loadInstance (/app/node_modules/@nestjs/core/injector/injector.js:75:13)
+    at async Injector.loadProvider (/app/node_modules/@nestjs/core/injector/injector.js:103:9)
+    at async /app/node_modules/@nestjs/core/injector/instance-loader.js:56:13
+    at async Promise.all (index 3)
+    at async InstanceLoader.createInstancesOfProviders (/app/node_modules/@nestjs/core/injector/instance-loader.js:55:9)
+    at async /app/node_modules/@nestjs/core/injector/instance-loader.js:40:13 {
+  type: 'ThrottlerGuard',
+  context: {
+    index: 0,
+    dependencies: [
+      'THROTTLER:MODULE_OPTIONS',
+      Symbol(ThrottlerStorage),
+      [class Reflector]
+    ],
+    name: 'THROTTLER:MODULE_OPTIONS'
+  },
+  metadata: {
+    id: 'a055db6e41c02275f5f96'
+  },
+  moduleRef: {
+    id: '37e9a85bdf9d9afc97df9'
+  }
+}
