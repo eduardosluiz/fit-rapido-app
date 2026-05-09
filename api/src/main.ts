@@ -2,7 +2,6 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { ValidationPipe } from '@nestjs/common';
-import { join } from 'path';
 import helmet from 'helmet';
 import { SanitizePipe } from './common/pipes/sanitize.pipe';
 import { json, urlencoded } from 'express';
@@ -22,20 +21,8 @@ async function bootstrap() {
   app.useGlobalPipes(new SanitizePipe());
   app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
   
-  const allowedOrigins = [
-    'https://admin.daipohlmann.com.br',
-    'http://localhost:3000',
-    'http://localhost:3001'
-  ];
-
   app.enableCors({
-    origin: (origin, callback) => {
-      if (!origin || allowedOrigins.includes(origin) || origin.endsWith('.daipohlmann.com.br')) {
-        callback(null, true);
-      } else {
-        callback(new Error('Not allowed by CORS'));
-      }
-    },
+    origin: process.env.ALLOWED_ORIGINS?.split(',') || true,
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
@@ -43,6 +30,6 @@ async function bootstrap() {
   
   const port = process.env.PORT || 3001;
   await app.listen(port);
-  console.log(`🚀 API ONLINE NA PORTA ${port}`);
+  console.log(`🚀 API rodando na porta ${port}`);
 }
 bootstrap();
