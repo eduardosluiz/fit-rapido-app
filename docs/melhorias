@@ -1,139 +1,108 @@
+> fit-rapido-api@0.1.0 start:prod
+> node dist/main
+
+/app/node_modules/@nestjs/typeorm/dist/common/typeorm.utils.js:123
+const generateString = () => crypto.randomUUID();
+                                    ^
+
+ReferenceError: crypto is not defined
+    at generateString (/app/node_modules/@nestjs/typeorm/dist/common/typeorm.utils.js:123:37)
+    at TypeOrmCoreModule.forRootAsync (/app/node_modules/@nestjs/typeorm/dist/typeorm-core.module.js:86:62)
+    at TypeOrmModule.forRootAsync (/app/node_modules/@nestjs/typeorm/dist/typeorm.module.js:35:63)
+    at Object.<anonymous> (/app/dist/app.module.js:38:37)
+    at Module._compile (node:internal/modules/cjs/loader:1364:14)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1422:10)
+    at Module.load (node:internal/modules/cjs/loader:1203:32)
+    at Module._load (node:internal/modules/cjs/loader:1019:12)
+    at Module.require (node:internal/modules/cjs/loader:1231:19)
+    at require (node:internal/modules/helpers:177:18)
+
+Node.js v18.20.5
+
+> fit-rapido-api@0.1.0 start:prod
+> node dist/main
+
 ⚠️  Node.js 18 and below are deprecated and will no longer be supported in future versions of @supabase/supabase-js. Please upgrade to Node.js 20 or later. For more information, visit: https://github.com/orgs/supabase/discussions/37217
-[Nest] 21  - 05/09/2026, 1:01:18 AM     LOG [NestFactory] Starting Nest application...
-[Nest] 21  - 05/09/2026, 1:01:18 AM     LOG [InstanceLoader] TypeOrmModule dependencies initialized +84ms
-[Nest] 21  - 05/09/2026, 1:01:18 AM     LOG [InstanceLoader] PassportModule dependencies initialized +0ms
-[Nest] 21  - 05/09/2026, 1:01:18 AM     LOG [InstanceLoader] ConfigHostModule dependencies initialized +1ms
-[Nest] 21  - 05/09/2026, 1:01:18 AM     LOG [InstanceLoader] ThrottlerModule dependencies initialized +0ms
-[Nest] 21  - 05/09/2026, 1:01:18 AM     LOG [InstanceLoader] ConfigModule dependencies initialized +4ms
-[Nest] 21  - 05/09/2026, 1:01:18 AM     LOG [InstanceLoader] ConfigModule dependencies initialized +1ms
-[Nest] 21  - 05/09/2026, 1:01:18 AM     LOG [InstanceLoader] AppModule dependencies initialized +1ms
-[Nest] 21  - 05/09/2026, 1:01:18 AM     LOG [InstanceLoader] JwtModule dependencies initialized +2ms
-[Nest] 21  - 05/09/2026, 1:01:18 AM     LOG [InstanceLoader] UploadModule dependencies initialized +6ms
-[Nest] 21  - 05/09/2026, 1:01:18 AM     LOG [InstanceLoader] IAModule dependencies initialized +0ms
-[Nest] 21  - 05/09/2026, 1:01:18 AM   ERROR [TypeOrmModule] Unable to connect to the database. Retrying (1)...
-error: Tenant or user not found
-    at Parser.parseErrorMessage (/app/node_modules/pg-protocol/dist/parser.js:285:98)
-    at Parser.handlePacket (/app/node_modules/pg-protocol/dist/parser.js:122:29)
-    at Parser.parse (/app/node_modules/pg-protocol/dist/parser.js:35:38)
-    at Socket.<anonymous> (/app/node_modules/pg-protocol/dist/index.js:11:42)
-    at Socket.emit (node:events:517:28)
-    at addChunk (node:internal/streams/readable:368:12)
-    at readableAddChunk (node:internal/streams/readable:341:9)
-    at Readable.push (node:internal/streams/readable:278:10)
-    at TCP.onStreamRead (node:internal/stream_base_commons:190:23)
-[Nest] 21  - 05/09/2026, 1:01:22 AM   ERROR [TypeOrmModule] Unable to connect to the database. Retrying (2)...
-error: Tenant or user not found
-    at Parser.parseErrorMessage (/app/node_modules/pg-protocol/dist/parser.js:285:98)
-    at Parser.handlePacket (/app/node_modules/pg-protocol/dist/parser.js:122:29)
-    at Parser.parse (/app/node_modules/pg-protocol/dist/parser.js:35:38)
-    at Socket.<anonymous> (/app/node_modules/pg-protocol/dist/index.js:11:42)
-    at Socket.emit (node:events:517:28)
-    at addChunk (node:internal/streams/readable:368:12)
-    at readableAddChunk (node:internal/streams/readable:341:9)
-    at Readable.push (node:internal/streams/readable:278:10)
-    at TCP.onStreamRead (node:internal/stream_base_commons:190:23)
-[Nest] 21  - 05/09/2026, 1:01:25 AM   ERROR [TypeOrmModule] Unable to connect to the database. Retrying (3)...
-error: Tenant or user not found
-    at Parser.parseErrorMessage (/app/node_modules/pg-protocol/dist/parser.js:285:98)
-    at Parser.handlePacket (/app/node_modules/pg-protocol/dist/parser.js:122:29)
-    at Parser.parse (/app/node_modules/pg-protocol/dist/parser.js:35:38)
-    at Socket.<anonymous> (/app/node_modules/pg-protocol/dist/index.js:11:42)
-    at Socket.emit (node:events:517:28)
-    at addChunk (node:internal/streams/readable:368:12)
-    at readableAddChunk (node:internal/streams/readable:341:9)
-    at Readable.push (node:internal/streams/readable:278:10)
-    at TCP.onStreamRead (node:internal/stream_base_commons:190:23)
-[Nest] 21  - 05/09/2026, 1:01:28 AM   ERROR [TypeOrmModule] Unable to connect to the database. Retrying (4)...
-error: Tenant or user not found
-    at Parser.parseErrorMessage (/app/node_modules/pg-protocol/dist/parser.js:285:98)
-    at Parser.handlePacket (/app/node_modules/pg-protocol/dist/parser.js:122:29)
-    at Parser.parse (/app/node_modules/pg-protocol/dist/parser.js:35:38)
-    at Socket.<anonymous> (/app/node_modules/pg-protocol/dist/index.js:11:42)
-    at Socket.emit (node:events:517:28)
-    at addChunk (node:internal/streams/readable:368:12)
-    at readableAddChunk (node:internal/streams/readable:341:9)
-    at Readable.push (node:internal/streams/readable:278:10)
-    at TCP.onStreamRead (node:internal/stream_base_commons:190:23)
-[Nest] 21  - 05/09/2026, 1:01:31 AM   ERROR [TypeOrmModule] Unable to connect to the database. Retrying (5)...
-error: Tenant or user not found
-    at Parser.parseErrorMessage (/app/node_modules/pg-protocol/dist/parser.js:285:98)
-    at Parser.handlePacket (/app/node_modules/pg-protocol/dist/parser.js:122:29)
-    at Parser.parse (/app/node_modules/pg-protocol/dist/parser.js:35:38)
-    at Socket.<anonymous> (/app/node_modules/pg-protocol/dist/index.js:11:42)
-    at Socket.emit (node:events:517:28)
-    at addChunk (node:internal/streams/readable:368:12)
-    at readableAddChunk (node:internal/streams/readable:341:9)
-    at Readable.push (node:internal/streams/readable:278:10)
-    at TCP.onStreamRead (node:internal/stream_base_commons:190:23)
-[Nest] 21  - 05/09/2026, 1:01:35 AM   ERROR [TypeOrmModule] Unable to connect to the database. Retrying (6)...
-error: Tenant or user not found
-    at Parser.parseErrorMessage (/app/node_modules/pg-protocol/dist/parser.js:285:98)
-    at Parser.handlePacket (/app/node_modules/pg-protocol/dist/parser.js:122:29)
-    at Parser.parse (/app/node_modules/pg-protocol/dist/parser.js:35:38)
-    at Socket.<anonymous> (/app/node_modules/pg-protocol/dist/index.js:11:42)
-    at Socket.emit (node:events:517:28)
-    at addChunk (node:internal/streams/readable:368:12)
-    at readableAddChunk (node:internal/streams/readable:341:9)
-    at Readable.push (node:internal/streams/readable:278:10)
-    at TCP.onStreamRead (node:internal/stream_base_commons:190:23)
-[Nest] 21  - 05/09/2026, 1:01:38 AM   ERROR [TypeOrmModule] Unable to connect to the database. Retrying (7)...
-error: Tenant or user not found
-    at Parser.parseErrorMessage (/app/node_modules/pg-protocol/dist/parser.js:285:98)
-    at Parser.handlePacket (/app/node_modules/pg-protocol/dist/parser.js:122:29)
-    at Parser.parse (/app/node_modules/pg-protocol/dist/parser.js:35:38)
-    at Socket.<anonymous> (/app/node_modules/pg-protocol/dist/index.js:11:42)
-    at Socket.emit (node:events:517:28)
-    at addChunk (node:internal/streams/readable:368:12)
-    at readableAddChunk (node:internal/streams/readable:341:9)
-    at Readable.push (node:internal/streams/readable:278:10)
-    at TCP.onStreamRead (node:internal/stream_base_commons:190:23)
-[Nest] 21  - 05/09/2026, 1:01:41 AM   ERROR [TypeOrmModule] Unable to connect to the database. Retrying (8)...
-error: Tenant or user not found
-    at Parser.parseErrorMessage (/app/node_modules/pg-protocol/dist/parser.js:285:98)
-    at Parser.handlePacket (/app/node_modules/pg-protocol/dist/parser.js:122:29)
-    at Parser.parse (/app/node_modules/pg-protocol/dist/parser.js:35:38)
-    at Socket.<anonymous> (/app/node_modules/pg-protocol/dist/index.js:11:42)
-    at Socket.emit (node:events:517:28)
-    at addChunk (node:internal/streams/readable:368:12)
-    at readableAddChunk (node:internal/streams/readable:341:9)
-    at Readable.push (node:internal/streams/readable:278:10)
-    at TCP.onStreamRead (node:internal/stream_base_commons:190:23)
-[Nest] 21  - 05/09/2026, 1:01:44 AM   ERROR [TypeOrmModule] Unable to connect to the database. Retrying (9)...
-error: Tenant or user not found
-    at Parser.parseErrorMessage (/app/node_modules/pg-protocol/dist/parser.js:285:98)
-    at Parser.handlePacket (/app/node_modules/pg-protocol/dist/parser.js:122:29)
-    at Parser.parse (/app/node_modules/pg-protocol/dist/parser.js:35:38)
-    at Socket.<anonymous> (/app/node_modules/pg-protocol/dist/index.js:11:42)
-    at Socket.emit (node:events:517:28)
-    at addChunk (node:internal/streams/readable:368:12)
-    at readableAddChunk (node:internal/streams/readable:341:9)
-    at Readable.push (node:internal/streams/readable:278:10)
-    at TCP.onStreamRead (node:internal/stream_base_commons:190:23)
-[Nest] 21  - 05/09/2026, 1:01:44 AM   ERROR [ExceptionHandler] error: Tenant or user not found
-    at Parser.parseErrorMessage (/app/node_modules/pg-protocol/dist/parser.js:285:98)
-    at Parser.handlePacket (/app/node_modules/pg-protocol/dist/parser.js:122:29)
-    at Parser.parse (/app/node_modules/pg-protocol/dist/parser.js:35:38)
-    at Socket.<anonymous> (/app/node_modules/pg-protocol/dist/index.js:11:42)
-    at Socket.emit (node:events:517:28)
-    at addChunk (node:internal/streams/readable:368:12)
-    at readableAddChunk (node:internal/streams/readable:341:9)
-    at Readable.push (node:internal/streams/readable:278:10)
-    at TCP.onStreamRead (node:internal/stream_base_commons:190:23) {
-  length: 52,
-  severity: 'FATAL',
-  code: 'XX000',
-  detail: undefined,
-  hint: undefined,
-  position: undefined,
-  internalPosition: undefined,
-  internalQuery: undefined,
-  where: undefined,
-  schema: undefined,
-  table: undefined,
-  column: undefined,
-  dataType: undefined,
-  constraint: undefined,
-  file: undefined,
-  line: undefined,
-  routine: undefined
-}
+/app/node_modules/@nestjs/typeorm/dist/common/typeorm.utils.js:123
+const generateString = () => crypto.randomUUID();
+                                    ^
+
+ReferenceError: crypto is not defined
+    at generateString (/app/node_modules/@nestjs/typeorm/dist/common/typeorm.utils.js:123:37)
+    at TypeOrmCoreModule.forRootAsync (/app/node_modules/@nestjs/typeorm/dist/typeorm-core.module.js:86:62)
+    at TypeOrmModule.forRootAsync (/app/node_modules/@nestjs/typeorm/dist/typeorm.module.js:35:63)
+    at Object.<anonymous> (/app/dist/app.module.js:38:37)
+    at Module._compile (node:internal/modules/cjs/loader:1364:14)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1422:10)
+    at Module.load (node:internal/modules/cjs/loader:1203:32)
+    at Module._load (node:internal/modules/cjs/loader:1019:12)
+    at Module.require (node:internal/modules/cjs/loader:1231:19)
+    at require (node:internal/modules/helpers:177:18)
+
+Node.js v18.20.5
+
+> fit-rapido-api@0.1.0 start:prod
+> node dist/main
+
+⚠️  Node.js 18 and below are deprecated and will no longer be supported in future versions of @supabase/supabase-js. Please upgrade to Node.js 20 or later. For more information, visit: https://github.com/orgs/supabase/discussions/37217
+/app/node_modules/@nestjs/typeorm/dist/common/typeorm.utils.js:123
+const generateString = () => crypto.randomUUID();
+                                    ^
+
+ReferenceError: crypto is not defined
+    at generateString (/app/node_modules/@nestjs/typeorm/dist/common/typeorm.utils.js:123:37)
+    at TypeOrmCoreModule.forRootAsync (/app/node_modules/@nestjs/typeorm/dist/typeorm-core.module.js:86:62)
+    at TypeOrmModule.forRootAsync (/app/node_modules/@nestjs/typeorm/dist/typeorm.module.js:35:63)
+    at Object.<anonymous> (/app/dist/app.module.js:38:37)
+    at Module._compile (node:internal/modules/cjs/loader:1364:14)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1422:10)
+    at Module.load (node:internal/modules/cjs/loader:1203:32)
+    at Module._load (node:internal/modules/cjs/loader:1019:12)
+    at Module.require (node:internal/modules/cjs/loader:1231:19)
+    at require (node:internal/modules/helpers:177:18)
+
+Node.js v18.20.5
+
+> fit-rapido-api@0.1.0 start:prod
+> node dist/main
+
+⚠️  Node.js 18 and below are deprecated and will no longer be supported in future versions of @supabase/supabase-js. Please upgrade to Node.js 20 or later. For more information, visit: https://github.com/orgs/supabase/discussions/37217
+/app/node_modules/@nestjs/typeorm/dist/common/typeorm.utils.js:123
+const generateString = () => crypto.randomUUID();
+                                    ^
+
+ReferenceError: crypto is not defined
+    at generateString (/app/node_modules/@nestjs/typeorm/dist/common/typeorm.utils.js:123:37)
+    at TypeOrmCoreModule.forRootAsync (/app/node_modules/@nestjs/typeorm/dist/typeorm-core.module.js:86:62)
+    at TypeOrmModule.forRootAsync (/app/node_modules/@nestjs/typeorm/dist/typeorm.module.js:35:63)
+    at Object.<anonymous> (/app/dist/app.module.js:38:37)
+    at Module._compile (node:internal/modules/cjs/loader:1364:14)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1422:10)
+    at Module.load (node:internal/modules/cjs/loader:1203:32)
+    at Module._load (node:internal/modules/cjs/loader:1019:12)
+    at Module.require (node:internal/modules/cjs/loader:1231:19)
+    at require (node:internal/modules/helpers:177:18)
+
+Node.js v18.20.5
+
+> fit-rapido-api@0.1.0 start:prod
+> node dist/main
+
+⚠️  Node.js 18 and below are deprecated and will no longer be supported in future versions of @supabase/supabase-js. Please upgrade to Node.js 20 or later. For more information, visit: https://github.com/orgs/supabase/discussions/37217
+/app/node_modules/@nestjs/typeorm/dist/common/typeorm.utils.js:123
+const generateString = () => crypto.randomUUID();
+                                    ^
+
+ReferenceError: crypto is not defined
+    at generateString (/app/node_modules/@nestjs/typeorm/dist/common/typeorm.utils.js:123:37)
+    at TypeOrmCoreModule.forRootAsync (/app/node_modules/@nestjs/typeorm/dist/typeorm-core.module.js:86:62)
+    at TypeOrmModule.forRootAsync (/app/node_modules/@nestjs/typeorm/dist/typeorm.module.js:35:63)
+    at Object.<anonymous> (/app/dist/app.module.js:38:37)
+    at Module._compile (node:internal/modules/cjs/loader:1364:14)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1422:10)
+    at Module.load (node:internal/modules/cjs/loader:1203:32)
+    at Module._load (node:internal/modules/cjs/loader:1019:12)
+    at Module.require (node:internal/modules/cjs/loader:1231:19)
+    at require (node:internal/modules/helpers:177:18)
+
+Node.js v18.20.5

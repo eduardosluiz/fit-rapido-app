@@ -2,6 +2,9 @@
   "name": "fit-rapido-monorepo",
   "version": "1.0.0",
   "private": true,
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
     "build": "if pwd | grep -q 'api.daipohlmann'; then npm run build:api; else npm run build:admin; fi",
     "build:admin": "cd admin && npm install && npm run build",
