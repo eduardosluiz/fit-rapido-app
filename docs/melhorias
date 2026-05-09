@@ -1,85 +1,20 @@
-‎docs/melhorias‎
-+44
--4
-Lines changed: 44 additions & 4 deletions
-Original file line number	Diff line number	Diff line change
-@@ -1,21 +1,61 @@
-‎api/src/main.ts‎
-+1
--1
-Lines changed: 1 addition & 1 deletion
-Original file line number	Diff line number	Diff line change
-@@ -22,7 +22,7 @@ async function bootstrap() {
-  app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
-  app.enableCors({
-    origin: process.env.ALLOWED_ORIGINS?.split(',') || true,
-    origin: true, // Permitir todas para teste inicial no Render
-    credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
-‎docs/melhorias‎
-+21
--24
-Lines changed: 21 additions & 24 deletions
-Original file line number	Diff line number	Diff line change
-@@ -1,26 +1,23 @@
-PS C:\Users\dude_\fit-rapido-app> node -e "const { Client } = require('pg'); const c = new
->>      Client('postgresql://postgres.occddouiyqvcdhtxpbej:Fitrapido248622@aws-0-sa-east-1.pooler.supabase.com:5432/postgres'); c.connect().then(() => {
->>      console.log('✅ CONECTOU!'); process.exit(); }).catch(e => { console.error('❌ ERRO:', e.message); process.exit(); })"
-node:internal/modules/cjs/loader:1228
-  throw err;
-  ^
-May 9, 2026 at 12:39 AM
-failed
-21276b0
-Limpeza código
-
-Error: Cannot find module 'pg'
-Require stack:
-- C:\Users\dude_\fit-rapido-app\[eval]
-    at Function._resolveFilename (node:internal/modules/cjs/loader:1225:15)
-    at Function._load (node:internal/modules/cjs/loader:1055:27)
-    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
-    at wrapModuleLoad (node:internal/modules/cjs/loader:220:24)
-    at Module.require (node:internal/modules/cjs/loader:1311:12)
-    at require (node:internal/modules/helpers:136:16)
-    at [eval]:1:20
-    at runScriptInThisContext (node:internal/vm:209:10)
-    at node:internal/process/execution:449:12
-    at [eval]-wrapper:6:24 {
-  code: 'MODULE_NOT_FOUND',
-  requireStack: [ 'C:\\Users\\dude_\\fit-rapido-app\\[eval]' ]
-}
-Rollback
-Exited with status 1 while building your code.
-Read our docs for common ways to troubleshoot your deploy.
-
-Node.js v22.14.0
-PS C:\Users\dude_\fit-rapido-app> 
-All logs
-Search
-Search
-May 9, 12:38 AM - 12:40 AM
-GMT-3
 ==> Cloning from https://github.com/eduardosluiz/fit-rapido-app
-==> Checking out commit 21276b001be237c6667ff5dbd3c7fbae45e68763 in branch main
+==> Checking out commit 7b589ef0128f2993f2cac4459bc695de7da2e4b1 in branch main
 ==> Using Node.js version 24.14.1 (default)
-‎package.json‎
-+3
--3
-Lines changed: 3 additions & 3 deletions
-Original file line number	Diff line number	Diff line change
-@@ -6,10 +6,10 @@
-    "node": ">=20"
-  },
-  "scripts": {
-    "build": "if pwd | grep -q 'api.daipohlmann'; then npm run build:api; else npm run build:admin; fi",
-    "build": "npm run build:api",
-    "build:admin": "cd admin && npm install && npm run build",
-    "build:api": "cd api && npm install --include=dev && npx nest build",
-    "start": "if [ \"$APP_TYPE\" = \"API\" ]; then node api/dist/main.js; else cd admin && npx next start; fi",
-    "build:api": "cd api && npm install && npm run build",
-    "start": "cd api && npm run start:prod",
-    "install:admin": "cd admin && npm install",
-    "install:api": "cd api && npm install"
-  },
+==> Docs on specifying a Node.js version: https://render.com/docs/node-version
+==> Running build command 'npm install && npm run build'...
+added 920 packages, and audited 921 packages in 15s
+105 packages are looking for funding
+  run `npm fund` for details
+31 vulnerabilities (1 low, 14 moderate, 16 high)
+To address issues that do not require attention, run:
+  npm audit fix
+Some issues need review, and may require choosing
+a different dependency.
+Run `npm audit` for details.
+> fit-rapido-api@0.1.0 build
+> npx nest build
+npm error could not determine executable to run
+npm error A complete log of this run can be found in: /opt/render/.cache/_logs/2026-05-09T04_10_59_649Z-debug-0.log
+==> Build failed 😞
+==> Common ways to troubleshoot your deploy: https://render.com/docs/troubleshooting-deploys
