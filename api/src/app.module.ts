@@ -22,35 +22,27 @@ import { IAModule } from './ia/ia.module';
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: process.env.NODE_ENV === 'production' ? [] : '.env',
+      cache: true,
+    }),
+    // Configuração do TypeORM com PostgreSQL
+    TypeOrmModule.forRootAsync({
+      useFactory: () => {
+        const url = process.env.DATABASE_URL || '';
+        const maskedUrl = url.replace(/:([^:@]+)@/, ':****@');
+        console.log(`🔌 Tentando conectar ao banco: ${maskedUrl}`);
+        console.log(`🌍 Ambiente: ${process.env.NODE_ENV}`);
+
+        return {
+          type: 'postgres',
+          url: process.env.DATABASE_URL,
+          autoLoadEntities: true,
+          synchronize: false,
+          logging: process.env.NODE_ENV === 'development',
+          ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
+        };
+      },
     }),
     // Rate Limiting - Proteção contra DDoS e abuso
-    ThrottlerModule.forRoot([
-      {
-        name: 'short',
-        ttl: 1000, // 1 segundo
-        limit: 10, // 10 requisições por segundo
-      },
-      {
-        name: 'medium',
-        ttl: 60000, // 1 minuto
-        limit: 100, // 100 requisições por minuto
-      },
-      {
-        name: 'long',
-        ttl: 900000, // 15 minutos
-        limit: 1000, // 1000 requisições por 15 minutos
-      },
-    ]),
-    // Configuração do TypeORM com PostgreSQL
-    TypeOrmModule.forRoot({
-      type: 'postgres',
-      url: process.env.DATABASE_URL,
-      autoLoadEntities: true,
-      synchronize: false, // Desabilitado temporariamente - usar migrations
-      migrations: ['dist/migrations/*.js'],
-      migrationsRun: false, // Executar migrations manualmente
-      logging: process.env.NODE_ENV === 'development',
-    }),
     // Módulos da aplicação
     AuthModule,
     ReceitasModule,

@@ -1,4 +1,16 @@
-[Nest] 19  - 05/09/2026, 12:54:02 AM   ERROR [TypeOrmModule] Unable to connect to the database. Retrying (6)...
+⚠️  Node.js 18 and below are deprecated and will no longer be supported in future versions of @supabase/supabase-js. Please upgrade to Node.js 20 or later. For more information, visit: https://github.com/orgs/supabase/discussions/37217
+[Nest] 21  - 05/09/2026, 1:01:18 AM     LOG [NestFactory] Starting Nest application...
+[Nest] 21  - 05/09/2026, 1:01:18 AM     LOG [InstanceLoader] TypeOrmModule dependencies initialized +84ms
+[Nest] 21  - 05/09/2026, 1:01:18 AM     LOG [InstanceLoader] PassportModule dependencies initialized +0ms
+[Nest] 21  - 05/09/2026, 1:01:18 AM     LOG [InstanceLoader] ConfigHostModule dependencies initialized +1ms
+[Nest] 21  - 05/09/2026, 1:01:18 AM     LOG [InstanceLoader] ThrottlerModule dependencies initialized +0ms
+[Nest] 21  - 05/09/2026, 1:01:18 AM     LOG [InstanceLoader] ConfigModule dependencies initialized +4ms
+[Nest] 21  - 05/09/2026, 1:01:18 AM     LOG [InstanceLoader] ConfigModule dependencies initialized +1ms
+[Nest] 21  - 05/09/2026, 1:01:18 AM     LOG [InstanceLoader] AppModule dependencies initialized +1ms
+[Nest] 21  - 05/09/2026, 1:01:18 AM     LOG [InstanceLoader] JwtModule dependencies initialized +2ms
+[Nest] 21  - 05/09/2026, 1:01:18 AM     LOG [InstanceLoader] UploadModule dependencies initialized +6ms
+[Nest] 21  - 05/09/2026, 1:01:18 AM     LOG [InstanceLoader] IAModule dependencies initialized +0ms
+[Nest] 21  - 05/09/2026, 1:01:18 AM   ERROR [TypeOrmModule] Unable to connect to the database. Retrying (1)...
 error: Tenant or user not found
     at Parser.parseErrorMessage (/app/node_modules/pg-protocol/dist/parser.js:285:98)
     at Parser.handlePacket (/app/node_modules/pg-protocol/dist/parser.js:122:29)
@@ -9,7 +21,7 @@ error: Tenant or user not found
     at readableAddChunk (node:internal/streams/readable:341:9)
     at Readable.push (node:internal/streams/readable:278:10)
     at TCP.onStreamRead (node:internal/stream_base_commons:190:23)
-[Nest] 19  - 05/09/2026, 12:54:05 AM   ERROR [TypeOrmModule] Unable to connect to the database. Retrying (7)...
+[Nest] 21  - 05/09/2026, 1:01:22 AM   ERROR [TypeOrmModule] Unable to connect to the database. Retrying (2)...
 error: Tenant or user not found
     at Parser.parseErrorMessage (/app/node_modules/pg-protocol/dist/parser.js:285:98)
     at Parser.handlePacket (/app/node_modules/pg-protocol/dist/parser.js:122:29)
@@ -20,7 +32,7 @@ error: Tenant or user not found
     at readableAddChunk (node:internal/streams/readable:341:9)
     at Readable.push (node:internal/streams/readable:278:10)
     at TCP.onStreamRead (node:internal/stream_base_commons:190:23)
-[Nest] 19  - 05/09/2026, 12:54:08 AM   ERROR [TypeOrmModule] Unable to connect to the database. Retrying (8)...
+[Nest] 21  - 05/09/2026, 1:01:25 AM   ERROR [TypeOrmModule] Unable to connect to the database. Retrying (3)...
 error: Tenant or user not found
     at Parser.parseErrorMessage (/app/node_modules/pg-protocol/dist/parser.js:285:98)
     at Parser.handlePacket (/app/node_modules/pg-protocol/dist/parser.js:122:29)
@@ -31,7 +43,7 @@ error: Tenant or user not found
     at readableAddChunk (node:internal/streams/readable:341:9)
     at Readable.push (node:internal/streams/readable:278:10)
     at TCP.onStreamRead (node:internal/stream_base_commons:190:23)
-[Nest] 19  - 05/09/2026, 12:54:12 AM   ERROR [TypeOrmModule] Unable to connect to the database. Retrying (9)...
+[Nest] 21  - 05/09/2026, 1:01:28 AM   ERROR [TypeOrmModule] Unable to connect to the database. Retrying (4)...
 error: Tenant or user not found
     at Parser.parseErrorMessage (/app/node_modules/pg-protocol/dist/parser.js:285:98)
     at Parser.handlePacket (/app/node_modules/pg-protocol/dist/parser.js:122:29)
@@ -42,7 +54,62 @@ error: Tenant or user not found
     at readableAddChunk (node:internal/streams/readable:341:9)
     at Readable.push (node:internal/streams/readable:278:10)
     at TCP.onStreamRead (node:internal/stream_base_commons:190:23)
-[Nest] 19  - 05/09/2026, 12:54:12 AM   ERROR [ExceptionHandler] error: Tenant or user not found
+[Nest] 21  - 05/09/2026, 1:01:31 AM   ERROR [TypeOrmModule] Unable to connect to the database. Retrying (5)...
+error: Tenant or user not found
+    at Parser.parseErrorMessage (/app/node_modules/pg-protocol/dist/parser.js:285:98)
+    at Parser.handlePacket (/app/node_modules/pg-protocol/dist/parser.js:122:29)
+    at Parser.parse (/app/node_modules/pg-protocol/dist/parser.js:35:38)
+    at Socket.<anonymous> (/app/node_modules/pg-protocol/dist/index.js:11:42)
+    at Socket.emit (node:events:517:28)
+    at addChunk (node:internal/streams/readable:368:12)
+    at readableAddChunk (node:internal/streams/readable:341:9)
+    at Readable.push (node:internal/streams/readable:278:10)
+    at TCP.onStreamRead (node:internal/stream_base_commons:190:23)
+[Nest] 21  - 05/09/2026, 1:01:35 AM   ERROR [TypeOrmModule] Unable to connect to the database. Retrying (6)...
+error: Tenant or user not found
+    at Parser.parseErrorMessage (/app/node_modules/pg-protocol/dist/parser.js:285:98)
+    at Parser.handlePacket (/app/node_modules/pg-protocol/dist/parser.js:122:29)
+    at Parser.parse (/app/node_modules/pg-protocol/dist/parser.js:35:38)
+    at Socket.<anonymous> (/app/node_modules/pg-protocol/dist/index.js:11:42)
+    at Socket.emit (node:events:517:28)
+    at addChunk (node:internal/streams/readable:368:12)
+    at readableAddChunk (node:internal/streams/readable:341:9)
+    at Readable.push (node:internal/streams/readable:278:10)
+    at TCP.onStreamRead (node:internal/stream_base_commons:190:23)
+[Nest] 21  - 05/09/2026, 1:01:38 AM   ERROR [TypeOrmModule] Unable to connect to the database. Retrying (7)...
+error: Tenant or user not found
+    at Parser.parseErrorMessage (/app/node_modules/pg-protocol/dist/parser.js:285:98)
+    at Parser.handlePacket (/app/node_modules/pg-protocol/dist/parser.js:122:29)
+    at Parser.parse (/app/node_modules/pg-protocol/dist/parser.js:35:38)
+    at Socket.<anonymous> (/app/node_modules/pg-protocol/dist/index.js:11:42)
+    at Socket.emit (node:events:517:28)
+    at addChunk (node:internal/streams/readable:368:12)
+    at readableAddChunk (node:internal/streams/readable:341:9)
+    at Readable.push (node:internal/streams/readable:278:10)
+    at TCP.onStreamRead (node:internal/stream_base_commons:190:23)
+[Nest] 21  - 05/09/2026, 1:01:41 AM   ERROR [TypeOrmModule] Unable to connect to the database. Retrying (8)...
+error: Tenant or user not found
+    at Parser.parseErrorMessage (/app/node_modules/pg-protocol/dist/parser.js:285:98)
+    at Parser.handlePacket (/app/node_modules/pg-protocol/dist/parser.js:122:29)
+    at Parser.parse (/app/node_modules/pg-protocol/dist/parser.js:35:38)
+    at Socket.<anonymous> (/app/node_modules/pg-protocol/dist/index.js:11:42)
+    at Socket.emit (node:events:517:28)
+    at addChunk (node:internal/streams/readable:368:12)
+    at readableAddChunk (node:internal/streams/readable:341:9)
+    at Readable.push (node:internal/streams/readable:278:10)
+    at TCP.onStreamRead (node:internal/stream_base_commons:190:23)
+[Nest] 21  - 05/09/2026, 1:01:44 AM   ERROR [TypeOrmModule] Unable to connect to the database. Retrying (9)...
+error: Tenant or user not found
+    at Parser.parseErrorMessage (/app/node_modules/pg-protocol/dist/parser.js:285:98)
+    at Parser.handlePacket (/app/node_modules/pg-protocol/dist/parser.js:122:29)
+    at Parser.parse (/app/node_modules/pg-protocol/dist/parser.js:35:38)
+    at Socket.<anonymous> (/app/node_modules/pg-protocol/dist/index.js:11:42)
+    at Socket.emit (node:events:517:28)
+    at addChunk (node:internal/streams/readable:368:12)
+    at readableAddChunk (node:internal/streams/readable:341:9)
+    at Readable.push (node:internal/streams/readable:278:10)
+    at TCP.onStreamRead (node:internal/stream_base_commons:190:23)
+[Nest] 21  - 05/09/2026, 1:01:44 AM   ERROR [ExceptionHandler] error: Tenant or user not found
     at Parser.parseErrorMessage (/app/node_modules/pg-protocol/dist/parser.js:285:98)
     at Parser.handlePacket (/app/node_modules/pg-protocol/dist/parser.js:122:29)
     at Parser.parse (/app/node_modules/pg-protocol/dist/parser.js:35:38)
@@ -70,42 +137,3 @@ error: Tenant or user not found
   line: undefined,
   routine: undefined
 }
-
-> fit-rapido-api@0.1.0 start:prod
-> node dist/main
-
-⚠️  Node.js 18 and below are deprecated and will no longer be supported in future versions of @supabase/supabase-js. Please upgrade to Node.js 20 or later. For more information, visit: https://github.com/orgs/supabase/discussions/37217
-[Nest] 20  - 05/09/2026, 12:54:21 AM     LOG [NestFactory] Starting Nest application...
-[Nest] 20  - 05/09/2026, 12:54:21 AM     LOG [InstanceLoader] TypeOrmModule dependencies initialized +92ms
-[Nest] 20  - 05/09/2026, 12:54:21 AM     LOG [InstanceLoader] PassportModule dependencies initialized +0ms
-[Nest] 20  - 05/09/2026, 12:54:21 AM     LOG [InstanceLoader] ConfigHostModule dependencies initialized +0ms
-[Nest] 20  - 05/09/2026, 12:54:21 AM     LOG [InstanceLoader] ThrottlerModule dependencies initialized +0ms
-[Nest] 20  - 05/09/2026, 12:54:21 AM     LOG [InstanceLoader] ConfigModule dependencies initialized +7ms
-[Nest] 20  - 05/09/2026, 12:54:21 AM     LOG [InstanceLoader] ConfigModule dependencies initialized +1ms
-[Nest] 20  - 05/09/2026, 12:54:21 AM     LOG [InstanceLoader] AppModule dependencies initialized +0ms
-[Nest] 20  - 05/09/2026, 12:54:21 AM     LOG [InstanceLoader] JwtModule dependencies initialized +3ms
-[Nest] 20  - 05/09/2026, 12:54:21 AM     LOG [InstanceLoader] UploadModule dependencies initialized +2ms
-[Nest] 20  - 05/09/2026, 12:54:21 AM     LOG [InstanceLoader] IAModule dependencies initialized +0ms
-[Nest] 20  - 05/09/2026, 12:54:21 AM   ERROR [TypeOrmModule] Unable to connect to the database. Retrying (1)...
-error: Tenant or user not found
-    at Parser.parseErrorMessage (/app/node_modules/pg-protocol/dist/parser.js:285:98)
-    at Parser.handlePacket (/app/node_modules/pg-protocol/dist/parser.js:122:29)
-    at Parser.parse (/app/node_modules/pg-protocol/dist/parser.js:35:38)
-    at Socket.<anonymous> (/app/node_modules/pg-protocol/dist/index.js:11:42)
-    at Socket.emit (node:events:517:28)
-    at addChunk (node:internal/streams/readable:368:12)
-    at readableAddChunk (node:internal/streams/readable:341:9)
-    at Readable.push (node:internal/streams/readable:278:10)
-    at TCP.onStreamRead (node:internal/stream_base_commons:190:23)
-[Nest] 20  - 05/09/2026, 12:54:25 AM   ERROR [TypeOrmModule] Unable to connect to the database. Retrying (2)...
-error: Tenant or user not found
-    at Parser.parseErrorMessage (/app/node_modules/pg-protocol/dist/parser.js:285:98)
-    at Parser.handlePacket (/app/node_modules/pg-protocol/dist/parser.js:122:29)
-    at Parser.parse (/app/node_modules/pg-protocol/dist/parser.js:35:38)
-    at Socket.<anonymous> (/app/node_modules/pg-protocol/dist/index.js:11:42)
-    at Socket.emit (node:events:517:28)
-    at addChunk (node:internal/streams/readable:368:12)
-    at readableAddChunk (node:internal/streams/readable:341:9)
-    at Readable.push (node:internal/streams/readable:278:10)
-    at TCP.onStreamRead (node:internal/stream_base_commons:190:23)
-[Nest] 20  - 05/09/2026, 12:54:28 AM   ERROR [TypeOrmModule] Unable to connect
