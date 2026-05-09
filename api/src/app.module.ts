@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, Logger } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
@@ -16,18 +16,37 @@ import { IAModule } from './ia/ia.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({
-      isGlobal: true,
-      cache: true,
-    }),
+    ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRootAsync({
-      useFactory: () => ({
-        type: 'postgres',
-        url: process.env.DATABASE_URL,
-        autoLoadEntities: true,
-        synchronize: false,
-        ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
-      }),
+      useFactory: () => {
+        const isProd = process.env.NODE_ENV === 'production';
+        
+        // DADOS TÉCNICOS EXTRAÍDOS DO PROJETO
+        const projectRef = 'occddouiyqvcdhtxpbej';
+        const pass = 'Fitrapido248622';
+        
+        if (isProd) {
+          console.log('🚀 CONFIGURANDO BANCO DE PRODUÇÃO (MODO DIRETO)');
+          return {
+            type: 'postgres',
+            host: `db.${projectRef}.supabase.co`,
+            port: 5432,
+            username: 'postgres',
+            password: pass,
+            database: 'postgres',
+            autoLoadEntities: true,
+            synchronize: false,
+            ssl: { rejectUnauthorized: false },
+          };
+        }
+
+        return {
+          type: 'postgres',
+          url: process.env.DATABASE_URL,
+          autoLoadEntities: true,
+          synchronize: false,
+        };
+      },
     }),
     AuthModule,
     ReceitasModule,
