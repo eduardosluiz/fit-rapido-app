@@ -6,10 +6,10 @@
     "node": ">=20"
   },
   "scripts": {
-    "build": "if pwd | grep -q 'api.daipohlmann'; then npm run build:api; else npm run build:admin; fi",
+    "build": "npm run build:api",
     "build:admin": "cd admin && npm install && npm run build",
-    "build:api": "cd api && npm install --include=dev && npx nest build",
-    "start": "if [ \"$APP_TYPE\" = \"API\" ]; then node api/dist/main.js; else cd admin && npx next start; fi",
+    "build:api": "cd api && npm install && npm run build",
+    "start": "cd api && npm run start:prod",
     "install:admin": "cd admin && npm install",
     "install:api": "cd api && npm install"
   },
