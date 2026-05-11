@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { cn } from '@/lib/utils';
+import { ImageCropper } from './ImageCropper';
 
 interface FileUploadProps {
   type: 'imagem' | 'video';
@@ -14,14 +15,17 @@ interface FileUploadProps {
   label?: string;
   accept?: string;
   error?: string;
-  hideUrlInput?: boolean; // Nova prop para ocultar o campo de URL manual
-  compact?: boolean; // Modo compacto (apenas botão, sem label e URL input)
+  hideUrlInput?: boolean; 
+  compact?: boolean; 
+  aspect?: number;
 }
 
-export function FileUpload({ type, value, onChange, label, accept, error, hideUrlInput = false, compact = false }: FileUploadProps) {
+export function FileUpload({ type, value, onChange, label, accept, error, hideUrlInput = false, compact = false, aspect = 4 / 3 }: FileUploadProps) {
   const [uploading, setUploading] = useState(false);
   const [uploadError, setUploadError] = useState<string | null>(null);
   const [preview, setPreview] = useState<string | null>(value || null);
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [originalFile, setOriginalFile] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -32,31 +36,45 @@ export function FileUpload({ type, value, onChange, label, accept, error, hideUr
     const file = e.target.files?.[0];
     if (!file) return;
 
+    if (type === 'imagem') {
+      setOriginalFile(file);
+      const reader = new FileReader();
+      reader.onload = () => {
+        setSelectedImage(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    } else {
+      setUploadError(null);
+      setUploading(true);
+      try {
+        const uploadResponse = await uploadVideo(file);
+        setPreview(uploadResponse.url);
+        onChange(uploadResponse.url);
+      } catch (err: any) {
+        setUploadError(err.message || 'Erro ao fazer upload');
+      } finally {
+        setUploading(false);
+      }
+    }
+  };
+
+  const onCropComplete = async (croppedBlob: Blob) => {
+    setSelectedImage(null);
     setUploadError(null);
     setUploading(true);
 
     try {
-      let uploadResponse;
-      if (type === 'imagem') {
-        uploadResponse = await uploadImagem(file);
-        const reader = new FileReader();
-        reader.onloadend = () => {
-          setPreview(reader.result as string);
-        };
-        reader.readAsDataURL(file);
-      } else {
-        uploadResponse = await uploadVideo(file);
-        setPreview(uploadResponse.url);
-      }
-
+      const croppedFile = new File([croppedBlob], originalFile?.name || 'image.jpg', { type: 'image/jpeg' });
+      const uploadResponse = await uploadImagem(croppedFile);
+      setPreview(uploadResponse.url);
       onChange(uploadResponse.url);
     } catch (err: any) {
       setUploadError(err.message || 'Erro ao fazer upload');
+    } finally {
+      setUploading(false);
       if (fileInputRef.current) {
         fileInputRef.current.value = '';
       }
-    } finally {
-      setUploading(false);
     }
   };
 
@@ -140,6 +158,14 @@ export function FileUpload({ type, value, onChange, label, accept, error, hideUr
 
   return (
     <div className="space-y-3">
+      {selectedImage && (
+        <ImageCropper
+          image={selectedImage}
+          onCropComplete={onCropComplete}
+          onCancel={() => setSelectedImage(null)}
+          aspect={aspect}
+        />
+      )}
       {label && (
         <Label className="text-sm font-semibold text-foreground">
           {label}

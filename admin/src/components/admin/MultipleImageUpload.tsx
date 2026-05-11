@@ -5,23 +5,29 @@ import { uploadImagem } from '@/lib/upload';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { cn } from '@/lib/utils';
+import { ImageCropper } from './ImageCropper';
 
 interface MultipleImageUploadProps {
   images: string[];
   onChange: (images: string[]) => void;
   label?: string;
   maxImages?: number;
+  aspect?: number;
 }
 
 export function MultipleImageUpload({ 
   images, 
   onChange, 
   label = 'Imagens da Receita',
-  maxImages = 10 
+  maxImages = 10,
+  aspect = 4 / 3
 }: MultipleImageUploadProps) {
   const [uploading, setUploading] = useState(false);
   const [uploadError, setUploadError] = useState<string | null>(null);
   const [displayImages, setDisplayImages] = useState<string[]>(images || []);
+  const [pendingFiles, setPendingFiles] = useState<File[]>([]);
+  const [currentCropImage, setCurrentCropImage] = useState<string | null>(null);
+  const [currentFileIndex, setCurrentFileIndex] = useState(0);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Sincronizar imagens quando a prop mudar
@@ -43,15 +49,39 @@ export function MultipleImageUpload({
     }
 
     setUploadError(null);
+    setPendingFiles(files);
+    setCurrentFileIndex(0);
+    startCropping(files[0]);
+  };
+
+  const startCropping = (file: File) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      setCurrentCropImage(reader.result as string);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const onCropComplete = async (croppedBlob: Blob) => {
+    const currentFile = pendingFiles[currentFileIndex];
+    setCurrentCropImage(null);
     setUploading(true);
 
     try {
-      const uploadPromises = files.map(file => uploadImagem(file));
-      const uploadResults = await Promise.all(uploadPromises);
-      const newUrls = uploadResults.map(result => result.url);
-      const updatedImages = [...displayImages, ...newUrls];
+      const croppedFile = new File([croppedBlob], currentFile.name, { type: 'image/jpeg' });
+      const uploadResponse = await uploadImagem(croppedFile);
+      const updatedImages = [...displayImages, uploadResponse.url];
       setDisplayImages(updatedImages);
       onChange(updatedImages);
+
+      // Check if there are more images to crop
+      if (currentFileIndex + 1 < pendingFiles.length) {
+        const nextIndex = currentFileIndex + 1;
+        setCurrentFileIndex(nextIndex);
+        startCropping(pendingFiles[nextIndex]);
+      } else {
+        setPendingFiles([]);
+      }
     } catch (err: any) {
       setUploadError(err.message || 'Erro ao fazer upload');
     } finally {
@@ -59,6 +89,14 @@ export function MultipleImageUpload({
       if (fileInputRef.current) {
         fileInputRef.current.value = '';
       }
+    }
+  };
+
+  const handleCancelCrop = () => {
+    setCurrentCropImage(null);
+    setPendingFiles([]);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
     }
   };
 
@@ -80,6 +118,14 @@ export function MultipleImageUpload({
 
   return (
     <div className="space-y-3">
+      {currentCropImage && (
+        <ImageCropper
+          image={currentCropImage}
+          onCropComplete={onCropComplete}
+          onCancel={handleCancelCrop}
+          aspect={aspect}
+        />
+      )}
       {label && (
         <Label className="text-sm font-semibold text-foreground">
           {label}

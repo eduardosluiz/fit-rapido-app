@@ -1,0 +1,14 @@
+page-1dfc3ee9d4eae806.js:1  POST https://api.daipohlmann.com.br/auth/login net::ERR_SSL_VERSION_OR_CIPHER_MISMATCH
+request @ page-1dfc3ee9d4eae806.js:1
+login @ page-1dfc3ee9d4eae806.js:1
+g @ page-1dfc3ee9d4eae806.js:1
+i8 @ 4bd1b696-f785427dddbba9fb.js:1
+(anônimo) @ 4bd1b696-f785427dddbba9fb.js:1
+nz @ 4bd1b696-f785427dddbba9fb.js:1
+sn @ 4bd1b696-f785427dddbba9fb.js:1
+cc @ 4bd1b696-f785427dddbba9fb.js:1
+ci @ 4bd1b696-f785427dddbba9fb.js:1Entenda o erro
+layout-ab2d981cd8ef31f6.js:1 ❌ Erro no login: Error: Não foi possível conectar ao servidor. Verifique se a API está rodando em https://api.daipohlmann.com.br
+    at a.request (page-1dfc3ee9d4eae806.js:1:1489)
+    at async a.login (page-1dfc3ee9d4eae806.js:1:1719)
+    at async g (page-1dfc3ee9d4eae806.js:1:8996)

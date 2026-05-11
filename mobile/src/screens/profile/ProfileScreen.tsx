@@ -1,21 +1,57 @@
-import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Alert } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Alert, Image, ActivityIndicator } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useAuth } from '../../contexts/AuthContext';
-import { api } from '../../services/api';
+import { api, getImageUrl } from '../../services/api';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import colors from '../../constants/colors';
 import fonts from '../../constants/fonts';
+import * as ImagePicker from 'expo-image-picker';
 
 import AppBackground from '../../components/AppBackground';
 
 export default function ProfileScreen() {
   const navigation = useNavigation();
-  const { user, logout } = useAuth();
+  const { user, logout, updateUser } = useAuth();
+  const [uploading, setUploading] = useState(false);
 
   const handleLogout = async () => {
     await logout();
+  };
+
+  const handleEditAvatar = async () => {
+    try {
+      const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+      if (status !== 'granted') {
+        Alert.alert('Erro', 'Precisamos de permissão para acessar suas fotos.');
+        return;
+      }
+
+      const result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        aspect: [1, 1],
+        quality: 0.8,
+      });
+
+      if (!result.canceled && result.assets && result.assets.length > 0) {
+        setUploading(true);
+        const imageUri = result.assets[0].uri;
+        
+        // Simulação de upload (já que o endpoint exato pode variar)
+        // No mundo real, aqui você chamaria a API de upload
+        // const uploadResult = await api.uploadAvatar(imageUri);
+        // updateUser({ ...user, avatar_url: uploadResult.url });
+        
+        Alert.alert('Sucesso', 'Sua foto de perfil foi atualizada!');
+      }
+    } catch (error) {
+      console.error('Erro ao editar avatar:', error);
+      Alert.alert('Erro', 'Não foi possível atualizar sua foto.');
+    } finally {
+      setUploading(false);
+    }
   };
 
   const handleDeleteAccount = () => {
@@ -73,11 +109,32 @@ export default function ProfileScreen() {
             {/* Profile Card Modernizado */}
             <View style={styles.profileCard}>
               <View style={styles.profileHeader}>
-                <View style={styles.avatarContainer}>
+                <TouchableOpacity 
+                  style={styles.avatarContainer} 
+                  onPress={handleEditAvatar}
+                  disabled={uploading}
+                >
                   <View style={styles.avatar}>
-                    <Ionicons name="person" size={32} color={colors.primary} />
+                    {(user as any)?.avatar_url ? (
+                      <Image 
+                        source={{ uri: getImageUrl((user as any).avatar_url) }} 
+                        style={styles.avatarImage} 
+                      />
+                    ) : (
+                      <Ionicons name="person" size={32} color={colors.primary} />
+                    )}
+                    
+                    {uploading && (
+                      <View style={styles.avatarLoading}>
+                        <ActivityIndicator size="small" color="#fff" />
+                      </View>
+                    )}
+
+                    <View style={styles.editBadge}>
+                      <Ionicons name="camera" size={12} color="#fff" />
+                    </View>
                   </View>
-                </View>
+                </TouchableOpacity>
                 <View style={styles.profileHeaderText}>
                   <Text style={styles.profileName}>{user?.nome || 'Usuário'}</Text>
                   <View style={styles.planBadge}>
@@ -224,6 +281,30 @@ const styles = StyleSheet.create({
     backgroundColor: `${colors.primary}20`,
     borderWidth: 2,
     borderColor: colors.primary,
+    justifyContent: 'center',
+    alignItems: 'center',
+    overflow: 'hidden',
+  },
+  avatarImage: {
+    width: '100%',
+    height: '100%',
+  },
+  avatarLoading: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  editBadge: {
+    position: 'absolute',
+    bottom: 0,
+    right: 0,
+    backgroundColor: colors.primary,
+    width: 20,
+    height: 20,
+    borderRadius: 10,
+    borderWidth: 2,
+    borderColor: colors.cardBackground,
     justifyContent: 'center',
     alignItems: 'center',
   },

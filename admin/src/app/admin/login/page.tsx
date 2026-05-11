@@ -6,12 +6,10 @@ import { api } from '@/lib/api';
 
 export default function Login() {
   const router = useRouter();
-  const [isLogin, setIsLogin] = useState(true);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [formData, setFormData] = useState({
     email: '',
-    nome: '',
     senha: '',
   });
 
@@ -21,11 +19,7 @@ export default function Login() {
     setError(null);
 
     try {
-      if (isLogin) {
-        await api.login(formData.email, formData.senha);
-      } else {
-        await api.register(formData.email, formData.nome, formData.senha);
-      }
+      await api.login(formData.email, formData.senha);
       
       const token = localStorage.getItem('auth_token');
       if (!token) {
@@ -73,7 +67,7 @@ export default function Login() {
               fontWeight: '500',
             }}
           >
-            {isLogin ? 'Bem-vindo de volta!' : 'Crie sua conta'}
+            Painel Administrativo
           </p>
         </div>
 
@@ -83,57 +77,10 @@ export default function Login() {
             backgroundColor: '#1a1a1a',
             border: '1px solid #333',
             borderRadius: '16px',
-            padding: '32px',
+            padding: '40px 32px',
             boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4)',
           }}
         >
-          {/* Tabs */}
-          <div 
-            style={{
-              display: 'flex',
-              gap: '8px',
-              marginBottom: '32px',
-              backgroundColor: '#0f0f0f',
-              padding: '4px',
-              borderRadius: '12px',
-            }}
-          >
-            <button
-              onClick={() => { setIsLogin(true); setError(null); }}
-              style={{
-                flex: 1,
-                padding: '12px 16px',
-                borderRadius: '8px',
-                fontSize: '15px',
-                fontWeight: '600',
-                border: 'none',
-                cursor: 'pointer',
-                transition: 'all 0.2s ease',
-                backgroundColor: isLogin ? '#c8921a' : 'transparent',
-                color: isLogin ? '#ffffff' : '#999',
-              }}
-            >
-              Login
-            </button>
-            <button
-              onClick={() => { setIsLogin(false); setError(null); }}
-              style={{
-                flex: 1,
-                padding: '12px 16px',
-                borderRadius: '8px',
-                fontSize: '15px',
-                fontWeight: '600',
-                border: 'none',
-                cursor: 'pointer',
-                transition: 'all 0.2s ease',
-                backgroundColor: !isLogin ? '#c8921a' : 'transparent',
-                color: !isLogin ? '#ffffff' : '#999',
-              }}
-            >
-              Cadastro
-            </button>
-          </div>
-
           {/* Error Message */}
           {error && (
             <div
@@ -155,36 +102,10 @@ export default function Login() {
           )}
 
           {/* Form */}
-          <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-            {!isLogin && (
-              <div>
-                <label style={{ display: 'block', color: '#ffffff', fontSize: '14px', fontWeight: '600', marginBottom: '8px' }}>
-                  Nome Completo *
-                </label>
-                <input
-                  type="text"
-                  required={!isLogin}
-                  value={formData.nome}
-                  onChange={(e) => setFormData({ ...formData, nome: e.target.value })}
-                  placeholder="Seu nome completo"
-                  style={{
-                    width: '100%',
-                    backgroundColor: '#0f0f0f',
-                    border: '1px solid #333',
-                    borderRadius: '8px',
-                    padding: '14px 16px',
-                    color: '#ffffff',
-                    fontSize: '16px',
-                    outline: 'none',
-                    boxSizing: 'border-box',
-                  }}
-                />
-              </div>
-            )}
-
+          <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
             <div>
               <label style={{ display: 'block', color: '#ffffff', fontSize: '14px', fontWeight: '600', marginBottom: '8px' }}>
-                Email *
+                Email de Acesso
               </label>
               <input
                 type="email"
@@ -208,7 +129,7 @@ export default function Login() {
 
             <div>
               <label style={{ display: 'block', color: '#ffffff', fontSize: '14px', fontWeight: '600', marginBottom: '8px' }}>
-                Senha *
+                Senha
               </label>
               <input
                 type="password"
@@ -216,7 +137,6 @@ export default function Login() {
                 value={formData.senha}
                 onChange={(e) => setFormData({ ...formData, senha: e.target.value })}
                 placeholder="••••••••"
-                minLength={6}
                 style={{
                   width: '100%',
                   backgroundColor: '#0f0f0f',
@@ -244,10 +164,11 @@ export default function Login() {
                 fontWeight: 'bold',
                 border: 'none',
                 cursor: loading ? 'not-allowed' : 'pointer',
-                marginTop: '8px',
+                marginTop: '12px',
+                transition: 'opacity 0.2s',
               }}
             >
-              {loading ? 'Processando...' : (isLogin ? 'Entrar' : 'Criar Conta')}
+              {loading ? 'Entrando...' : 'Acessar Painel'}
             </button>
           </form>
         </div>
