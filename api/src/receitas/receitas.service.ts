@@ -47,7 +47,6 @@ export class ReceitasService {
       }
     }
 
-    // Separar categoria_ids do DTO antes de criar a receita
     const { categoria_ids, ...receitaData } = createReceitaDto;
 
     // Normalizar campos de array (converter de string para array se necessário)
