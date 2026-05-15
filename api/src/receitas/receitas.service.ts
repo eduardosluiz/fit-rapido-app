@@ -207,194 +207,105 @@ export class ReceitasService {
 
     queryBuilder.orderBy('receita.created_at', 'DESC');
 
-    // Debug: verificar a query SQL gerada
-    const sql = queryBuilder.getSql();
-    const params = queryBuilder.getParameters();
-    console.log(`[DEBUG] SQL Query: ${sql}`);
-    console.log(`[DEBUG] SQL Parameters:`, params);
-    
     let receitas = await queryBuilder.getMany();
     
-    // Verificar quantas receitas existem no total no banco (sem filtros)
     const totalNoBanco = await this.receitaRepository.count({
       where: incluirInativas ? {} : { ativa: true },
     });
-    console.log(`[DEBUG] Total de receitas no banco (com filtro ativa=${!incluirInativas}): ${totalNoBanco}`);
     
-    // Se não retornou todas as receitas, buscar diretamente do repositório
-    // Isso garante que todas as receitas sejam retornadas, especialmente as PREMIUM
     if (receitas.length < totalNoBanco) {
-      console.log(`[DEBUG] ⚠️  Query retornou apenas ${receitas.length} de ${totalNoBanco} receitas, buscando diretamente do repositório...`);
-      // Buscar todas as receitas, respeitando o filtro de ativas
       const whereClause = incluirInativas ? {} : { ativa: true };
       const todasReceitas = await this.receitaRepository.find({
         where: whereClause,
         relations: ['categorias'],
         order: { created_at: 'DESC' },
       });
-      console.log(`[DEBUG] Busca direta retornou ${todasReceitas.length} receitas (incluirInativas=${incluirInativas})`);
-      console.log(`[DEBUG] Receitas PREMIUM na busca direta: ${todasReceitas.filter(r => r.is_premium === true).length}`);
-      console.log(`[DEBUG] Receitas FREE na busca direta: ${todasReceitas.filter(r => r.is_free === true).length}`);
       
-      // Aplicar filtros manualmente (exceto ativa, que já foi aplicado na query)
       let receitasFiltradas = todasReceitas;
-      console.log(`[DEBUG] Antes dos filtros: ${receitasFiltradas.length} receitas`);
       
       if (categoriaId) {
-        const antes = receitasFiltradas.length;
         receitasFiltradas = receitasFiltradas.filter(r => 
           r.categorias && r.categorias.some(cat => cat.id === categoriaId)
         );
-        console.log(`[DEBUG] Filtro categoriaId: ${antes} -> ${receitasFiltradas.length}`);
       }
       
       if (search) {
-        const antes = receitasFiltradas.length;
         const searchLower = search.toLowerCase();
         receitasFiltradas = receitasFiltradas.filter(r => 
           r.titulo.toLowerCase().includes(searchLower) ||
           r.descricao?.toLowerCase().includes(searchLower)
         );
-        console.log(`[DEBUG] Filtro search: ${antes} -> ${receitasFiltradas.length}`);
       }
       
-      // NÃO aplicar filtro isPremium para admins - admins devem ver todas as receitas
       const isAdmin = user && (user.role === UserRole.ADMIN || String(user.role) === 'admin' || user.email === 'dai@gmail.com');
       if (isPremium !== undefined && !isAdmin) {
-        const antes = receitasFiltradas.length;
         receitasFiltradas = receitasFiltradas.filter(r => r.is_premium === isPremium);
-        console.log(`[DEBUG] Filtro isPremium=${isPremium}: ${antes} -> ${receitasFiltradas.length}`);
-      } else if (isPremium !== undefined && isAdmin) {
-        console.log(`[DEBUG] ⚠️  Filtro isPremium ignorado para admin - retornando todas as receitas`);
       }
       
       if (dificuldade) {
-        const antes = receitasFiltradas.length;
         receitasFiltradas = receitasFiltradas.filter(r => r.dificuldade === dificuldade);
-        console.log(`[DEBUG] Filtro dificuldade: ${antes} -> ${receitasFiltradas.length}`);
       }
       
       if (tipoRefeicao) {
-        const antes = receitasFiltradas.length;
         receitasFiltradas = receitasFiltradas.filter(r => r.tipo_refeicao === tipoRefeicao);
-        console.log(`[DEBUG] Filtro tipoRefeicao: ${antes} -> ${receitasFiltradas.length}`);
       }
       
       if (tempoMaximo) {
-        const antes = receitasFiltradas.length;
         receitasFiltradas = receitasFiltradas.filter(r => r.tempo_preparo <= tempoMaximo);
-        console.log(`[DEBUG] Filtro tempoMaximo: ${antes} -> ${receitasFiltradas.length}`);
       }
       
       if (proteinasMin) {
-        const antes = receitasFiltradas.length;
         receitasFiltradas = receitasFiltradas.filter(r => {
           const valor = parseFloat(String(r.proteinas).replace(',', '.'));
           return !isNaN(valor) && valor >= proteinasMin;
         });
-        console.log(`[DEBUG] Filtro proteinasMin: ${antes} -> ${receitasFiltradas.length}`);
       }
       
       if (semLactose) {
-        const antes = receitasFiltradas.length;
         receitasFiltradas = receitasFiltradas.filter(r => 
           r.descricao?.toLowerCase().includes('sem lactose') ||
           r.tags?.some(tag => tag.toLowerCase().includes('sem lactose'))
         );
-        console.log(`[DEBUG] Filtro semLactose: ${antes} -> ${receitasFiltradas.length}`);
       }
       
       if (lowCarb) {
-        const antes = receitasFiltradas.length;
         receitasFiltradas = receitasFiltradas.filter(r => {
           const valor = parseFloat(String(r.carboidratos).replace(',', '.'));
           return !isNaN(valor) && valor <= 30;
         });
-        console.log(`[DEBUG] Filtro lowCarb: ${antes} -> ${receitasFiltradas.length}`);
       }
       
       receitas = receitasFiltradas;
-      console.log(`[DEBUG] ✅ Após aplicar filtros: ${receitas.length} receitas`);
-      console.log(`[DEBUG] ✅ Receitas PREMIUM após filtros: ${receitas.filter(r => r.is_premium === true).length}`);
-      console.log(`[DEBUG] ✅ Receitas FREE após filtros: ${receitas.filter(r => r.is_free === true).length}`);
     }
 
-    // Debug: log para verificar quantas receitas foram encontradas
-    console.log(`[DEBUG] Total de receitas retornadas: ${receitas.length}`);
-    
-    // Verificar se os campos is_premium e is_free estão presentes
-    const receitasComPremium = receitas.filter(r => r.hasOwnProperty('is_premium'));
-    const receitasComFree = receitas.filter(r => r.hasOwnProperty('is_free'));
-    console.log(`[DEBUG] Receitas com campo is_premium: ${receitasComPremium.length}`);
-    console.log(`[DEBUG] Receitas com campo is_free: ${receitasComFree.length}`);
-    
-    // Verificar valores booleanos
-    const receitasPremiumTrue = receitas.filter(r => r.is_premium === true).length;
-    const receitasFreeTrue = receitas.filter(r => r.is_free === true).length;
-    console.log(`[DEBUG] Receitas FREE (is_free === true): ${receitasFreeTrue}`);
-    console.log(`[DEBUG] Receitas PREMIUM (is_premium === true): ${receitasPremiumTrue}`);
-    
-    // Debug adicional: verificar se há receitas com is_premium null ou undefined
-    const premiumNull = receitas.filter(r => r.is_premium === null || r.is_premium === undefined).length;
-    const freeNull = receitas.filter(r => r.is_free === null || r.is_free === undefined).length;
-    if (premiumNull > 0) console.log(`[DEBUG] ⚠️  Receitas com is_premium null/undefined: ${premiumNull}`);
-    if (freeNull > 0) console.log(`[DEBUG] ⚠️  Receitas com is_free null/undefined: ${freeNull}`);
-    
-    // Debug: mostrar algumas receitas PREMIUM para verificar
-    const exemplosPremium = receitas.filter(r => r.is_premium === true).slice(0, 3);
-    if (exemplosPremium.length > 0) {
-      console.log(`[DEBUG] Exemplos de receitas PREMIUM:`);
-      exemplosPremium.forEach(r => {
-        console.log(`[DEBUG]   - ${r.titulo.substring(0, 50)}... | is_premium: ${r.is_premium} | is_free: ${r.is_free}`);
-      });
-    }
     if (user) {
-      console.log(`[DEBUG] Usuário autenticado: ${user.email}, Role: ${user.role}, Tipo: ${typeof user.role}`);
       const isAdmin = user.role === UserRole.ADMIN || String(user.role) === 'admin';
-      console.log(`[DEBUG] É admin? ${isAdmin}`);
-    } else {
-      console.log(`[DEBUG] Nenhum usuário autenticado`);
-    }
-
-    // Filtrar por plano do usuário se fornecido
-    // IMPORTANTE: Admins sempre veem todas as receitas, independente do plano
-    if (user) {
-      // Se é admin, retornar todas as receitas sem filtro
-      // Comparar com enum (pode vir como string do banco)
-      const isAdmin = user.role === UserRole.ADMIN || String(user.role) === 'admin';
-      // Verificação específica para o admin dai@gmail.com
       const isDaiAdmin = user.email === 'dai@gmail.com';
       
       if (isAdmin || isDaiAdmin) {
-        console.log(`[DEBUG] Retornando todas as ${receitas.length} receitas para admin${isDaiAdmin ? ' (dai@gmail.com)' : ''}`);
         return receitas;
       }
 
       const tier = user.subscription_tier || SubscriptionTier.NONE;
       const isInTrial = hasActiveTrial(user);
 
-      // Se está no trial, pode ver todas as receitas
       if (isInTrial) {
         return receitas;
       }
 
-      // Se é FREE ou NONE (após trial), apenas receitas FREE
       if (tier === SubscriptionTier.FREE || tier === SubscriptionTier.NONE) {
         return receitas.filter((r) => r.is_free === true);
       }
 
-      // PREMIUM e PREMIUM_FIT podem ver todas as receitas
       if (tier === SubscriptionTier.PREMIUM || tier === SubscriptionTier.PREMIUM_FIT) {
         return receitas;
       }
 
-      // BASIC (deprecated) - apenas receitas não premium
       if (tier === SubscriptionTier.BASIC) {
         return receitas.filter((r) => r.is_premium === false);
       }
     }
 
-    // Se não há usuário, retornar apenas receitas FREE (acesso público limitado)
     return receitas.filter((r) => r.is_free === true);
   }
 
