@@ -851,7 +851,10 @@ export default function ReceitaDetailScreen() {
               {(macrosModificados?.macrosModificado.proteinas || receita.proteinas) && (
                 <View style={styles.macroItem}>
                   <Text style={styles.macroValue}>
-                    {Number(macrosModificados?.macrosModificado.proteinas || receita.proteinas || 0).toFixed(1)}g
+                    {macrosModificados 
+                      ? Number(macrosModificados.macrosModificado.proteinas).toFixed(1)
+                      : (isNaN(Number(receita.proteinas)) ? receita.proteinas : Number(receita.proteinas).toFixed(1))}
+                    {!isNaN(Number(receita.proteinas)) && 'g'}
                   </Text>
                   <Text style={styles.macroLabel}>Proteínas</Text>
                   {macrosModificados && (
@@ -865,7 +868,10 @@ export default function ReceitaDetailScreen() {
               {(macrosModificados?.macrosModificado.carboidratos || receita.carboidratos) && (
                 <View style={styles.macroItem}>
                   <Text style={styles.macroValue}>
-                    {Number(macrosModificados?.macrosModificado.carboidratos || receita.carboidratos || 0).toFixed(1)}g
+                    {macrosModificados 
+                      ? Number(macrosModificados.macrosModificado.carboidratos).toFixed(1)
+                      : (isNaN(Number(receita.carboidratos)) ? receita.carboidratos : Number(receita.carboidratos).toFixed(1))}
+                    {!isNaN(Number(receita.carboidratos)) && 'g'}
                   </Text>
                   <Text style={styles.macroLabel}>Carbos</Text>
                   {macrosModificados && (
@@ -879,7 +885,10 @@ export default function ReceitaDetailScreen() {
               {(macrosModificados?.macrosModificado.gorduras || receita.gorduras) && (
                 <View style={styles.macroItem}>
                   <Text style={styles.macroValue}>
-                    {Number(macrosModificados?.macrosModificado.gorduras || receita.gorduras || 0).toFixed(1)}g
+                    {macrosModificados 
+                      ? Number(macrosModificados.macrosModificado.gorduras).toFixed(1)
+                      : (isNaN(Number(receita.gorduras)) ? receita.gorduras : Number(receita.gorduras).toFixed(1))}
+                    {!isNaN(Number(receita.gorduras)) && 'g'}
                   </Text>
                   <Text style={styles.macroLabel}>Gorduras</Text>
                   {macrosModificados && (
@@ -898,7 +907,10 @@ export default function ReceitaDetailScreen() {
                 {(macrosModificados?.macrosModificado.fibras || receita.fibras) && (
                   <View style={[styles.macroItem, { minWidth: '22%', flex: 0 }]}>
                     <Text style={styles.macroValue}>
-                      {Number(macrosModificados?.macrosModificado.fibras || receita.fibras || 0).toFixed(1)}g
+                      {macrosModificados 
+                        ? Number(macrosModificados.macrosModificado.fibras).toFixed(1)
+                        : (isNaN(Number(receita.fibras)) ? receita.fibras : Number(receita.fibras).toFixed(1))}
+                      {!isNaN(Number(receita.fibras)) && 'g'}
                     </Text>
                     <Text style={styles.macroLabel}>Fibras</Text>
                   </View>
@@ -906,7 +918,10 @@ export default function ReceitaDetailScreen() {
                 {(macrosModificados?.macrosModificado.sodio || receita.sodio) && (
                   <View style={[styles.macroItem, { minWidth: '22%', flex: 0 }]}>
                     <Text style={styles.macroValue}>
-                      {Math.round(Number(macrosModificados?.macrosModificado.sodio || receita.sodio || 0))}mg
+                      {macrosModificados 
+                        ? Math.round(Number(macrosModificados.macrosModificado.sodio))
+                        : (isNaN(Number(receita.sodio)) ? receita.sodio : Math.round(Number(receita.sodio)))}
+                      {!isNaN(Number(receita.sodio)) && 'mg'}
                     </Text>
                     <Text style={styles.macroLabel}>Sódio</Text>
                   </View>

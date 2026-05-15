@@ -49,6 +49,22 @@ export class ReceitasService {
 
     // Separar categoria_ids do DTO antes de criar a receita
     const { categoria_ids, ...receitaData } = createReceitaDto;
+
+    // Normalizar campos de array (converter de string para array se necessário)
+    const arrayFields = ['ingredientes', 'modo_preparo', 'imagens_url', 'tags', 'cuisines'];
+    for (const field of arrayFields) {
+      if (receitaData[field] !== undefined) {
+        if (typeof receitaData[field] === 'string') {
+          receitaData[field] = (receitaData[field] as string)
+            .split('\n')
+            .map(item => item.trim())
+            .filter(item => item !== '');
+        } else if (!Array.isArray(receitaData[field])) {
+          receitaData[field] = receitaData[field] ? [receitaData[field]] : [];
+        }
+      }
+    }
+
     const receita = this.receitaRepository.create(receitaData);
     const savedReceita = await this.receitaRepository.save(receita);
 
@@ -424,6 +440,23 @@ export class ReceitasService {
     }
     if (updateData.ebook_url === '' || updateData.ebook_url === null || updateData.ebook_url === undefined) {
       delete updateData.ebook_url;
+    }
+
+    // Normalizar campos de array (converter de string para array se necessário)
+    const arrayFields = ['ingredientes', 'modo_preparo', 'imagens_url', 'tags', 'cuisines'];
+    for (const field of arrayFields) {
+      if (updateData[field] !== undefined) {
+        if (typeof updateData[field] === 'string') {
+          // Se for uma string com quebras de linha, dividir por linha
+          updateData[field] = (updateData[field] as string)
+            .split('\n')
+            .map(item => item.trim())
+            .filter(item => item !== '');
+        } else if (!Array.isArray(updateData[field])) {
+          // Se for qualquer outra coisa que não seja array, colocar em um array
+          updateData[field] = updateData[field] ? [updateData[field]] : [];
+        }
+      }
     }
 
     Object.assign(receita, updateData);

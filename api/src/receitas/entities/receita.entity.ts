@@ -48,6 +48,9 @@ export class Receita {
   dica: string;
 
   @Column('text', { nullable: true })
+  finalizacao: string;
+
+  @Column('text', { nullable: true })
   informacoes_nutricionais: string;
  // Informações nutricionais aproximadas ou adicionais (texto livre)
 
@@ -90,24 +93,24 @@ export class Receita {
   @Column({ type: 'int', default: 1 })
   porcoes: number;
 
-  // Informações nutricionais (por porção)
-  @Column({ type: 'decimal', precision: 8, scale: 2, nullable: true })
-  calorias: number; // kcal por porção
+  // Informações nutricionais (por porção) - Alterado para text para permitir intervalos (ex: 180-220)
+  @Column('text', { nullable: true })
+  calorias: string; // kcal por porção
 
-  @Column({ type: 'decimal', precision: 8, scale: 2, nullable: true })
-  proteinas: number; // gramas por porção
+  @Column('text', { nullable: true })
+  proteinas: string; // gramas por porção
 
-  @Column({ type: 'decimal', precision: 8, scale: 2, nullable: true })
-  carboidratos: number; // gramas por porção
+  @Column('text', { nullable: true })
+  carboidratos: string; // gramas por porção
 
-  @Column({ type: 'decimal', precision: 8, scale: 2, nullable: true })
-  gorduras: number; // gramas por porção
+  @Column('text', { nullable: true })
+  gorduras: string; // gramas por porção
 
-  @Column({ type: 'decimal', precision: 8, scale: 2, nullable: true })
-  fibras: number; // gramas por porção
+  @Column('text', { nullable: true })
+  fibras: string; // gramas por porção
 
-  @Column({ type: 'decimal', precision: 8, scale: 2, nullable: true })
-  sodio: number; // miligramas por porção
+  @Column('text', { nullable: true })
+  sodio: string; // miligramas por porção
 
   @Column({ default: false })
   is_premium: boolean;
