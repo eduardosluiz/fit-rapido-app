@@ -478,6 +478,17 @@ export default function EditarReceita() {
                     className="w-full bg-gray-100 dark:bg-[#111] border border-gray-400 dark:border-[#555] rounded-md px-4 py-4 text-sm focus:outline-none focus:ring-2 focus:ring-[#c8921a]/20 focus:border-[#c8921a] text-gray-800 dark:text-gray-200 resize-none transition-all"
                   />
                 </div>
+
+                <div className="space-y-2">
+                  <label className="text-[9px] font-bold uppercase tracking-[0.15em] text-gray-800 dark:text-gray-200 ml-0.5">Finalização (Exibida após o modo de preparo)</label>
+                  <textarea
+                    value={formData.finalizacao}
+                    onChange={(e) => setFormData({ ...formData, finalizacao: e.target.value })}
+                    rows={3}
+                    placeholder="Sugestões para finalizar o prato..."
+                    className="w-full bg-gray-100 dark:bg-[#111] border border-gray-400 dark:border-[#555] rounded-md px-4 py-4 text-sm focus:outline-none focus:ring-2 focus:ring-[#c8921a]/20 focus:border-[#c8921a] text-gray-800 dark:text-gray-200 resize-none transition-all"
+                  />
+                </div>
               </div>
             </div>
 

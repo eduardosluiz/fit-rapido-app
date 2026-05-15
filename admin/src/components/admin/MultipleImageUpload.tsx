@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { uploadImagem } from '@/lib/upload';
+import { getMediaUrl } from '@/lib/media';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { cn } from '@/lib/utils';
@@ -150,7 +151,7 @@ export function MultipleImageUpload({
             <div key={index} className="relative group">
               <div className="relative aspect-square rounded-lg border-2 border-border overflow-hidden bg-gray-100 dark:bg-gray-800">
                 <img
-                  src={image}
+                  src={getMediaUrl(image)}
                   alt={`Imagem ${index + 1}`}
                   className="w-full h-full object-cover"
                 />

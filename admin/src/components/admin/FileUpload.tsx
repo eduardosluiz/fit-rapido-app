@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { uploadImagem, uploadVideo } from '@/lib/upload';
+import { getMediaUrl } from '@/lib/media';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
@@ -110,7 +111,7 @@ export function FileUpload({ type, value, onChange, label, accept, error, hideUr
           <div className="relative">
             {type === 'imagem' ? (
               <img
-                src={preview}
+                src={getMediaUrl(preview)}
                 alt="Preview"
                 className="w-12 h-12 rounded border-2 border-border object-cover"
               />
@@ -178,7 +179,7 @@ export function FileUpload({ type, value, onChange, label, accept, error, hideUr
           {type === 'imagem' ? (
             <>
               <img
-                src={preview}
+                src={getMediaUrl(preview)}
                 alt="Preview"
                 className={cn(
                   "rounded-lg border-2 border-border",
@@ -199,7 +200,7 @@ export function FileUpload({ type, value, onChange, label, accept, error, hideUr
           ) : (
             <>
               <video
-                src={preview}
+                src={getMediaUrl(preview)}
                 controls
                 className={cn(
                   "rounded-lg border-2 border-border",

@@ -131,9 +131,13 @@ export class CreateReceitaDto {
   @IsOptional()
   dica?: string;
 
+  @IsString()
+  @IsOptional()
+  finalizacao?: string;
+
+  @IsOptional()
   @IsNumber()
   @Min(0)
-  @IsOptional()
   calorias?: number;
 
   @IsNumber()

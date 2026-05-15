@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { Button } from './Button';
+import { getMediaUrl } from '@/lib/media';
 import '../../app/admin/item-card.css';
 
 interface ItemCardProps {
@@ -49,7 +50,7 @@ export function ItemCard({
           }}
         >
           <img
-            src={imageUrl}
+            src={getMediaUrl(imageUrl)}
             alt={title}
             className="w-full h-full object-cover"
             style={{

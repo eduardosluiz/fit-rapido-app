@@ -835,7 +835,9 @@ export default function ReceitaDetailScreen() {
               {(macrosModificados?.macrosModificado.calorias || receita.calorias) && (
                 <View style={styles.macroItem}>
                   <Text style={styles.macroValue}>
-                    {Math.round(Number(macrosModificados?.macrosModificado.calorias || receita.calorias || 0))}
+                    {macrosModificados 
+                      ? Math.round(Number(macrosModificados.macrosModificado.calorias))
+                      : (isNaN(Number(receita.calorias)) ? receita.calorias : Math.round(Number(receita.calorias)))}
                   </Text>
                   <Text style={styles.macroLabel}>kcal</Text>
                   {macrosModificados && (
@@ -1146,6 +1148,17 @@ export default function ReceitaDetailScreen() {
                 <Text style={styles.dicaTitle}>Dica de Ouro</Text>
               </View>
               <Text style={styles.dicaText}>{receita.dica.trim()}</Text>
+            </View>
+          ) : null}
+
+          {/* Finalização */}
+          {receita.finalizacao && receita.finalizacao.trim() ? (
+            <View style={[styles.dicaContainer, { backgroundColor: '#f0f9ff', borderColor: '#bae6fd', marginTop: 12 }]}>
+              <View style={styles.dicaHeader}>
+                <Ionicons name="star" size={20} color="#0284c7" />
+                <Text style={[styles.dicaTitle, { color: '#0284c7' }]}>Finalização</Text>
+              </View>
+              <Text style={styles.dicaText}>{receita.finalizacao.trim()}</Text>
             </View>
           ) : null}
         </View>

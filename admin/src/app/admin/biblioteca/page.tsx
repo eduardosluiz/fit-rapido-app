@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { api } from '@/lib/api';
 import { useAuth } from '@/lib/useAuth';
+import { getMediaUrl } from '@/lib/media';
 import { Search, ChevronDown, Trash2, Play, Edit3, AlertTriangle, X, Upload, FolderPlus } from 'lucide-react';
 import { toast } from 'react-hot-toast';
 import '@/app/admin/item-card.css';
@@ -334,7 +335,7 @@ export default function BibliotecaVideosPage() {
             exercicios.map((ex) => (
               <div key={ex.id} className="group bg-white dark:bg-[#111] border border-[#c8921a]/30 dark:border-[#c8921a]/20 rounded-xl overflow-hidden hover:border-[#c8921a]/60 hover:shadow-lg transition-all duration-300 flex flex-col">
                 <div onClick={() => { setPreviewVideo(ex); setVideoError(false); setVideoIsLoading(true); }} className="w-full h-[160px] bg-[#000] relative cursor-pointer overflow-hidden flex items-center justify-center">
-                  <video src={`${ex.video_url}#t=0.5`} className="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity" muted playsInline preload="metadata" crossOrigin="anonymous" />
+                  <video src={`${getMediaUrl(ex.video_url)}#t=0.5`} className="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity" muted playsInline preload="metadata" crossOrigin="anonymous" />
                   <div className="absolute inset-0 flex items-center justify-center z-20 opacity-0 group-hover:opacity-100 transition-opacity"><div className="w-10 h-10 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center border border-white/20 scale-90 group-hover:scale-100 transition-transform"><Play className="text-white fill-current ml-0.5" size={16} /></div></div>
                   <div className="absolute top-3 left-3 z-20"><span className="bg-[#c8921a] text-white text-[7px] px-2 py-0.5 rounded font-black uppercase tracking-[0.2em] shadow-lg">{ex.categoria || 'Geral'}</span></div>
                 </div>
@@ -402,8 +403,8 @@ export default function BibliotecaVideosPage() {
                   onCanPlay={() => setVideoIsLoading(false)} 
                   onError={() => setVideoError(true)}
                 >
-                  <source src={previewVideo.video_url} type="video/mp4" />
-                  <source src={previewVideo.video_url} type="video/quicktime" />
+                  <source src={getMediaUrl(previewVideo.video_url)} type="video/mp4" />
+                  <source src={getMediaUrl(previewVideo.video_url)} type="video/quicktime" />
                   Seu navegador não suporta a tag de vídeo.
                 </video>
               )}

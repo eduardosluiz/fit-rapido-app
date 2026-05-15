@@ -5,6 +5,7 @@ import { BaseModal } from '@/components/admin/BaseModal';
 import { DataTable } from '@/components/admin/DataTable';
 import { Switch } from '@/components/ui/switch';
 import { api } from '@/lib/api';
+import { getMediaUrl } from '@/lib/media';
 import { Plus, Edit3, Trash2, Image as ImageIcon } from 'lucide-react';
 import { FileUpload } from './FileUpload';
 import { toast } from 'react-hot-toast';
@@ -129,7 +130,7 @@ export function ModalidadesModal({
           <div className="w-8 h-8 rounded-lg bg-gray-50 dark:bg-[#111] border border-gray-100 dark:border-[#222] overflow-hidden flex items-center justify-center">
             {mod?.imagem_url ? (
               <img 
-                src={mod.imagem_url} 
+                src={getMediaUrl(mod.imagem_url)} 
                 alt={mod.nome || 'Modalidade'} 
                 className="w-full h-full object-cover"
                 loading="lazy"

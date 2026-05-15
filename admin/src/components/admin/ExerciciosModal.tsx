@@ -5,6 +5,7 @@ import { BaseModal } from '@/components/admin/BaseModal';
 import { DataTable } from '@/components/admin/DataTable';
 import { FileUpload } from '@/components/admin/FileUpload';
 import { api } from '@/lib/api';
+import { getMediaUrl } from '@/lib/media';
 import { Plus, Edit3, Trash2, Video, Search, X } from 'lucide-react';
 import { toast } from 'react-hot-toast';
 import '@/app/admin/data-table.css';
@@ -153,7 +154,7 @@ export function ExerciciosModal({
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded bg-black flex items-center justify-center overflow-hidden border border-gray-200 dark:border-[#222]">
             {ex.video_url ? (
-              <video src={`${ex.video_url}#t=0.5`} className="w-full h-full object-cover" muted playsInline />
+              <video src={`${getMediaUrl(ex.video_url)}#t=0.5`} className="w-full h-full object-cover" muted playsInline />
             ) : (
               <Video size={14} className="text-gray-500" />
             )}
