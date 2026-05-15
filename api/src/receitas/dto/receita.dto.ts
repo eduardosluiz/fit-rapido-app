@@ -180,18 +180,16 @@ export class UpdateReceitaDto {
   descricao?: string;
 
   @IsArray()
-  @IsString({ each: true })
   @IsOptional()
-  ingredientes?: string[];
+  ingredientes?: any[];
 
   @IsObject()
   @IsOptional()
   substituicoes_ingredientes?: Record<string, string | string[]>;
 
   @IsArray()
-  @IsString({ each: true })
   @IsOptional()
-  modo_preparo?: string[];
+  modo_preparo?: any[];
 
   @IsString()
   @IsOptional()
@@ -214,9 +212,8 @@ export class UpdateReceitaDto {
   imagem_url?: string;
 
   @IsArray()
-  @IsString({ each: true })
   @IsOptional()
-  imagens_url?: string[];
+  imagens_url?: any[];
 
   @Transform(({ value }) => {
     if (value === '' || value === null) return undefined;
@@ -244,8 +241,7 @@ export class UpdateReceitaDto {
 
   @IsOptional()
   @IsArray()
-  @IsString({ each: true })
-  categoria_ids?: string[];
+  categoria_ids?: any[];
 
   @IsEnum(DificuldadeReceita)
   @IsOptional()
@@ -264,7 +260,7 @@ export class UpdateReceitaDto {
   @IsNumber()
   @Min(0)
   @IsOptional()
-  calorias?: number;
+  calorias?: any;
 
   @IsNumber()
   @Min(0)
@@ -304,18 +300,16 @@ export class UpdateReceitaDto {
   is_free?: boolean;
 
   @IsArray()
-  @IsString({ each: true })
   @IsOptional()
-  tags?: string[];
+  tags?: any[];
 
   @IsEnum(TipoRefeicao)
   @IsOptional()
   tipo_refeicao?: TipoRefeicao;
 
   @IsArray()
-  @IsString({ each: true })
   @IsOptional()
-  cuisines?: string[];
+  cuisines?: any[];
 
   @IsBoolean()
   @IsOptional()
