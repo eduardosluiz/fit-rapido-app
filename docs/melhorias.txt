@@ -1,28 +1,7 @@
-1649-7cd66cf584448986.js:1  PATCH https://backend.daipohlmann.com.br/receitas/a14eb13d-313e-498b-ad8a-1bb2950a55d3 400 (Bad Request)
-request @ 1649-7cd66cf584448986.js:1
-updateReceita @ 1649-7cd66cf584448986.js:1
-M @ page-e8e209b12780f31f.js:1
-i8 @ 4bd1b696-f785427dddbba9fb.js:1
-(anonymous) @ 4bd1b696-f785427dddbba9fb.js:1
-nz @ 4bd1b696-f785427dddbba9fb.js:1
-sn @ 4bd1b696-f785427dddbba9fb.js:1
-cc @ 4bd1b696-f785427dddbba9fb.js:1
-ci @ 4bd1b696-f785427dddbba9fb.js:1Understand this error
-layout-ab2d981cd8ef31f6.js:1 ❌ Erro na API (400): {"message":["each value in ingredientes must be a string","ingredientes must be an array","each value in modo_preparo must be a string","modo_preparo must be an array","each value in imagens_url must be a string","imagens_url must be an array","each value in categoria_ids must be a string","categoria_ids must be an array","each value in tags must be a string","tags must be an array"],"error":"Bad Request","statusCode":400}
-(anonymous) @ layout-ab2d981cd8ef31f6.js:1
-setTimeout
-push.1586.console.error @ layout-ab2d981cd8ef31f6.js:1
-request @ 1649-7cd66cf584448986.js:1
-await in request
-updateReceita @ 1649-7cd66cf584448986.js:1
-M @ page-e8e209b12780f31f.js:1
-i8 @ 4bd1b696-f785427dddbba9fb.js:1
-(anonymous) @ 4bd1b696-f785427dddbba9fb.js:1
-nz @ 4bd1b696-f785427dddbba9fb.js:1
-sn @ 4bd1b696-f785427dddbba9fb.js:1
-cc @ 4bd1b696-f785427dddbba9fb.js:1
-ci @ 4bd1b696-f785427dddbba9fb.js:1Understand this error
+Failed to load resource: the server responded with a status of 400 ()Understand this error
+layout-ab2d981cd8ef31f6.js:1 ❌ Erro na API (400): {"message":["ingredientes must be an array","modo_preparo must be an array","imagens_url must be an array","categoria_ids must be an array","tags must be an array"],"error":"Bad Request","statusCode":400}
+(anonymous) @ layout-ab2d981cd8ef31f6.js:1Understand this error
 layout-ab2d981cd8ef31f6.js:1 ❌ Erro ao atualizar receita: Error: Erro desconhecido
-    at i.request (1649-7cd66cf584448986.js:1:768)
-    at async i.updateReceita (1649-7cd66cf584448986.js:1:3154)
-    at async M (page-e8e209b12780f31f.js:1:3912)
+    at n.request (layout-31597067667ab465.js:1:1113)
+    at async n.updateReceita (layout-31597067667ab465.js:1:3499)
+    at async M (page-0d7718ae7f05147d.js:1:3912)

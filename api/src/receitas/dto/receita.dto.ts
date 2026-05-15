@@ -179,7 +179,6 @@ export class UpdateReceitaDto {
   @IsOptional()
   descricao?: string;
 
-  @IsArray()
   @IsOptional()
   ingredientes?: any[];
 
@@ -187,7 +186,6 @@ export class UpdateReceitaDto {
   @IsOptional()
   substituicoes_ingredientes?: Record<string, string | string[]>;
 
-  @IsArray()
   @IsOptional()
   modo_preparo?: any[];
 
@@ -211,7 +209,6 @@ export class UpdateReceitaDto {
   @IsOptional()
   imagem_url?: string;
 
-  @IsArray()
   @IsOptional()
   imagens_url?: any[];
 
@@ -240,7 +237,6 @@ export class UpdateReceitaDto {
   ebook_url?: string;
 
   @IsOptional()
-  @IsArray()
   categoria_ids?: any[];
 
   @IsEnum(DificuldadeReceita)
@@ -257,8 +253,6 @@ export class UpdateReceitaDto {
   @IsOptional()
   porcoes?: number;
 
-  @IsNumber()
-  @Min(0)
   @IsOptional()
   calorias?: any;
 
@@ -299,7 +293,6 @@ export class UpdateReceitaDto {
   @IsOptional()
   is_free?: boolean;
 
-  @IsArray()
   @IsOptional()
   tags?: any[];
 
@@ -307,7 +300,6 @@ export class UpdateReceitaDto {
   @IsOptional()
   tipo_refeicao?: TipoRefeicao;
 
-  @IsArray()
   @IsOptional()
   cuisines?: any[];
 
