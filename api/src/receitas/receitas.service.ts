@@ -460,15 +460,25 @@ export class ReceitasService {
     for (const field of arrayFields) {
       if (updateData[field] !== undefined) {
         if (typeof updateData[field] === 'string') {
-          // Se for uma string com quebras de linha, dividir por linha
           updateData[field] = (updateData[field] as string)
             .split('\n')
             .map(item => item.trim())
             .filter(item => item !== '');
+        } else if (typeof updateData[field] === 'object' && !Array.isArray(updateData[field])) {
+          // Se vier como objeto {"0": "x"}, converter para array real
+          updateData[field] = Object.values(updateData[field]);
         } else if (!Array.isArray(updateData[field])) {
-          // Se for qualquer outra coisa que não seja array, colocar em um array
           updateData[field] = updateData[field] ? [updateData[field]] : [];
         }
+      }
+    }
+
+    // Garantir que substituicoes_ingredientes seja um objeto real e não uma string JSON
+    if (updateData.substituicoes_ingredientes && typeof updateData.substituicoes_ingredientes === 'string') {
+      try {
+        updateData.substituicoes_ingredientes = JSON.parse(updateData.substituicoes_ingredientes);
+      } catch (e) {
+        // Se falhar o parse, mantém como está ou limpa
       }
     }
 
