@@ -375,11 +375,11 @@ export default function ReceitaDetailScreen() {
 
       // Para substituições simples, buscar ingredientes similares e calcular diferença
       const macrosOriginal = {
-        calorias: Number(receita.calorias) || 0,
-        proteinas: Number(receita.proteinas) || 0,
-        carboidratos: Number(receita.carboidratos) || 0,
-        gorduras: Number(receita.gorduras) || 0,
-        fibras: Number(receita.fibras) || 0,
+        calorias: parseFloat(String(receita.calorias).replace(',', '.')) || 0,
+        proteinas: parseFloat(String(receita.proteinas).replace(',', '.')) || 0,
+        carboidratos: parseFloat(String(receita.carboidratos).replace(',', '.')) || 0,
+        gorduras: parseFloat(String(receita.gorduras).replace(',', '.')) || 0,
+        fibras: parseFloat(String(receita.fibras).replace(',', '.')) || 0,
       };
 
       console.log('📊 Macros originais:', macrosOriginal);
