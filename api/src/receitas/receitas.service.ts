@@ -73,7 +73,7 @@ export class ReceitasService {
     }
 
     const receita = this.receitaRepository.create(receitaData as any);
-    const savedReceita = await this.receitaRepository.save(receita);
+    const savedReceita: Receita = await this.receitaRepository.save(receita);
 
     // Associar categorias se fornecidas
     if (categoria_ids && categoria_ids.length > 0) {
