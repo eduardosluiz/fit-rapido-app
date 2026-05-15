@@ -37,22 +37,22 @@ export class MacrosService {
 
     return {
       caloriasPorPorcao: receita.calorias
-        ? Number((receita.calorias * fatorMultiplicacao).toFixed(2))
+        ? Number((parseFloat(String(receita.calorias).replace(',', '.')) * fatorMultiplicacao).toFixed(2))
         : 0,
       proteinasPorPorcao: receita.proteinas
-        ? Number((receita.proteinas * fatorMultiplicacao).toFixed(2))
+        ? Number((parseFloat(String(receita.proteinas).replace(',', '.')) * fatorMultiplicacao).toFixed(2))
         : 0,
       carboidratosPorPorcao: receita.carboidratos
-        ? Number((receita.carboidratos * fatorMultiplicacao).toFixed(2))
+        ? Number((parseFloat(String(receita.carboidratos).replace(',', '.')) * fatorMultiplicacao).toFixed(2))
         : 0,
       gordurasPorPorcao: receita.gorduras
-        ? Number((receita.gorduras * fatorMultiplicacao).toFixed(2))
+        ? Number((parseFloat(String(receita.gorduras).replace(',', '.')) * fatorMultiplicacao).toFixed(2))
         : 0,
       fibrasPorPorcao: receita.fibras
-        ? Number((receita.fibras * fatorMultiplicacao).toFixed(2))
+        ? Number((parseFloat(String(receita.fibras).replace(',', '.')) * fatorMultiplicacao).toFixed(2))
         : undefined,
       sodioPorPorcao: receita.sodio
-        ? Number((receita.sodio * fatorMultiplicacao).toFixed(2))
+        ? Number((parseFloat(String(receita.sodio).replace(',', '.')) * fatorMultiplicacao).toFixed(2))
         : undefined,
     };
   }

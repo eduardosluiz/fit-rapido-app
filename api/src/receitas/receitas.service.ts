@@ -65,7 +65,15 @@ export class ReceitasService {
       }
     }
 
-    const receita = this.receitaRepository.create(receitaData);
+    // Garantir que os campos nutricionais sejam strings para o repositório
+    const nutriFields = ['calorias', 'proteinas', 'carboidratos', 'gorduras', 'fibras', 'sodio'];
+    for (const field of nutriFields) {
+      if (receitaData[field] !== undefined && receitaData[field] !== null) {
+        receitaData[field] = String(receitaData[field]);
+      }
+    }
+
+    const receita = this.receitaRepository.create(receitaData as any);
     const savedReceita = await this.receitaRepository.save(receita);
 
     // Associar categorias se fornecidas
@@ -281,7 +289,10 @@ export class ReceitasService {
       
       if (proteinasMin) {
         const antes = receitasFiltradas.length;
-        receitasFiltradas = receitasFiltradas.filter(r => r.proteinas && r.proteinas >= proteinasMin);
+        receitasFiltradas = receitasFiltradas.filter(r => {
+          const valor = parseFloat(String(r.proteinas).replace(',', '.'));
+          return !isNaN(valor) && valor >= proteinasMin;
+        });
         console.log(`[DEBUG] Filtro proteinasMin: ${antes} -> ${receitasFiltradas.length}`);
       }
       
@@ -296,7 +307,10 @@ export class ReceitasService {
       
       if (lowCarb) {
         const antes = receitasFiltradas.length;
-        receitasFiltradas = receitasFiltradas.filter(r => r.carboidratos && r.carboidratos <= 30);
+        receitasFiltradas = receitasFiltradas.filter(r => {
+          const valor = parseFloat(String(r.carboidratos).replace(',', '.'));
+          return !isNaN(valor) && valor <= 30;
+        });
         console.log(`[DEBUG] Filtro lowCarb: ${antes} -> ${receitasFiltradas.length}`);
       }
       
@@ -460,7 +474,7 @@ export class ReceitasService {
     }
 
     Object.assign(receita, updateData);
-    const saved = await this.receitaRepository.save(receita);
+    const saved = await this.receitaRepository.save(receita as any);
 
     // Atualizar categorias se fornecidas
     if (categoria_ids !== undefined) {
