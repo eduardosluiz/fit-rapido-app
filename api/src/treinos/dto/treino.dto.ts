@@ -13,6 +13,7 @@ export class CreateTreinoDto {
   exercicios?: string[];
 
   @IsOptional()
+  @IsArray()
   series_repeticoes?: Array<{
     exercicio: string;
     series: number;
@@ -158,6 +159,7 @@ export class UpdateTreinoDto {
   exercicios?: string[];
 
   @IsOptional()
+  @IsArray()
   series_repeticoes?: Array<{
     exercicio: string;
     series: number;
