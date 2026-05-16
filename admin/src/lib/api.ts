@@ -275,8 +275,8 @@ class ApiService {
     const cleanData: any = {};
     
     for (const [key, value] of Object.entries(data)) {
-      // Remover valores inúteis
-      if (value === undefined || value === null || value === '') {
+      // Remover apenas null e undefined. Manter string vazia para permitir limpar campos!
+      if (value === undefined || value === null) {
         continue;
       }
 
