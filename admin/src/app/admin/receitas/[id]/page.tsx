@@ -85,11 +85,38 @@ export default function EditarReceita() {
         });
       }
 
+      // Função auxiliar para normalizar dados que podem vir como strings JSON ou objetos com índices numéricos
+      const normalizeArray = (data: any) => {
+        if (!data) return [];
+        if (Array.isArray(data)) {
+          // Se for um array de um único item que é uma string JSON de objeto
+          if (data.length === 1 && typeof data[0] === 'string' && data[0].startsWith('{')) {
+            try {
+              const parsed = JSON.parse(data[0]);
+              return Object.values(parsed);
+            } catch (e) { return data; }
+          }
+          return data;
+        }
+        if (typeof data === 'string' && data.startsWith('{')) {
+          try {
+            const parsed = JSON.parse(data);
+            return Object.values(parsed);
+          } catch (e) { return [data]; }
+        }
+        if (typeof data === 'object') return Object.values(data);
+        return [data];
+      };
+
+      const ingredientesList = normalizeArray(receita.ingredientes);
+      const modoPreparoList = normalizeArray(receita.modo_preparo);
+      const tagsList = normalizeArray(receita.tags);
+
       setFormData({
         titulo: receita.titulo || '',
         descricao: receita.descricao || '',
-        ingredientes: Array.isArray(receita.ingredientes) ? receita.ingredientes.join('\n') : '',
-        modo_preparo: Array.isArray(receita.modo_preparo) ? receita.modo_preparo.join('\n') : '',
+        ingredientes: ingredientesList.join('\n'),
+        modo_preparo: modoPreparoList.join('\n'),
         informacoes_nutricionais: receita.informacoes_nutricionais || '',
         aviso_nutricional: receita.aviso_nutricional || '',
         imagem_url: receita.imagem_url || '',
@@ -103,7 +130,7 @@ export default function EditarReceita() {
         is_premium: receita.is_premium || false,
         is_inedito: receita.is_inedito || false,
         is_free: receita.is_free || false,
-        tags: Array.isArray(receita.tags) ? receita.tags.join(', ') : '',
+        tags: tagsList.join(', '),
         ativa: receita.ativa ?? true,
         substituicoes_ingredientes: subsArray.length > 0 ? subsArray : [{ ingrediente: '', substituto: '' }],
         calorias: receita.calorias ? String(receita.calorias) : '',
@@ -113,6 +140,7 @@ export default function EditarReceita() {
         fibras: receita.fibras ? String(receita.fibras) : '',
         sodio: receita.sodio ? String(receita.sodio) : '',
         dica: receita.dica || '',
+        finalizacao: receita.finalizacao || '',
       });
     } catch (err: any) {
       toast.error('Erro ao carregar dados');
