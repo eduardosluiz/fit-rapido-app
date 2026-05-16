@@ -170,6 +170,7 @@ class ApiService {
 
   async checkIsFavorito(itemId: string, tipo: string) {
     try {
+      // Corrigida a ordem dos parâmetros para bater com a rota da API
       return await this.request<boolean>(`/favoritos/check?itemId=${itemId}&tipo=${tipo}`);
     } catch {
       return false;
@@ -185,7 +186,7 @@ class ApiService {
 
   async getReceitaIngredientes(receitaId: string) {
     try {
-      return await this.request<any[]>(`/receitas/${receitaId}/ingredients`);
+      return await this.request<any[]>(`/receitas/${receitaId}/ingredientes`);
     } catch (e) {
       return [];
     }
@@ -193,7 +194,7 @@ class ApiService {
 
   async getSubstituicoes(ingredienteId: string) {
     try {
-      return await this.request<any[]>(`/ingredients/${ingredienteId}/substitutions`);
+      return await this.request<any[]>(`/ingredientes/${ingredienteId}/substituicoes`);
     } catch (e) {
       return [];
     }

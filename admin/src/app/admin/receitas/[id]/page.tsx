@@ -463,7 +463,16 @@ export default function EditarReceita() {
                               setFormData({...formData, substituicoes_ingredientes: novas});
                             }} className="w-full h-[38px] bg-white dark:bg-[#111] border border-gray-300 dark:border-[#444] rounded px-3 text-sm focus:border-[#c8921a] outline-none">
                               <option value="">Selecione...</option>
-                              {ingredientesLista.map((ing, i) => <option key={i} value={ing}>{ing}</option>)}
+                              {ingredientesLista.map((ing, i) => {
+                                // Tenta limpar quantidades/emojis para valor de busca, mas mantém original para exibição
+                                const cleanValue = ing.replace(/^[•\-\d\s\/¼½¾]+|^\w+[:]\s*|[\d,.]+\s*(g|ml|xícara|colher|pitada)\w*\s*(de)?\s*/gi, '').trim();
+                                return (
+                                  <optgroup key={i} label={ing}>
+                                    <option value={ing}>Usar texto completo</option>
+                                    <option value={cleanValue}>Usar apenas "{cleanValue}"</option>
+                                  </optgroup>
+                                );
+                              })}
                             </select>
                           </div>
                           <div className="md:col-span-6 space-y-1.5">

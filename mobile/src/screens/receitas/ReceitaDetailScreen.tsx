@@ -1073,7 +1073,10 @@ export default function ReceitaDetailScreen() {
                             setIngredienteComSelectAberto(selectAberto ? null : ingredienteTexto);
                           }}
                         >
-                          <Ionicons name={selectAberto ? "chevron-up" : "repeat"} size={18} color={colors.primary} />
+                          <View style={{ flexDirection: 'row', alignItems: 'center', backgroundColor: colors.primary + '15', paddingHorizontal: 8, paddingVertical: 4, borderRadius: 12 }}>
+                            <Ionicons name={selectAberto ? "chevron-up" : "repeat"} size={14} color={colors.primary} />
+                            <Text style={{ color: colors.primary, fontSize: 10, fontWeight: 'bold', marginLeft: 4 }}>Substituível</Text>
+                          </View>
                         </TouchableOpacity>
                       )}
                     </View>
