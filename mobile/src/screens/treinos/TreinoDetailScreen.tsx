@@ -159,7 +159,7 @@ export default function TreinoDetailScreen() {
             const images: string[] = [];
             // Priorizar imagem_capa_url se existir
             const mainImg = (treino as any).imagem_capa_url || treino.imagem_url;
-            
+
             if (treino.imagens_url && Array.isArray(treino.imagens_url) && treino.imagens_url.length > 0) {
               images.push(...treino.imagens_url.map(img => getImageUrl(img) || '').filter(Boolean));
             } else if (mainImg) {
@@ -171,7 +171,7 @@ export default function TreinoDetailScreen() {
             }
             return null;
           })()}
-          
+
           <View style={styles.imageOverlay} />
 
           <View style={styles.ratingOverlayOverlay}>
