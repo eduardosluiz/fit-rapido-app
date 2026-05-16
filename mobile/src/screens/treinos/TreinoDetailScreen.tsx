@@ -157,10 +157,13 @@ export default function TreinoDetailScreen() {
         <View style={styles.imageContainer}>
           {(() => {
             const images: string[] = [];
+            // Priorizar imagem_capa_url se existir
+            const mainImg = (treino as any).imagem_capa_url || treino.imagem_url;
+            
             if (treino.imagens_url && Array.isArray(treino.imagens_url) && treino.imagens_url.length > 0) {
               images.push(...treino.imagens_url.map(img => getImageUrl(img) || '').filter(Boolean));
-            } else if (treino.imagem_url) {
-              const imgUrl = getImageUrl(treino.imagem_url);
+            } else if (mainImg) {
+              const imgUrl = getImageUrl(mainImg);
               if (imgUrl) images.push(imgUrl);
             }
             if (images.length > 0) {

@@ -374,12 +374,20 @@ export default function ReceitaDetailScreen() {
       }
 
       // Para substituições simples, buscar ingredientes similares e calcular diferença
+      const getBaseValue = (val: any) => {
+        if (!val) return 0;
+        const strVal = String(val).replace(',', '.');
+        // Se for um intervalo (ex: 180-220), pegar o primeiro número
+        const match = strVal.match(/(\d+(?:\.\d+)?)/);
+        return match ? parseFloat(match[1]) : 0;
+      };
+
       const macrosOriginal = {
-        calorias: parseFloat(String(receita.calorias).replace(',', '.')) || 0,
-        proteinas: parseFloat(String(receita.proteinas).replace(',', '.')) || 0,
-        carboidratos: parseFloat(String(receita.carboidratos).replace(',', '.')) || 0,
-        gorduras: parseFloat(String(receita.gorduras).replace(',', '.')) || 0,
-        fibras: parseFloat(String(receita.fibras).replace(',', '.')) || 0,
+        calorias: getBaseValue(receita.calorias),
+        proteinas: getBaseValue(receita.proteinas),
+        carboidratos: getBaseValue(receita.carboidratos),
+        gorduras: getBaseValue(receita.gorduras),
+        fibras: getBaseValue(receita.fibras),
       };
 
       console.log('📊 Macros originais:', macrosOriginal);

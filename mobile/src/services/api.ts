@@ -20,6 +20,9 @@ export interface User {
   nome: string;
   role: string;
   subscription_tier: 'none' | 'basic' | 'free' | 'premium' | 'premium_fit';
+  subscription_expires_at?: string;
+  trial_expires_at?: string;
+  dieta_atual?: string;
 }
 
 export interface Receita {
@@ -31,7 +34,12 @@ export interface Receita {
   imagem_url?: string;
   imagens_url?: string[];
   video_url?: string;
+  video_thumbnail_url?: string;
+  ebook_url?: string;
   categorias?: any[];
+  dificuldade: 'facil' | 'medio' | 'dificil';
+  tempo_preparo: number;
+  porcoes: number;
   is_premium: boolean;
   ativa: boolean;
   substituicoes_ingredientes?: Record<string, any>;
@@ -42,6 +50,11 @@ export interface Receita {
   fibras?: string;
   sodio?: string;
   finalizacao?: string;
+  informacoes_nutricionais?: string;
+  aviso_nutricional?: string;
+  dica?: string;
+  avaliacao?: number;
+  total_avaliacoes?: number;
 }
 
 export interface Treino {
@@ -51,12 +64,18 @@ export interface Treino {
   exercicios: string[];
   imagem_url?: string;
   video_url?: string;
+  nivel: 'iniciante' | 'intermediario' | 'avancado';
+  duracao_minutos: number;
   is_premium: boolean;
   ativa: boolean;
+  exercicios_detalhados?: any[];
+  avaliacao?: number;
+  total_avaliacoes?: number;
 }
 
 class ApiService {
   private async request<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
+    const netInfo = await NetInfo.fetch();
     const token = await AsyncStorage.getItem('auth_token');
     const headers: HeadersInit = {
       'Content-Type': 'application/json',
@@ -75,7 +94,6 @@ class ApiService {
       if (response.status === 401) {
         if (!endpoint.includes('/auth/login')) {
           await AsyncStorage.removeItem('auth_token');
-          // Forçar recarregamento se estiver no navegador para limpar estado de autenticação
           if (Platform.OS === 'web') {
             window.location.href = '/login';
           }
@@ -104,6 +122,17 @@ class ApiService {
       await AsyncStorage.setItem('auth_token', data.access_token);
     }
     return data;
+  }
+
+  async register(email: string, nome: string, senha: string) {
+    return this.request<any>('/auth/register', {
+      method: 'POST',
+      body: JSON.stringify({ email, nome, senha }),
+    });
+  }
+
+  async logout() {
+    await AsyncStorage.removeItem('auth_token');
   }
 
   async getProfile() { 
@@ -170,7 +199,6 @@ class ApiService {
 
   async checkIsFavorito(itemId: string, tipo: string) {
     try {
-      // Corrigida a ordem dos parâmetros para bater com a rota da API
       return await this.request<boolean>(`/favoritos/check?itemId=${itemId}&tipo=${tipo}`);
     } catch {
       return false;
@@ -249,6 +277,14 @@ class ApiService {
   async buscarIngredienteSimilar(nome: string) {
     try {
       return await this.request<any>(`/ingredientes/buscar-similar?nome=${encodeURIComponent(nome)}`);
+    } catch {
+      return null;
+    }
+  }
+
+  async calcularMacrosComSubstituicao(receitaId: string) {
+    try {
+      return await this.request<any>(`/receitas/${receitaId}/macros/substituicao`);
     } catch {
       return null;
     }
