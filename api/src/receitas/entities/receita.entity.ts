@@ -72,7 +72,7 @@ export class Receita {
   @Column({ nullable: true })
   ebook_url: string;
 
-  @ManyToMany(() => CategoriaReceita, { eager: false })
+  @ManyToMany(() => CategoriaReceita, (categoria) => categoria.receitas, { eager: false })
   @JoinTable({
     name: 'receitas_categorias',
     joinColumn: { name: 'receita_id', referencedColumnName: 'id' },

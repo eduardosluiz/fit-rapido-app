@@ -1,28 +1,243 @@
-page-2a4b5c1b11edd667.js:1  PATCH https://backend.daipohlmann.com.br/receitas/205dcfef-8fe7-4b6d-9b02-b90b700ad970 404 (Not Found)
-request @ page-2a4b5c1b11edd667.js:1
-updateReceita @ page-2a4b5c1b11edd667.js:1
-E @ 4747-00a668ffd1319881.js:1
-i8 @ 4bd1b696-f785427dddbba9fb.js:1
-(anonymous) @ 4bd1b696-f785427dddbba9fb.js:1
-nz @ 4bd1b696-f785427dddbba9fb.js:1
-sn @ 4bd1b696-f785427dddbba9fb.js:1
-cc @ 4bd1b696-f785427dddbba9fb.js:1
-ci @ 4bd1b696-f785427dddbba9fb.js:1Understand this error
-layout-ab2d981cd8ef31f6.js:1 ❌ Erro na API (404): {"message":"Receita não encontrada","error":"Not Found","statusCode":404}
-(anonymous) @ layout-ab2d981cd8ef31f6.js:1
-setTimeout
-push.1586.console.error @ layout-ab2d981cd8ef31f6.js:1
-request @ page-2a4b5c1b11edd667.js:1
-await in request
-updateReceita @ page-2a4b5c1b11edd667.js:1
-E @ 4747-00a668ffd1319881.js:1
-i8 @ 4bd1b696-f785427dddbba9fb.js:1
-(anonymous) @ 4bd1b696-f785427dddbba9fb.js:1
-nz @ 4bd1b696-f785427dddbba9fb.js:1
-sn @ 4bd1b696-f785427dddbba9fb.js:1
-cc @ 4bd1b696-f785427dddbba9fb.js:1
-ci @ 4bd1b696-f785427dddbba9fb.js:1Understand this error
-layout-ab2d981cd8ef31f6.js:1 ❌ Erro ao atualizar receita: Error: Erro desconhecido
-    at s.request (page-2a4b5c1b11edd667.js:1:1113)
-    at async s.updateReceita (page-2a4b5c1b11edd667.js:1:3499)
-    at async E (4747-00a668ffd1319881.js:1:3438)
+> fit-rapido-api@0.1.0 start:prod
+> node dist/main.js
+
+[Nest] 20  - 05/16/2026, 2:32:48 AM     LOG [NestFactory] Starting Nest application...
+[Nest] 20  - 05/16/2026, 2:32:48 AM     LOG [InstanceLoader] AppModule dependencies initialized +120ms
+[Nest] 20  - 05/16/2026, 2:32:48 AM     LOG [InstanceLoader] TypeOrmModule dependencies initialized +0ms
+[Nest] 20  - 05/16/2026, 2:32:48 AM     LOG [InstanceLoader] PassportModule dependencies initialized +1ms
+[Nest] 20  - 05/16/2026, 2:32:48 AM     LOG [InstanceLoader] ConfigHostModule dependencies initialized +2ms
+[Nest] 20  - 05/16/2026, 2:32:48 AM     LOG [InstanceLoader] ConfigModule dependencies initialized +5ms
+[Nest] 20  - 05/16/2026, 2:32:48 AM     LOG [InstanceLoader] ConfigModule dependencies initialized +2ms
+[Nest] 20  - 05/16/2026, 2:32:48 AM     LOG [InstanceLoader] JwtModule dependencies initialized +4ms
+[Nest] 20  - 05/16/2026, 2:32:48 AM     LOG [InstanceLoader] UploadModule dependencies initialized +2ms
+[Nest] 20  - 05/16/2026, 2:32:48 AM     LOG [InstanceLoader] IAModule dependencies initialized +0ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [IAService] ✅ OpenAI configurado com sucesso
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [InstanceLoader] TypeOrmCoreModule dependencies initialized +1ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [InstanceLoader] TypeOrmModule dependencies initialized +0ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [InstanceLoader] TypeOrmModule dependencies initialized +0ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [InstanceLoader] TypeOrmModule dependencies initialized +0ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [InstanceLoader] TypeOrmModule dependencies initialized +0ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [InstanceLoader] TypeOrmModule dependencies initialized +0ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [InstanceLoader] TypeOrmModule dependencies initialized +0ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [InstanceLoader] TypeOrmModule dependencies initialized +0ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [InstanceLoader] TypeOrmModule dependencies initialized +0ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [InstanceLoader] TypeOrmModule dependencies initialized +0ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [InstanceLoader] TypeOrmModule dependencies initialized +0ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [InstanceLoader] NotificationsModule dependencies initialized +35ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [InstanceLoader] FavoritosModule dependencies initialized +1ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [InstanceLoader] LegalModule dependencies initialized +0ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [InstanceLoader] AtividadesModule dependencies initialized +0ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [InstanceLoader] IngredientesModule dependencies initialized +9ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [InstanceLoader] AvaliacoesModule dependencies initialized +1ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [InstanceLoader] SubscriptionsModule dependencies initialized +1ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [InstanceLoader] AuthModule dependencies initialized +0ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [InstanceLoader] ReceitasModule dependencies initialized +0ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [InstanceLoader] TreinosModule dependencies initialized +0ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [RoutesResolver] AuthController {/auth}: +10ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [RouterExplorer] Mapped {/auth, GET} route +4ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [RouterExplorer] Mapped {/auth/register, POST} route +10ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [RouterExplorer] Mapped {/auth/login, POST} route +1ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [RouterExplorer] Mapped {/auth/profile, GET} route +1ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [RouterExplorer] Mapped {/auth/users, GET} route +1ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [RouterExplorer] Mapped {/auth/users/:id, GET} route +1ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [RouterExplorer] Mapped {/auth/users/:id, PATCH} route +4ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [RouterExplorer] Mapped {/auth/profile, DELETE} route +0ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [RoutesResolver] ReceitasController {/receitas}: +0ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [RouterExplorer] Mapped {/receitas, POST} route +1ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [RouterExplorer] Mapped {/receitas, GET} route +1ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [RouterExplorer] Mapped {/receitas/:id, GET} route +0ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [RouterExplorer] Mapped {/receitas/:id/macros, GET} route +0ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [RouterExplorer] Mapped {/receitas/macros/calcular-diarios, POST} route +1ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [RouterExplorer] Mapped {/receitas/:id, PATCH} route +0ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [RouterExplorer] Mapped {/receitas/:id, DELETE} route +1ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [RoutesResolver] CategoriasReceitasController {/categorias-receitas}: +0ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [RouterExplorer] Mapped {/categorias-receitas, POST} route +0ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [RouterExplorer] Mapped {/categorias-receitas, GET} route +1ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [RouterExplorer] Mapped {/categorias-receitas/:id, GET} route +0ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [RouterExplorer] Mapped {/categorias-receitas/slug/:slug, GET} route +1ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [RouterExplorer] Mapped {/categorias-receitas/:id, PATCH} route +0ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [RouterExplorer] Mapped {/categorias-receitas/:id, DELETE} route +1ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [RoutesResolver] NotificationsController {/notifications}: +0ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [RouterExplorer] Mapped {/notifications/register-token, POST} route +0ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [RouterExplorer] Mapped {/notifications/remove-token/:token, DELETE} route +1ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [RouterExplorer] Mapped {/notifications/tokens, GET} route +0ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [RouterExplorer] Mapped {/notifications/send, POST} route +1ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [RouterExplorer] Mapped {/notifications/send-to-user/:userId, POST} route +0ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [RouterExplorer] Mapped {/notifications/history, GET} route +1ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [RouterExplorer] Mapped {/notifications/mark-as-read/:notificationId, POST} route +0ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [RoutesResolver] UploadController {/upload}: +0ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [RouterExplorer] Mapped {/upload/imagem, POST} route +10ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [RouterExplorer] Mapped {/upload/video, POST} route +0ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [RoutesResolver] TreinosController {/treinos}: +1ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [RouterExplorer] Mapped {/treinos, POST} route +0ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [RouterExplorer] Mapped {/treinos, GET} route +0ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [RouterExplorer] Mapped {/treinos/:id, GET} route +1ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [RouterExplorer] Mapped {/treinos/:id, PATCH} route +0ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [RouterExplorer] Mapped {/treinos/:id, DELETE} route +0ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [RoutesResolver] CategoriasTreinosController {/categorias-treinos}: +0ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [RouterExplorer] Mapped {/categorias-treinos, POST} route +1ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [RouterExplorer] Mapped {/categorias-treinos, GET} route +0ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [RouterExplorer] Mapped {/categorias-treinos/:id, GET} route +1ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [RouterExplorer] Mapped {/categorias-treinos/:id, PATCH} route +0ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [RouterExplorer] Mapped {/categorias-treinos/:id, DELETE} route +1ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [RoutesResolver] ExerciciosBibliotecaController {/exercicios-biblioteca}: +0ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [RouterExplorer] Mapped {/exercicios-biblioteca, POST} route +0ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [RouterExplorer] Mapped {/exercicios-biblioteca, GET} route +1ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [RouterExplorer] Mapped {/exercicios-biblioteca/:id, GET} route +0ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [RouterExplorer] Mapped {/exercicios-biblioteca/:id, DELETE} route +0ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [RoutesResolver] ExerciciosCategoriasController {/exercicios-categorias}: +0ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [RouterExplorer] Mapped {/exercicios-categorias, POST} route +1ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [RouterExplorer] Mapped {/exercicios-categorias, GET} route +0ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [RouterExplorer] Mapped {/exercicios-categorias/:id, DELETE} route +1ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [RoutesResolver] TreinosModalidadesController {/treinos-modalidades}: +0ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [RouterExplorer] Mapped {/treinos-modalidades, POST} route +0ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [RouterExplorer] Mapped {/treinos-modalidades, GET} route +0ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [RouterExplorer] Mapped {/treinos-modalidades/:id, GET} route +1ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [RouterExplorer] Mapped {/treinos-modalidades/:id, PATCH} route +0ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [RouterExplorer] Mapped {/treinos-modalidades/:id, DELETE} route +1ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [RoutesResolver] FavoritosController {/favoritos}: +0ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [RouterExplorer] Mapped {/favoritos, POST} route +0ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [RouterExplorer] Mapped {/favoritos, GET} route +1ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [RouterExplorer] Mapped {/favoritos/check/:tipo/:itemId, GET} route +0ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [RouterExplorer] Mapped {/favoritos/:tipo/:itemId, DELETE} route +1ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [RoutesResolver] SubscriptionsController {/subscriptions}: +0ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [RouterExplorer] Mapped {/subscriptions/validate-ios, POST} route +0ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [RouterExplorer] Mapped {/subscriptions/validate-android, POST} route +1ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [RouterExplorer] Mapped {/subscriptions/status, GET} route +0ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [RouterExplorer] Mapped {/subscriptions/restore, POST} route +1ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [RouterExplorer] Mapped {/subscriptions/plans, GET} route +0ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [RoutesResolver] LegalController {/legal}: +0ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [RouterExplorer] Mapped {/legal/privacy-policy, GET} route +1ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [RouterExplorer] Mapped {/legal/terms-of-service, GET} route +0ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [RouterExplorer] Mapped {/legal/consent, POST} route +0ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [RouterExplorer] Mapped {/legal/consents, GET} route +1ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [RouterExplorer] Mapped {/legal/has-consent/:tipo, GET} route +0ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [RoutesResolver] IngredientesController {/ingredientes}: +0ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [RouterExplorer] Mapped {/ingredientes, POST} route +0ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [RouterExplorer] Mapped {/ingredientes, GET} route +1ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [RouterExplorer] Mapped {/ingredientes/search, GET} route +0ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [RouterExplorer] Mapped {/ingredientes/search/advanced, GET} route +0ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [RouterExplorer] Mapped {/ingredientes/buscar-similar, GET} route +1ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [RouterExplorer] Mapped {/ingredientes/sugerir-substitutos/:id, GET} route +0ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [RouterExplorer] Mapped {/ingredientes/validar-compatibilidade/:originalId/:substitutoId, GET} route +1ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [RouterExplorer] Mapped {/ingredientes/:id, GET} route +0ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [RouterExplorer] Mapped {/ingredientes/:id, PATCH} route +1ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [RouterExplorer] Mapped {/ingredientes/:id, DELETE} route +0ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [RoutesResolver] SubstituicoesController {/substituicoes}: +0ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [RouterExplorer] Mapped {/substituicoes, POST} route +1ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [RouterExplorer] Mapped {/substituicoes/receita/:receitaId, GET} route +0ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [RouterExplorer] Mapped {/substituicoes/historico, GET} route +1ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [RouterExplorer] Mapped {/substituicoes/frequentes, GET} route +0ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [RouterExplorer] Mapped {/substituicoes/calcular/:receitaId, GET} route +2ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [RouterExplorer] Mapped {/substituicoes/:id, DELETE} route +4ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [RoutesResolver] ReceitaIngredientesController {/receita-ingredientes}: +0ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [RouterExplorer] Mapped {/receita-ingredientes, POST} route +1ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [RouterExplorer] Mapped {/receita-ingredientes/receita/:receitaId, GET} route +0ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [RouterExplorer] Mapped {/receita-ingredientes/:id, GET} route +1ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [RouterExplorer] Mapped {/receita-ingredientes/:id, PATCH} route +0ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [RouterExplorer] Mapped {/receita-ingredientes/:id, DELETE} route +3ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [RoutesResolver] IAController {/ingredientes/ia}: +1ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [RouterExplorer] Mapped {/ingredientes/ia/consulta, POST} route +0ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [RouterExplorer] Mapped {/ingredientes/ia/consultas, GET} route +1ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [RouterExplorer] Mapped {/ingredientes/ia/consultas/receita/:receitaId, GET} route +0ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [RouterExplorer] Mapped {/ingredientes/ia/consultas/:id/aplicar, PATCH} route +1ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [RoutesResolver] AtividadesController {/atividades}: +0ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [RouterExplorer] Mapped {/atividades, POST} route +1ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [RouterExplorer] Mapped {/atividades, GET} route +0ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [RouterExplorer] Mapped {/atividades/check/:tipo/:itemId, GET} route +0ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [RouterExplorer] Mapped {/atividades/:tipo/:itemId, DELETE} route +1ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [RoutesResolver] AvaliacoesController {/avaliacoes}: +0ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [RouterExplorer] Mapped {/avaliacoes, POST} route +0ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [RouterExplorer] Mapped {/avaliacoes/:tipo/:itemId, GET} route +2ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [RouterExplorer] Mapped {/avaliacoes/:tipo/:itemId, PUT} route +1ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [RouterExplorer] Mapped {/avaliacoes/:tipo/:itemId, DELETE} route +0ms
+[Nest] 20  - 05/16/2026, 2:32:49 AM     LOG [RoutesResolver] IAController {/ia}: +0ms
+[Nest] 20  - 05/16/2026, 2:32:50 AM     LOG [RouterExplorer] Mapped {/ia/chat-ingredientes/:recipeId, POST} route +1ms
+[Nest] 20  - 05/16/2026, 2:32:50 AM     LOG [SupabaseService] Conectado ao cliente de armazenamento do Supabase
+[Nest] 20  - 05/16/2026, 2:32:50 AM     LOG [NestApplication] Nest application successfully started +8ms
+[RECEITAS CONTROLLER] Usuário autenticado: dai@gmail.com, Role: admin, É admin: true, É dai@gmail.com: true
+[DEBUG] ⚠️  Admin detectado - ignorando filtro isPremium=false
+[RECEITAS CONTROLLER] Usuário autenticado: dai@gmail.com, Role: admin, É admin: true, É dai@gmail.com: true
+[DEBUG] ⚠️  Admin detectado - ignorando filtro isPremium=false
+[RECEITAS CONTROLLER] Retornando 138 receitas para o frontend
+[RECEITAS CONTROLLER] Receitas PREMIUM retornadas: 138
+[RECEITAS CONTROLLER] Receitas FREE retornadas: 1
+[RECEITAS CONTROLLER] Retornando 138 receitas para o frontend
+[RECEITAS CONTROLLER] Receitas PREMIUM retornadas: 138
+[RECEITAS CONTROLLER] Receitas FREE retornadas: 1
+Histórico de notificações para usuário 3fff36c3-1fea-4f35-9e41-4da95130fe83: 50 notificações encontradas
+Primeira notificação: {
+  id: '382906d3-6fcf-411d-a4b7-9ae86c4982f9',
+  titulo: '💪 Novo Treino Disponível!',
+  tipo: 'treino',
+  item_id: '4c5dcf9d-99b5-4b63-a675-c31ebf8a8989',
+  usuario_id: null
+}
+[RECEITAS CONTROLLER] Usuário autenticado: dai@gmail.com, Role: admin, É admin: true, É dai@gmail.com: true
+[DEBUG] ⚠️  Admin detectado - ignorando filtro isPremium=false
+[RECEITAS CONTROLLER] Retornando 138 receitas para o frontend
+[RECEITAS CONTROLLER] Receitas PREMIUM retornadas: 138
+[RECEITAS CONTROLLER] Receitas FREE retornadas: 1
+[RECEITAS CONTROLLER] Usuário autenticado: dai@gmail.com, Role: admin, É admin: true, É dai@gmail.com: true
+[DEBUG] ⚠️  Admin detectado - ignorando filtro isPremium=false
+[RECEITAS CONTROLLER] Retornando 138 receitas para o frontend
+[RECEITAS CONTROLLER] Receitas PREMIUM retornadas: 138
+[RECEITAS CONTROLLER] Receitas FREE retornadas: 1
+[RECEITAS CONTROLLER] Usuário autenticado: dai@gmail.com, Role: admin, É admin: true, É dai@gmail.com: true
+[DEBUG] ⚠️  Admin detectado - ignorando filtro isPremium=false
+[RECEITAS CONTROLLER] Retornando 138 receitas para o frontend
+[RECEITAS CONTROLLER] Receitas PREMIUM retornadas: 138
+[RECEITAS CONTROLLER] Receitas FREE retornadas: 1
+[RECEITAS CONTROLLER] Usuário autenticado: dai@gmail.com, Role: admin, É admin: true, É dai@gmail.com: true
+[DEBUG] ⚠️  Admin detectado - ignorando filtro isPremium=false
+[RECEITAS CONTROLLER] Retornando 138 receitas para o frontend
+[RECEITAS CONTROLLER] Receitas PREMIUM retornadas: 138
+[RECEITAS CONTROLLER] Receitas FREE retornadas: 1
+[Nest] 20  - 05/16/2026, 2:35:59 AM     LOG [SupabaseService] Sucesso! URL: https://occddouiyqvcdhtxpbej.supabase.co/storage/v1/object/public/treinos/geral/img-1778898958782-970415179.jpeg
+[Nest] 20  - 05/16/2026, 2:37:16 AM   ERROR [ExceptionsHandler] TypeError: Cannot read properties of undefined (reading 'tablePath')
+    at /app/node_modules/typeorm/query-builder/SelectQueryBuilder.js:1255:75
+    at Array.map (<anonymous>)
+    at SelectQueryBuilder.createJoinExpression (/app/node_modules/typeorm/query-builder/SelectQueryBuilder.js:1161:57)
+    at SelectQueryBuilder.getQuery (/app/node_modules/typeorm/query-builder/SelectQueryBuilder.js:54:21)
+    at SelectQueryBuilder.executeEntitiesAndRawResults (/app/node_modules/typeorm/query-builder/SelectQueryBuilder.js:2024:18)
+    at SelectQueryBuilder.getRawAndEntities (/app/node_modules/typeorm/query-builder/SelectQueryBuilder.js:684:40)
+    at SelectQueryBuilder.getOne (/app/node_modules/typeorm/query-builder/SelectQueryBuilder.js:711:36)
+    at EntityManager.findOne (/app/node_modules/typeorm/entity-manager/EntityManager.js:627:14)
+    at Repository.findOne (/app/node_modules/typeorm/repository/Repository.js:276:29)
+    at CategoriasReceitasService.findOne (/app/dist/receitas/categorias-receitas.service.js:41:58)
+[RECEITAS CONTROLLER] Usuário autenticado: dai@gmail.com, Role: admin, É admin: true, É dai@gmail.com: true
+[DEBUG] ⚠️  Admin detectado - ignorando filtro isPremium=false
+[RECEITAS CONTROLLER] Retornando 138 receitas para o frontend
+[RECEITAS CONTROLLER] Receitas PREMIUM retornadas: 138
+[RECEITAS CONTROLLER] Receitas FREE retornadas: 1
+[RECEITAS CONTROLLER] Usuário autenticado: dai@gmail.com, Role: admin, É admin: true, É dai@gmail.com: true
+[DEBUG] ⚠️  Admin detectado - ignorando filtro isPremium=false
+[RECEITAS CONTROLLER] Usuário autenticado: dai@gmail.com, Role: admin, É admin: true, É dai@gmail.com: true
+[DEBUG] ⚠️  Admin detectado - ignorando filtro isPremium=false
+[RECEITAS CONTROLLER] Retornando 0 receitas para o frontend
+[RECEITAS CONTROLLER] Receitas PREMIUM retornadas: 0
+[RECEITAS CONTROLLER] Receitas FREE retornadas: 0
+[RECEITAS CONTROLLER] Usuário autenticado: dai@gmail.com, Role: admin, É admin: true, É dai@gmail.com: true
+[DEBUG] ⚠️  Admin detectado - ignorando filtro isPremium=false
+[RECEITAS CONTROLLER] Retornando 138 receitas para o frontend
+[RECEITAS CONTROLLER] Receitas PREMIUM retornadas: 138
+[RECEITAS CONTROLLER] Receitas FREE retornadas: 1
+[RECEITAS CONTROLLER] Retornando 0 receitas para o frontend
+[RECEITAS CONTROLLER] Receitas PREMIUM retornadas: 0
+[RECEITAS CONTROLLER] Receitas FREE retornadas: 0
+[RECEITAS CONTROLLER] Usuário autenticado: dai@gmail.com, Role: admin, É admin: true, É dai@gmail.com: true
+[DEBUG] ⚠️  Admin detectado - ignorando filtro isPremium=false
+[RECEITAS CONTROLLER] Retornando 138 receitas para o frontend
+[RECEITAS CONTROLLER] Receitas PREMIUM retornadas: 138
+[RECEITAS CONTROLLER] Receitas FREE retornadas: 1
+[Nest] 20  - 05/16/2026, 2:50:52 AM   ERROR [ExceptionsHandler] TypeError: Cannot read properties of undefined (reading 'tablePath')
+    at /app/node_modules/typeorm/query-builder/SelectQueryBuilder.js:1255:75
+    at Array.map (<anonymous>)
+    at SelectQueryBuilder.createJoinExpression (/app/node_modules/typeorm/query-builder/SelectQueryBuilder.js:1161:57)
+    at SelectQueryBuilder.getQuery (/app/node_modules/typeorm/query-builder/SelectQueryBuilder.js:54:21)
+    at SelectQueryBuilder.executeEntitiesAndRawResults (/app/node_modules/typeorm/query-builder/SelectQueryBuilder.js:2024:18)
+    at SelectQueryBuilder.getRawAndEntities (/app/node_modules/typeorm/query-builder/SelectQueryBuilder.js:684:40)
+    at SelectQueryBuilder.getOne (/app/node_modules/typeorm/query-builder/SelectQueryBuilder.js:711:36)
+    at EntityManager.findOne (/app/node_modules/typeorm/entity-manager/EntityManager.js:627:14)
+    at Repository.findOne (/app/node_modules/typeorm/repository/Repository.js:276:29)
+    at CategoriasReceitasService.findOne (/app/dist/receitas/categorias-receitas.service.js:41:58)

@@ -412,7 +412,7 @@ const styles = StyleSheet.create({
     padding: 6,
   },
   filterChipText: {
-    fontSize: 10,
+    fontSize: 9,
     color: '#ffffff',
     fontFamily: fonts.bold,
     textAlign: 'center',

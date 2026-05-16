@@ -236,7 +236,7 @@ export function CategoriasModal({
                         value={formData.nome} 
                         onChange={(e) => handleNomeChange(e.target.value)} 
                         placeholder="Ex: CAFÉ DA MANHÃ"
-                        className="w-full bg-gray-50/80 dark:bg-[#111] border border-gray-300 dark:border-[#444] rounded-md px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#c8921a]/20 focus:border-[#c8921a] text-gray-900 dark:text-white font-medium transition-all placeholder:text-gray-500"
+                        className="w-full h-[42px] bg-gray-50/80 dark:bg-[#111] border border-gray-300 dark:border-[#444] rounded-md px-4 text-sm focus:outline-none focus:ring-2 focus:ring-[#c8921a]/20 focus:border-[#c8921a] text-gray-900 dark:text-white font-medium transition-all placeholder:text-gray-500"
                         required
                       />
                     </div>
@@ -246,7 +246,7 @@ export function CategoriasModal({
                         value={formData.slug} 
                         onChange={(e) => setFormData({...formData, slug: e.target.value})} 
                         placeholder="cafe-da-manha"
-                        className="w-full bg-gray-50/80 dark:bg-[#111] border border-gray-300 dark:border-[#444] rounded-md px-4 py-2.5 text-[12px] focus:outline-none focus:ring-2 focus:ring-[#c8921a]/20 focus:border-[#c8921a] text-gray-700 dark:text-gray-300 transition-all placeholder:text-gray-500"
+                        className="w-full h-[42px] bg-gray-50/80 dark:bg-[#111] border border-gray-300 dark:border-[#444] rounded-md px-4 text-sm focus:outline-none focus:ring-2 focus:ring-[#c8921a]/20 focus:border-[#c8921a] text-gray-700 dark:text-gray-300 transition-all placeholder:text-gray-500"
                       />
                     </div>
                   </div>
