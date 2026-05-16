@@ -199,7 +199,7 @@ class ApiService {
 
   async checkIsFavorito(tipo: string, itemId: string) {
     try {
-      return await this.request<any>(`/favoritos/check?itemId=${itemId}&tipo=${tipo}`);
+      return await this.request<any>(`/favoritos/check/${tipo}/${itemId}`);
     } catch {
       return { is_favorito: false };
     }
@@ -238,7 +238,7 @@ class ApiService {
 
   async verificarFezHoje(itemId: string, tipo: string) {
     try {
-      return await this.request<{ fezHoje: boolean }>(`/atividades/check?itemId=${itemId}&tipo=${tipo}`);
+      return await this.request<{ fezHoje: boolean }>(`/atividades/check/${tipo}/${itemId}`);
     } catch {
       return { fezHoje: false };
     }
