@@ -99,7 +99,14 @@ export default function ReceitaCardAnimated({ item, isHorizontal, onPress, order
             {item.calorias && (
               <View style={styles.metaItem}>
                 <Ionicons name="flame-outline" size={12} color={colors.textMuted} />
-                <Text style={styles.metaText}>{Math.round(item.calorias)} kcal</Text>
+                <Text style={styles.metaText}>
+                  {(() => {
+                    const strVal = String(item.calorias);
+                    const match = strVal.match(/(\d+(?:\.\d+)?)/);
+                    const num = match ? parseFloat(match[1]) : 0;
+                    return Math.round(num);
+                  })()} kcal
+                </Text>
               </View>
             )}
             <View style={styles.metaItem}>
