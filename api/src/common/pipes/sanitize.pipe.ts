@@ -13,6 +13,14 @@ export class SanitizePipe implements PipeTransform {
   }
 
   private sanitizeObject(obj: any): any {
+    if (Array.isArray(obj)) {
+      return obj.map(item => {
+        if (typeof item === 'string') return this.sanitizeString(item);
+        if (typeof item === 'object' && item !== null) return this.sanitizeObject(item);
+        return item;
+      });
+    }
+
     const sanitized: any = {};
     for (const key in obj) {
       if (obj.hasOwnProperty(key)) {
