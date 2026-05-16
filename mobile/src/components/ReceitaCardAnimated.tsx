@@ -75,7 +75,7 @@ export default function ReceitaCardAnimated({ item, isHorizontal, onPress, order
         <View style={styles.imageContainer}>
           {renderMedia()}
           
-          {orderNumber && (
+          {!!orderNumber && (
             <View style={styles.orderBadge}>
               <Text style={styles.orderText}>{orderNumber}</Text>
             </View>
@@ -96,7 +96,7 @@ export default function ReceitaCardAnimated({ item, isHorizontal, onPress, order
               <Ionicons name="time-outline" size={12} color={colors.textMuted} />
               <Text style={styles.metaText}>{item.tempo_preparo || 0} min</Text>
             </View>
-            {item.calorias && (
+            {!!item.calorias && (
               <View style={styles.metaItem}>
                 <Ionicons name="flame-outline" size={12} color={colors.textMuted} />
                 <Text style={styles.metaText}>

@@ -113,11 +113,11 @@ export default function TreinoDetailScreen() {
         <View style={styles.loadingContainer}>
           <ActivityIndicator size="large" color="#c8921a" />
         </View>
-      </SafeAreaView>
-    );
-  }
+        </SafeAreaView>
+        );
+        }
 
-  if (!treino) {
+        if (!treino) {
     return (
       <SafeAreaView style={styles.container}>
         <View style={styles.loadingContainer}>
