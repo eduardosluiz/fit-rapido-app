@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { api } from '@/lib/api';
@@ -376,14 +376,28 @@ export default function NovaReceita() {
                         <div key={index} className="grid grid-cols-1 md:grid-cols-12 gap-4 items-end animate-in fade-in duration-300">
                           <div className="md:col-span-5 space-y-1.5">
                             <label className="text-[8px] font-bold uppercase text-gray-400 ml-0.5">Ingrediente da Receita</label>
-                            <select value={sub.ingrediente} onChange={(e) => {
-                              const novas = [...formData.substituicoes_ingredientes];
-                              novas[index].ingrediente = e.target.value;
-                              setFormData({...formData, substituicoes_ingredientes: novas});
-                            }} className="w-full h-[38px] bg-white dark:bg-[#111] border border-gray-300 dark:border-[#444] rounded px-3 text-sm focus:border-[#c8921a] outline-none">
-                              <option value="">Selecione...</option>
-                              {ingredientesLista.map((ing, i) => <option key={i} value={ing}>{ing}</option>)}
-                            </select>
+                            <input
+                              list={`ingredientes-list-${index}`}
+                              value={sub.ingrediente}
+                              onChange={(e) => {
+                                const novas = [...formData.substituicoes_ingredientes];
+                                novas[index].ingrediente = e.target.value;
+                                setFormData({...formData, substituicoes_ingredientes: novas});
+                              }}
+                              placeholder="Ex: Óleo de coco"
+                              className="w-full h-[38px] bg-white dark:bg-[#111] border border-gray-300 dark:border-[#444] rounded px-3 text-sm focus:border-[#c8921a] outline-none"
+                            />
+                            <datalist id={`ingredientes-list-${index}`}>
+                              {ingredientesLista.map((ing, i) => {
+                                const cleanValue = ing.replace(/^[•\-\d\s\/¼½¾]+|^\w+[:]\s*|[\d,.]+\s*(g|ml|xícara|colher|pitada)\w*\s*(de)?\s*/gi, '').trim();
+                                return (
+                                  <React.Fragment key={i}>
+                                    <option value={ing} />
+                                    {cleanValue !== ing && <option value={cleanValue} />}
+                                  </React.Fragment>
+                                );
+                              })}
+                            </datalist>
                           </div>
                           <div className="md:col-span-6 space-y-1.5">
                             <label className="text-[8px] font-bold uppercase text-gray-400 ml-0.5">Opção Substituta</label>

@@ -197,11 +197,11 @@ class ApiService {
     }
   }
 
-  async checkIsFavorito(itemId: string, tipo: string) {
+  async checkIsFavorito(tipo: string, itemId: string) {
     try {
-      return await this.request<boolean>(`/favoritos/check?itemId=${itemId}&tipo=${tipo}`);
+      return await this.request<any>(`/favoritos/check?itemId=${itemId}&tipo=${tipo}`);
     } catch {
-      return false;
+      return { is_favorito: false };
     }
   }
 
@@ -210,6 +210,14 @@ class ApiService {
       method: 'POST',
       body: JSON.stringify({ itemId, tipo }),
     });
+  }
+
+  async addFavorito(tipo: string, itemId: string) {
+    return this.toggleFavorito(itemId, tipo);
+  }
+
+  async removeFavorito(tipo: string, itemId: string) {
+    return this.toggleFavorito(itemId, tipo);
   }
 
   async getReceitaIngredientes(receitaId: string) {

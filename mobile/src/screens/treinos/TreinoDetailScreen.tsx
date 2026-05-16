@@ -214,7 +214,7 @@ export default function TreinoDetailScreen() {
           </View>
         </View>
 
-        {treino.descricao && treino.descricao !== treino.titulo && treino.descricao.trim() !== '' && (
+        {!!treino.descricao && treino.descricao !== treino.titulo && treino.descricao.trim() !== '' && (
           <Text style={styles.description}>{treino.descricao}</Text>
         )}
 
@@ -279,7 +279,7 @@ export default function TreinoDetailScreen() {
           </View>
         )}
 
-        {treino.observacoes && treino.observacoes.trim() !== '' && (
+        {!!treino.observacoes && treino.observacoes.trim() !== '' && (
           <View style={styles.section}>
             <View style={styles.sectionTitleContainer}>
               <View style={styles.sectionTitleRow}>
@@ -292,7 +292,7 @@ export default function TreinoDetailScreen() {
           </View>
         )}
 
-        {treino.video_url && (
+        {!!treino.video_url && (
           <View style={styles.section}>
             <View style={styles.sectionTitleContainer}>
               <View style={styles.sectionTitleRow}>
@@ -308,7 +308,7 @@ export default function TreinoDetailScreen() {
         )}
       </ScrollView>
 
-      {treino && treino.video_url && (
+      {treino && !!treino.video_url && (
         <Modal visible={showVideoPlayer} animationType="slide" onRequestClose={() => setShowVideoPlayer(false)}>
           <VideoPlayer videoUrl={treino.video_url} title={treino.titulo} onClose={() => setShowVideoPlayer(false)} />
         </Modal>

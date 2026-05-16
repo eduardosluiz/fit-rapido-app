@@ -1,22 +1,28 @@
-Substituições Inteligentes (Opcional)
-Adicionar Nova
-Ingrediente da Receita
-Selecione...
-Opção Substituta
-proteína vegetal ou colágeno
-
-Ingrediente da Receita
-Selecione...
-Opção Substituta
-amêndoas, castanhas ou nozes
-
-Ingrediente da Receita
-Selecione...
-Opção Substituta
-sem lactose ou vegetal
-
-Ingrediente da Receita
-Selecione...
-Opção Substituta
-TCM (sabor mais neutro)
-
+page-2a4b5c1b11edd667.js:1  PATCH https://backend.daipohlmann.com.br/receitas/205dcfef-8fe7-4b6d-9b02-b90b700ad970 404 (Not Found)
+request @ page-2a4b5c1b11edd667.js:1
+updateReceita @ page-2a4b5c1b11edd667.js:1
+E @ 4747-00a668ffd1319881.js:1
+i8 @ 4bd1b696-f785427dddbba9fb.js:1
+(anonymous) @ 4bd1b696-f785427dddbba9fb.js:1
+nz @ 4bd1b696-f785427dddbba9fb.js:1
+sn @ 4bd1b696-f785427dddbba9fb.js:1
+cc @ 4bd1b696-f785427dddbba9fb.js:1
+ci @ 4bd1b696-f785427dddbba9fb.js:1Understand this error
+layout-ab2d981cd8ef31f6.js:1 ❌ Erro na API (404): {"message":"Receita não encontrada","error":"Not Found","statusCode":404}
+(anonymous) @ layout-ab2d981cd8ef31f6.js:1
+setTimeout
+push.1586.console.error @ layout-ab2d981cd8ef31f6.js:1
+request @ page-2a4b5c1b11edd667.js:1
+await in request
+updateReceita @ page-2a4b5c1b11edd667.js:1
+E @ 4747-00a668ffd1319881.js:1
+i8 @ 4bd1b696-f785427dddbba9fb.js:1
+(anonymous) @ 4bd1b696-f785427dddbba9fb.js:1
+nz @ 4bd1b696-f785427dddbba9fb.js:1
+sn @ 4bd1b696-f785427dddbba9fb.js:1
+cc @ 4bd1b696-f785427dddbba9fb.js:1
+ci @ 4bd1b696-f785427dddbba9fb.js:1Understand this error
+layout-ab2d981cd8ef31f6.js:1 ❌ Erro ao atualizar receita: Error: Erro desconhecido
+    at s.request (page-2a4b5c1b11edd667.js:1:1113)
+    at async s.updateReceita (page-2a4b5c1b11edd667.js:1:3499)
+    at async E (4747-00a668ffd1319881.js:1:3438)

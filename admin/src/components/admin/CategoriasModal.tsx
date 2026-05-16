@@ -93,7 +93,7 @@ export function CategoriasModal({
     setSaving(true);
     try {
       if (editingId) {
-        if (type === 'receitas') await api.updateReceita(editingId, formData); // Nota: ajuste na API para categoria se necessário
+        if (type === 'receitas') await api.updateCategoria(editingId, formData);
         else await api.updateCategoriaTreino(editingId, formData);
         toast.success('Categoria atualizada');
       } else {
@@ -201,14 +201,23 @@ export function CategoriasModal({
       }
     >
       <div className="space-y-8">
-        {showForm && (
-          <div className="p-10 rounded-xl border border-gray-300 dark:border-[#333] bg-white dark:bg-[#0a0a0a] shadow-sm animate-in fade-in slide-in-from-top-2 duration-300 mb-10">
-            <div className="flex items-center justify-between mb-10 pb-6 border-b border-gray-100 dark:border-[#1a1a1a]">
-              <h3 className="text-[11px] font-bold uppercase tracking-[0.2em] text-gray-800 dark:text-gray-200">
-                {editingId ? 'Editar Categoria' : 'Registro de Nova Categoria'}
-              </h3>
-              <div className="flex items-center gap-6">
-                <span className="text-[9px] font-bold uppercase tracking-widest text-gray-700 dark:text-gray-300">Status</span>
+        <BaseModal
+          open={showForm}
+          onOpenChange={(open) => {
+            if (!open) {
+              setShowForm(false);
+              setEditingId(null);
+            }
+          }}
+          title={editingId ? 'Editar Categoria' : 'Nova Categoria'}
+          description="Registro editorial"
+          maxWidth="2xl"
+          icon="bx bx-edit"
+        >
+          <div className="p-6">
+            <div className="flex items-center justify-end mb-8 pb-4 border-b border-gray-100 dark:border-[#1a1a1a]">
+              <div className="flex items-center gap-4">
+                <span className="text-[9px] font-bold uppercase tracking-widest text-gray-700 dark:text-gray-300">Status Ativo</span>
                 <Switch 
                   checked={formData.ativa} 
                   onCheckedChange={(v) => setFormData({...formData, ativa: v})} 
@@ -217,10 +226,10 @@ export function CategoriasModal({
               </div>
             </div>
             
-            <form onSubmit={handleSubmit} className="space-y-10">
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
-                <div className="lg:col-span-7 space-y-8">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <form onSubmit={handleSubmit} className="space-y-8">
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                <div className="lg:col-span-7 space-y-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-2">
                       <label className="text-[9px] font-bold uppercase tracking-[0.15em] text-gray-800 dark:text-gray-200 ml-0.5">Nome Oficial</label>
                       <input 
@@ -253,9 +262,9 @@ export function CategoriasModal({
                   </div>
                 </div>
 
-                <div className="lg:col-span-5 flex flex-col border-l border-gray-200 dark:border-[#333] pl-12">
-                  <label className="text-[9px] font-bold uppercase tracking-[0.15em] text-gray-800 dark:text-gray-200 block mb-6 text-center w-full">Ícone de Representação</label>
-                  <div className="p-6 rounded-xl border border-gray-300 dark:border-[#444] bg-gray-50/50 dark:bg-[#111] w-full flex flex-col items-center justify-center min-h-[220px] shadow-inner">
+                <div className="lg:col-span-5 flex flex-col border-l border-gray-200 dark:border-[#333] pl-8">
+                  <label className="text-[9px] font-bold uppercase tracking-[0.15em] text-gray-800 dark:text-gray-200 block mb-4 text-center w-full">Ícone de Representação</label>
+                  <div className="p-4 rounded-xl border border-gray-300 dark:border-[#444] bg-gray-50/50 dark:bg-[#111] w-full flex flex-col items-center justify-center min-h-[220px] shadow-inner">
                     <FileUpload 
                       type="imagem" 
                       value={formData.imagem_url} 
@@ -263,31 +272,31 @@ export function CategoriasModal({
                       hideUrlInput
                     />
                     {!formData.imagem_url && (
-                      <p className="mt-4 text-[10px] text-gray-500 dark:text-gray-400 text-center px-4 font-medium italic">Selecione um ícone ou imagem quadrada (1:1)</p>
+                      <p className="mt-4 text-[10px] text-gray-500 dark:text-gray-400 text-center px-2 font-medium italic">Selecione uma imagem quadrada (1:1)</p>
                     )}
                   </div>
                 </div>
               </div>
 
-              <div className="flex gap-6 pt-10 justify-end items-center border-t border-gray-200 dark:border-[#333]">
+              <div className="flex gap-4 pt-8 justify-end items-center border-t border-gray-200 dark:border-[#333]">
                 <button 
                   type="button" 
                   onClick={() => setShowForm(false)} 
                   className="text-[10px] font-bold uppercase tracking-widest text-gray-500 hover:text-red-600 transition-colors px-6 py-2 border border-transparent hover:border-red-200 rounded-md"
                 >
-                  Descartar
+                  Cancelar
                 </button>
                 <button 
                   type="submit" 
                   disabled={saving} 
-                  className="px-12 py-3 rounded-md bg-[#c8921a] text-[#2d2106] text-[10px] font-bold uppercase tracking-widest shadow-md hover:shadow-lg hover:bg-[#b88217] transition-all disabled:opacity-50 active:scale-95"
+                  className="px-10 py-2.5 rounded-md bg-[#c8921a] text-[#2d2106] text-[10px] font-bold uppercase tracking-widest shadow-md hover:shadow-lg hover:bg-[#b88217] transition-all disabled:opacity-50 active:scale-95"
                 >
-                  {saving ? 'Sincronizando...' : 'Confirmar Categoria'}
+                  {saving ? 'Salvando...' : 'Confirmar Categoria'}
                 </button>
               </div>
             </form>
           </div>
-        )}
+        </BaseModal>
 
         <div className="data-table-container">
           <DataTable 

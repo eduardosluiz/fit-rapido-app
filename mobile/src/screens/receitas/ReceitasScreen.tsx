@@ -8,10 +8,11 @@ import {
   Animated,
   ActivityIndicator,
   TextInput,
+  Image,
 } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { useAuth } from '../../contexts/AuthContext';
-import { api, Receita } from '../../services/api';
+import { api, Receita, getImageUrl } from '../../services/api';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import colors from '../../constants/colors';
@@ -178,24 +179,31 @@ export default function ReceitasScreen() {
             keyExtractor={c => c.id}
             contentContainerStyle={styles.filtersContent}
             renderItem={({ item: cat }) => {
-              const getEmoji = (slug: string) => {
-                const emojis: Record<string, string> = {
-                  'cafe-da-manha': '☀️', 'almoco': '🍛', 'jantar': '🍽️', 'lanches': '🥪',
-                  'sobremesas': '🍮', 'airfryer': '🥘', 'rapidas': '⏱️', 'pre-treino': '💪',
-                  'pos-treino': '🍗', 'acompanhamento': '🥗', 'acompanhamentos': '🥗',
-                };
-                return emojis[slug.toLowerCase()] || '🥗';
-              };
+              const isActive = selectedCategoria === cat.id;
               return (
-                <CategoryChip 
-                  label={cat.nome} icon={getEmoji(cat.slug)} 
-                  isActive={selectedCategoria === cat.id} 
-                  compact={true}
+                <TouchableOpacity
+                  style={[styles.filterChip, isActive && styles.filterChipActive]}
                   onPress={() => {
-                    setSelectedCategoria(selectedCategoria === cat.id ? null : cat.id);
+                    setSelectedCategoria(isActive ? null : cat.id);
                     setFilterMode('todos'); 
-                  }} 
-                />
+                  }}
+                  activeOpacity={0.8}
+                >
+                  {cat.imagem_url ? (
+                    <Image
+                      source={{ uri: getImageUrl(cat.imagem_url) || '' }}
+                      style={styles.filterChipImage}
+                      resizeMode="cover"
+                    />
+                  ) : (
+                    <View style={[styles.filterChipImage, { backgroundColor: '#333' }]} />
+                  )}
+                  <View style={styles.filterChipOverlay}>
+                    <Text style={[styles.filterChipText, isActive && styles.filterChipTextActive]} numberOfLines={2}>
+                      {cat.nome}
+                    </Text>
+                  </View>
+                </TouchableOpacity>
               );
             }}
           />
@@ -368,8 +376,51 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(231,196,138,0.35)',
   },
   searchInput: { flex: 1, color: '#fff', marginLeft: 10, fontSize: 14 },
-  filtersContainer: { marginBottom: 20 },
+  filtersContainer: { marginBottom: 30 },
   filtersContent: { paddingHorizontal: 20 },
+  filterChip: {
+    width: 70,
+    height: 70,
+    borderRadius: 16,
+    backgroundColor: colors.cardBackground,
+    borderWidth: 1.2,
+    borderColor: 'rgba(231,196,138,0.3)',
+    marginRight: 12,
+    justifyContent: 'center',
+    alignItems: 'center',
+    overflow: 'hidden',
+    elevation: 8,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4.65,
+  },
+  filterChipActive: {
+    borderColor: '#c8921a',
+    borderWidth: 2,
+    shadowColor: '#c8921a',
+    shadowOpacity: 0.8,
+  },
+  filterChipImage: { width: '100%', height: '100%', position: 'absolute' },
+  filterChipOverlay: {
+    flex: 1,
+    width: '100%',
+    height: '100%',
+    backgroundColor: 'rgba(0,0,0,0.55)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 6,
+  },
+  filterChipText: {
+    fontSize: 10,
+    color: '#ffffff',
+    fontFamily: fonts.bold,
+    textAlign: 'center',
+    textTransform: 'uppercase',
+  },
+  filterChipTextActive: {
+    color: '#c8921a',
+  },
   section: { marginBottom: 20 },
   sectionHeader: { 
     flexDirection: 'row', 
