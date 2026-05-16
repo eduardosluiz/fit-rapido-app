@@ -272,10 +272,46 @@ class ApiService {
   }
 
   async updateTreino(id: string, data: any) {
-    return this.request<any>(`/treinos/${id}`, {
-      method: 'PATCH',
-      body: JSON.stringify(data),
-    });
+    const cleanData: any = {};
+    
+    for (const [key, value] of Object.entries(data)) {
+      // Remover valores inúteis
+      if (value === undefined || value === null || value === '') {
+        continue;
+      }
+
+      // Proteger arrays contra [null] ou strings vazias dentro deles
+      if (Array.isArray(value)) {
+        if (['categoria_ids', 'tags', 'grupos_musculares', 'equipamentos'].includes(key)) {
+          // Filtra para garantir que o array só tem strings válidas
+          const validStrings = value.filter(v => typeof v === 'string' && v.trim() !== '');
+          cleanData[key] = validStrings;
+          continue;
+        }
+
+        if (key === 'exercicios_detalhados') {
+          // Garante que só envie os exercícios que têm nome (já estava no form, mas é uma camada extra)
+          const validExs = value.filter(ex => ex && ex.nome && ex.nome.trim() !== '');
+          cleanData[key] = validExs;
+          continue;
+        }
+      }
+
+      cleanData[key] = value;
+    }
+
+    console.log('📤 Enviando Treino para API:', JSON.stringify(cleanData, null, 2));
+
+    try {
+      const resultado = await this.request<any>(`/treinos/${id}`, {
+        method: 'PATCH',
+        body: JSON.stringify(cleanData),
+      });
+      return resultado;
+    } catch (error: any) {
+      console.error('❌ Erro ao atualizar treino:', error);
+      throw error;
+    }
   }
 
   async deleteTreino(id: string) {
