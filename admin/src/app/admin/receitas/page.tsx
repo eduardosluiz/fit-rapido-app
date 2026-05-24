@@ -38,6 +38,7 @@ export default function AdminReceitas() {
   const [selectedCategoria, setSelectedCategoria] = useState<string>('');
   const [currentPage, setCurrentPage] = useState(1);
   const [categoriasModalOpen, setCategoriasModalOpen] = useState(false);
+  const [initialLoad, setInitialLoad] = useState(true);
   const [totalPages, setTotalPages] = useState(1);
   const itemsPerPage = 12;
 
@@ -96,6 +97,7 @@ export default function AdminReceitas() {
       setError(err.message || 'Erro ao carregar receitas');
     } finally {
       setLoading(false);
+      setInitialLoad(false);
     }
   };
 
@@ -136,10 +138,10 @@ export default function AdminReceitas() {
     }
   };
 
-  if (loading && currentPage === 1) {
+  if (initialLoad) {
     return (
-      <div className="min-h-screen bg-white flex items-center justify-center">
-        <div className="w-6 h-6 border-2 border-[#c8921a]/20 border-t-[#c8921a] rounded-full animate-spin"></div>
+      <div className="min-h-screen bg-[#fafafa] dark:bg-[#0a0a0a] flex items-center justify-center">
+        <div className="w-8 h-8 border-2 border-[#c8921a]/20 border-t-[#c8921a] rounded-full animate-spin"></div>
       </div>
     );
   }
