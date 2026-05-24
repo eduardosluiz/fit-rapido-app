@@ -102,7 +102,7 @@ export class TreinosService {
       .leftJoinAndSelect('treino.categorias', 'categorias');
 
     if (apenasAvulsos) {
-      queryBuilder.andWhere('(treino.modalidade_id IS NULL OR treino.modalidade_id = :emptyModalidade)', { emptyModalidade: '' });
+      queryBuilder.andWhere('treino.modalidade_id IS NULL');
     }
 
     if (!incluirInativas) {
