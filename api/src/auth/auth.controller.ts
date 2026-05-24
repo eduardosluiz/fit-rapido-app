@@ -11,12 +11,14 @@ import {
   HttpCode,
   HttpStatus,
   UnauthorizedException,
+  ForbiddenException,
   NotFoundException,
   UseFilters,
+  BadRequestException,
 } from '@nestjs/common';
 import { Throttle } from '@nestjs/throttler';
 import { AuthService } from './auth.service';
-import { RegisterDto, LoginDto, UpdateUserDto } from './dto/auth.dto';
+import { RegisterDto, LoginDto, UpdateUserDto, UpdatePasswordDto } from './dto/auth.dto';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { ThrottleExceptionFilter } from '../common/guards/throttle-exception.filter';
 
@@ -103,7 +105,7 @@ export class AuthController {
     
     // Se já existem admins, apenas admins podem ver
     if (currentUser.role !== 'admin') {
-      throw new UnauthorizedException('Acesso negado. Apenas administradores podem ver usuários.');
+      throw new ForbiddenException('Acesso negado. Apenas administradores podem ver usuários.');
     }
     
     return this.authService.findAll();
@@ -129,7 +131,7 @@ export class AuthController {
       return userWithoutPassword;
     }
     
-    throw new UnauthorizedException('Acesso negado. Apenas administradores podem ver usuários.');
+    throw new ForbiddenException('Acesso negado. Apenas administradores podem ver usuários.');
   }
 
   @Patch('users/:id')
@@ -153,7 +155,37 @@ export class AuthController {
       return this.authService.updateUser(id, updateUserDto, currentUser.role);
     }
     
-    throw new UnauthorizedException('Acesso negado. Apenas administradores podem editar usuários.');
+    throw new ForbiddenException('Acesso negado. Apenas administradores podem editar usuários.');
+  }
+
+  @Post('change-password')
+  @UseGuards(JwtAuthGuard)
+  @HttpCode(HttpStatus.OK)
+  async changePassword(@Request() req, @Body() updatePasswordDto: UpdatePasswordDto) {
+    await this.authService.changePassword(req.user.sub, updatePasswordDto);
+    return { message: 'Senha atualizada com sucesso' };
+  }
+
+  @Patch('users/:id/password')
+  @UseGuards(JwtAuthGuard)
+  @HttpCode(HttpStatus.OK)
+  async adminChangePassword(
+    @Param('id') id: string,
+    @Body('nova_senha') nova_senha: string,
+    @Request() req,
+  ) {
+    if (!nova_senha || nova_senha.length < 6) {
+      throw new BadRequestException('A nova senha deve ter pelo menos 6 caracteres');
+    }
+
+    // Verificar se o usuário é admin
+    const currentUser = await this.authService.findById(req.user.sub);
+    if (!currentUser || currentUser.role !== 'admin') {
+      throw new ForbiddenException('Acesso negado. Apenas administradores podem alterar a senha de outros usuários.');
+    }
+
+    await this.authService.adminChangePassword(id, nova_senha);
+    return { message: 'Senha do usuário atualizada com sucesso' };
   }
 
   @Delete('profile')

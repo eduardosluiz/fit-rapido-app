@@ -8,7 +8,6 @@ import { Ionicons } from '@expo/vector-icons';
 import colors from '../../constants/colors';
 import fonts from '../../constants/fonts';
 import AppBackground from '../../components/AppBackground';
-import CategoryChip from '../../components/CategoryChip';
 import ReceitaCardAnimated from '../../components/ReceitaCardAnimated';
 import BuscaAvancada, { BuscaFilters } from '../../components/BuscaAvancada';
 
@@ -27,8 +26,9 @@ export default function FavoritosScreen() {
   const [favoritos, setFavoritos] = useState<Favorito[]>([]);
   const [receitas, setReceitas] = useState<Receita[]>([]);
   const [treinos, setTreinos] = useState<Treino[]>([]);
+  const [categoriasFavoritos, setCategoriasFavoritos] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState<'all' | 'receitas' | 'treinos'>('all');
+  const [activeTab, setActiveTab] = useState<string>('all');
   const [searchText, setSearchText] = useState('');
   const [buscaAvancadaVisible, setBuscaAvancadaVisible] = useState(false);
   const [filtrosBusca, setFiltrosBusca] = useState<BuscaFilters>({});
@@ -50,6 +50,13 @@ export default function FavoritosScreen() {
       setLoading(true);
       const data = await api.getFavoritos();
       setFavoritos(data);
+
+      try {
+        const categoriasData = await api.getCategorias();
+        setCategoriasFavoritos(categoriasData.filter((c: any) => c.aparece_favoritos === true));
+      } catch (err) {
+        console.error('Erro ao carregar categorias', err);
+      }
 
       const receitaIds = data
         .filter(f => f.tipo === 'receita' && f.item_id && f.item_id.trim() !== '')
@@ -115,7 +122,11 @@ export default function FavoritosScreen() {
     ? [...filteredReceitas.map(r => ({ type: 'receita' as const, data: r })), ...filteredTreinos.map(t => ({ type: 'treino' as const, data: t }))]
     : activeTab === 'receitas'
     ? filteredReceitas.map(r => ({ type: 'receita' as const, data: r }))
-    : filteredTreinos.map(t => ({ type: 'treino' as const, data: t }));
+    : activeTab === 'treinos'
+    ? filteredTreinos.map(t => ({ type: 'treino' as const, data: t }))
+    : filteredReceitas
+        .filter(r => r.categorias?.some(c => c.id === activeTab))
+        .map(r => ({ type: 'receita' as const, data: r }));
 
   const renderItem = ({ item, index }: { item: { type: 'receita' | 'treino', data: Receita | Treino }, index: number }) => {
     const isReceita = item.type === 'receita';
@@ -162,13 +173,11 @@ export default function FavoritosScreen() {
 
   const renderHeader = () => (
     <View style={{ paddingBottom: 20 }}>
-      <View style={styles.headerTopBar}>
-        <View style={styles.headerDateContainer}></View>
-      </View>
-
-      <View style={styles.titleContainer}>
-        <Text style={styles.headerTitle}>Favoritos</Text>
-        <View style={styles.titleUnderline} />
+      <View style={[styles.titleContainer, { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-end', marginTop: 20 }]}>
+        <View>
+          <Text style={styles.headerTitle}>Favoritos</Text>
+          <View style={styles.titleUnderline} />
+        </View>
       </View>
 
       <View style={styles.searchRow}>
@@ -200,27 +209,37 @@ export default function FavoritosScreen() {
 
       <View style={styles.filtersContainer}>
         <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.filtersContent}>
-          <CategoryChip 
-            label="Todos" 
-            icon="🌟" 
-            isActive={activeTab === 'all'} 
-            onPress={() => setActiveTab('all')} 
-            compact={true}
-          />
-          <CategoryChip 
-            label="Receitas" 
-            icon="🥗" 
-            isActive={activeTab === 'receitas'} 
-            onPress={() => setActiveTab('receitas')} 
-            compact={true}
-          />
-          <CategoryChip 
-            label="Treinos" 
-            icon="💪" 
-            isActive={activeTab === 'treinos'} 
-            onPress={() => setActiveTab('treinos')} 
-            compact={true}
-          />
+          <TouchableOpacity
+            style={[styles.filterChip, activeTab === 'all' && styles.filterChipActive]}
+            onPress={() => setActiveTab('all')}
+          >
+            <Text style={{ fontSize: 22 }}>🌟</Text>
+            <Text style={styles.filterChipText}>Todos</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[styles.filterChip, activeTab === 'receitas' && styles.filterChipActive]}
+            onPress={() => setActiveTab('receitas')}
+          >
+            <Text style={{ fontSize: 22 }}>🥗</Text>
+            <Text style={styles.filterChipText}>Receitas</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[styles.filterChip, activeTab === 'treinos' && styles.filterChipActive]}
+            onPress={() => setActiveTab('treinos')}
+          >
+            <Text style={{ fontSize: 22 }}>💪</Text>
+            <Text style={styles.filterChipText}>Treinos</Text>
+          </TouchableOpacity>
+          {categoriasFavoritos.map(cat => (
+            <TouchableOpacity
+              key={cat.id}
+              style={[styles.filterChip, activeTab === cat.id && styles.filterChipActive]}
+              onPress={() => setActiveTab(cat.id)}
+            >
+              <Text style={{ fontSize: 22 }}>{cat.icone_emoji || '🍽️'}</Text>
+              <Text style={styles.filterChipText}>{cat.nome}</Text>
+            </TouchableOpacity>
+          ))}
         </ScrollView>
         {3 > 3 && ( // Atualmente fixo em 3, não aparecerá. Lógica pronta para expansão.
           <View style={styles.scrollIndicator}>
@@ -233,7 +252,7 @@ export default function FavoritosScreen() {
 
   return (
     <AppBackground>
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView style={styles.container} edges={['top']}>
         <FlatList
           key="grid-2-favs"
           data={filteredData}
@@ -261,7 +280,10 @@ export default function FavoritosScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1 },
+  container: { 
+    flex: 1,
+    backgroundColor: 'transparent',
+  },
   headerTopBar: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 20, marginTop: 10, marginBottom: 20 },
   headerDateContainer: { flex: 1 },
   titleContainer: { paddingHorizontal: 20, marginBottom: 5 }, 
@@ -304,7 +326,7 @@ const styles = StyleSheet.create({
     borderWidth: 1.2,
     borderColor: 'rgba(231,196,138,0.35)',
   },
-  searchInput: { flex: 1, color: '#fff', marginLeft: 10, fontSize: 14 },
+  searchInput: { flex: 1, color: '#fff', marginLeft: 10, fontSize: 14, outlineStyle: 'none' as any },
   loadingContainer: { padding: 40, justifyContent: 'center', alignItems: 'center' },
   loadingText: { marginTop: 12, fontSize: 16, color: colors.textMuted },
   list: { paddingBottom: 40 },
@@ -315,8 +337,34 @@ const styles = StyleSheet.create({
   filtersContainer: { 
     marginBottom: 20,
   },
-  filtersContent: { 
-    paddingHorizontal: 20,
+  filtersContent: { paddingHorizontal: 20 },
+  filterChip: {
+    width: 70,
+    height: 70,
+    borderRadius: 16,
+    backgroundColor: colors.cardBackground,
+    borderWidth: 1.2,
+    borderColor: 'rgba(231,196,138,0.3)',
+    marginRight: 12,
+    justifyContent: 'center',
+    alignItems: 'center',
+    overflow: 'hidden',
+    elevation: 8,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4.65,
+  },
+  filterChipActive: {
+    backgroundColor: 'rgba(231,196,138, 0.15)',
+    borderColor: 'rgba(231,196,138, 0.8)',
+  },
+  filterChipText: {
+    color: '#fff',
+    fontSize: 9,
+    fontFamily: fonts.bodySemiBold,
+    marginTop: 6,
+    textTransform: 'uppercase',
   },
   floatingRemoveButton: {
     position: 'absolute',

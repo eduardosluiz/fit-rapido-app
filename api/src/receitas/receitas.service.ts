@@ -117,9 +117,11 @@ export class ReceitasService {
     semLactose?: boolean, // Filtrar receitas sem lactose
     lowCarb?: boolean, // Filtrar receitas low carb
     user?: User, // Usuário atual para filtrar por plano
-  ): Promise<Receita[]> {
+    page?: number,
+    limit?: number,
+  ): Promise<any> {
     // Verificar se é admin ANTES de aplicar filtros
-    const isAdmin = user && (user.role === UserRole.ADMIN || String(user.role) === 'admin' || user.email === 'dai@gmail.com');
+    const isAdmin = user && (user.role === UserRole.ADMIN || String(user.role) === 'admin' || String(user.role) === 'personal_trainer' || user.email === 'dai@gmail.com');
     // Se for admin, ignorar filtro isPremium - admins devem ver todas as receitas
     if (isAdmin && isPremium !== undefined) {
       console.log(`[DEBUG] ⚠️  Admin detectado - ignorando filtro isPremium=${isPremium}`);
@@ -237,7 +239,7 @@ export class ReceitasService {
         );
       }
       
-      const isAdmin = user && (user.role === UserRole.ADMIN || String(user.role) === 'admin' || user.email === 'dai@gmail.com');
+      const isAdmin = user && (user.role === UserRole.ADMIN || String(user.role) === 'admin' || String(user.role) === 'personal_trainer' || user.email === 'dai@gmail.com');
       if (isPremium !== undefined && !isAdmin) {
         receitasFiltradas = receitasFiltradas.filter(r => r.is_premium === isPremium);
       }
@@ -278,35 +280,42 @@ export class ReceitasService {
       receitas = receitasFiltradas;
     }
 
+    let resultReceitas = receitas;
+
     if (user) {
-      const isAdmin = user.role === UserRole.ADMIN || String(user.role) === 'admin';
+      const isAdmin = user.role === UserRole.ADMIN || String(user.role) === 'admin' || String(user.role) === 'personal_trainer';
       const isDaiAdmin = user.email === 'dai@gmail.com';
       
-      if (isAdmin || isDaiAdmin) {
-        return receitas;
-      }
+      if (!isAdmin && !isDaiAdmin) {
+        const tier = user.subscription_tier || SubscriptionTier.NONE;
+        const isInTrial = hasActiveTrial(user);
 
-      const tier = user.subscription_tier || SubscriptionTier.NONE;
-      const isInTrial = hasActiveTrial(user);
-
-      if (isInTrial) {
-        return receitas;
+        if (!isInTrial) {
+          if (tier === SubscriptionTier.FREE || tier === SubscriptionTier.NONE) {
+            resultReceitas = receitas.filter((r) => r.is_free === true);
+          } else if (tier === SubscriptionTier.BASIC) {
+            resultReceitas = receitas.filter((r) => r.is_premium === false);
+          }
+        }
       }
-
-      if (tier === SubscriptionTier.FREE || tier === SubscriptionTier.NONE) {
-        return receitas.filter((r) => r.is_free === true);
-      }
-
-      if (tier === SubscriptionTier.PREMIUM || tier === SubscriptionTier.PREMIUM_FIT) {
-        return receitas;
-      }
-
-      if (tier === SubscriptionTier.BASIC) {
-        return receitas.filter((r) => r.is_premium === false);
-      }
+    } else {
+      resultReceitas = receitas.filter((r) => r.is_free === true);
     }
 
-    return receitas.filter((r) => r.is_free === true);
+    if (page !== undefined && limit !== undefined) {
+      const skip = (page - 1) * limit;
+      const total = resultReceitas.length;
+      const data = resultReceitas.slice(skip, skip + limit);
+      return {
+        data,
+        total,
+        page,
+        limit,
+        totalPages: Math.ceil(total / limit),
+      };
+    }
+
+    return resultReceitas;
   }
 
   async getFreeRecipesCount(): Promise<number> {

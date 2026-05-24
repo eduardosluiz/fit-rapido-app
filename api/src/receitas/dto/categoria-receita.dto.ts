@@ -26,6 +26,14 @@ export class CreateCategoriaReceitaDto {
   @IsBoolean()
   @IsOptional()
   ativa?: boolean;
+
+  @IsBoolean()
+  @IsOptional()
+  aparece_favoritos?: boolean;
+
+  @IsString()
+  @IsOptional()
+  icone_emoji?: string;
 }
 
 export class UpdateCategoriaReceitaDto {
@@ -48,5 +56,13 @@ export class UpdateCategoriaReceitaDto {
   @IsBoolean()
   @IsOptional()
   ativa?: boolean;
+
+  @IsBoolean()
+  @IsOptional()
+  aparece_favoritos?: boolean;
+
+  @IsString()
+  @IsOptional()
+  icone_emoji?: string;
 }
 

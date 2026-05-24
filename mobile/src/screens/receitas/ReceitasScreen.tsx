@@ -18,7 +18,6 @@ import { Ionicons } from '@expo/vector-icons';
 import colors from '../../constants/colors';
 import fonts from '../../constants/fonts';
 import AppBackground from '../../components/AppBackground';
-import CategoryChip from '../../components/CategoryChip';
 import ReceitaCardAnimated from '../../components/ReceitaCardAnimated';
 import BuscaAvancada, { BuscaFilters } from '../../components/BuscaAvancada';
 
@@ -375,7 +374,7 @@ const styles = StyleSheet.create({
     borderWidth: 1.2,
     borderColor: 'rgba(231,196,138,0.35)',
   },
-  searchInput: { flex: 1, color: '#fff', marginLeft: 10, fontSize: 14 },
+  searchInput: { flex: 1, color: '#fff', marginLeft: 10, fontSize: 14, outlineStyle: 'none' as any },
   filtersContainer: { marginBottom: 30 },
   filtersContent: { paddingHorizontal: 20 },
   filterChip: {

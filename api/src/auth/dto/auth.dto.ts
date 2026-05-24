@@ -98,3 +98,12 @@ export class UpdateUserDto {
   alergias?: string[];
 }
 
+export class UpdatePasswordDto {
+  @IsNotEmpty({ message: 'Senha atual é obrigatória' })
+  senha_atual: string;
+
+  @IsNotEmpty({ message: 'Nova senha é obrigatória' })
+  @MinLength(6, { message: 'Nova senha deve ter no mínimo 6 caracteres' })
+  @MaxLength(100, { message: 'Nova senha deve ter no máximo 100 caracteres' })
+  nova_senha: string;
+}

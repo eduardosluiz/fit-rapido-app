@@ -20,6 +20,9 @@ out/
 */.next/
 */out/
 
+# Documentation
+docs/
+
 # Media and Uploads (IMPORTANT: We use Supabase, so we ignore local uploads)
 api/uploads/
 api/temp-uploads/

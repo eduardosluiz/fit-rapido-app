@@ -377,7 +377,7 @@ const styles = StyleSheet.create({
     borderWidth: 1.2,
     borderColor: 'rgba(231,196,138,0.35)',
   },
-  searchInput: { flex: 1, color: '#fff', marginLeft: 10, fontSize: 14 },
+  searchInput: { flex: 1, color: '#fff', marginLeft: 10, fontSize: 14, outlineStyle: 'none' as any },
   loadingContainer: {
     flex: 1,
     justifyContent: 'center',

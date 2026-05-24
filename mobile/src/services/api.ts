@@ -188,6 +188,15 @@ class ApiService {
       return [];
     }
   }
+
+  async getExerciciosBiblioteca(params?: any) {
+    try {
+      const query = params ? `?${new URLSearchParams(params).toString()}` : '';
+      return await this.request<any>(`/exercicios-biblioteca${query}`);
+    } catch (e) {
+      return { data: [] };
+    }
+  }
   
   async getFavoritos(tipo?: string) {
     try {
@@ -280,6 +289,10 @@ class ApiService {
     } catch {
       return { tier: 'none' };
     }
+  }
+
+  async getSubscriptionPlans() {
+    return this.request<any>('/subscriptions/plans');
   }
 
   async buscarIngredienteSimilar(nome: string) {

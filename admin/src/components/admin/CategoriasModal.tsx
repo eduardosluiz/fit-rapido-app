@@ -17,6 +17,8 @@ interface Categoria {
   descricao?: string;
   imagem_url?: string;
   ativa: boolean;
+  aparece_favoritos?: boolean;
+  icone_emoji?: string;
 }
 
 interface CategoriasModalProps {
@@ -43,6 +45,8 @@ export function CategoriasModal({
     descricao: '',
     imagem_url: '',
     ativa: true,
+    aparece_favoritos: false,
+    icone_emoji: '',
   });
 
   const loadCategorias = async () => {
@@ -65,7 +69,7 @@ export function CategoriasModal({
       loadCategorias();
       setShowForm(false);
       setEditingId(null);
-      setFormData({ nome: '', slug: '', descricao: '', imagem_url: '', ativa: true });
+      setFormData({ nome: '', slug: '', descricao: '', imagem_url: '', ativa: true, aparece_favoritos: false, icone_emoji: '' });
     }
   }, [open, type]);
 
@@ -103,7 +107,7 @@ export function CategoriasModal({
       }
       setShowForm(false);
       setEditingId(null);
-      setFormData({ nome: '', slug: '', descricao: '', imagem_url: '', ativa: true });
+      setFormData({ nome: '', slug: '', descricao: '', imagem_url: '', ativa: true, aparece_favoritos: false, icone_emoji: '' });
       await loadCategorias();
       if (onCategoriaChange) onCategoriaChange();
     } catch (err: any) {
@@ -134,6 +138,8 @@ export function CategoriasModal({
       descricao: cat.descricao || '',
       imagem_url: cat.imagem_url || '',
       ativa: cat.ativa,
+      aparece_favoritos: cat.aparece_favoritos || false,
+      icone_emoji: cat.icone_emoji || '',
     });
     setShowForm(true);
   };
@@ -193,7 +199,7 @@ export function CategoriasModal({
       maxWidth="4xl"
       headerAction={
         <button
-          onClick={() => { setShowForm(true); setEditingId(null); setFormData({ nome: '', slug: '', descricao: '', imagem_url: '', ativa: true }); }}
+          onClick={() => { setShowForm(true); setEditingId(null); setFormData({ nome: '', slug: '', descricao: '', imagem_url: '', ativa: true, aparece_favoritos: false, icone_emoji: '' }); }}
           className="px-4 py-2 rounded-md border border-[#c8921a] text-[#c8921a] text-[10px] font-semibold uppercase tracking-widest hover:bg-[#c8921a] hover:text-white transition-all duration-300 flex items-center gap-2"
         >
           <Plus size={14} /> Nova Categoria
@@ -263,18 +269,49 @@ export function CategoriasModal({
                 </div>
 
                 <div className="lg:col-span-5 flex flex-col border-l border-gray-200 dark:border-[#333] pl-8">
-                  <label className="text-[9px] font-bold uppercase tracking-[0.15em] text-gray-800 dark:text-gray-200 block mb-4 text-center w-full">Ícone de Representação</label>
-                  <div className="p-4 rounded-xl border border-gray-300 dark:border-[#444] bg-gray-50/50 dark:bg-[#111] w-full flex flex-col items-center justify-center min-h-[220px] shadow-inner">
-                    <FileUpload 
-                      type="imagem" 
-                      value={formData.imagem_url} 
-                      onChange={(url) => setFormData({...formData, imagem_url: url})} 
-                      hideUrlInput
+                  <div className="flex items-center justify-between mb-4 border-b border-gray-100 dark:border-[#222] pb-4">
+                    <label className="text-[9px] font-bold uppercase tracking-[0.15em] text-gray-800 dark:text-gray-200">Exibir em Favoritos (Mobile)</label>
+                    <Switch 
+                      checked={formData.aparece_favoritos} 
+                      onCheckedChange={(v) => setFormData({...formData, aparece_favoritos: v})} 
+                      className="data-[state=unchecked]:bg-gray-300 border border-gray-400 shadow-sm scale-75 origin-right"
                     />
-                    {!formData.imagem_url && (
-                      <p className="mt-4 text-[10px] text-gray-500 dark:text-gray-400 text-center px-2 font-medium italic">Selecione uma imagem quadrada (1:1)</p>
-                    )}
                   </div>
+
+                  {formData.aparece_favoritos ? (
+                    <>
+                      <label className="text-[9px] font-bold uppercase tracking-[0.15em] text-gray-800 dark:text-gray-200 block mb-4 text-center w-full">Ícone (Emoji)</label>
+                      <div className="p-4 rounded-xl border border-gray-300 dark:border-[#444] bg-gray-50/50 dark:bg-[#111] w-full flex flex-col items-center justify-center min-h-[180px] shadow-inner">
+                        <div className="flex flex-wrap gap-2 justify-center max-h-[180px] overflow-y-auto custom-scrollbar pr-1">
+                          {['🌟', '🥗', '💪', '🔥', '🥩', '🥑', '🍳', '🥦', '🌶️', '🏃‍♂️', '🏋️‍♀️', '🧘‍♀️', '🍎', '🍓', '🍌', '🍗', '🐟', '🥤', '🧊', '🍯', '🍚', '🍫', '🍵', '☕', '🥜', '🍞', '🥞'].map(emoji => (
+                            <button
+                              key={emoji}
+                              type="button"
+                              onClick={() => setFormData({...formData, icone_emoji: emoji})}
+                              className={`text-2xl w-10 h-10 rounded-md flex items-center justify-center transition-all ${formData.icone_emoji === emoji ? 'bg-[#c8921a]/20 border border-[#c8921a] scale-110 shadow-sm' : 'bg-transparent border border-transparent hover:bg-gray-200 dark:hover:bg-[#222]'}`}
+                            >
+                              {emoji}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <label className="text-[9px] font-bold uppercase tracking-[0.15em] text-gray-800 dark:text-gray-200 block mb-4 text-center w-full">Ícone de Representação</label>
+                      <div className="p-4 rounded-xl border border-gray-300 dark:border-[#444] bg-gray-50/50 dark:bg-[#111] w-full flex flex-col items-center justify-center min-h-[180px] shadow-inner">
+                        <FileUpload 
+                          type="imagem" 
+                          value={formData.imagem_url} 
+                          onChange={(url) => setFormData({...formData, imagem_url: url})} 
+                          hideUrlInput
+                        />
+                        {!formData.imagem_url && (
+                          <p className="mt-4 text-[10px] text-gray-500 dark:text-gray-400 text-center px-2 font-medium italic">Selecione uma imagem quadrada (1:1)</p>
+                        )}
+                      </div>
+                    </>
+                  )}
                 </div>
               </div>
 

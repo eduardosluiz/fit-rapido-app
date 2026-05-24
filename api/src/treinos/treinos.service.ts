@@ -73,15 +73,18 @@ export class TreinosService {
     search?: string,
     isPremium?: boolean,
     nivel?: string,
-    incluirInativas?: boolean,
     user?: User, // Usuário atual para filtrar por plano
+    incluirInativas?: boolean,
     tipoTreino?: 'ponto_partida' | 'academia' | 'casa',
     tipoDica?: 'ajuste_carga' | 'mobilidade' | 'cardio',
     tipoEquipamentoCasa?: 'sem_equipamentos' | 'com_halteres' | 'rapido',
     mostrarPontoPartida?: boolean,
-  ): Promise<Treino[]> {
+    page?: number,
+    limit?: number,
+    apenasAvulsos?: boolean,
+  ): Promise<any> {
     // IMPORTANTE: Admins sempre veem todos os treinos, independente do plano
-    if (user && user.role === UserRole.ADMIN) {
+    if (user && (user.role === UserRole.ADMIN || String(user.role) === 'admin' || String(user.role) === 'personal_trainer')) {
       // Admin vê tudo, continuar sem filtro de acesso
     } else {
       // Verificar acesso - apenas PREMIUM_FIT pode acessar treinos
@@ -98,8 +101,12 @@ export class TreinosService {
       .createQueryBuilder('treino')
       .leftJoinAndSelect('treino.categorias', 'categorias');
 
+    if (apenasAvulsos) {
+      queryBuilder.andWhere('(treino.modalidade_id IS NULL OR treino.modalidade_id = :emptyModalidade)', { emptyModalidade: '' });
+    }
+
     if (!incluirInativas) {
-      queryBuilder.where('treino.ativa = :ativa', { ativa: true });
+      queryBuilder.andWhere('treino.ativa = :ativa', { ativa: true });
     }
 
     if (categoriaId) {
@@ -144,6 +151,18 @@ export class TreinosService {
     }
 
     queryBuilder.orderBy('treino.ordem', 'ASC').addOrderBy('treino.created_at', 'DESC');
+
+    if (page !== undefined && limit !== undefined) {
+      const skip = (page - 1) * limit;
+      const [data, total] = await queryBuilder.skip(skip).take(limit).getManyAndCount();
+      return {
+        data,
+        total,
+        page,
+        limit,
+        totalPages: Math.ceil(total / limit),
+      };
+    }
 
     return await queryBuilder.getMany();
   }

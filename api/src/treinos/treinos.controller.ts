@@ -45,6 +45,9 @@ export class TreinosController {
     @Query('tipoDica') tipoDica?: 'ajuste_carga' | 'mobilidade' | 'cardio',
     @Query('tipoEquipamentoCasa') tipoEquipamentoCasa?: 'sem_equipamentos' | 'com_halteres' | 'rapido',
     @Query('mostrarPontoPartida') mostrarPontoPartida?: string,
+    @Query('apenasAvulsos') apenasAvulsos?: string,
+    @Query('page') page?: string,
+    @Query('limit') limit?: string,
   ) {
     // Buscar usuário se autenticado
     let user = null;
@@ -56,14 +59,17 @@ export class TreinosController {
       categoriaId,
       modalidadeId,
       search,
-      premium === 'true' ? true : premium === 'false' ? false : undefined,
+      premium !== undefined ? premium === 'true' : undefined,
       nivel,
+      user,
       incluirInativas === 'true',
-      user || undefined,
       tipoTreino,
       tipoDica,
       tipoEquipamentoCasa,
-      mostrarPontoPartida === 'true' ? true : mostrarPontoPartida === 'false' ? false : undefined,
+      mostrarPontoPartida !== undefined ? mostrarPontoPartida === 'true' : undefined,
+      page ? parseInt(page, 10) : undefined,
+      limit ? parseInt(limit, 10) : undefined,
+      apenasAvulsos === 'true',
     );
   }
 

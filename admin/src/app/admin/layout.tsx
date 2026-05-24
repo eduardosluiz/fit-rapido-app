@@ -53,14 +53,19 @@ export default function AdminLayout({
   }
 
   const navItems = [
-    { href: '/admin', label: 'Dashboard', icon: 'bx-home' },
-    { href: '/admin/receitas', label: 'Receitas', icon: 'bx-food-menu' },
-    { href: '/admin/treinos', label: 'Treinos', icon: 'bx-dumbbell' },
-    { href: '/admin/modalidades', label: 'Modalidades', icon: 'bx-layer' },
-    { href: '/admin/biblioteca', label: 'Biblioteca', icon: 'bx-video' },
-    { href: '/admin/ingredientes', label: 'Ingredientes', icon: 'bx-package' },
-    { href: '/admin/usuarios', label: 'Usuários', icon: 'bx-user' },
+    { href: '/admin', label: 'Dashboard', icon: 'bx-home', roles: ['admin', 'personal_trainer', 'ADMIN'] },
+    { href: '/admin/receitas', label: 'Receitas', icon: 'bx-food-menu', roles: ['admin', 'ADMIN'] },
+    { href: '/admin/treinos', label: 'Treinos', icon: 'bx-dumbbell', roles: ['admin', 'personal_trainer', 'ADMIN'] },
+    { href: '/admin/modalidades', label: 'Modalidades', icon: 'bx-layer', roles: ['admin', 'personal_trainer', 'ADMIN'] },
+    { href: '/admin/biblioteca', label: 'Biblioteca', icon: 'bx-video', roles: ['admin', 'personal_trainer', 'ADMIN'] },
+    { href: '/admin/ingredientes', label: 'Ingredientes', icon: 'bx-package', roles: ['admin', 'ADMIN'] },
+    { href: '/admin/usuarios', label: 'Usuários', icon: 'bx-user', roles: ['admin', 'ADMIN'] },
   ];
+
+  const visibleNavItems = navItems.filter(item => {
+    if (!user || !user.role) return false;
+    return item.roles.includes(user.role);
+  });
 
   return (
     <div className={`admin-container ${isDarkTheme ? 'dark-theme' : ''}`}>
@@ -80,7 +85,7 @@ export default function AdminLayout({
         </div>
 
         <nav className="admin-nav">
-          {navItems.map((item) => {
+          {visibleNavItems.map((item) => {
             const isActive = pathname === item.href;
             return (
               <Link 
@@ -127,6 +132,25 @@ export default function AdminLayout({
               title={isDarkTheme ? 'Modo Claro' : 'Modo Escuro'}
             >
               <i className={`bx ${isDarkTheme ? 'bx-sun' : 'bx-moon'}`} style={{ opacity: 1, color: isDarkTheme ? '#c8921a' : '#94a3b8' }}></i>
+            </button>
+
+            {/* Botão de Perfil/Senha */}
+            <button
+              onClick={() => router.push('/admin/perfil')}
+              className="admin-nav-item"
+              style={{ 
+                flex: '1', 
+                justifyContent: 'center', 
+                margin: 0, 
+                padding: '12px 0',
+                background: 'rgba(255, 255, 255, 0.03)',
+                borderColor: 'rgba(255, 255, 255, 0.05)',
+                borderWidth: '1px',
+                borderStyle: 'solid'
+              }}
+              title="Mudar Senha / Perfil"
+            >
+              <i className="bx bx-key" style={{ opacity: 1, color: '#94a3b8' }}></i>
             </button>
 
             {/* Botão de Sair */}

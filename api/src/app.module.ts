@@ -13,6 +13,7 @@ import { IngredientesModule } from './ingredientes/ingredientes.module';
 import { AtividadesModule } from './atividades/atividades.module';
 import { AvaliacoesModule } from './avaliacoes/avaliacoes.module';
 import { IAModule } from './ia/ia.module';
+import { StatsModule } from './stats/stats.module';
 
 @Module({
   imports: [
@@ -39,6 +40,7 @@ import { IAModule } from './ia/ia.module';
     AtividadesModule,
     AvaliacoesModule,
     IAModule,
+    StatsModule,
   ],
 })
 export class AppModule {}

@@ -32,15 +32,29 @@ class ApiService {
         
         // Se for 401, tratar como aviso (esperado quando não logado)
         if (response.status === 401) {
-          console.warn(`ℹ️ Sessão não iniciada ou expirada (${response.status})`);
-          if (typeof window !== 'undefined') {
+          console.warn(`ℹ️ Sessão não iniciada, expirada ou sem permissão (${response.status}) na rota ${endpoint}`);
+          
+          if (endpoint === '/auth/login') {
+            throw new Error('E-mail ou senha incorretos.');
+          }
+
+          // Apenas remover o token e deslogar se for a rota de validação do perfil,
+          // ou se a API explicitamente retornar que o token é inválido.
+          // Não deslogar em rotas comuns que podem apenas retornar Forbidden/Unauthorized por falta de permissão.
+          if (typeof window !== 'undefined' && endpoint === '/auth/profile') {
             localStorage.removeItem('auth_token');
           }
         } else {
           console.error(`❌ Erro na API (${response.status}):`, errorText);
         }
 
-        const error = await response.json().catch(() => ({ message: 'Erro desconhecido' }));
+        let error;
+        try {
+          error = JSON.parse(errorText);
+        } catch {
+          error = { message: errorText || 'Erro desconhecido' };
+        }
+        
         throw new Error(error.message || `Erro ${response.status}`);
       }
 
@@ -127,6 +141,20 @@ class ApiService {
     return this.request<any>('/auth/profile');
   }
 
+  async changePassword(senha_atual: string, nova_senha: string) {
+    return this.request<any>('/auth/change-password', {
+      method: 'POST',
+      body: JSON.stringify({ senha_atual, nova_senha }),
+    });
+  }
+
+  async adminChangePassword(userId: string, nova_senha: string) {
+    return this.request<any>(`/auth/users/${userId}/password`, {
+      method: 'PATCH',
+      body: JSON.stringify({ nova_senha }),
+    });
+  }
+
   // Receitas
   async getReceitas(params?: {
     categoria?: string;
@@ -134,6 +162,8 @@ class ApiService {
     premium?: boolean;
     dificuldade?: string;
     incluirInativas?: boolean;
+    page?: number;
+    limit?: number;
   }) {
     const queryParams = new URLSearchParams();
     if (params?.categoria) queryParams.append('categoria', params.categoria);
@@ -141,9 +171,11 @@ class ApiService {
     if (params?.premium !== undefined) queryParams.append('premium', String(params.premium));
     if (params?.dificuldade) queryParams.append('dificuldade', params.dificuldade);
     if (params?.incluirInativas) queryParams.append('incluirInativas', 'true');
+    if (params?.page) queryParams.append('page', String(params.page));
+    if (params?.limit) queryParams.append('limit', String(params.limit));
 
     const query = queryParams.toString();
-    return this.request<any[]>(`/receitas${query ? `?${query}` : ''}`);
+    return this.request<any>(`/receitas${query ? `?${query}` : ''}`);
   }
 
   async getReceita(id: string) {
@@ -241,23 +273,35 @@ class ApiService {
     });
   }
 
+  async getStats() {
+    return this.request<any>('/stats');
+  }
+
   // Treinos
   async getTreinos(params?: {
     categoria?: string;
+    modalidade_id?: string;
     search?: string;
     premium?: boolean;
     nivel?: string;
     incluirInativas?: boolean;
+    apenasAvulsos?: boolean;
+    page?: number;
+    limit?: number;
   }) {
     const queryParams = new URLSearchParams();
     if (params?.categoria) queryParams.append('categoria', params.categoria);
+    if (params?.modalidade_id) queryParams.append('modalidade_id', params.modalidade_id);
     if (params?.search) queryParams.append('search', params.search);
     if (params?.premium !== undefined) queryParams.append('premium', String(params.premium));
     if (params?.nivel) queryParams.append('nivel', params.nivel);
     if (params?.incluirInativas) queryParams.append('incluirInativas', 'true');
+    if (params?.apenasAvulsos) queryParams.append('apenasAvulsos', 'true');
+    if (params?.page) queryParams.append('page', String(params.page));
+    if (params?.limit) queryParams.append('limit', String(params.limit));
 
     const query = queryParams.toString();
-    return this.request<any[]>(`/treinos${query ? `?${query}` : ''}`);
+    return this.request<any>(`/treinos${query ? `?${query}` : ''}`);
   }
 
   async getTreino(id: string) {

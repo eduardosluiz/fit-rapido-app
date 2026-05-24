@@ -31,7 +31,6 @@ interface Receita {
 export default function AdminReceitas() {
   const { isAuthenticated } = useAuth();
   const [receitas, setReceitas] = useState<Receita[]>([]);
-  const [receitasFiltradas, setReceitasFiltradas] = useState<Receita[]>([]);
   const [categorias, setCategorias] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -39,14 +38,8 @@ export default function AdminReceitas() {
   const [selectedCategoria, setSelectedCategoria] = useState<string>('');
   const [currentPage, setCurrentPage] = useState(1);
   const [categoriasModalOpen, setCategoriasModalOpen] = useState(false);
+  const [totalPages, setTotalPages] = useState(1);
   const itemsPerPage = 12;
-
-  useEffect(() => {
-    if (isAuthenticated) {
-      loadReceitas();
-      loadCategorias();
-    }
-  }, [isAuthenticated]);
 
   const loadCategorias = async () => {
     try {
@@ -60,9 +53,45 @@ export default function AdminReceitas() {
   const loadReceitas = async () => {
     try {
       setLoading(true);
-      const data = await api.getReceitas({ incluirInativas: true });
-      setReceitas(data);
-      setReceitasFiltradas(data);
+      const dataRaw = await api.getReceitas({
+        incluirInativas: true,
+        page: currentPage,
+        limit: itemsPerPage,
+        search: searchText || undefined,
+        categoria: selectedCategoria || undefined,
+      });
+
+      let items = [];
+      let total = 1;
+      let isPaginatedServerSide = false;
+      
+      if (Array.isArray(dataRaw)) {
+        items = dataRaw;
+      } else if (dataRaw && Array.isArray(dataRaw.data)) {
+        items = dataRaw.data;
+        if (dataRaw.totalPages) total = dataRaw.totalPages;
+        isPaginatedServerSide = true;
+      } else if (dataRaw && Array.isArray(dataRaw.items)) {
+        items = dataRaw.items;
+        if (dataRaw.totalPages) total = dataRaw.totalPages;
+        isPaginatedServerSide = true;
+      }
+
+      // Fallback: If the backend hasn't been updated and didn't paginate or filter, do it locally
+      if (!isPaginatedServerSide) {
+        if (searchText) {
+          items = items.filter((r: any) => r.titulo?.toLowerCase().includes(searchText.toLowerCase()));
+        }
+        if (selectedCategoria) {
+          items = items.filter((r: any) => r.categoria_ids?.includes(selectedCategoria) || r.categoria?.id === selectedCategoria);
+        }
+        total = Math.ceil(items.length / itemsPerPage);
+        const startIndex = (currentPage - 1) * itemsPerPage;
+        items = items.slice(startIndex, startIndex + itemsPerPage);
+      }
+
+      setReceitas(items);
+      setTotalPages(total);
     } catch (err: any) {
       setError(err.message || 'Erro ao carregar receitas');
     } finally {
@@ -71,29 +100,27 @@ export default function AdminReceitas() {
   };
 
   useEffect(() => {
-    // Debounce manual para busca
-    const timer = setTimeout(() => {
-      let filtered = receitas;
-      if (searchText.trim()) {
-        const searchLower = searchText.toLowerCase();
-        filtered = filtered.filter((r) =>
-          r.titulo.toLowerCase().includes(searchLower) ||
-          r.descricao?.toLowerCase().includes(searchLower)
-        );
-      }
-      if (selectedCategoria) {
-        filtered = filtered.filter((r) => r.categoria_id === selectedCategoria);
-      }
-      setReceitasFiltradas(filtered);
-      setCurrentPage(1);
-    }, 300);
+    if (isAuthenticated) {
+      loadCategorias();
+    }
+  }, [isAuthenticated]);
 
-    return () => clearTimeout(timer);
-  }, [searchText, selectedCategoria, receitas]);
+  useEffect(() => {
+    if (isAuthenticated) {
+      loadReceitas();
+    }
+  }, [isAuthenticated, currentPage, searchText, selectedCategoria]);
 
-  const totalPages = Math.ceil(receitasFiltradas.length / itemsPerPage);
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const receitasPaginated = receitasFiltradas.slice(startIndex, startIndex + itemsPerPage);
+  const handleSearchChange = (val: string) => {
+    setSearchText(val);
+    setCurrentPage(1);
+  };
+  const handleCategoriaChange = (val: string) => {
+    setSelectedCategoria(val);
+    setCurrentPage(1);
+  };
+
+  const receitasPaginated = receitas;
 
   const handleDelete = async (id: string) => {
     const receita = receitas.find(r => r.id === id);
@@ -161,7 +188,7 @@ export default function AdminReceitas() {
           <div className="relative w-full max-w-[300px] group">
             <Search className="absolute left-0 top-1/2 -translate-y-1/2 text-gray-300 group-focus-within:text-[#c8921a] transition-colors" size={16} />
             <input 
-              type="text" value={searchText} onChange={(e) => setSearchText(e.target.value)} 
+              type="text" value={searchText} onChange={(e) => handleSearchChange(e.target.value)} 
               placeholder="Buscar receita..." 
               className="w-full pl-7 pr-4 py-2 bg-transparent border-t-0 border-l-0 border-r-0 border-b border-gray-300 dark:border-[#333] focus:border-[#c8921a] focus:ring-0 outline-none text-sm text-black dark:text-white font-normal placeholder-gray-400" 
             />
@@ -170,7 +197,7 @@ export default function AdminReceitas() {
           {/* Filtro Dropdown */}
           <div className="relative min-w-[180px]">
             <select 
-              value={selectedCategoria} onChange={(e) => setSelectedCategoria(e.target.value)}
+              value={selectedCategoria} onChange={(e) => handleCategoriaChange(e.target.value)}
               className="w-full appearance-none bg-transparent border-t-0 border-l-0 border-r-0 border-b border-gray-300 dark:border-[#333] pl-2 pr-8 py-2 text-xs text-black dark:text-white font-normal focus:outline-none focus:border-[#c8921a] cursor-pointer uppercase tracking-widest"
             >
               <option value="" className="dark:bg-[#0a0a0a]">Todas as Categorias</option>
@@ -188,7 +215,7 @@ export default function AdminReceitas() {
           </div>
         )}
 
-        {receitasFiltradas.length === 0 ? (
+        {receitas.length === 0 ? (
           <EmptyState icon="bx-food-menu" title="Sem receitas" description="Comece criando sua primeira receita!" actionLabel="Nova Receita" actionHref="/admin/receitas/nova" />
         ) : (
           <>

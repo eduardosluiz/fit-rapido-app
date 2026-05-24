@@ -20,6 +20,14 @@ const nextConfig: NextConfig = {
   experimental: {
     optimizePackageImports: ['@/lib/api'],
   },
+  async rewrites() {
+    return [
+      {
+        source: '/api-proxy/:path*',
+        destination: 'https://backend.daipohlmann.com.br/:path*',
+      },
+    ];
+  },
 };
 
 export default nextConfig;

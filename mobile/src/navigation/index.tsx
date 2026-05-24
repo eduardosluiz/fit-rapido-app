@@ -18,6 +18,7 @@ import TreinosScreen from '../screens/treinos/TreinosScreen';
 import TreinoDetailScreen from '../screens/treinos/TreinoDetailScreen';
 import ExerciseDetailScreen from '../screens/treinos/ExerciseDetailScreen';
 import ModalityWorkoutsScreen from '../screens/treinos/ModalityWorkoutsScreen';
+import BibliotecaTreinosScreen from '../screens/treinos/BibliotecaTreinosScreen';
 import FavoritosScreen from '../screens/favoritos/FavoritosScreen';
 import ProfileScreen from '../screens/profile/ProfileScreen';
 import SubscriptionsScreen from '../screens/subscriptions/SubscriptionsScreen';
@@ -150,6 +151,13 @@ function TreinosStack() {
       <TreinosStackNav.Screen
         name="ModalityWorkouts"
         component={ModalityWorkoutsScreen}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <TreinosStackNav.Screen
+        name="BibliotecaTreinos"
+        component={BibliotecaTreinosScreen}
         options={{
           headerShown: false,
         }}

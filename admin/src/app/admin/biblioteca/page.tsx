@@ -71,10 +71,7 @@ export default function BibliotecaVideosPage() {
   const fetchExercicios = useCallback(async (pageNum: number, isNewSearch = false) => {
     try {
       if (isNewSearch) {
-        // Se for a primeira carga (não tem exercícios), usa loading total
-        // Se já tem exercícios, estamos apenas filtrando/buscando, usa loadingMore para não piscar a tela
-        if (exercicios.length === 0) setLoading(true);
-        else setLoadingMore(true);
+        setLoading(true);
       } else {
         setLoadingMore(true);
       }
@@ -91,7 +88,12 @@ export default function BibliotecaVideosPage() {
         setExercicios(newItems);
         setTotalItems(response?.total || 0);
       } else {
-        setExercicios(prev => [...(prev || []), ...newItems]);
+        setExercicios(prev => {
+          // Prevent duplicates by checking IDs
+          const existingIds = new Set(prev.map(item => item.id));
+          const uniqueNewItems = newItems.filter((item: Exercicio) => !existingIds.has(item.id));
+          return [...prev, ...uniqueNewItems];
+        });
       }
       
       setHasMore(pageNum < (response?.lastPage || 0));
@@ -102,7 +104,7 @@ export default function BibliotecaVideosPage() {
       setLoading(false);
       setLoadingMore(false);
     }
-  }, [selectedCategoria, searchText, exercicios.length]);
+  }, [selectedCategoria, searchText]);
 
   // Carregar categorias apenas uma vez
   useEffect(() => {
@@ -270,7 +272,7 @@ export default function BibliotecaVideosPage() {
   }
 
   return (
-    <div className="p-6 sm:p-10 bg-[#fafafa] dark:bg-[#0a0a0a] min-h-screen">
+    <div className="p-6 sm:p-10 bg-[#fafafa] dark:bg-[#0a0a0a] min-h-screen pb-24">
       <div className="w-full max-w-[1400px] mx-auto space-y-12">
         
         {/* Header Oficial Minimalista */}
@@ -335,9 +337,9 @@ export default function BibliotecaVideosPage() {
             exercicios.map((ex) => (
               <div key={ex.id} className="group bg-white dark:bg-[#111] border border-[#c8921a]/30 dark:border-[#c8921a]/20 rounded-xl overflow-hidden hover:border-[#c8921a]/60 hover:shadow-lg transition-all duration-300 flex flex-col">
                 <div onClick={() => { setPreviewVideo(ex); setVideoError(false); setVideoIsLoading(true); }} className="w-full h-[160px] bg-[#000] relative cursor-pointer overflow-hidden flex items-center justify-center">
-                  <video src={`${getMediaUrl(ex.video_url)}#t=0.5`} className="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity" muted playsInline preload="metadata" crossOrigin="anonymous" />
-                  <div className="absolute inset-0 flex items-center justify-center z-20 opacity-0 group-hover:opacity-100 transition-opacity"><div className="w-10 h-10 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center border border-white/20 scale-90 group-hover:scale-100 transition-transform"><Play className="text-white fill-current ml-0.5" size={16} /></div></div>
-                  <div className="absolute top-3 left-3 z-20"><span className="bg-[#c8921a] text-white text-[7px] px-2 py-0.5 rounded font-black uppercase tracking-[0.2em] shadow-lg">{ex.categoria || 'Geral'}</span></div>
+                  <video src={`${getMediaUrl(ex.video_url)}#t=0.5`} className="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity pointer-events-none" muted playsInline preload="metadata" crossOrigin="anonymous" />
+                  <div className="absolute inset-0 flex items-center justify-center z-20 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"><div className="w-10 h-10 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center border border-white/20 scale-90 group-hover:scale-100 transition-transform"><Play className="text-white fill-current ml-0.5" size={16} /></div></div>
+                  <div className="absolute top-3 left-3 z-20 pointer-events-none"><span className="bg-[#c8921a] text-white text-[7px] px-2 py-0.5 rounded font-black uppercase tracking-[0.2em] shadow-lg">{ex.categoria || 'Geral'}</span></div>
                 </div>
                 <div className="p-4 flex flex-col flex-1">
                   <h3 className="text-[13px] font-normal text-gray-500 dark:text-gray-400 line-clamp-1 mb-4 tracking-tight group-hover:text-gray-800 dark:group-hover:text-white transition-colors">{ex.nome}</h3>
@@ -529,6 +531,17 @@ export default function BibliotecaVideosPage() {
         </div>
       )}
       
+      {/* Botão de Voltar ao Topo */}
+      <button
+        onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+        className="fixed bottom-8 right-8 z-[100] bg-[#c8921a] text-white p-3 rounded-full shadow-lg hover:bg-[#b07d14] transition-all duration-300 opacity-80 hover:opacity-100 group"
+        title="Voltar ao Topo"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="group-hover:-translate-y-1 transition-transform">
+          <path d="m18 15-6-6-6 6"/>
+        </svg>
+      </button>
+
       <style jsx>{`
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }

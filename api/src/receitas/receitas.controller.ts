@@ -49,6 +49,8 @@ export class ReceitasController {
     @Query('proteinasMin') proteinasMin?: string,
     @Query('semLactose') semLactose?: string,
     @Query('lowCarb') lowCarb?: string,
+    @Query('page') page?: string,
+    @Query('limit') limit?: string,
   ) {
     // Buscar usuário se autenticado
     let user = null;
@@ -61,7 +63,7 @@ export class ReceitasController {
       console.log(`[RECEITAS CONTROLLER] Nenhum usuário autenticado (req.user:`, req.user, `)`);
     }
 
-    const receitas = await this.receitasService.findAll(
+    const result = await this.receitasService.findAll(
       categoriaId,
       search,
       isPremium === 'true',
@@ -74,13 +76,16 @@ export class ReceitasController {
       semLactose === 'true',
       lowCarb === 'true',
       user || undefined,
+      page ? parseInt(page, 10) : undefined,
+      limit ? parseInt(limit, 10) : undefined,
     );
     
-    console.log(`[RECEITAS CONTROLLER] Retornando ${receitas.length} receitas para o frontend`);
-    console.log(`[RECEITAS CONTROLLER] Receitas PREMIUM retornadas: ${receitas.filter(r => r.is_premium === true).length}`);
-    console.log(`[RECEITAS CONTROLLER] Receitas FREE retornadas: ${receitas.filter(r => r.is_free === true).length}`);
+    const receitasToLog = result.data ? result.data : result;
+    console.log(`[RECEITAS CONTROLLER] Retornando ${receitasToLog.length} receitas para o frontend`);
+    console.log(`[RECEITAS CONTROLLER] Receitas PREMIUM retornadas: ${receitasToLog.filter(r => r.is_premium === true).length}`);
+    console.log(`[RECEITAS CONTROLLER] Receitas FREE retornadas: ${receitasToLog.filter(r => r.is_free === true).length}`);
     
-    return receitas;
+    return result;
   }
 
   @Get(':id')

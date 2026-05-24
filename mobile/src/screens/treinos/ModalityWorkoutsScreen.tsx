@@ -205,27 +205,12 @@ export default function ModalityWorkoutsScreen() {
         </View>
 
         {isExpanded && temTreino && (
-          <View>
-            <ScrollView 
-              horizontal 
-              showsHorizontalScrollIndicator={false}
-              contentContainerStyle={{ paddingLeft: 20, paddingRight: 5, marginTop: 15 }}
-              snapToInterval={295} // 280 (largura) + 15 (margin)
-              decelerationRate="fast"
-            >
-              {treinosDoDia.map((treino, tIndex) => (
-                <View key={treino.id}>
-                  {renderTreinoCard(treino, tIndex, true)}
-                </View>
-              ))}
-            </ScrollView>
-            
-            {treinosDoDia.length > 1 && (
-              <View style={styles.carouselIndicator}>
-                <Text style={styles.indicatorText}>DESLIZE PARA VER MAIS</Text>
-                <Ionicons name="chevron-forward" size={12} color="#E7C48A" />
+          <View style={{ flexDirection: 'row', flexWrap: 'wrap', paddingHorizontal: 15, marginTop: 15 }}>
+            {treinosDoDia.map((treino, tIndex) => (
+              <View key={treino.id} style={{ width: '50%', padding: 5, marginBottom: 10 }}>
+                {renderTreinoCard(treino, tIndex, false)}
               </View>
-            )}
+            ))}
           </View>
         )}
       </View>
@@ -249,9 +234,10 @@ export default function ModalityWorkoutsScreen() {
           <FlatList
             data={treinos.sort((a, b) => (a.ordem || 0) - (b.ordem || 0))}
             keyExtractor={(item) => item.id}
+            numColumns={2}
             ListHeaderComponent={renderHeader}
             renderItem={({ item, index }) => (
-              <View style={{ paddingHorizontal: 20, marginBottom: 15 }}>
+              <View style={{ width: '50%', paddingLeft: index % 2 === 0 ? 20 : 5, paddingRight: index % 2 === 0 ? 5 : 20, marginBottom: 15 }}>
                 {renderTreinoCard(item, index)}
               </View>
             )}

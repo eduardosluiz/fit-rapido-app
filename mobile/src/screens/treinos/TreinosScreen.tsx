@@ -116,13 +116,18 @@ export default function TreinosScreen() {
 
   const renderHeader = () => (
     <View style={{ paddingBottom: 20 }}>
-      <View style={styles.headerTopBar}>
-        <View style={styles.headerDateContainer}></View>
-      </View>
-
-      <View style={styles.titleContainer}>
-        <Text style={styles.headerTitle}>Treinos</Text>
-        <View style={styles.titleUnderline} />
+      <View style={[styles.titleContainer, { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-end', marginTop: 20 }]}>
+        <View>
+          <Text style={styles.headerTitle}>Treinos</Text>
+          <View style={styles.titleUnderline} />
+        </View>
+        <TouchableOpacity 
+          style={{ flexDirection: 'row', alignItems: 'center', backgroundColor: 'rgba(231,196,138,0.1)', paddingHorizontal: 12, paddingVertical: 8, borderRadius: 20, borderWidth: 1, borderColor: 'rgba(231,196,138,0.3)', marginBottom: 8 }}
+          onPress={() => (navigation as any).navigate('BibliotecaTreinos')}
+        >
+          <Ionicons name="library-outline" size={16} color="#E7C48A" />
+          <Text style={{ color: '#E7C48A', fontSize: 12, marginLeft: 6, fontWeight: 'bold' }}>Biblioteca</Text>
+        </TouchableOpacity>
       </View>
 
       {!canAccessWorkouts ? (
@@ -276,7 +281,7 @@ const styles = StyleSheet.create({
     borderWidth: 1.2,
     borderColor: 'rgba(231,196,138,0.35)',
   },
-  searchInput: { flex: 1, color: '#fff', marginLeft: 10, fontSize: 14 },
+  searchInput: { flex: 1, color: '#fff', marginLeft: 10, fontSize: 14, outlineStyle: 'none' as any },
   filtersContainer: { marginBottom: 30 },
   filtersContent: { paddingHorizontal: 20 },
   filterChip: {

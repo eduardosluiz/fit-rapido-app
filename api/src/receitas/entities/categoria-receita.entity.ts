@@ -28,6 +28,12 @@ export class CategoriaReceita {
   @Column({ default: true })
   ativa: boolean;
 
+  @Column({ default: false })
+  aparece_favoritos: boolean;
+
+  @Column({ nullable: true })
+  icone_emoji: string;
+
   @ManyToMany(() => Receita, (receita) => receita.categorias)
   receitas: Receita[];
 

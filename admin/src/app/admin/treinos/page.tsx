@@ -21,7 +21,6 @@ export default function TreinosPage() {
   const router = useRouter();
   const { isAuthenticated } = useAuth();
   const [treinos, setTreinos] = useState<any[]>([]);
-  const [treinosFiltrados, setTreinosFiltrados] = useState<any[]>([]);
   const [categorias, setCategorias] = useState<any[]>([]);
   const [modalidades, setModalidades] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -29,6 +28,7 @@ export default function TreinosPage() {
   const [selectedCategoria, setSelectedCategoria] = useState<string>('');
   const [selectedModalidade, setSelectedModalidade] = useState<string>('');
   const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
   const [categoriasModalOpen, setCategoriasModalOpen] = useState(false);
   const [exerciciosModalOpen, setExerciciosModalOpen] = useState(false);
   const itemsPerPage = 12;
@@ -36,18 +36,50 @@ export default function TreinosPage() {
   const loadTreinos = useCallback(async () => {
     try {
       setLoading(true);
-      const dataRaw = await api.getTreinos({ incluirInativas: true });
-      const data = Array.isArray(dataRaw) ? dataRaw : [];
-      // Filtrar para não mostrar vídeos de modalidades
-      const filtered = data.filter((t: any) => !t.modalidade_id && !t.modalidade);
-      setTreinos(filtered);
-      setTreinosFiltrados(filtered);
+      const dataRaw = await api.getTreinos({
+        incluirInativas: true,
+        apenasAvulsos: !selectedModalidade,
+        page: currentPage,
+        limit: itemsPerPage,
+        search: searchText || undefined,
+        categoria: selectedCategoria || undefined,
+        modalidade_id: selectedModalidade || undefined,
+      });
+
+      let items = [];
+      let total = 1;
+      let isPaginatedServerSide = false;
+      
+      if (Array.isArray(dataRaw)) {
+        items = dataRaw;
+      } else if (dataRaw && Array.isArray(dataRaw.data)) {
+        items = dataRaw.data;
+        if (dataRaw.totalPages) total = dataRaw.totalPages;
+        isPaginatedServerSide = true;
+      } else if (dataRaw && Array.isArray(dataRaw.items)) {
+        items = dataRaw.items;
+        if (dataRaw.totalPages) total = dataRaw.totalPages;
+        isPaginatedServerSide = true;
+      }
+
+      // Fallback: If the backend hasn't been updated and didn't paginate or filter, do it locally
+      if (!isPaginatedServerSide) {
+        if (!selectedModalidade) {
+          items = items.filter((t: any) => !t.modalidade_id && !t.modalidade);
+        }
+        total = Math.ceil(items.length / itemsPerPage);
+        const startIndex = (currentPage - 1) * itemsPerPage;
+        items = items.slice(startIndex, startIndex + itemsPerPage);
+      }
+
+      setTreinos(items);
+      setTotalPages(total);
     } catch (err: any) {
       console.error('Erro:', err);
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [currentPage, searchText, selectedCategoria, selectedModalidade]);
 
   const loadCategorias = useCallback(async () => {
     try {
@@ -69,38 +101,35 @@ export default function TreinosPage() {
 
   useEffect(() => {
     if (isAuthenticated === true) {
-      loadTreinos();
       loadCategorias();
       loadModalidades();
+    }
+  }, [isAuthenticated, loadCategorias, loadModalidades]);
+
+  useEffect(() => {
+    if (isAuthenticated === true) {
+      loadTreinos();
     } else if (isAuthenticated === false) {
       setLoading(false);
     }
-  }, [isAuthenticated, loadTreinos, loadCategorias, loadModalidades]);
+  }, [isAuthenticated, loadTreinos]);
 
-  useEffect(() => {
-    let filtered = treinos;
-    if (searchText.trim()) {
-      const searchLower = searchText.toLowerCase();
-      filtered = filtered.filter((t) =>
-        t.titulo?.toLowerCase().includes(searchLower) ||
-        t.descricao?.toLowerCase().includes(searchLower)
-      );
-    }
-    if (selectedCategoria) {
-      filtered = filtered.filter((t) => 
-        t.categorias && t.categorias.some((cat: any) => cat.id === selectedCategoria)
-      );
-    }
-    if (selectedModalidade) {
-      filtered = filtered.filter((t) => t.modalidade_id === selectedModalidade);
-    }
-    setTreinosFiltrados(filtered);
+  // Remover useEffect de filtro local, vamos usar server-side
+  // Resetar pagina ao mudar filtros
+  const handleSearchChange = (val: string) => {
+    setSearchText(val);
     setCurrentPage(1);
-  }, [searchText, selectedCategoria, selectedModalidade, treinos]);
+  };
+  const handleCategoriaChange = (val: string) => {
+    setSelectedCategoria(val);
+    setCurrentPage(1);
+  };
+  const handleModalidadeChange = (val: string) => {
+    setSelectedModalidade(val);
+    setCurrentPage(1);
+  };
 
-  const totalPages = Math.ceil(treinosFiltrados.length / itemsPerPage);
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const treinosPaginated = treinosFiltrados.slice(startIndex, startIndex + itemsPerPage);
+  const treinosPaginated = treinos;
 
   const handleDelete = async (id: string) => {
     if (!confirm('Excluir este treino?')) return;
@@ -202,7 +231,7 @@ export default function TreinosPage() {
       <div className="w-full max-w-[1400px] mx-auto space-y-12">
         
         {/* Header Oficial Minimalista */}
-        <div className="flex items-center justify-between border-b border-gray-100 dark:border-[#222] pb-8">
+        <div className="flex flex-col md:flex-row md:items-center justify-between border-b border-gray-100 dark:border-[#222] pb-8 gap-6">
           <div>
             <h1 className="text-xl font-light text-gray-400 dark:text-gray-500 tracking-tight uppercase">
               Gerenciar <span className="text-gray-800 dark:text-white font-semibold">Treinos</span>
@@ -210,45 +239,45 @@ export default function TreinosPage() {
             <p className="text-[10px] text-gray-400 font-medium uppercase tracking-[0.2em] mt-1">Sessões de Treinamento Personalizadas</p>
           </div>
           
-          <div className="flex items-center gap-3">
+          <div className="flex flex-wrap items-center gap-3 w-full md:w-auto mt-4 md:mt-0">
             <button 
               onClick={() => setExerciciosModalOpen(true)}
-              className="px-4 py-1.5 rounded-md border border-[#c8921a]/60 text-[#c8921a] text-[9px] font-bold uppercase tracking-widest hover:bg-[#c8921a]/5 hover:border-[#c8921a] transition-all duration-300 flex items-center gap-1.5"
+              className="flex-1 sm:flex-none justify-center px-4 py-2 rounded-md border border-[#c8921a]/60 text-[#c8921a] text-[10px] font-bold uppercase tracking-widest hover:bg-[#c8921a]/10 hover:border-[#c8921a] transition-all duration-300 flex items-center gap-2 whitespace-nowrap"
             >
-              <Dumbbell size={12} /> Exercícios
+              <Dumbbell size={14} /> Exercícios
             </button>
             <button 
               onClick={() => setCategoriasModalOpen(true)}
-              className="px-4 py-1.5 rounded-md border border-[#c8921a]/60 text-[#c8921a] text-[9px] font-bold uppercase tracking-widest hover:bg-[#c8921a]/5 hover:border-[#c8921a] transition-all duration-300 flex items-center gap-1.5"
+              className="flex-1 sm:flex-none justify-center px-4 py-2 rounded-md border border-[#c8921a]/60 text-[#c8921a] text-[10px] font-bold uppercase tracking-widest hover:bg-[#c8921a]/10 hover:border-[#c8921a] transition-all duration-300 flex items-center gap-2 whitespace-nowrap"
             >
-              <FolderPlus size={12} /> Categoria
+              <FolderPlus size={14} /> Categoria
             </button>
             <Link 
               href="/admin/treinos/novo"
-              className="px-4 py-1.5 rounded-md border border-[#c8921a] text-[#c8921a] text-[9px] font-bold uppercase tracking-widest hover:bg-[#c8921a] hover:text-white transition-all duration-300 flex items-center gap-1.5"
+              className="flex-1 sm:flex-none justify-center px-4 py-2 rounded-md border border-[#c8921a] bg-[#c8921a] text-white text-[10px] font-bold uppercase tracking-widest hover:bg-[#b88217] hover:border-[#b88217] transition-all duration-300 flex items-center gap-2 whitespace-nowrap shadow-sm"
             >
-              <Plus size={12} /> Novo Treino
+              <Plus size={14} /> Novo Treino
             </Link>
           </div>
         </div>
 
         {/* Barra Superior de Busca e Filtros - Estilo Linha Fina */}
-        <div className="flex items-center justify-between gap-10 mb-12">
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 mb-12">
           {/* Campo de Busca */}
-          <div className="relative w-full max-w-[300px] group">
+          <div className="relative w-full lg:max-w-[300px] group">
             <Search className="absolute left-0 top-1/2 -translate-y-1/2 text-gray-300 group-focus-within:text-[#c8921a] transition-colors" size={16} />
             <input 
-              type="text" value={searchText} onChange={(e) => setSearchText(e.target.value)} 
+              type="text" value={searchText} onChange={(e) => handleSearchChange(e.target.value)} 
               placeholder="Buscar treino..." 
               className="w-full pl-7 pr-4 py-2 bg-transparent border-t-0 border-l-0 border-r-0 border-b border-gray-300 dark:border-[#333] focus:border-[#c8921a] focus:ring-0 outline-none text-sm text-black dark:text-white font-normal placeholder-gray-400" 
             />
           </div>
           
-          <div className="flex items-center gap-6">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 w-full lg:w-auto">
             {/* Filtro Modalidade */}
-            <div className="relative min-w-[180px]">
+            <div className="relative flex-1 sm:min-w-[180px]">
               <select 
-                value={selectedModalidade} onChange={(e) => setSelectedModalidade(e.target.value)}
+                value={selectedModalidade} onChange={(e) => handleModalidadeChange(e.target.value)}
                 className="w-full appearance-none bg-transparent border-t-0 border-l-0 border-r-0 border-b border-gray-300 dark:border-[#333] pl-2 pr-8 py-2 text-xs text-black dark:text-white font-normal focus:outline-none focus:border-[#c8921a] cursor-pointer uppercase tracking-widest"
               >
                 <option value="" className="dark:bg-[#0a0a0a]">Modalidade</option>
@@ -260,9 +289,9 @@ export default function TreinosPage() {
             </div>
 
             {/* Filtro Categoria */}
-            <div className="relative min-w-[180px]">
+            <div className="relative flex-1 sm:min-w-[180px]">
               <select 
-                value={selectedCategoria} onChange={(e) => setSelectedCategoria(e.target.value)}
+                value={selectedCategoria} onChange={(e) => handleCategoriaChange(e.target.value)}
                 className="w-full appearance-none bg-transparent border-t-0 border-l-0 border-r-0 border-b border-gray-300 dark:border-[#333] pl-2 pr-8 py-2 text-xs text-black dark:text-white font-normal focus:outline-none focus:border-[#c8921a] cursor-pointer uppercase tracking-widest"
               >
                 <option value="" className="dark:bg-[#0a0a0a]">Categoria</option>
@@ -275,7 +304,7 @@ export default function TreinosPage() {
           </div>
         </div>
 
-        {treinosFiltrados.length === 0 ? (
+        {treinos.length === 0 ? (
           <EmptyState icon="bx-dumbbell" title="Sem treinos" description="Crie seu primeiro treino agora!" actionLabel="Novo Treino" actionHref="/admin/treinos/novo" />
         ) : (
           <>

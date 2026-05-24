@@ -960,7 +960,7 @@ export default function ModalidadesPage() {
                 });
                 setExpandedSections({ iniciante: true, intermediario: false, avancado: false });
               }}
-              className="px-6 py-2.5 rounded-md bg-[#c8921a] text-[#2d2106] text-[10px] font-bold uppercase tracking-widest shadow-lg shadow-[#c8921a]/20 hover:scale-105 transition-all flex items-center gap-2"
+              className="w-full sm:w-auto px-6 py-2.5 rounded-md bg-[#c8921a] text-[#2d2106] text-[10px] font-bold uppercase tracking-widest shadow-lg shadow-[#c8921a]/20 hover:scale-105 transition-all flex items-center justify-center gap-2"
             >
               <Plus size={14} /> Novo Registro
             </button>

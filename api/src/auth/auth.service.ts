@@ -4,7 +4,7 @@ import { Repository } from 'typeorm';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { User, UserRole, SubscriptionTier } from './entities/user.entity';
-import { RegisterDto, LoginDto, UpdateUserDto } from './dto/auth.dto';
+import { RegisterDto, LoginDto, UpdateUserDto, UpdatePasswordDto } from './dto/auth.dto';
 import { canManuallyChangeSubscription, getSubscriptionChangeErrorMessage } from '../common/helpers/subscription-validation.helper';
 
 @Injectable()
@@ -162,6 +162,35 @@ export class AuthService {
     // Remover senha_hash da resposta
     const { senha_hash: _, ...userWithoutPassword } = user;
     return userWithoutPassword as Omit<User, 'senha_hash'>;
+  }
+
+  async changePassword(userId: string, updatePasswordDto: UpdatePasswordDto): Promise<void> {
+    const user = await this.userRepository.findOne({ where: { id: userId } });
+    if (!user || !user.senha_hash) {
+      throw new NotFoundException('Usuário não encontrado ou não possui senha definida');
+    }
+
+    const isPasswordValid = await bcrypt.compare(updatePasswordDto.senha_atual, user.senha_hash);
+    if (!isPasswordValid) {
+      throw new UnauthorizedException('Senha atual incorreta');
+    }
+
+    const new_senha_hash = await bcrypt.hash(updatePasswordDto.nova_senha, 10);
+    user.senha_hash = new_senha_hash;
+
+    await this.userRepository.save(user);
+  }
+
+  async adminChangePassword(userId: string, nova_senha: string): Promise<void> {
+    const user = await this.userRepository.findOne({ where: { id: userId } });
+    if (!user) {
+      throw new NotFoundException('Usuário não encontrado');
+    }
+
+    const new_senha_hash = await bcrypt.hash(nova_senha, 10);
+    user.senha_hash = new_senha_hash;
+
+    await this.userRepository.save(user);
   }
 
   async countAdmins(): Promise<number> {

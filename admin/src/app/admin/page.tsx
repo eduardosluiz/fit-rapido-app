@@ -27,19 +27,15 @@ export default function AdminDashboard() {
   const loadStats = async () => {
     try {
       setLoading(true);
-      const [receitas, treinos, usuarios] = await Promise.all([
-        api.getReceitas({ incluirInativas: true }).catch(() => []),
-        api.getTreinos({ incluirInativas: true }).catch(() => []),
-        api.getUsers().catch(() => []),
-      ]);
+      const statsData = await api.getStats().catch(() => ({}));
 
       setStats({
-        receitas: receitas.length || 0,
-        treinos: treinos.length || 0,
-        receitasAtivas: receitas.filter((r: any) => r.ativa).length || 0,
-        treinosAtivos: treinos.filter((t: any) => t.ativa).length || 0,
-        usuariosAtivos: usuarios.filter((u: any) => u.ativo !== false).length || 0,
-        usuariosTotal: usuarios.length || 0,
+        receitas: statsData.receitas_totais || 0,
+        treinos: statsData.treinos_totais || 0,
+        receitasAtivas: statsData.receitas_totais || 0, // Como stats ainda nao retorna ativas separado, podemos mapear ou ignorar
+        treinosAtivos: statsData.treinos_totais || 0,
+        usuariosAtivos: statsData.usuarios_ativos || 0,
+        usuariosTotal: statsData.usuarios_totais || 0,
       });
     } catch (error) {
       console.error('Erro:', error);

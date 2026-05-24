@@ -5,7 +5,8 @@ import { api } from '@/lib/api';
 import { useAuth } from '@/lib/useAuth';
 import { DataTable } from '@/components/admin/DataTable';
 import { EditarUsuarioModal } from '@/components/admin/EditarUsuarioModal';
-import { Search, ChevronDown, Loader2, Edit3, Lock, CheckCircle } from 'lucide-react';
+import { TrocarSenhaModal } from '@/components/admin/TrocarSenhaModal';
+import { Search, ChevronDown, Loader2, Edit3, Lock, CheckCircle, Key } from 'lucide-react';
 import { toast } from 'react-hot-toast';
 import '@/app/admin/data-table.css';
 
@@ -29,7 +30,9 @@ export default function UsuariosPage() {
   const [searchText, setSearchText] = useState('');
   const [selectedRole, setSelectedRole] = useState<string>('');
   const [editarModalOpen, setEditarModalOpen] = useState(false);
+  const [trocarSenhaModalOpen, setTrocarSenhaModalOpen] = useState(false);
   const [usuarioEditandoId, setUsuarioEditandoId] = useState<string | null>(null);
+  const [usuarioNome, setUsuarioNome] = useState('');
 
   useEffect(() => {
     if (isAuthenticated) loadUsuarios();
@@ -79,6 +82,7 @@ export default function UsuariosPage() {
       <div className="flex items-center gap-3">
         {/* Ícones com cores vivas por padrão e inversão no hover via CSS */}
         <button onClick={() => { setUsuarioEditandoId(u.id); setEditarModalOpen(true); }} className="action-icon-edit" title="Editar"><Edit3 size={14} /></button>
+        <button onClick={() => { setUsuarioEditandoId(u.id); setUsuarioNome(u.nome || u.email); setTrocarSenhaModalOpen(true); }} className="action-icon-edit text-yellow-500" title="Trocar Senha"><Key size={14} /></button>
         <button onClick={() => handleToggleBlock(u)} className={u.ativo !== false ? 'action-icon-warning' : 'action-icon-success'} title={u.ativo !== false ? 'Bloquear' : 'Ativar'}>
           {u.ativo !== false ? <Lock size={14} /> : <CheckCircle size={14} />}
         </button>
@@ -139,6 +143,13 @@ export default function UsuariosPage() {
         onOpenChange={setEditarModalOpen}
         usuarioId={usuarioEditandoId}
         onUsuarioChange={loadUsuarios}
+      />
+      
+      <TrocarSenhaModal
+        open={trocarSenhaModalOpen}
+        onOpenChange={setTrocarSenhaModalOpen}
+        usuarioId={usuarioEditandoId}
+        usuarioNome={usuarioNome}
       />
     </div>
   );
