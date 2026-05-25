@@ -6,6 +6,7 @@ import { useAuth } from '@/lib/useAuth';
 import { Switch } from '@/components/ui/switch';
 import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover';
 import { FileUpload } from '@/components/admin/FileUpload';
+import { BaseModal } from '@/components/admin/BaseModal';
 import { toast } from 'react-hot-toast';
 import { 
   Plus, 
@@ -435,15 +436,22 @@ export default function ModalidadesPage() {
     setShowForm(true);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
+  const [confirmDeleteModal, setConfirmDeleteModal] = useState<{ open: boolean; mod: Modalidade | null }>({ open: false, mod: null });
 
-  const handleDelete = async (mod: Modalidade) => {
-    if (!confirm(`Excluir modalidade "${mod.nome}" e todos os seus vídeos?`)) return;
+  const confirmDelete = (mod: Modalidade) => {
+    setConfirmDeleteModal({ open: true, mod });
+  };
+
+  const handleDelete = async () => {
+    if (!confirmDeleteModal.mod) return;
     try {
-      await api.deleteModalidadeTreino(mod.id);
+      await api.deleteModalidadeTreino(confirmDeleteModal.mod.id);
       toast.success('Modalidade removida');
       loadData();
     } catch (err: any) {
       toast.error('Erro ao excluir');
+    } finally {
+      setConfirmDeleteModal({ open: false, mod: null });
     }
   };
 
@@ -1109,7 +1117,7 @@ export default function ModalidadesPage() {
                   </div>
                   <div className="flex gap-2 pt-2 border-t border-gray-50 dark:border-[#1a1a1a]">
                     <button onClick={() => handleEdit(mod)} className="flex-1 py-2 rounded-md bg-gray-100 dark:bg-[#111] text-gray-700 dark:text-gray-300 text-[9px] font-bold uppercase tracking-widest hover:bg-[#c8921a] hover:text-white transition-all flex items-center justify-center gap-2"><Edit3 size={12} /> Editar</button>
-                    <button onClick={() => handleDelete(mod)} className="p-2 rounded-md bg-red-50 dark:bg-red-950/20 text-red-500 hover:bg-red-500 hover:text-white transition-all"><Trash2 size={14} /></button>
+                    <button onClick={() => confirmDelete(mod)} className="p-2 rounded-md bg-red-50 dark:bg-red-950/20 text-red-500 hover:bg-red-500 hover:text-white transition-all"><Trash2 size={14} /></button>
                   </div>
                 </div>
               </div>
@@ -1122,6 +1130,35 @@ export default function ModalidadesPage() {
           </div>
         )}
       </div>
+
+      <BaseModal
+        open={confirmDeleteModal.open}
+        onOpenChange={(open) => !open && setConfirmDeleteModal({ open: false, mod: null })}
+        title="Confirmar Exclusão"
+        description={`Tem certeza que deseja excluir a modalidade "${confirmDeleteModal.mod?.nome}" e todos os seus vídeos associados?`}
+        icon="bx bx-trash"
+        maxWidth="sm"
+      >
+        <div className="py-2">
+          <p className="text-sm text-gray-600 dark:text-gray-400 mb-6">
+            Esta ação não poderá ser desfeita.
+          </p>
+          <div className="flex justify-end gap-3">
+            <button
+              onClick={() => setConfirmDeleteModal({ open: false, mod: null })}
+              className="px-4 py-2 rounded-lg text-sm font-semibold text-gray-700 bg-gray-100 hover:bg-gray-200 dark:bg-[#252525] dark:text-gray-300 dark:hover:bg-[#333] transition-colors"
+            >
+              Cancelar
+            </button>
+            <button
+              onClick={handleDelete}
+              className="px-4 py-2 rounded-lg text-sm font-semibold text-white bg-red-600 hover:bg-red-700 transition-colors flex items-center gap-2"
+            >
+              <Trash2 size={16} /> Excluir Modalidade
+            </button>
+          </div>
+        </div>
+      </BaseModal>
     </div>
   );
 }

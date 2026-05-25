@@ -65,6 +65,14 @@ export class TreinosModalidadesController {
   @Delete(':id')
   async remove(@Param('id') id: string) {
     try {
+      // Deletar primeiro os treinos associados (vídeos)
+      await this.repository.manager
+        .createQueryBuilder()
+        .delete()
+        .from('treinos')
+        .where('modalidade_id = :id', { id })
+        .execute();
+
       await this.repository.delete(id);
       return { message: 'Modalidade removida com sucesso' };
     } catch (error) {

@@ -159,7 +159,7 @@ export default function ExerciseDetailScreen() {
     <SafeAreaView style={styles.container} edges={['bottom']}>
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
-          <Ionicons name="chevron-back" size={24} color="#fff" />
+          <Ionicons name="chevron-back" size={24} color={colors.primary} />
         </TouchableOpacity>
         <Text style={styles.headerTitle} numberOfLines={1}>{display.titulo}</Text>
         <View style={{ width: 40 }} />
@@ -409,17 +409,18 @@ const styles = StyleSheet.create({
   infoGrid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: 12,
+    justifyContent: 'space-between',
     marginBottom: 24,
   },
   infoCard: {
-    width: (width - 40 - 12) / 2,
+    width: '48%',
     backgroundColor: '#0a0a0a',
     borderRadius: 12,
     padding: 16,
     borderWidth: 1,
     borderColor: 'rgba(200, 146, 26, 0.2)', // BORDA DOURADA SUTIL
     alignItems: 'center',
+    marginBottom: 12,
   },
   infoLabel: {
     color: '#555',
