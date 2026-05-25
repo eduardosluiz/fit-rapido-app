@@ -42,6 +42,7 @@ export default function BibliotecaVideosPage() {
   const [itemToEdit, setItemToEdit] = useState<any>(null);
   const [newTitle, setNewTitle] = useState('');
   const [editExibirMobile, setEditExibirMobile] = useState(false);
+  const [editCategorias, setEditCategorias] = useState<string[]>([]);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false);
   
@@ -208,10 +209,23 @@ export default function BibliotecaVideosPage() {
       await api.createExercicioCategoria(newCategoryName);
       toast.success('Categoria criada');
       setNewCategoryName('');
-      setIsCategoryModalOpen(false);
       loadCategorias();
     } catch (error) {
       toast.error('Erro ao criar categoria');
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  const handleDeleteCategory = async (id: string) => {
+    if (!confirm('Tem certeza que deseja excluir esta categoria? Os vídeos que a utilizam não serão excluídos, apenas a categoria.')) return;
+    setIsSaving(true);
+    try {
+      await api.deleteExercicioCategoria(id);
+      toast.success('Categoria excluída');
+      loadCategorias();
+    } catch (error) {
+      toast.error('Erro ao excluir categoria');
     } finally {
       setIsSaving(false);
     }
@@ -224,10 +238,11 @@ export default function BibliotecaVideosPage() {
       await api.createExercicioBiblioteca({
         ...itemToEdit,
         nome: newTitle,
-        exibir_mobile: editExibirMobile
+        exibir_mobile: editExibirMobile,
+        categoria: editCategorias.join(', ')
       });
       
-      toast.success('Renomeado');
+      toast.success('Atualizado');
       setIsEditModalOpen(false);
       setPage(1);
       fetchExercicios(1, true);
@@ -342,7 +357,7 @@ export default function BibliotecaVideosPage() {
                   <div className="flex items-center justify-between pt-3 border-t border-gray-50 dark:border-[#1a1a1a] mt-auto">
                     <button onClick={() => { setPreviewVideo(ex); setVideoError(false); setVideoIsLoading(true); }} className="text-[9px] font-black text-[#c8921a] hover:text-blue-500 transition-all uppercase tracking-widest">Acessar</button>
                     <div className="flex justify-end gap-2 px-6">
-                      <button onClick={() => { setItemToEdit(ex); setNewTitle(ex.nome); setEditExibirMobile(!!ex.exibir_mobile); setIsEditModalOpen(true); }} className="text-blue-400 hover:text-blue-600 transition-colors" title="Editar"><Edit3 size={12} /></button>
+                      <button onClick={() => { setItemToEdit(ex); setNewTitle(ex.nome); setEditExibirMobile(!!ex.exibir_mobile); setEditCategorias(ex.categoria ? ex.categoria.split(',').map((c: string) => c.trim()).filter(Boolean) : []); setIsEditModalOpen(true); }} className="text-blue-400 hover:text-blue-600 transition-colors" title="Editar"><Edit3 size={12} /></button>
                       <button onClick={() => { setItemToDelete(ex); setIsDeleteModalOpen(true); }} className="text-gray-300 hover:text-red-500 transition-colors" title="Excluir"><X size={12} /></button>
                     </div>
                   </div>
@@ -417,7 +432,7 @@ export default function BibliotecaVideosPage() {
           <div className="bg-white dark:bg-[#111] rounded-2xl shadow-xl w-full max-w-xs overflow-hidden border border-gray-100 dark:border-[#222]">
             <div className="px-5 py-3 border-b border-gray-100 dark:border-[#1a1a1a] flex items-center justify-between">
               <h2 className="text-[10px] font-bold uppercase tracking-widest text-gray-800 dark:text-white">Confirmar Exclusão</h2>
-              <button onClick={() => setIsDeleteModalOpen(false)} className="text-gray-300 hover:text-red-500"><X size={16} /></button>
+              <button onClick={() => setIsDeleteModalOpen(false)} className="text-red-500 hover:text-red-600 bg-red-50 hover:bg-red-100 dark:bg-red-500/10 dark:hover:bg-red-500/20 p-1 rounded transition-all"><X size={16} /></button>
             </div>
             <div className="p-6 text-center">
               <AlertTriangle className="text-red-500 mx-auto mb-4" size={16} />
@@ -437,7 +452,7 @@ export default function BibliotecaVideosPage() {
           <div className="bg-white dark:bg-[#111] rounded-2xl shadow-xl w-full max-w-xs overflow-hidden border border-gray-100 dark:border-[#222]">
             <div className="px-5 py-3 border-b border-gray-100 dark:border-[#1a1a1a] flex items-center justify-between">
               <h2 className="text-[10px] font-bold uppercase tracking-widest text-gray-800 dark:text-white">Editar Mídia</h2>
-              <button onClick={() => setIsEditModalOpen(false)} className="text-gray-300 hover:text-red-500"><X size={16} /></button>
+              <button onClick={() => setIsEditModalOpen(false)} className="text-red-500 hover:text-red-600 bg-red-50 hover:bg-red-100 dark:bg-red-500/10 dark:hover:bg-red-500/20 p-1 rounded transition-all"><X size={16} /></button>
             </div>
             <div className="p-6">
               <label className="text-[8px] font-black text-gray-400 uppercase tracking-widest block mb-1">Título do Exercício</label>
@@ -453,24 +468,62 @@ export default function BibliotecaVideosPage() {
                 <span className="text-[10px] font-black text-gray-800 dark:text-gray-200 uppercase tracking-wide">Exibir na Biblioteca do Mobile</span>
               </label>
 
+              {/* Categorias Múltiplas */}
+              <label className="text-[8px] font-black text-gray-400 uppercase tracking-widest block mb-2 mt-4">Categorias</label>
+              <div className="bg-gray-50 dark:bg-[#222] border border-gray-200 dark:border-[#333] rounded-lg p-2 max-h-32 overflow-y-auto custom-scrollbar mb-6">
+                {categorias.map(cat => (
+                  <label key={cat.id} className="flex items-center gap-2 p-2 hover:bg-gray-100 dark:hover:bg-[#333] rounded cursor-pointer transition-colors">
+                    <input 
+                      type="checkbox" 
+                      checked={editCategorias.includes(cat.nome)}
+                      onChange={(e) => {
+                        if (e.target.checked) {
+                          setEditCategorias(prev => [...prev, cat.nome]);
+                        } else {
+                          setEditCategorias(prev => prev.filter(c => c !== cat.nome));
+                        }
+                      }}
+                      className="w-3.5 h-3.5 text-[#c8921a] rounded border-gray-400 focus:ring-[#c8921a]"
+                    />
+                    <span className="text-[10px] font-medium text-gray-700 dark:text-gray-300">{cat.nome}</span>
+                  </label>
+                ))}
+                {categorias.length === 0 && (
+                  <div className="p-2 text-[10px] text-gray-500 text-center uppercase tracking-widest">Nenhuma categoria criada</div>
+                )}
+              </div>
+
               <button onClick={handleUpdateTitle} disabled={isSaving || !newTitle.trim()} className="w-full py-2.5 rounded-lg bg-[#c8921a] text-white text-[9px] font-black uppercase tracking-widest shadow-lg shadow-[#c8921a]/20 hover:bg-[#b07d14] transition-colors">Salvar</button>
             </div>
           </div>
         </div>
       )}
 
-      {/* Modal de Nova Categoria */}
+      {/* Modal de Gerenciar Categorias */}
       {isCategoryModalOpen && (
         <div className="fixed inset-0 z-[3000] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in zoom-in duration-200">
           <div className="bg-white dark:bg-[#111] rounded-2xl shadow-xl w-full max-w-xs overflow-hidden border border-gray-100 dark:border-[#222]">
             <div className="px-5 py-3 border-b border-gray-100 dark:border-[#1a1a1a] flex items-center justify-between">
-              <h2 className="text-[10px] font-bold uppercase tracking-widest text-gray-800 dark:text-white">Nova Categoria</h2>
-              <button onClick={() => setIsCategoryModalOpen(false)} className="text-gray-300 hover:text-red-500"><X size={16} /></button>
+              <h2 className="text-[10px] font-bold uppercase tracking-widest text-gray-800 dark:text-white">Gerenciar Categorias</h2>
+              <button onClick={() => setIsCategoryModalOpen(false)} className="text-red-500 hover:text-red-600 bg-red-50 hover:bg-red-100 dark:bg-red-500/10 dark:hover:bg-red-500/20 p-1 rounded transition-all"><X size={16} /></button>
             </div>
             <div className="p-6">
-              <label className="text-[8px] font-black text-gray-400 uppercase tracking-widest block mb-1">Nome do Grupo Muscular</label>
+              <label className="text-[8px] font-black text-gray-400 uppercase tracking-widest block mb-2">Categorias Existentes</label>
+              <div className="bg-gray-50 dark:bg-[#222] border border-gray-200 dark:border-[#333] rounded-lg p-2 max-h-40 overflow-y-auto custom-scrollbar mb-6">
+                {categorias.map(cat => (
+                  <div key={cat.id} className="flex items-center justify-between p-2 hover:bg-gray-100 dark:hover:bg-[#333] rounded transition-colors">
+                    <span className="text-[10px] font-medium text-gray-700 dark:text-gray-300">{cat.nome}</span>
+                    <button onClick={() => handleDeleteCategory(cat.id)} className="text-red-500 hover:text-red-600 transition-all bg-red-50 hover:bg-red-100 dark:bg-red-500/10 dark:hover:bg-red-500/20 p-1 rounded" title="Excluir"><X size={14} /></button>
+                  </div>
+                ))}
+                {categorias.length === 0 && (
+                  <div className="p-2 text-[10px] text-gray-500 text-center uppercase tracking-widest">Nenhuma categoria criada</div>
+                )}
+              </div>
+
+              <label className="text-[8px] font-black text-gray-400 uppercase tracking-widest block mb-1">Adicionar Nova</label>
               <input type="text" value={newCategoryName} onChange={(e) => setNewCategoryName(e.target.value)} className="w-full bg-transparent border-t-0 border-l-0 border-r-0 border-b border-gray-300 dark:border-[#333] px-0 py-2 text-xs focus:outline-none focus:border-[#c8921a] text-gray-700 dark:text-white mb-6 font-medium" placeholder="Ex: Costas..." autoFocus />
-              <button onClick={handleCreateCategory} disabled={isSaving || !newCategoryName.trim()} className="w-full py-2.5 rounded-lg bg-[#c8921a] text-white text-[9px] font-black uppercase tracking-widest shadow-lg shadow-[#c8921a]/20">Criar</button>
+              <button onClick={handleCreateCategory} disabled={isSaving || !newCategoryName.trim()} className="w-full py-2.5 rounded-lg bg-[#c8921a] text-white text-[9px] font-black uppercase tracking-widest shadow-lg shadow-[#c8921a]/20 hover:bg-[#b07d14] transition-colors">Criar</button>
             </div>
           </div>
         </div>
@@ -482,7 +535,7 @@ export default function BibliotecaVideosPage() {
           <div className="bg-white dark:bg-[#111] rounded-xl shadow-2xl w-full max-w-xl overflow-hidden border border-gray-100 dark:border-[#222]">
             <div className="px-8 py-4 border-b border-gray-50 dark:border-[#1a1a1a] flex items-center justify-between">
               <h2 className="text-[10px] font-bold uppercase tracking-widest text-gray-800 dark:text-white">Adicionar Mídia</h2>
-              <button onClick={() => !isUploading && setIsUploadModalOpen(false)} className="text-gray-500 hover:text-red-500 p-1 dark:text-gray-300"><X size={18} /></button>
+              <button onClick={() => !isUploading && setIsUploadModalOpen(false)} className="text-red-500 hover:text-red-600 bg-red-50 hover:bg-red-100 dark:bg-red-500/10 dark:hover:bg-red-500/20 p-1.5 rounded transition-all"><X size={18} /></button>
             </div>
             
             <div className="p-10 space-y-8">

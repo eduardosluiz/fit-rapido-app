@@ -556,6 +556,12 @@ class ApiService {
       body: JSON.stringify({ nome }),
     });
   }
+
+  async deleteExercicioCategoria(id: string) {
+    return this.request<void>(`/exercicios-categorias/${id}`, {
+      method: 'DELETE',
+    });
+  }
 }
 
 export const api = new ApiService();
