@@ -39,15 +39,16 @@ export default function BibliotecaVideosPage() {
   // Modais
   const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [itemToEdit, setItemToEdit] = useState<any>(null);
+  const [newTitle, setNewTitle] = useState('');
+  const [editExibirMobile, setEditExibirMobile] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false);
   
   // Estados de Manipulação
   const [uploadItems, setUploadItems] = useState<UploadItem[]>([]);
   const [isUploading, setIsUploading] = useState(false);
-  const [itemToEdit, setItemToEdit] = useState<Exercicio | null>(null);
   const [itemToDelete, setItemToDelete] = useState<Exercicio | null>(null);
-  const [newTitle, setNewTitle] = useState('');
   const [newCategoryName, setNewCategoryName] = useState('');
   const [isSaving, setIsSaving] = useState(false);
   
@@ -131,14 +132,10 @@ export default function BibliotecaVideosPage() {
   }, [isAuthenticated, selectedCategoria, searchText, fetchExercicios]);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      const files = Array.from(e.target.files);
-      const newItems = files.map(file => ({
-        file,
-        categorias: categorias.length > 0 ? [categorias[0].nome] : ['Geral']
-      }));
-      setUploadItems(prev => [...prev, ...newItems]);
-    }
+    if (!e.target.files) return;
+    const files = Array.from(e.target.files);
+    setUploadItems(prev => [...prev, ...files.map(f => ({ file: f, categorias: [], exibir_mobile: false }))]);
+    e.target.value = '';
   };
 
   const toggleItemCategory = (index: number, catName: string) => {
@@ -149,6 +146,12 @@ export default function BibliotecaVideosPage() {
     } else {
       item.categorias = [...item.categorias, catName];
     }
+    setUploadItems(updated);
+  };
+
+  const toggleExibirMobile = (index: number, checked: boolean) => {
+    const updated = [...uploadItems];
+    updated[index].exibir_mobile = checked;
     setUploadItems(updated);
   };
 
@@ -164,8 +167,6 @@ export default function BibliotecaVideosPage() {
       const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
       
       for (const item of uploadItems) {
-        // Para upload de arquivo, ainda usamos FormData e o axios ou fetch direto pode ser necessário
-        // mas vamos tentar usar o fetch com a lógica do api service para manter o token
         const formData = new FormData();
         formData.append('file', item.file);
         
@@ -183,10 +184,9 @@ export default function BibliotecaVideosPage() {
         await api.createExercicioBiblioteca({
           nome: item.file.name.split('.')[0],
           video_url: uploadData.url.startsWith('http') ? uploadData.url : `${API_URL}${uploadData.url}`,
-          categoria: item.categorias.join(', ')
+          categoria: item.categorias.join(', '),
+          exibir_mobile: item.exibir_mobile
         });
-
-
       }
       
       toast.success('Mídias adicionadas!', { id: toastId });
@@ -221,11 +221,10 @@ export default function BibliotecaVideosPage() {
     if (!itemToEdit || !newTitle.trim()) return;
     setIsSaving(true);
     try {
-      // Usando o create (POST) que atua como update no backend se passar o ID? 
-      // Não, vamos usar o POST conforme o código anterior mas ajustado
       await api.createExercicioBiblioteca({
         ...itemToEdit,
-        nome: newTitle
+        nome: newTitle,
+        exibir_mobile: editExibirMobile
       });
       
       toast.success('Renomeado');
@@ -275,7 +274,6 @@ export default function BibliotecaVideosPage() {
     <div className="p-6 sm:p-10 bg-[#fafafa] dark:bg-[#0a0a0a] min-h-screen pb-24">
       <div className="w-full max-w-[1400px] mx-auto space-y-12">
         
-        {/* Header Oficial Minimalista */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-gray-100 dark:border-[#222] pb-8 gap-6">
           <div className="flex items-center gap-4">
             <div>
@@ -306,7 +304,6 @@ export default function BibliotecaVideosPage() {
           </div>
         </div>
 
-        {/* Filtros de Linha */}
         <div className="flex items-center justify-between gap-10 mb-12">
           <div className="relative w-full max-w-[300px] group">
             <Search className="absolute left-0 top-1/2 -translate-y-1/2 text-gray-300 group-focus-within:text-[#c8921a] transition-colors" size={16} />
@@ -331,7 +328,6 @@ export default function BibliotecaVideosPage() {
           </div>
         </div>
 
-        {/* Grid de Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {exercicios.length > 0 ? (
             exercicios.map((ex) => (
@@ -345,9 +341,9 @@ export default function BibliotecaVideosPage() {
                   <h3 className="text-[13px] font-normal text-gray-500 dark:text-gray-400 line-clamp-1 mb-4 tracking-tight group-hover:text-gray-800 dark:group-hover:text-white transition-colors">{ex.nome}</h3>
                   <div className="flex items-center justify-between pt-3 border-t border-gray-50 dark:border-[#1a1a1a] mt-auto">
                     <button onClick={() => { setPreviewVideo(ex); setVideoError(false); setVideoIsLoading(true); }} className="text-[9px] font-black text-[#c8921a] hover:text-blue-500 transition-all uppercase tracking-widest">Acessar</button>
-                    <div className="flex items-center gap-3">
-                      <button onClick={() => { setItemToEdit(ex); setNewTitle(ex.nome); setIsEditModalOpen(true); }} className="text-blue-400 hover:text-blue-600 transition-colors" title="Editar"><Edit3 size={12} /></button>
-                      <button onClick={() => { setItemToDelete(ex); setIsDeleteModalOpen(true); }} className="text-red-500 hover:text-red-700 transition-colors" title="Excluir"><Trash2 size={12} /></button>
+                    <div className="flex justify-end gap-2 px-6">
+                      <button onClick={() => { setItemToEdit(ex); setNewTitle(ex.nome); setEditExibirMobile(!!ex.exibir_mobile); setIsEditModalOpen(true); }} className="text-blue-400 hover:text-blue-600 transition-colors" title="Editar"><Edit3 size={12} /></button>
+                      <button onClick={() => { setItemToDelete(ex); setIsDeleteModalOpen(true); }} className="text-gray-300 hover:text-red-500 transition-colors" title="Excluir"><X size={12} /></button>
                     </div>
                   </div>
                 </div>
@@ -440,13 +436,24 @@ export default function BibliotecaVideosPage() {
         <div className="fixed inset-0 z-[3000] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in zoom-in duration-200">
           <div className="bg-white dark:bg-[#111] rounded-2xl shadow-xl w-full max-w-xs overflow-hidden border border-gray-100 dark:border-[#222]">
             <div className="px-5 py-3 border-b border-gray-100 dark:border-[#1a1a1a] flex items-center justify-between">
-              <h2 className="text-[10px] font-bold uppercase tracking-widest text-gray-800 dark:text-white">Editar Título</h2>
+              <h2 className="text-[10px] font-bold uppercase tracking-widest text-gray-800 dark:text-white">Editar Mídia</h2>
               <button onClick={() => setIsEditModalOpen(false)} className="text-gray-300 hover:text-red-500"><X size={16} /></button>
             </div>
             <div className="p-6">
               <label className="text-[8px] font-black text-gray-400 uppercase tracking-widest block mb-1">Título do Exercício</label>
-              <input type="text" value={newTitle} onChange={(e) => setNewTitle(e.target.value)} className="w-full bg-transparent border-t-0 border-l-0 border-r-0 border-b border-gray-300 dark:border-[#333] px-0 py-2 text-xs focus:outline-none focus:border-[#c8921a] text-gray-700 dark:text-white mb-6 font-medium" placeholder="Novo nome..." autoFocus />
-              <button onClick={handleUpdateTitle} disabled={isSaving || !newTitle.trim()} className="w-full py-2.5 rounded-lg bg-[#c8921a] text-white text-[9px] font-black uppercase tracking-widest shadow-lg shadow-[#c8921a]/20">Salvar</button>
+              <input type="text" value={newTitle} onChange={(e) => setNewTitle(e.target.value)} className="w-full bg-transparent border-t-0 border-l-0 border-r-0 border-b border-gray-300 dark:border-[#333] px-0 py-2 text-xs focus:outline-none focus:border-[#c8921a] text-gray-700 dark:text-white mb-2 font-medium" placeholder="Novo nome..." autoFocus />
+              
+              <label className="flex items-center gap-2 cursor-pointer mt-4 mb-6 bg-gray-50 dark:bg-[#222] p-3 rounded-md border border-gray-200 dark:border-[#333] hover:border-[#c8921a] transition-colors">
+                <input 
+                  type="checkbox" 
+                  checked={editExibirMobile}
+                  onChange={(e) => setEditExibirMobile(e.target.checked)}
+                  className="w-4 h-4 text-[#c8921a] rounded border-gray-400 focus:ring-[#c8921a]"
+                />
+                <span className="text-[10px] font-black text-gray-800 dark:text-gray-200 uppercase tracking-wide">Exibir na Biblioteca do Mobile</span>
+              </label>
+
+              <button onClick={handleUpdateTitle} disabled={isSaving || !newTitle.trim()} className="w-full py-2.5 rounded-lg bg-[#c8921a] text-white text-[9px] font-black uppercase tracking-widest shadow-lg shadow-[#c8921a]/20 hover:bg-[#b07d14] transition-colors">Salvar</button>
             </div>
           </div>
         </div>
@@ -475,47 +482,57 @@ export default function BibliotecaVideosPage() {
           <div className="bg-white dark:bg-[#111] rounded-xl shadow-2xl w-full max-w-xl overflow-hidden border border-gray-100 dark:border-[#222]">
             <div className="px-8 py-4 border-b border-gray-50 dark:border-[#1a1a1a] flex items-center justify-between">
               <h2 className="text-[10px] font-bold uppercase tracking-widest text-gray-800 dark:text-white">Adicionar Mídia</h2>
-              <button onClick={() => !isUploading && setIsUploadModalOpen(false)} className="text-gray-300 hover:text-red-500 p-1"><X size={18} /></button>
+              <button onClick={() => !isUploading && setIsUploadModalOpen(false)} className="text-gray-500 hover:text-red-500 p-1 dark:text-gray-300"><X size={18} /></button>
             </div>
             
             <div className="p-10 space-y-8">
-              <label htmlFor="file-up" className="border-2 border-dashed rounded-xl p-12 flex flex-col items-center justify-center cursor-pointer hover:border-[#c8921a] transition-all border-gray-100 dark:border-[#333] group bg-gray-50/20">
-                <Upload className="text-[#c8921a] mb-3 group-hover:scale-110 transition-transform" size={24} />
-                <h3 className="text-[10px] font-black uppercase tracking-widest text-gray-800 dark:text-white">Selecionar Vídeos</h3>
-                <input type="file" multiple accept="video/*" id="file-up" className="hidden" onChange={handleFileChange} disabled={isUploading} />
-              </label>
+              {uploadItems.length === 0 && (
+                <label htmlFor="file-up" className="border-2 border-dashed rounded-xl p-12 flex flex-col items-center justify-center cursor-pointer hover:border-[#c8921a] hover:bg-[#c8921a]/5 transition-all border-[#c8921a]/40 dark:border-[#c8921a]/30 group bg-gray-50/50 dark:bg-[#1a1a1a]/50">
+                  <Upload className="text-[#c8921a] mb-3 group-hover:scale-110 transition-transform" size={24} />
+                  <h3 className="text-[10px] font-black uppercase tracking-widest text-gray-800 dark:text-white">Selecionar Vídeos</h3>
+                  <input type="file" multiple accept="video/*" id="file-up" className="hidden" onChange={handleFileChange} disabled={isUploading} />
+                </label>
+              )}
               
               {uploadItems.length > 0 && (
-                <div className="bg-gray-50 dark:bg-[#1a1a1a] rounded-lg p-6 max-h-60 overflow-y-auto custom-scrollbar border border-gray-100 dark:border-[#222]">
-                  <div className="text-[9px] font-black text-gray-400 uppercase tracking-widest mb-4 border-b pb-2">Fila de Processamento ({uploadItems.length})</div>
+                <div className="bg-gray-50 dark:bg-[#1a1a1a] rounded-lg p-6 max-h-80 overflow-y-auto custom-scrollbar border border-gray-200 dark:border-[#333]">
+                  <div className="text-[10px] font-black text-gray-800 dark:text-white uppercase tracking-widest mb-4 border-b border-gray-200 dark:border-[#333] pb-2">Fila de Processamento ({uploadItems.length})</div>
                   <div className="space-y-4">
                     {uploadItems.map((item, i) => (
-                      <div key={i} className="flex items-center justify-between gap-4 py-2 border-b border-gray-50 dark:border-[#222] last:border-0">
-                        <div className="flex-1 min-w-0">
-                          <p className="truncate text-[10px] font-bold text-gray-700 dark:text-gray-300">{item.file.name}</p>
-                          <p className="text-[8px] text-gray-400">{(item.file.size / (1024 * 1024)).toFixed(1)}MB</p>
+                      <div key={i} className="flex flex-col gap-3 py-4 border-b border-gray-200 dark:border-[#333] last:border-0 relative">
+                        <button onClick={() => removeUploadItem(i)} className="absolute top-4 right-0 text-gray-400 hover:text-red-500 transition-colors"><X size={16} /></button>
+                        
+                        <div className="pr-6">
+                          <p className="truncate text-[11px] font-black text-gray-900 dark:text-white">{item.file.name}</p>
+                          <p className="text-[9px] font-bold text-gray-500">{(item.file.size / (1024 * 1024)).toFixed(1)}MB</p>
                         </div>
                         
-                        <div className="flex-1">
-                          <p className="text-[8px] font-black text-gray-400 uppercase tracking-widest mb-2">Categorias</p>
-                          <div className="flex flex-wrap gap-1.5">
+                        <div>
+                          <p className="text-[9px] font-black text-[#c8921a] uppercase tracking-widest mb-2">Categorias</p>
+                          <div className="flex flex-col gap-1 max-h-32 overflow-y-auto custom-scrollbar bg-white dark:bg-[#222] border border-gray-200 dark:border-[#444] rounded-md p-2">
                             {categorias.map((cat) => (
-                              <button
-                                key={cat.id}
-                                onClick={() => toggleItemCategory(i, cat.nome)}
-                                className={`px-2 py-0.5 rounded text-[8px] font-bold uppercase tracking-tighter transition-all ${
-                                  item.categorias.includes(cat.nome)
-                                    ? 'bg-[#c8921a] text-white shadow-sm'
-                                    : 'bg-gray-100 dark:bg-[#222] text-gray-400 border border-gray-200 dark:border-[#333]'
-                                }`}
-                              >
-                                {cat.nome}
-                              </button>
+                              <label key={cat.id} className="flex items-center gap-2 cursor-pointer p-1.5 hover:bg-gray-50 dark:hover:bg-[#333] rounded transition-colors">
+                                <input
+                                  type="checkbox"
+                                  checked={item.categorias.includes(cat.nome)}
+                                  onChange={() => toggleItemCategory(i, cat.nome)}
+                                  className="w-3.5 h-3.5 text-[#c8921a] rounded border-gray-300 focus:ring-[#c8921a]"
+                                />
+                                <span className="text-[10px] font-bold text-gray-700 dark:text-gray-300 uppercase tracking-tighter">{cat.nome}</span>
+                              </label>
                             ))}
                           </div>
                         </div>
 
-                        <button onClick={() => removeUploadItem(i)} className="text-gray-300 hover:text-red-500 transition-colors"><X size={14} /></button>
+                        <label className="flex items-center gap-2 cursor-pointer mt-1 bg-white dark:bg-[#222] p-2.5 rounded-md border border-gray-200 dark:border-[#444] w-fit hover:border-[#c8921a] transition-colors">
+                          <input 
+                            type="checkbox" 
+                            checked={item.exibir_mobile}
+                            onChange={(e) => toggleExibirMobile(i, e.target.checked)}
+                            className="w-4 h-4 text-[#c8921a] rounded border-gray-400 focus:ring-[#c8921a]"
+                          />
+                          <span className="text-[10px] font-black text-gray-900 dark:text-gray-100 uppercase tracking-wide">Exibir na Biblioteca do Mobile</span>
+                        </label>
                       </div>
                     ))}
                   </div>
@@ -523,10 +540,12 @@ export default function BibliotecaVideosPage() {
               )}
             </div>
 
-            <div className="px-10 py-5 bg-gray-50 dark:bg-[#1a1a1a] flex justify-end gap-4 border-t border-gray-100 dark:border-[#222]">
-              <button onClick={() => setIsUploadModalOpen(false)} disabled={isUploading} className="px-6 py-2 rounded-lg border border-gray-200 dark:border-[#333] bg-white dark:bg-[#111] text-[9px] font-black uppercase tracking-widest text-gray-400">Cancelar</button>
-              <button onClick={handleUpload} disabled={isUploading || uploadItems.length === 0} className="px-8 py-2 rounded-lg bg-[#c8921a] text-white text-[9px] font-black uppercase shadow-lg shadow-[#c8921a]/20 disabled:opacity-50">{isUploading ? 'Processando...' : 'Iniciar Upload'}</button>
-            </div>
+            {uploadItems.length > 0 && (
+              <div className="px-10 py-5 bg-gray-50 dark:bg-[#1a1a1a] flex justify-end gap-4 border-t border-gray-200 dark:border-[#333]">
+                <button onClick={() => setIsUploadModalOpen(false)} disabled={isUploading} className="px-6 py-2 rounded-md border border-gray-400 dark:border-[#444] bg-white dark:bg-[#222] text-[10px] font-black uppercase tracking-widest text-gray-800 dark:text-gray-100 hover:bg-gray-100 transition-colors">Cancelar</button>
+                <button onClick={handleUpload} disabled={isUploading || uploadItems.length === 0} className="px-8 py-2 rounded-md bg-[#c8921a] text-white text-[10px] font-black uppercase disabled:opacity-50 hover:bg-[#b07d14] transition-colors">{isUploading ? 'Processando...' : 'Iniciar Upload'}</button>
+              </div>
+            )}
           </div>
         </div>
       )}

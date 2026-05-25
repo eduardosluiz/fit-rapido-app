@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useId } from 'react';
 import { uploadImagem, uploadVideo } from '@/lib/upload';
 import { getMediaUrl } from '@/lib/media';
 import { Input } from '@/components/ui/input';
@@ -22,6 +22,7 @@ interface FileUploadProps {
 }
 
 export function FileUpload({ type, value, onChange, label, accept, error, hideUrlInput = false, compact = false, aspect = 4 / 3 }: FileUploadProps) {
+  const reactId = useId();
   const [uploading, setUploading] = useState(false);
   const [uploadError, setUploadError] = useState<string | null>(null);
   const [preview, setPreview] = useState<string | null>(value || null);
@@ -92,7 +93,7 @@ export function FileUpload({ type, value, onChange, label, accept, error, hideUr
     : 'video/mp4,video/webm,video/quicktime';
 
   const displayError = error || uploadError;
-  const fileInputId = `file-upload-${type}-${Math.random().toString(36).substr(2, 9)}`;
+  const fileInputId = `file-upload-${type}-${reactId}`;
 
   // Modo compacto: apenas botão pequeno
   if (compact) {
@@ -120,16 +121,14 @@ export function FileUpload({ type, value, onChange, label, accept, error, hideUr
                 <i className="bx bx-play text-[#c8921a] text-xl"></i>
               </div>
             )}
-            <Button
+            <button
               type="button"
-              variant="destructive"
-              size="icon"
               onClick={handleRemove}
-              className="absolute -top-2 -right-2 h-5 w-5 rounded-full shadow-lg z-10"
+              className="absolute -top-1.5 -right-1.5 w-4 h-4 rounded-full bg-red-500 hover:bg-red-600 text-white flex items-center justify-center shadow-sm z-10 transition-all"
               title="Remover"
             >
-              <i className="bx bx-x text-xs"></i>
-            </Button>
+              <i className="bx bx-x text-[10px]"></i>
+            </button>
           </div>
         ) : (
           <Label
@@ -186,16 +185,14 @@ export function FileUpload({ type, value, onChange, label, accept, error, hideUr
                   "w-full max-w-[280px] h-[120px] object-cover"
                 )}
               />
-              <Button
+              <button
                 type="button"
-                variant="destructive"
-                size="icon"
                 onClick={handleRemove}
-                className="absolute top-2 right-2 h-7 w-7 rounded-full shadow-lg z-10"
+                className="absolute top-2 right-2 h-7 w-7 rounded-full bg-red-500 hover:bg-red-600 text-white flex items-center justify-center shadow-lg z-10 transition-all"
                 title="Remover imagem"
               >
-                <i className="bx bx-x text-sm"></i>
-              </Button>
+                <i className="bx bx-x text-base"></i>
+              </button>
             </>
           ) : (
             <>
@@ -207,16 +204,14 @@ export function FileUpload({ type, value, onChange, label, accept, error, hideUr
                   "w-full max-w-[280px] h-[120px] object-cover"
                 )}
               />
-              <Button
+              <button
                 type="button"
-                variant="destructive"
-                size="icon"
                 onClick={handleRemove}
-                className="absolute top-2 right-2 h-7 w-7 rounded-full shadow-lg z-10"
+                className="absolute top-2 right-2 h-7 w-7 rounded-full bg-red-500 hover:bg-red-600 text-white flex items-center justify-center shadow-lg z-10 transition-all"
                 title="Remover vídeo"
               >
-                <i className="bx bx-x text-sm"></i>
-              </Button>
+                <i className="bx bx-x text-base"></i>
+              </button>
             </>
           )}
         </div>

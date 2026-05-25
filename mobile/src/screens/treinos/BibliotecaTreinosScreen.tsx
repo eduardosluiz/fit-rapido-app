@@ -27,7 +27,7 @@ export default function BibliotecaTreinosScreen({ navigation }: any) {
   const loadExercicios = useCallback(async () => {
     try {
       setLoading(true);
-      const res = await api.getExerciciosBiblioteca({ search: searchText, limit: 100 });
+      const res = await api.getExerciciosBiblioteca({ search: searchText, limit: 100, exibir_mobile: 'true' });
       const data = res?.items || (Array.isArray(res) ? res : (res?.data || []));
       // Garante a ordenação alfabética
       const sortedData = data.sort((a: any, b: any) => a.nome?.localeCompare(b.nome));

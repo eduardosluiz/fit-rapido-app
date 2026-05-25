@@ -29,6 +29,9 @@ export class ExercicioBiblioteca {
   @Column({ nullable: true })
   equipamento: string;
 
+  @Column({ default: false })
+  exibir_mobile: boolean;
+
   @CreateDateColumn()
   createdAt: Date;
 

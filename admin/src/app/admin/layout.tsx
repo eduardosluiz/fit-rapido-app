@@ -71,6 +71,7 @@ export default function AdminLayout({
     <div className={`admin-container ${isDarkTheme ? 'dark-theme' : ''}`}>
       {/* Mobile Menu Button - Somente em Mobile */}
       <button 
+        type="button"
         className="admin-mobile-menu-btn md:hidden"
         onClick={() => setIsSidebarOpen(!isSidebarOpen)}
       >

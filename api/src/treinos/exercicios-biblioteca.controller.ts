@@ -31,6 +31,7 @@ export class ExerciciosBibliotecaController {
   async findAll(
     @Query('grupo') grupo?: string,
     @Query('search') search?: string,
+    @Query('exibir_mobile') exibir_mobile?: string,
     @Query('page') page: number = 1,
     @Query('limit') limit: number = 20
   ) {
@@ -44,6 +45,12 @@ export class ExerciciosBibliotecaController {
     // Busca por nome do exercício
     if (search && search.trim() !== '') {
       where.nome = ILike(`%${search.trim()}%`);
+    }
+
+    if (exibir_mobile === 'true') {
+      where.exibir_mobile = true;
+    } else if (exibir_mobile === 'false') {
+      where.exibir_mobile = false;
     }
     
     const [items, total] = await this.repository.findAndCount({

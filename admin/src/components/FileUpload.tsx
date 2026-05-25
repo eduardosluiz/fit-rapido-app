@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useId } from 'react';
 import { uploadImagem, uploadVideo } from '@/lib/upload';
 
 interface FileUploadProps {
@@ -12,6 +12,7 @@ interface FileUploadProps {
 }
 
 export function FileUpload({ type, value, onChange, label, accept }: FileUploadProps) {
+  const reactId = useId();
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [preview, setPreview] = useState<string | null>(value || null);
@@ -125,10 +126,10 @@ export function FileUpload({ type, value, onChange, label, accept }: FileUploadP
               onChange={handleFileChange}
               disabled={uploading}
               className="hidden"
-              id={`file-upload-${type}`}
+              id={`file-upload-${type}-${reactId}`}
             />
             <label
-              htmlFor={`file-upload-${type}`}
+              htmlFor={`file-upload-${type}-${reactId}`}
               className={`
                 inline-flex items-center gap-2 px-4 py-2 rounded-lg border-2 border-dashed cursor-pointer
                 transition-colors

@@ -30,6 +30,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-BR" className={inter.variable} suppressHydrationWarning>
+      <head suppressHydrationWarning />
       <body className="font-inter antialiased" suppressHydrationWarning>
         <SuppressExtensionErrorsInit />
         <Toaster position="top-right" reverseOrder={false} />

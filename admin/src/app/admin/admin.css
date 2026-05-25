@@ -938,7 +938,7 @@
 
   /* Sidebar header menor */
   .admin-sidebar-header {
-    padding: 1.5rem 1.25rem;
+    padding: 4.5rem 1.5rem 1.5rem 1.5rem; /* Aumentado padding-top para não chocar com o botão mobile */
   }
 
   .admin-sidebar-header h1 {

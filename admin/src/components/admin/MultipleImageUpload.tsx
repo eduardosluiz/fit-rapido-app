@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useId } from 'react';
 import { uploadImagem } from '@/lib/upload';
 import { getMediaUrl } from '@/lib/media';
 import { Button } from '@/components/ui/button';
@@ -23,6 +23,7 @@ export function MultipleImageUpload({
   maxImages = 10,
   aspect = 4 / 3
 }: MultipleImageUploadProps) {
+  const reactId = useId();
   const [uploading, setUploading] = useState(false);
   const [uploadError, setUploadError] = useState<string | null>(null);
   const [displayImages, setDisplayImages] = useState<string[]>(images || []);
@@ -115,7 +116,7 @@ export function MultipleImageUpload({
     onChange(newImages);
   };
 
-  const fileInputId = `multiple-image-upload-${Math.random().toString(36).substr(2, 9)}`;
+  const fileInputId = `multiple-image-upload-${reactId}`;
 
   return (
     <div className="space-y-3">

@@ -161,25 +161,25 @@ function EditarTreinoForm() {
     <div className="relative p-6 sm:p-10 bg-[#f4f7f9] dark:bg-[#0a0a0a] min-h-screen pb-20">
       <div className="w-full max-w-[1400px] mx-auto space-y-10">
         {/* Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6 pb-8 border-b border-gray-200 dark:border-[#222]">
-          <div className="flex items-center gap-5">
-            <div className="p-4 bg-white dark:bg-[#111] border border-gray-200 dark:border-[#333] rounded-xl shadow-sm">
+        <div className="flex flex-row items-center justify-between gap-4 pb-8 border-b border-gray-200 dark:border-[#222]">
+          <div className="flex items-center gap-3 sm:gap-5">
+            <div className="hidden sm:flex p-4 bg-white dark:bg-[#111] border border-gray-200 dark:border-[#333] rounded-xl shadow-sm">
               <Edit3 size={32} className="text-[#c8921a]" />
             </div>
             <div>
-              <h1 className="text-xl font-light text-gray-400 dark:text-gray-500 tracking-tight uppercase">
+              <h1 className="text-lg sm:text-xl font-light text-gray-600 dark:text-gray-400 tracking-tight uppercase">
                 Editar <span className="text-gray-800 dark:text-white font-semibold">Treino</span>
               </h1>
-              <p className="text-[10px] text-gray-400 font-medium uppercase tracking-[0.2em] mt-1">Atualização de Registro Técnico</p>
+              <p className="text-[9px] sm:text-[10px] text-gray-500 dark:text-gray-400 font-medium uppercase tracking-[0.2em] mt-1">Atualização de Registro</p>
             </div>
           </div>
-          <div className="flex items-center justify-end gap-3">
+          <div className="flex items-center justify-end">
             <Link href="/admin/treinos">
               <button 
                 type="button"
-                className="px-4 py-2 rounded-md border border-gray-300 dark:border-[#333] text-gray-500 dark:text-gray-400 text-[10px] font-bold uppercase tracking-widest hover:bg-gray-50 dark:hover:bg-[#1a1a1a] transition-all flex items-center gap-2"
+                className="px-3 sm:px-4 py-2 rounded-md border border-gray-300 dark:border-[#333] text-gray-600 dark:text-gray-400 text-[10px] font-bold uppercase tracking-widest hover:bg-gray-50 dark:hover:bg-[#1a1a1a] transition-all flex items-center gap-1 sm:gap-2"
               >
-                <i className="bx bx-arrow-back text-lg"></i> Voltar
+                <i className="bx bx-arrow-back text-lg"></i> <span className="hidden sm:inline">Voltar</span>
               </button>
             </Link>
           </div>
@@ -273,7 +273,7 @@ function EditarTreinoForm() {
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-3 gap-4 mt-8">
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 mt-8">
                     <div className="flex items-center justify-between p-3 rounded-xl border border-gray-400 dark:border-[#444] bg-gray-100/50 dark:bg-[#0f0f0f] shadow-sm">
                       <p className="text-[9px] font-bold uppercase tracking-widest text-gray-800 dark:text-gray-200">Premium</p>
                       <Switch
@@ -658,18 +658,18 @@ function EditarTreinoForm() {
             </div>
 
             {/* Ações */}
-            <div className="flex gap-4 pt-10 border-t border-gray-200 dark:border-[#222] justify-end">
+            <div className="flex flex-col-reverse sm:flex-row gap-4 pt-10 border-t border-gray-200 dark:border-[#222] justify-end">
               <button 
                 type="button" 
                 onClick={() => router.push('/admin/treinos')}
-                className="px-5 py-2 rounded-md border border-gray-300 dark:border-[#444] text-[10px] font-bold uppercase tracking-widest text-gray-500 hover:bg-gray-50 transition-all flex items-center gap-2"
+                className="w-full sm:w-auto px-5 py-3 sm:py-2 rounded-md border border-gray-300 dark:border-[#444] text-[10px] font-bold uppercase tracking-widest text-gray-500 hover:bg-gray-50 transition-all flex items-center justify-center gap-2"
               >
                 <i className="bx bx-x text-lg"></i> Cancelar
               </button>
               <button 
                 type="submit" 
                 disabled={saving}
-                className="px-8 py-2.5 rounded-md bg-[#c8921a] text-[#2d2106] text-[10px] font-bold uppercase tracking-widest shadow-md hover:shadow-xl transition-all disabled:opacity-50 flex items-center gap-2"
+                className="w-full sm:w-auto px-8 py-3 sm:py-2.5 rounded-md bg-[#c8921a] text-[#2d2106] text-[10px] font-bold uppercase tracking-widest shadow-md hover:shadow-xl transition-all disabled:opacity-50 flex items-center justify-center gap-2"
               >
                 {saving ? (
                   <>

@@ -516,28 +516,28 @@ export default function ModalidadesPage() {
     return (
       <div className="bg-white dark:bg-[#0f0f0f] border border-gray-200 dark:border-[#222] rounded-2xl shadow-sm overflow-hidden mb-8 transition-all">
         <div className="p-6 sm:p-10 space-y-8">
-          <div className="flex items-center justify-between border-b border-gray-100 dark:border-[#1a1a1a] pb-4">
-            <h3 className="text-[11px] font-bold uppercase tracking-[0.3em] text-gray-400 flex items-center gap-3">
-              <div className={`w-1.5 h-1.5 rounded-full ${color}`}></div>
-              {displayTitle}
-              <span className="ml-2 px-2 py-0.5 rounded bg-gray-100 dark:bg-[#1a1a1a] text-[9px] text-gray-500 font-black">{allFilteredVideos.length}</span>
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-gray-100 dark:border-[#1a1a1a] pb-4 gap-4">
+            <h3 className="text-[11px] font-bold uppercase tracking-[0.3em] text-gray-600 dark:text-gray-400 flex items-center gap-2 sm:gap-3 leading-snug">
+              <div className={`w-1.5 h-1.5 rounded-full ${color} shrink-0`}></div>
+              <span>{displayTitle}</span>
+              <span className="ml-1 sm:ml-2 px-2 py-0.5 rounded bg-gray-100 dark:bg-[#1a1a1a] text-[9px] text-gray-500 font-black shrink-0">{allFilteredVideos.length}</span>
             </h3>
-            <div className="flex items-center gap-6">
+            <div className="flex items-center gap-4 sm:gap-6 w-full sm:w-auto justify-between sm:justify-end shrink-0">
               <button
                 type="button"
                 onClick={() => handleAddVideo(nivel)}
-                className={`text-[9px] font-bold uppercase tracking-widest ${color.replace('bg-', 'text-')} hover:underline flex items-center gap-2`}
+                className={`text-[9px] font-bold uppercase tracking-widest ${color.replace('bg-', 'text-')} hover:underline flex items-center gap-2 whitespace-nowrap`}
               >
-                <PlusCircle size={14} /> Adicionar Vídeo
+                <PlusCircle size={14} /> <span className="hidden sm:inline">Adicionar</span> Vídeo
               </button>
               
               <button
                 type="button"
                 onClick={() => toggleSection(nivel)}
-                className="p-2 rounded-lg bg-gray-50 dark:bg-[#1a1a1a] text-gray-400 hover:text-[#c8921a] transition-all flex items-center gap-1.5"
+                className="px-3 py-2 rounded-lg bg-gray-50 dark:bg-[#1a1a1a] text-gray-500 dark:text-gray-400 hover:text-[#c8921a] hover:bg-gray-100 dark:hover:bg-[#222] transition-all flex items-center gap-1.5 whitespace-nowrap border border-gray-200 dark:border-[#333]"
               >
-                <span className="text-[8px] font-black uppercase tracking-tighter mr-1">{isExpanded ? 'Colapsar Tudo' : 'Expandir Tudo'}</span>
-                {isExpanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+                <span className="text-[9px] font-bold uppercase tracking-widest mr-1">{isExpanded ? 'Colapsar' : 'Expandir'}</span>
+                {isExpanded ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
               </button>
             </div>
           </div>
@@ -569,57 +569,61 @@ export default function ModalidadesPage() {
                   return (
                     <div key={dayKey} className="space-y-6">
                       <div
-                        className="w-full flex items-center justify-between p-4 bg-gray-50 dark:bg-[#111] rounded-xl border border-gray-200 dark:border-[#222] hover:border-[#c8921a]/30 transition-all group cursor-pointer"
+                        className="w-full flex flex-col sm:flex-row sm:items-center justify-between p-4 sm:p-5 bg-white dark:bg-[#111] rounded-xl border-2 border-gray-200 dark:border-[#333] shadow-sm hover:border-[#c8921a]/40 transition-all group cursor-pointer gap-3 sm:gap-0"
                         onClick={() => toggleDay(nivel, dia)}
                       >
-                        <div className="flex items-center gap-4">
-                          <Calendar size={18} className="text-[#c8921a]" />
-                          <span className="text-xs font-black uppercase tracking-[0.1em] text-gray-700 dark:text-gray-300">
+                        <div className="flex flex-wrap items-center gap-2 sm:gap-4 w-full sm:w-auto pr-6 sm:pr-0 relative">
+                          <Calendar size={18} className="text-[#c8921a] shrink-0" />
+                          <span className="text-[11px] sm:text-xs font-black uppercase tracking-[0.1em] text-gray-700 dark:text-gray-300">
                             {getDiaNome(dia)}
                           </span>
-                          <span className="px-2 py-0.5 rounded bg-white dark:bg-black border border-gray-200 dark:border-[#333] text-[9px] text-gray-500 font-bold">
-                            {videosDoDia.length} {videosDoDia.length === 1 ? 'vídeo' : 'vídeos'}
+                          <span className="px-2 py-0.5 rounded bg-white dark:bg-black border border-gray-200 dark:border-[#333] text-[9px] text-gray-500 font-bold shrink-0">
+                            {videosDoDia.length} <span className="hidden sm:inline">{videosDoDia.length === 1 ? 'vídeo' : 'vídeos'}</span>
                           </span>
                           
                           <button 
                             type="button"
                             onClick={(e) => { e.stopPropagation(); handleAddVideo(nivel, dia); }}
-                            className="ml-4 px-3 py-1.5 rounded-md bg-[#c8921a]/10 text-[#c8921a] hover:bg-[#c8921a] hover:text-white transition-all text-[9px] font-bold uppercase tracking-widest flex items-center gap-1.5"
+                            className="ml-auto sm:ml-4 w-8 h-8 sm:w-auto sm:h-auto sm:px-3 sm:py-1.5 rounded-md bg-[#c8921a]/10 text-[#c8921a] hover:bg-[#c8921a] hover:text-white transition-all text-[9px] font-bold uppercase tracking-widest flex items-center justify-center sm:gap-1.5 shrink-0"
                             title="Adicionar vídeo para este dia"
                           >
-                            <Plus size={12} /> Adicionar
+                            <Plus size={16} className="sm:w-3 sm:h-3" /> <span className="hidden sm:inline">Adicionar</span>
                           </button>
+
+                          <div className="absolute right-0 top-1/2 -translate-y-1/2 sm:hidden text-gray-600 dark:text-gray-400 group-hover:text-[#c8921a] transition-colors bg-gray-100 dark:bg-[#222] p-1.5 rounded-md">
+                            {isDayExpanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+                          </div>
                         </div>
-                        <div className="text-gray-400 group-hover:text-[#c8921a] transition-colors">
-                          {isDayExpanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+                        <div className="hidden sm:block text-gray-600 dark:text-gray-400 group-hover:text-[#c8921a] transition-colors bg-gray-100 dark:bg-[#222] p-1.5 rounded-md">
+                            {isDayExpanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
                         </div>
                       </div>
 
                       {isDayExpanded && (
                         <div className="space-y-8 pl-4 border-l-2 border-gray-100 dark:border-[#1a1a1a] ml-4 animate-in fade-in duration-300">
                           {videosDoDia.map((video, fIndex) => (
-                            <div key={`${nivel}-${video.id || video.originalIndex}-${video.ordem}`} className="group relative p-8 rounded-2xl border border-gray-400 dark:border-[#444] bg-gray-50/30 dark:bg-[#0a0a0a] hover:border-[#c8921a]/40 transition-all flex flex-col gap-8">
-                              <div className="absolute -left-4 top-8 flex flex-col gap-3 z-10">
+                            <div key={`${nivel}-${video.id || video.originalIndex}-${video.ordem}`} className="group relative p-6 sm:p-8 rounded-2xl border border-gray-400 dark:border-[#444] bg-gray-50/30 dark:bg-[#0a0a0a] hover:border-[#c8921a]/40 transition-all flex flex-col gap-6 sm:gap-8 mt-4 sm:mt-0">
+                              <div className="absolute -left-3 sm:-left-4 top-4 sm:top-8 flex flex-col gap-1.5 sm:gap-2 z-10 scale-[0.80] sm:scale-100">
                                 <div className={`w-8 h-8 rounded-lg ${color} text-white flex items-center justify-center text-[11px] font-black shadow-lg`}>
                                   {fIndex + 1}
                                 </div>
-                                <div className="flex flex-col gap-1 bg-white dark:bg-[#111] border border-gray-200 dark:border-[#333] rounded-md p-1 shadow-md overflow-hidden">
+                                <div className="flex flex-col items-center justify-center gap-0.5 bg-white dark:bg-[#111] border border-gray-200 dark:border-[#333] rounded-md py-0.5 shadow-md overflow-hidden w-8">
                                   <button 
                                     type="button" 
                                     onClick={() => moveVideo(video.originalIndex, 'up')} 
                                     disabled={fIndex === 0}
-                                    className="p-1 text-gray-400 hover:text-[#c8921a] hover:bg-gray-50 dark:hover:bg-[#1a1a1a] transition-all disabled:opacity-20"
+                                    className="w-full flex items-center justify-center p-1 text-gray-500 hover:text-[#c8921a] hover:bg-gray-50 dark:hover:bg-[#1a1a1a] transition-all disabled:opacity-20"
                                   >
-                                    <ChevronUp size={14} />
+                                    <ChevronUp size={16} />
                                   </button>
                                   <div className="h-[1px] w-full bg-gray-100 dark:bg-[#222]"></div>
                                   <button 
                                     type="button" 
                                     onClick={() => moveVideo(video.originalIndex, 'down')} 
                                     disabled={fIndex === videosDoDia.length - 1}
-                                    className="p-1 text-gray-400 hover:text-[#c8921a] hover:bg-gray-50 dark:hover:bg-[#1a1a1a] transition-all disabled:opacity-20"
+                                    className="w-full flex items-center justify-center p-1 text-gray-500 hover:text-[#c8921a] hover:bg-gray-50 dark:hover:bg-[#1a1a1a] transition-all disabled:opacity-20"
                                   >
-                                    <ChevronDown size={14} />
+                                    <ChevronDown size={16} />
                                   </button>
                                 </div>
                               </div>
@@ -654,8 +658,8 @@ export default function ModalidadesPage() {
                                 <div className="lg:col-span-5 space-y-2">
                                   <label className="text-[9px] font-bold uppercase tracking-[0.15em] text-gray-800 dark:text-gray-200">Mídia Principal (Vídeo)</label>
                                   <div className="flex items-center gap-3">
-                                    <div className="flex-1 h-[42px] bg-gray-100 dark:bg-[#111] border border-gray-400 dark:border-[#333] rounded-md flex items-center px-4 overflow-hidden shadow-inner">
-                                      <span className="text-[11px] text-gray-400 truncate flex-1 font-medium">{video.video_url || 'Selecione mídia...'}</span>
+                                    <div className="flex-1 h-[42px] bg-gray-100 dark:bg-[#111] border border-gray-400 dark:border-[#333] rounded-md flex items-center px-3 sm:px-4 overflow-hidden shadow-inner">
+                                      <span className="text-[9px] sm:text-[11px] text-gray-400 truncate flex-1 font-medium">{video.video_url || 'Selecione mídia...'}</span>
                                     </div>
                                     <div className="flex items-center gap-2 shrink-0">
                                       <FileUpload type="video" value={video.video_url} onChange={(url) => handleVideoChange(video.originalIndex, 'video_url', url)} hideUrlInput compact />
@@ -707,10 +711,10 @@ export default function ModalidadesPage() {
 
                               {/* Informações Técnicas do Exercício Principal */}
                               <div className="w-full grid grid-cols-2 md:grid-cols-4 gap-6 p-6 rounded-xl bg-gray-100/50 dark:bg-[#111]/50 border border-gray-200 dark:border-[#222]">
-                                <div className="space-y-2"><label className="text-[9px] font-bold uppercase tracking-[0.2em] text-[#c8921a] ml-0.5">Séries</label><input value={video.series || ''} onChange={(e) => handleVideoChange(video.originalIndex, 'series', e.target.value)} placeholder="3" className="w-full bg-white dark:bg-[#0a0a0a] border border-gray-400 dark:border-[#444] rounded-md px-4 py-2.5 text-sm focus:border-[#c8921a] outline-none text-gray-900 dark:text-white font-bold" /></div>
-                                <div className="space-y-2"><label className="text-[9px] font-bold uppercase tracking-[0.2em] text-[#c8921a] ml-0.5">Repetições</label><input value={video.repeticoes || ''} onChange={(e) => handleVideoChange(video.originalIndex, 'repeticoes', e.target.value)} placeholder="12-15" className="w-full bg-white dark:bg-[#0a0a0a] border border-gray-400 dark:border-[#444] rounded-md px-4 py-2.5 text-sm focus:border-[#c8921a] outline-none text-gray-900 dark:text-white font-bold" /></div>
-                                <div className="space-y-2"><label className="text-[9px] font-bold uppercase tracking-[0.2em] text-[#c8921a] ml-0.5">Tempo Descanso</label><input value={video.descanso || ''} onChange={(e) => handleVideoChange(video.originalIndex, 'descanso', e.target.value)} placeholder="45s" className="w-full bg-white dark:bg-[#0a0a0a] border border-gray-400 dark:border-[#444] rounded-md px-4 py-2.5 text-sm focus:border-[#c8921a] outline-none text-gray-900 dark:text-white font-bold" /></div>
-                                <div className="space-y-2"><label className="text-[9px] font-bold uppercase tracking-[0.2em] text-[#c8921a] ml-0.5">Peso (Kg)</label><input value={video.peso || ''} onChange={(e) => handleVideoChange(video.originalIndex, 'peso', e.target.value)} placeholder="Livre" className="w-full bg-white dark:bg-[#0a0a0a] border border-gray-400 dark:border-[#444] rounded-md px-4 py-2.5 text-sm focus:border-[#c8921a] outline-none text-gray-900 dark:text-white font-bold" /></div>
+                                <div className="space-y-2"><label className="text-[9px] font-bold uppercase tracking-[0.2em] text-[#c8921a] ml-0.5 truncate block">Séries</label><input value={video.series || ''} onChange={(e) => handleVideoChange(video.originalIndex, 'series', e.target.value)} placeholder="3" className="w-full bg-white dark:bg-[#0a0a0a] border border-gray-400 dark:border-[#444] rounded-md px-3 sm:px-4 py-2.5 text-sm focus:border-[#c8921a] outline-none text-gray-900 dark:text-white font-bold" /></div>
+                                <div className="space-y-2"><label className="text-[9px] font-bold uppercase tracking-[0.2em] text-[#c8921a] ml-0.5 truncate block">Repetições</label><input value={video.repeticoes || ''} onChange={(e) => handleVideoChange(video.originalIndex, 'repeticoes', e.target.value)} placeholder="12-15" className="w-full bg-white dark:bg-[#0a0a0a] border border-gray-400 dark:border-[#444] rounded-md px-3 sm:px-4 py-2.5 text-sm focus:border-[#c8921a] outline-none text-gray-900 dark:text-white font-bold" /></div>
+                                <div className="space-y-2"><label className="text-[9px] font-bold uppercase tracking-[0.2em] text-[#c8921a] ml-0.5 truncate block" title="Tempo Descanso">Descanso</label><input value={video.descanso || ''} onChange={(e) => handleVideoChange(video.originalIndex, 'descanso', e.target.value)} placeholder="45s" className="w-full bg-white dark:bg-[#0a0a0a] border border-gray-400 dark:border-[#444] rounded-md px-3 sm:px-4 py-2.5 text-sm focus:border-[#c8921a] outline-none text-gray-900 dark:text-white font-bold" /></div>
+                                <div className="space-y-2"><label className="text-[9px] font-bold uppercase tracking-[0.2em] text-[#c8921a] ml-0.5 truncate block">Peso (Kg)</label><input value={video.peso || ''} onChange={(e) => handleVideoChange(video.originalIndex, 'peso', e.target.value)} placeholder="Livre" className="w-full bg-white dark:bg-[#0a0a0a] border border-gray-400 dark:border-[#444] rounded-md px-3 sm:px-4 py-2.5 text-sm focus:border-[#c8921a] outline-none text-gray-900 dark:text-white font-bold" /></div>
                               </div>
 
                               <div className="flex flex-col gap-6">
@@ -848,41 +852,41 @@ export default function ModalidadesPage() {
                                           </div>
                                         </div>
 
-                                        <div className="w-full grid grid-cols-2 md:grid-cols-4 gap-6 p-6 rounded-xl bg-gray-100/50 dark:bg-[#111]/50 border border-gray-200 dark:border-[#222]">
+                                        <div className="w-full grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 p-4 sm:p-6 rounded-xl bg-gray-100/50 dark:bg-[#111]/50 border border-gray-200 dark:border-[#222]">
                                           <div className="space-y-2">
-                                            <label className="text-[9px] font-bold uppercase tracking-[0.2em] text-[#c8921a] ml-0.5">Séries</label>
+                                            <label className="text-[9px] font-bold uppercase tracking-[0.2em] text-[#c8921a] ml-0.5 truncate block">Séries</label>
                                             <input 
                                               value={info.series || ''} 
                                               onChange={(e) => handleSubstitutoInfoChange(video.originalIndex, num as 1 | 2, 'series', e.target.value)} 
                                               placeholder="3" 
-                                              className="w-full bg-white dark:bg-[#0a0a0a] border border-gray-400 dark:border-[#444] rounded-md px-4 py-2.5 text-sm focus:border-[#c8921a] outline-none text-gray-900 dark:text-white font-bold" 
+                                              className="w-full bg-white dark:bg-[#0a0a0a] border border-gray-400 dark:border-[#444] rounded-md px-3 sm:px-4 py-2.5 text-sm focus:border-[#c8921a] outline-none text-gray-900 dark:text-white font-bold" 
                                             />
                                           </div>
                                           <div className="space-y-2">
-                                            <label className="text-[9px] font-bold uppercase tracking-[0.2em] text-[#c8921a] ml-0.5">Repetições</label>
+                                            <label className="text-[9px] font-bold uppercase tracking-[0.2em] text-[#c8921a] ml-0.5 truncate block">Repetições</label>
                                             <input 
                                               value={info.repeticoes || ''} 
                                               onChange={(e) => handleSubstitutoInfoChange(video.originalIndex, num as 1 | 2, 'repeticoes', e.target.value)} 
                                               placeholder="12-15" 
-                                              className="w-full bg-white dark:bg-[#0a0a0a] border border-gray-400 dark:border-[#444] rounded-md px-4 py-2.5 text-sm focus:border-[#c8921a] outline-none text-gray-900 dark:text-white font-bold" 
+                                              className="w-full bg-white dark:bg-[#0a0a0a] border border-gray-400 dark:border-[#444] rounded-md px-3 sm:px-4 py-2.5 text-sm focus:border-[#c8921a] outline-none text-gray-900 dark:text-white font-bold" 
                                             />
                                           </div>
                                           <div className="space-y-2">
-                                            <label className="text-[9px] font-bold uppercase tracking-[0.2em] text-[#c8921a] ml-0.5">Tempo Descanso</label>
+                                            <label className="text-[9px] font-bold uppercase tracking-[0.2em] text-[#c8921a] ml-0.5 truncate block" title="Tempo Descanso">Descanso</label>
                                             <input 
                                               value={info.descanso || ''} 
                                               onChange={(e) => handleSubstitutoInfoChange(video.originalIndex, num as 1 | 2, 'descanso', e.target.value)} 
                                               placeholder="45s" 
-                                              className="w-full bg-white dark:bg-[#0a0a0a] border border-gray-400 dark:border-[#444] rounded-md px-4 py-2.5 text-sm focus:border-[#c8921a] outline-none text-gray-900 dark:text-white font-bold" 
+                                              className="w-full bg-white dark:bg-[#0a0a0a] border border-gray-400 dark:border-[#444] rounded-md px-3 sm:px-4 py-2.5 text-sm focus:border-[#c8921a] outline-none text-gray-900 dark:text-white font-bold" 
                                             />
                                           </div>
                                           <div className="space-y-2">
-                                            <label className="text-[9px] font-bold uppercase tracking-[0.2em] text-[#c8921a] ml-0.5">Peso (Kg)</label>
+                                            <label className="text-[9px] font-bold uppercase tracking-[0.2em] text-[#c8921a] ml-0.5 truncate block">Peso (Kg)</label>
                                             <input 
                                               value={info.peso || ''} 
                                               onChange={(e) => handleSubstitutoInfoChange(video.originalIndex, num as 1 | 2, 'peso', e.target.value)} 
                                               placeholder="Livre" 
-                                              className="w-full bg-white dark:bg-[#0a0a0a] border border-gray-400 dark:border-[#444] rounded-md px-4 py-2.5 text-sm focus:border-[#c8921a] outline-none text-gray-900 dark:text-white font-bold" 
+                                              className="w-full bg-white dark:bg-[#0a0a0a] border border-gray-400 dark:border-[#444] rounded-md px-3 sm:px-4 py-2.5 text-sm focus:border-[#c8921a] outline-none text-gray-900 dark:text-white font-bold" 
                                             />
                                           </div>
                                         </div>
@@ -892,7 +896,7 @@ export default function ModalidadesPage() {
                                 </div>
                               </div>
 
-                              <button type="button" onClick={() => handleRemoveVideo(video.originalIndex)} className="absolute top-4 right-4 p-2 text-gray-300 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-950/20 rounded-full transition-all"><Trash2 size={20} /></button>
+                              <button type="button" onClick={() => handleRemoveVideo(video.originalIndex)} className="absolute top-3 right-3 sm:top-4 sm:right-4 w-8 h-8 flex items-center justify-center p-0 text-red-500 bg-red-50 dark:bg-red-950/30 hover:text-white hover:bg-red-500 rounded-full transition-all shadow-sm"><Trash2 size={16} className="shrink-0" /></button>
                             </div>
                           ))}
                         </div>
@@ -996,7 +1000,7 @@ export default function ModalidadesPage() {
             <form onSubmit={handleSubmit} className="space-y-10">
               <div className="bg-white dark:bg-[#0f0f0f] border border-gray-200 dark:border-[#222] rounded-2xl shadow-sm overflow-hidden">
                 <div className="p-8 sm:p-12 space-y-12">
-                  <div className="border-b border-gray-100 dark:border-[#1a1a1a] pb-4 flex items-center justify-between">
+                  <div className="border-b border-gray-100 dark:border-[#1a1a1a] pb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                     <h3 className="text-[11px] font-bold uppercase tracking-[0.3em] text-gray-400 flex items-center gap-3">
                       <div className="w-1.5 h-1.5 rounded-full bg-[#c8921a]"></div>
                       Identidade da Trilha
@@ -1045,7 +1049,7 @@ export default function ModalidadesPage() {
 
                     <div className="lg:col-span-5 space-y-4">
                       <label className="text-[9px] font-bold uppercase tracking-[0.15em] text-gray-800 dark:text-gray-200 block text-center">Banner de Topo (App Mobile)</label>
-                      <div className="p-4 rounded-xl border border-gray-400 dark:border-[#444] bg-gray-100/30 dark:bg-[#0a0a0a] shadow-inner h-[218px] flex items-center justify-center">
+                      <div className="p-4 rounded-xl border border-gray-400 dark:border-[#444] bg-gray-100/30 dark:bg-[#0a0a0a] shadow-inner min-h-[160px] flex items-center justify-center">
                         <FileUpload
                           type="imagem"
                           value={formData.imagem_url}
@@ -1117,7 +1121,7 @@ export default function ModalidadesPage() {
                   </div>
                   <div className="flex gap-2 pt-2 border-t border-gray-50 dark:border-[#1a1a1a]">
                     <button onClick={() => handleEdit(mod)} className="flex-1 py-2 rounded-md bg-gray-100 dark:bg-[#111] text-gray-700 dark:text-gray-300 text-[9px] font-bold uppercase tracking-widest hover:bg-[#c8921a] hover:text-white transition-all flex items-center justify-center gap-2"><Edit3 size={12} /> Editar</button>
-                    <button onClick={() => confirmDelete(mod)} className="p-2 rounded-md bg-red-50 dark:bg-red-950/20 text-red-500 hover:bg-red-500 hover:text-white transition-all"><Trash2 size={14} /></button>
+                    <button onClick={() => confirmDelete(mod)} className="p-2 w-10 flex items-center justify-center rounded-md bg-red-50 dark:bg-red-950/20 text-red-500 hover:bg-red-500 hover:text-white transition-all"><Trash2 size={14} /></button>
                   </div>
                 </div>
               </div>
