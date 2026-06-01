@@ -94,15 +94,14 @@ export default function ProfileScreen() {
   return (
     <AppBackground>
       <SafeAreaView style={styles.container}>
-        <View style={styles.headerTopBar}>
-          <TouchableOpacity onPress={() => navigation.goBack()}>
-            <Ionicons name="chevron-back" size={24} color={colors.textSecondary} />
-          </TouchableOpacity>
-        </View>
-
-        <View style={styles.titleContainer}>
-          <Text style={styles.headerTitle}>Perfil</Text>
-          <View style={styles.titleUnderline} />
+        <View style={styles.headerContainer}>
+          <View style={styles.headerRow}>
+            <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
+              <Ionicons name="chevron-back" size={24} color="#E7C48A" />
+            </TouchableOpacity>
+            <Text style={styles.headerTitle}>Perfil</Text>
+          </View>
+          <View style={styles.headerDivider} />
         </View>
         <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
           <View style={styles.content}>
@@ -223,29 +222,34 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'transparent',
   },
-  headerTopBar: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+  headerContainer: {
     paddingHorizontal: 20,
-    marginTop: 10,
+    marginTop: 30,
     marginBottom: 20,
   },
-  titleContainer: {
-    paddingHorizontal: 20,
-    marginBottom: 20,
+  headerRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 15,
+  },
+  backButton: {
+    width: 40,
+    height: 40,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 20,
+    backgroundColor: 'rgba(255,255,255,0.05)',
+    marginRight: 15,
   },
   headerTitle: {
-    fontSize: 32,
+    fontSize: 24,
     fontFamily: fonts.title,
     color: colors.primaryLight,
-    marginBottom: 8,
   },
-  titleUnderline: {
-    height: 2,
-    backgroundColor: colors.primaryDark,
-    width: 100,
-    borderRadius: 1,
+  headerDivider: {
+    height: 1,
+    backgroundColor: 'rgba(255,255,255,0.1)',
+    width: '100%',
   },
   scrollView: {
     flex: 1,

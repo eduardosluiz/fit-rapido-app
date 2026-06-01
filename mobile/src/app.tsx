@@ -13,6 +13,7 @@ import {
 import { AuthProvider } from './contexts/AuthContext';
 import Navigation from './navigation';
 import OfflineNotice from './components/OfflineNotice';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { ActivityIndicator, View, StyleSheet, LogBox } from 'react-native';
 import colors from './constants/colors';
 
@@ -58,11 +59,13 @@ export default function App() {
   }
 
   return (
-    <AuthProvider>
-      <StatusBar style="light" />
-      <Navigation />
-      <OfflineNotice />
-    </AuthProvider>
+    <SafeAreaProvider>
+      <AuthProvider>
+        <StatusBar style="light" />
+        <Navigation />
+        <OfflineNotice />
+      </AuthProvider>
+    </SafeAreaProvider>
   );
 }
 

@@ -96,13 +96,13 @@ export default function ModalityWorkoutsScreen() {
   };
 
   const diasSemana = [
-    'Segunda-feira',
-    'Terça-feira',
-    'Quarta-feira',
-    'Quinta-feira',
-    'Sexta-feira',
-    'Sábado',
-    'Domingo',
+    'TREINO 1 (Segunda)',
+    'TREINO 2 (Terça)',
+    'TREINO 3 (Quarta)',
+    'TREINO 4 (Quinta)',
+    'TREINO 5 (Sexta)',
+    'TREINO 6 (Sábado)',
+    'TREINO 7 (Domingo)'
   ];
 
   const handleDayPress = (index: number, treinosDoDia: Treino[]) => {
@@ -123,15 +123,28 @@ export default function ModalityWorkoutsScreen() {
 
     return (
       <View style={{ paddingBottom: hasNivelamento ? 10 : 10 }}>
-        <View style={styles.headerTopBar}>
-          <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
-            <Ionicons name="chevron-back" size={24} color={colors.textSecondary} />
-          </TouchableOpacity>
-        </View>
-
-        <View style={styles.titleContainer}>
-          <Text style={styles.headerTitle}>{modalityName}</Text>
-          <View style={styles.titleUnderline} />
+        <View style={styles.headerContainer}>
+          <View style={styles.headerRow}>
+            <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
+              <Ionicons name="chevron-back" size={24} color="#E7C48A" />
+            </TouchableOpacity>
+            <View style={styles.titleWrapper}>
+              <Text style={styles.headerTitle} numberOfLines={2}>{modalityName}</Text>
+              {!loading && (
+                <View style={styles.premiumBadgeRow}>
+                  <Ionicons 
+                    name={(modalityName || '').toLowerCase().includes('jornada') || (modalityName || '').toLowerCase().includes('começa') ? 'play-circle' : 'fitness'} 
+                    size={12} 
+                    color="#E7C48A" 
+                  />
+                  <Text style={styles.headerSubtitle}>
+                    {treinos.length} {(modalityName || '').toLowerCase().includes('jornada') || (modalityName || '').toLowerCase().includes('começa') ? (treinos.length === 1 ? 'Aula' : 'Aulas') : (treinos.length === 1 ? 'Treino' : 'Treinos')}
+                  </Text>
+                </View>
+              )}
+            </View>
+          </View>
+          <View style={styles.headerDivider} />
         </View>
 
         {hasNivelamento && (
@@ -176,13 +189,17 @@ export default function ModalityWorkoutsScreen() {
 
     return (
       <View style={{ marginBottom: 12 }}>
-        <View style={{ paddingHorizontal: 20 }}>
+        <View style={{ paddingHorizontal: 0 }}>
           <TouchableOpacity 
-            style={[styles.glassCard, isExpanded && temTreino && styles.glassCardActive]}
+            style={[
+              styles.glassCard, 
+              isExpanded && temTreino && styles.glassCardActive,
+              { borderRadius: 0, borderLeftWidth: 0, borderRightWidth: 0 }
+            ]}
             onPress={() => handleDayPress(index, treinosDoDia)}
             activeOpacity={0.7}
           >
-            <View style={styles.glassContent}>
+            <View style={[styles.glassContent, { paddingHorizontal: 20 }]}>
               <View style={styles.glassInfo}>
                 <Text style={[styles.glassDayTitle, { color: temTreino ? '#FFFFFF' : 'rgba(255,255,255,0.4)' }]}>
                   {dia.split('-')[0].toUpperCase()}
@@ -253,20 +270,52 @@ export default function ModalityWorkoutsScreen() {
 
 const styles = StyleSheet.create({
   container: { flex: 1 },
-  headerTopBar: { flexDirection: 'row', alignItems: 'center', paddingHorizontal: 20, marginTop: 10, marginBottom: 20 },
-  backButton: { width: 32, height: 32, borderRadius: 16, borderWidth: 1, borderColor: colors.border, justifyContent: 'center', alignItems: 'center' },
-  titleContainer: { paddingHorizontal: 20, marginBottom: 5 }, 
+  headerContainer: {
+    paddingHorizontal: 20,
+    marginTop: 30,
+    marginBottom: 20,
+  },
+  headerRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 15,
+  },
+  backButton: { width: 40, height: 40, borderRadius: 20, backgroundColor: 'rgba(255,255,255,0.05)', justifyContent: 'center', alignItems: 'center', marginRight: 15 },
+  titleWrapper: {
+    flex: 1,
+    justifyContent: 'center',
+  },
   headerTitle: { 
-    fontSize: 28, 
+    fontSize: 20, 
     fontFamily: fonts.title, 
     color: '#E7C48A', 
-    marginBottom: 6,
-    textShadowColor: 'rgba(231,196,138,0.15)',
-    textShadowOffset: { width: 0, height: 1 },
-    textShadowRadius: 3,
-    textTransform: 'uppercase',
+    lineHeight: 24,
   },
-  titleUnderline: { height: 2, backgroundColor: '#E7C48A', width: 90, borderRadius: 1 },
+  premiumBadgeRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 4,
+    backgroundColor: 'rgba(231,196,138,0.1)',
+    alignSelf: 'flex-start',
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: 'rgba(231,196,138,0.2)',
+  },
+  headerSubtitle: {
+    fontSize: 10,
+    fontFamily: fonts.bodySemiBold,
+    color: '#E7C48A',
+    marginLeft: 4,
+    textTransform: 'uppercase',
+    letterSpacing: 0.5,
+  },
+  headerDivider: {
+    height: 1,
+    backgroundColor: 'rgba(255,255,255,0.1)',
+    width: '100%',
+  },
   nivelTabsContainer: { flexDirection: 'row', marginTop: 20, borderBottomWidth: 1, borderBottomColor: 'rgba(255,255,255,0.05)' },
   nivelTab: { flex: 1, paddingVertical: 15, alignItems: 'center', position: 'relative' },
   nivelTabActive: {},

@@ -58,7 +58,10 @@ export class Treino {
   imagem_capa_url: string;
 
   @Column({ nullable: true })
-  video_url: string;
+  video_url?: string;
+
+  @Column({ nullable: true })
+  video_explicativo_url?: string;
 
   @ManyToMany(() => CategoriaTreino, { eager: false })
   @JoinTable({

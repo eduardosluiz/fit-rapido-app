@@ -53,6 +53,10 @@ export class CreateTreinoDto {
   video_url?: string;
 
   @IsOptional()
+  @IsString()
+  video_explicativo_url?: string;
+
+  @IsOptional()
   @IsArray()
   @IsString({ each: true })
   categoria_ids?: string[];
@@ -197,6 +201,10 @@ export class UpdateTreinoDto {
   @IsOptional()
   @IsString()
   video_url?: string;
+
+  @IsOptional()
+  @IsString()
+  video_explicativo_url?: string;
 
   @IsOptional()
   @IsArray()

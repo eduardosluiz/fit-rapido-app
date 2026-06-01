@@ -116,18 +116,18 @@ export default function TreinosScreen() {
 
   const renderHeader = () => (
     <View style={{ paddingBottom: 20 }}>
-      <View style={[styles.titleContainer, { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-end', marginTop: 20 }]}>
-        <View>
+      <View style={styles.headerContainer}>
+        <View style={styles.headerRow}>
           <Text style={styles.headerTitle}>Treinos</Text>
-          <View style={styles.titleUnderline} />
+          <TouchableOpacity 
+            style={{ flexDirection: 'row', alignItems: 'center', backgroundColor: 'rgba(231,196,138,0.1)', paddingHorizontal: 12, paddingVertical: 8, borderRadius: 20, borderWidth: 1, borderColor: 'rgba(231,196,138,0.3)' }}
+            onPress={() => (navigation as any).navigate('BibliotecaTreinos')}
+          >
+            <Ionicons name="play-circle-outline" size={16} color="#E7C48A" />
+            <Text style={{ color: '#E7C48A', fontSize: 12, marginLeft: 6, fontWeight: 'bold' }}>Biblioteca de Execuções</Text>
+          </TouchableOpacity>
         </View>
-        <TouchableOpacity 
-          style={{ flexDirection: 'row', alignItems: 'center', backgroundColor: 'rgba(231,196,138,0.1)', paddingHorizontal: 12, paddingVertical: 8, borderRadius: 20, borderWidth: 1, borderColor: 'rgba(231,196,138,0.3)', marginBottom: 8 }}
-          onPress={() => (navigation as any).navigate('BibliotecaTreinos')}
-        >
-          <Ionicons name="play-circle-outline" size={16} color="#E7C48A" />
-          <Text style={{ color: '#E7C48A', fontSize: 12, marginLeft: 6, fontWeight: 'bold' }}>Biblioteca de Execuções</Text>
-        </TouchableOpacity>
+        <View style={styles.headerDivider} />
       </View>
 
       {!canAccessWorkouts ? (
@@ -241,22 +241,32 @@ const styles = StyleSheet.create({
   container: { flex: 1 },
   headerTopBar: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 20, marginTop: 10, marginBottom: 20 },
   headerDateContainer: { flex: 1 },
-  titleContainer: { paddingHorizontal: 20, marginBottom: 5 }, 
+  headerContainer: {
+    paddingHorizontal: 20,
+    marginTop: 30,
+    marginBottom: 20,
+  },
+  headerRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 15,
+  },
   headerTitle: { 
-    fontSize: 34, 
+    fontSize: 24, 
     fontFamily: fonts.title, 
     color: '#E7C48A', 
-    marginBottom: 6,
-    textShadowColor: 'rgba(231,196,138,0.15)',
-    textShadowOffset: { width: 0, height: 1 },
-    textShadowRadius: 3,
   },
-  titleUnderline: { height: 2, backgroundColor: '#E7C48A', width: 90, borderRadius: 1 },
+  headerDivider: {
+    height: 1,
+    backgroundColor: 'rgba(255,255,255,0.1)',
+    width: '100%',
+  },
   searchRow: {
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: 20,
-    marginTop: 20,
+    marginTop: 5,
     marginBottom: 30,
     gap: 10,
   },

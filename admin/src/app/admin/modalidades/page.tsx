@@ -30,6 +30,7 @@ interface VideoTreino {
   id?: string;
   titulo: string;
   video_url: string;
+  video_explicativo_url?: string;
   dia_semana: string;
   nivel: string;
   series?: string;
@@ -98,13 +99,13 @@ export default function ModalidadesPage() {
   const getDiaNome = (dia: string) => {
     const dias: Record<string, string> = {
       '': 'Conteúdo Geral / Sem Dia Definido',
-      '0': 'Segunda-feira',
-      '1': 'Terça-feira',
-      '2': 'Quarta-feira',
-      '3': 'Quinta-feira',
-      '4': 'Sexta-feira',
-      '5': 'Sábado',
-      '6': 'Domingo'
+      '0': 'TREINO 1 (Segunda)',
+      '1': 'TREINO 2 (Terça)',
+      '2': 'TREINO 3 (Quarta)',
+      '3': 'TREINO 4 (Quinta)',
+      '4': 'TREINO 5 (Sexta)',
+      '5': 'TREINO 6 (Sábado)',
+      '6': 'TREINO 7 (Domingo)'
     };
     return dias[dia] || 'Outro';
   };
@@ -182,6 +183,7 @@ export default function ModalidadesPage() {
       videos: [...prev.videos, { 
         titulo: '', 
         video_url: '', 
+        video_explicativo_url: '',
         dia_semana: String(dia), 
         nivel, 
         series: '', 
@@ -241,12 +243,14 @@ export default function ModalidadesPage() {
       const newVideos = [...formData.videos];
       
       const tempOrdem = newVideos[originalIndex].ordem;
-      newVideos[originalIndex].ordem = newVideos[otherVideo.originalIndex].ordem;
-      newVideos[otherVideo.originalIndex].ordem = tempOrdem;
+      const targetOrdem = newVideos[otherVideo.originalIndex].ordem;
+      
+      newVideos[originalIndex] = { ...newVideos[originalIndex], ordem: targetOrdem };
+      newVideos[otherVideo.originalIndex] = { ...newVideos[otherVideo.originalIndex], ordem: tempOrdem };
       
       if (newVideos[originalIndex].ordem === newVideos[otherVideo.originalIndex].ordem) {
-        newVideos[originalIndex].ordem = fIndex - 1;
-        newVideos[otherVideo.originalIndex].ordem = fIndex;
+        newVideos[originalIndex] = { ...newVideos[originalIndex], ordem: fIndex - 1 };
+        newVideos[otherVideo.originalIndex] = { ...newVideos[otherVideo.originalIndex], ordem: fIndex };
       }
       
       setFormData(prev => ({ ...prev, videos: newVideos }));
@@ -255,12 +259,14 @@ export default function ModalidadesPage() {
       const newVideos = [...formData.videos];
       
       const tempOrdem = newVideos[originalIndex].ordem;
-      newVideos[originalIndex].ordem = newVideos[otherVideo.originalIndex].ordem;
-      newVideos[otherVideo.originalIndex].ordem = tempOrdem;
+      const targetOrdem = newVideos[otherVideo.originalIndex].ordem;
+      
+      newVideos[originalIndex] = { ...newVideos[originalIndex], ordem: targetOrdem };
+      newVideos[otherVideo.originalIndex] = { ...newVideos[otherVideo.originalIndex], ordem: tempOrdem };
 
       if (newVideos[originalIndex].ordem === newVideos[otherVideo.originalIndex].ordem) {
-        newVideos[originalIndex].ordem = fIndex + 1;
-        newVideos[otherVideo.originalIndex].ordem = fIndex;
+        newVideos[originalIndex] = { ...newVideos[originalIndex], ordem: fIndex + 1 };
+        newVideos[otherVideo.originalIndex] = { ...newVideos[otherVideo.originalIndex], ordem: fIndex };
       }
       
       setFormData(prev => ({ ...prev, videos: newVideos }));
@@ -342,6 +348,7 @@ export default function ModalidadesPage() {
             const treinoData: any = {
               titulo: video.titulo,
               video_url: video.video_url,
+              video_explicativo_url: video.video_explicativo_url || null,
               modalidade_id: modalidadeId,
               dia_semana: video.dia_semana !== '' ? parseInt(video.dia_semana) : null,
               ativa: true,
@@ -405,6 +412,7 @@ export default function ModalidadesPage() {
         id: t.id,
         titulo: t.titulo,
         video_url: t.video_url,
+        video_explicativo_url: t.video_explicativo_url || '',
         dia_semana: t.dia_semana !== null && t.dia_semana !== undefined ? String(t.dia_semana) : '',
         nivel: t.nivel || 'iniciante',
         ordem: t.ordem !== undefined && t.ordem !== null ? t.ordem : index,
@@ -641,50 +649,85 @@ export default function ModalidadesPage() {
                                     />
                                   </div>
 
-                                  <div className="space-y-2">
-                                    <label className="text-[9px] font-bold uppercase tracking-[0.15em] text-gray-800 dark:text-gray-200">Dia Semana</label>
-                                    <select value={video.dia_semana} onChange={(e) => handleVideoChange(video.originalIndex, 'dia_semana', e.target.value)} className="w-full bg-gray-100 dark:bg-[#111] border border-gray-400 dark:border-[#333] rounded-md px-4 py-2.5 text-sm focus:border-[#c8921a] outline-none text-gray-900 dark:text-white font-medium appearance-none">
-                                      <option value="">Geral</option><option value="0">Segunda-feira</option><option value="1">Terça-feira</option><option value="2">Quarta-feira</option><option value="3">Quinta-feira</option><option value="4">Sexta-feira</option><option value="5">Sábado</option><option value="6">Domingo</option>
-                                    </select>
-                                  </div>
-
-                                  {formData.tem_nivelamento && (
+                                  <div className={`grid grid-cols-1 ${formData.tem_nivelamento ? 'sm:grid-cols-2' : ''} gap-4`}>
                                     <div className="space-y-2">
-                                      <label className="text-[9px] font-bold uppercase tracking-[0.15em] text-gray-800 dark:text-gray-200">Nível</label>
-                                      <select value={video.nivel} onChange={(e) => handleVideoChange(video.originalIndex, 'nivel', e.target.value)} className="w-full bg-gray-100 dark:bg-[#111] border border-gray-400 dark:border-[#333] rounded-md px-4 py-2.5 text-sm focus:border-[#c8921a] outline-none text-gray-900 dark:text-white font-medium appearance-none">
-                                        <option value="iniciante">Iniciante</option><option value="intermediario">Intermediário</option><option value="avancado">Avançado</option>
+                                      <label className="text-[9px] font-bold uppercase tracking-[0.15em] text-gray-800 dark:text-gray-200">Treino</label>
+                                      <select value={video.dia_semana} onChange={(e) => handleVideoChange(video.originalIndex, 'dia_semana', e.target.value)} className="w-full bg-gray-100 dark:bg-[#111] border border-gray-400 dark:border-[#333] rounded-md px-4 py-2.5 text-sm focus:border-[#c8921a] outline-none text-gray-900 dark:text-white font-medium appearance-none">
+                                        <option value="">Geral</option><option value="0">TREINO 1 (Segunda)</option><option value="1">TREINO 2 (Terça)</option><option value="2">TREINO 3 (Quarta)</option><option value="3">TREINO 4 (Quinta)</option><option value="4">TREINO 5 (Sexta)</option><option value="5">TREINO 6 (Sábado)</option><option value="6">TREINO 7 (Domingo)</option>
                                       </select>
                                     </div>
-                                  )}
+
+                                    {formData.tem_nivelamento && (
+                                      <div className="space-y-2">
+                                        <label className="text-[9px] font-bold uppercase tracking-[0.15em] text-gray-800 dark:text-gray-200">Nível</label>
+                                        <select value={video.nivel} onChange={(e) => handleVideoChange(video.originalIndex, 'nivel', e.target.value)} className="w-full bg-gray-100 dark:bg-[#111] border border-gray-400 dark:border-[#333] rounded-md px-4 py-2.5 text-sm focus:border-[#c8921a] outline-none text-gray-900 dark:text-white font-medium appearance-none">
+                                          <option value="iniciante">Iniciante</option><option value="intermediario">Intermediário</option><option value="avancado">Avançado</option>
+                                        </select>
+                                      </div>
+                                    )}
+                                  </div>
                                 </div>
                                 
-                                <div className="lg:col-span-5 space-y-2">
-                                  <label className="text-[9px] font-bold uppercase tracking-[0.15em] text-gray-800 dark:text-gray-200">Mídia Principal (Vídeo)</label>
-                                  <div className="flex items-center gap-3">
-                                    <div className="flex-1 h-[42px] bg-gray-100 dark:bg-[#111] border border-gray-400 dark:border-[#333] rounded-md flex items-center px-3 sm:px-4 overflow-hidden shadow-inner">
-                                      <span className="text-[9px] sm:text-[11px] text-gray-400 truncate flex-1 font-medium">{video.video_url || 'Selecione mídia...'}</span>
+                                <div className="lg:col-span-5 space-y-4">
+                                  <div className="space-y-2">
+                                    <label className="text-[9px] font-bold uppercase tracking-[0.15em] text-gray-800 dark:text-gray-200">Vídeo de Execução</label>
+                                    <div className="flex items-center gap-3">
+                                      <div className="flex-1 h-[42px] bg-gray-100 dark:bg-[#111] border border-gray-400 dark:border-[#333] rounded-md flex items-center px-3 sm:px-4 overflow-hidden shadow-inner">
+                                        <span className="text-[9px] sm:text-[11px] text-gray-400 truncate flex-1 font-medium">{video.video_url || 'Selecione mídia...'}</span>
+                                      </div>
+                                      <div className="flex items-center gap-2 shrink-0">
+                                        <FileUpload type="video" value={video.video_url} onChange={(url) => handleVideoChange(video.originalIndex, 'video_url', url)} hideUrlInput compact />
+                                        <Popover>
+                                          <PopoverTrigger asChild>
+                                            <button type="button" className="w-10 h-[42px] rounded-md border border-[#c8921a]/30 bg-white dark:bg-[#111] text-[#c8921a] flex items-center justify-center hover:bg-[#c8921a] hover:text-white transition-all"><LayoutGrid size={18} /></button>
+                                          </PopoverTrigger>
+                                          <PopoverContent className="w-[350px] p-0 bg-white dark:bg-[#0a0a0a] border border-gray-200 dark:border-[#333] shadow-2xl z-[200]">
+                                            <div className="p-4 border-b border-gray-100 dark:border-[#1a1a1a] space-y-3">
+                                              <p className="text-[9px] font-bold uppercase tracking-widest text-[#c8921a]">Mídias Privadas</p>
+                                              <input type="text" placeholder="Filtrar..." onChange={(e) => setSearchTerm(e.target.value.toLowerCase())} className="w-full h-9 px-3 bg-gray-50 dark:bg-[#111] border border-gray-300 dark:border-[#333] rounded text-xs focus:border-[#c8921a] outline-none" autoFocus />
+                                            </div>
+                                            <div className="max-h-[320px] overflow-y-auto custom-scrollbar p-2 space-y-1">
+                                              {bibliotecaExercicios.filter(ex => ex.nome.toLowerCase().includes(searchTerm.toLowerCase())).map((libEx: any) => (
+                                                <button key={libEx.id} type="button" className="w-full p-2.5 flex items-center gap-4 hover:bg-gray-50 dark:hover:bg-[#111] rounded-lg transition-all text-left" onClick={() => handleVideoChange(video.originalIndex, 'video_url', libEx.video_url)}>
+                                                  <div className="w-12 h-12 rounded-md bg-black overflow-hidden border border-gray-200 flex-shrink-0 relative"><video src={`${libEx.video_url}#t=0.5`} className="w-full h-full object-cover opacity-60" muted preload="none" /><Play className="absolute inset-0 m-auto text-white opacity-40" size={12} /></div>
+                                                  <div className="flex-1 min-w-0"><p className="text-[11px] font-bold text-gray-700 dark:text-gray-200 uppercase truncate mb-1">{libEx.nome}</p><p className="text-[9px] text-gray-400 uppercase">{libEx.categoria || 'Geral'}</p></div>
+                                                </button>
+                                              ))}
+                                            </div>
+                                          </PopoverContent>
+                                        </Popover>
+                                      </div>
                                     </div>
-                                    <div className="flex items-center gap-2 shrink-0">
-                                      <FileUpload type="video" value={video.video_url} onChange={(url) => handleVideoChange(video.originalIndex, 'video_url', url)} hideUrlInput compact />
-                                      <Popover>
-                                        <PopoverTrigger asChild>
-                                          <button type="button" className="w-10 h-[42px] rounded-md border border-[#c8921a]/30 bg-white dark:bg-[#111] text-[#c8921a] flex items-center justify-center hover:bg-[#c8921a] hover:text-white transition-all"><LayoutGrid size={18} /></button>
-                                        </PopoverTrigger>
-                                        <PopoverContent className="w-[350px] p-0 bg-white dark:bg-[#0a0a0a] border border-gray-200 dark:border-[#333] shadow-2xl z-[200]">
-                                          <div className="p-4 border-b border-gray-100 dark:border-[#1a1a1a] space-y-3">
-                                            <p className="text-[9px] font-bold uppercase tracking-widest text-[#c8921a]">Mídias Privadas</p>
-                                            <input type="text" placeholder="Filtrar..." onChange={(e) => setSearchTerm(e.target.value.toLowerCase())} className="w-full h-9 px-3 bg-gray-50 dark:bg-[#111] border border-gray-300 dark:border-[#333] rounded text-xs focus:border-[#c8921a] outline-none" autoFocus />
-                                          </div>
-                                          <div className="max-h-[320px] overflow-y-auto custom-scrollbar p-2 space-y-1">
-                                            {bibliotecaExercicios.filter(ex => ex.nome.toLowerCase().includes(searchTerm.toLowerCase())).map((libEx: any) => (
-                                              <button key={libEx.id} type="button" className="w-full p-2.5 flex items-center gap-4 hover:bg-gray-50 dark:hover:bg-[#111] rounded-lg transition-all text-left" onClick={() => handleVideoChange(video.originalIndex, 'video_url', libEx.video_url)}>
-                                                <div className="w-12 h-12 rounded-md bg-black overflow-hidden border border-gray-200 flex-shrink-0 relative"><video src={`${libEx.video_url}#t=0.5`} className="w-full h-full object-cover opacity-60" muted preload="none" /><Play className="absolute inset-0 m-auto text-white opacity-40" size={12} /></div>
-                                                <div className="flex-1 min-w-0"><p className="text-[11px] font-bold text-gray-700 dark:text-gray-200 uppercase truncate mb-1">{libEx.nome}</p><p className="text-[9px] text-gray-400 uppercase">{libEx.categoria || 'Geral'}</p></div>
-                                              </button>
-                                            ))}
-                                          </div>
-                                        </PopoverContent>
-                                      </Popover>
+                                  </div>
+
+                                  <div className="space-y-2">
+                                    <label className="text-[9px] font-bold uppercase tracking-[0.15em] text-gray-800 dark:text-gray-200">Vídeo Explicativo</label>
+                                    <div className="flex items-center gap-3">
+                                      <div className="flex-1 h-[42px] bg-gray-100 dark:bg-[#111] border border-gray-400 dark:border-[#333] rounded-md flex items-center px-3 sm:px-4 overflow-hidden shadow-inner">
+                                        <span className="text-[9px] sm:text-[11px] text-gray-400 truncate flex-1 font-medium">{video.video_explicativo_url || 'Selecione mídia...'}</span>
+                                      </div>
+                                      <div className="flex items-center gap-2 shrink-0">
+                                        <FileUpload type="video" value={video.video_explicativo_url} onChange={(url) => handleVideoChange(video.originalIndex, 'video_explicativo_url', url)} hideUrlInput compact />
+                                        <Popover>
+                                          <PopoverTrigger asChild>
+                                            <button type="button" className="w-10 h-[42px] rounded-md border border-[#c8921a]/30 bg-white dark:bg-[#111] text-[#c8921a] flex items-center justify-center hover:bg-[#c8921a] hover:text-white transition-all"><LayoutGrid size={18} /></button>
+                                          </PopoverTrigger>
+                                          <PopoverContent className="w-[350px] p-0 bg-white dark:bg-[#0a0a0a] border border-gray-200 dark:border-[#333] shadow-2xl z-[200]">
+                                            <div className="p-4 border-b border-gray-100 dark:border-[#1a1a1a] space-y-3">
+                                              <p className="text-[9px] font-bold uppercase tracking-widest text-[#c8921a]">Mídias Privadas</p>
+                                              <input type="text" placeholder="Filtrar..." onChange={(e) => setSearchTerm(e.target.value.toLowerCase())} className="w-full h-9 px-3 bg-gray-50 dark:bg-[#111] border border-gray-300 dark:border-[#333] rounded text-xs focus:border-[#c8921a] outline-none" autoFocus />
+                                            </div>
+                                            <div className="max-h-[320px] overflow-y-auto custom-scrollbar p-2 space-y-1">
+                                              {bibliotecaExercicios.filter(ex => ex.nome.toLowerCase().includes(searchTerm.toLowerCase())).map((libEx: any) => (
+                                                <button key={libEx.id} type="button" className="w-full p-2.5 flex items-center gap-4 hover:bg-gray-50 dark:hover:bg-[#111] rounded-lg transition-all text-left" onClick={() => handleVideoChange(video.originalIndex, 'video_explicativo_url', libEx.video_url)}>
+                                                  <div className="w-12 h-12 rounded-md bg-black overflow-hidden border border-gray-200 flex-shrink-0 relative"><video src={`${libEx.video_url}#t=0.5`} className="w-full h-full object-cover opacity-60" muted preload="none" /><Play className="absolute inset-0 m-auto text-white opacity-40" size={12} /></div>
+                                                  <div className="flex-1 min-w-0"><p className="text-[11px] font-bold text-gray-700 dark:text-gray-200 uppercase truncate mb-1">{libEx.nome}</p><p className="text-[9px] text-gray-400 uppercase">{libEx.categoria || 'Geral'}</p></div>
+                                                </button>
+                                              ))}
+                                            </div>
+                                          </PopoverContent>
+                                        </Popover>
+                                      </div>
                                     </div>
                                   </div>
                                 </div>
@@ -776,7 +819,7 @@ export default function ModalidadesPage() {
                                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
                                           <div className="space-y-6">
                                             <div className="space-y-2">
-                                              <label className="text-[9px] font-bold uppercase tracking-[0.2em] text-gray-500 ml-0.5">Mídia do Substituto (Vídeo)</label>
+                                              <label className="text-[9px] font-bold uppercase tracking-[0.2em] text-gray-500 ml-0.5">Vídeo de Execução (Substituto)</label>
                                               <Popover>
                                                 <PopoverTrigger asChild>
                                                   <button type="button" className="w-full h-[46px] px-4 rounded-md border border-gray-400 dark:border-[#333] bg-gray-50 dark:bg-[#111] flex items-center justify-between hover:border-[#c8921a] transition-all group shadow-inner">
@@ -828,6 +871,36 @@ export default function ModalidadesPage() {
                                                   </div>
                                                 </PopoverContent>
                                               </Popover>
+                                            </div>
+
+                                            <div className="space-y-2">
+                                              <label className="text-[9px] font-bold uppercase tracking-[0.2em] text-gray-500 ml-0.5">Vídeo Explicativo (Opcional)</label>
+                                              <div className="flex items-center gap-3">
+                                                <div className="flex-1 h-[46px] bg-gray-100 dark:bg-[#111] border border-gray-300 dark:border-[#222] rounded-md flex items-center px-4 overflow-hidden shadow-inner">
+                                                  <span className="text-xs text-gray-400 truncate font-bold">{info.video_explicativo_url || 'Selecione mídia...'}</span>
+                                                </div>
+                                                <div className="flex items-center gap-2 shrink-0">
+                                                  <FileUpload type="video" value={info.video_explicativo_url || ''} onChange={(url) => handleSubstitutoInfoChange(video.originalIndex, num as 1 | 2, 'video_explicativo_url', url)} hideUrlInput compact />
+                                                  <Popover>
+                                                    <PopoverTrigger asChild>
+                                                      <button type="button" className="w-[46px] h-[46px] rounded-md border border-[#c8921a]/30 bg-white dark:bg-[#111] text-[#c8921a] flex items-center justify-center hover:bg-[#c8921a] hover:text-white transition-all"><LayoutGrid size={18} /></button>
+                                                    </PopoverTrigger>
+                                                    <PopoverContent className="w-[300px] p-0 bg-white dark:bg-[#0a0a0a] border border-gray-200 dark:border-[#333] shadow-2xl z-[200]">
+                                                      <div className="p-3 border-b border-gray-100 dark:border-[#1a1a1a]">
+                                                        <input type="text" placeholder="Filtrar exercícios..." onChange={(e) => setSearchTerm(e.target.value.toLowerCase())} className="w-full h-8 px-3 bg-gray-50 dark:bg-[#111] border border-gray-300 dark:border-[#333] rounded text-[10px] focus:border-[#c8921a] outline-none" autoFocus />
+                                                      </div>
+                                                      <div className="max-h-[250px] overflow-y-auto custom-scrollbar p-1">
+                                                        {bibliotecaExercicios.filter(ex => ex.nome.toLowerCase().includes(searchTerm.toLowerCase())).map((libEx: any) => (
+                                                          <button key={libEx.id} type="button" className={`w-full p-2.5 flex items-center gap-4 hover:bg-gray-50 dark:hover:bg-[#111] rounded transition-all text-left ${info.video_explicativo_url === libEx.video_url ? 'bg-[#c8921a]/10 border-l-2 border-[#c8921a]' : ''}`} onClick={() => handleSubstitutoInfoChange(video.originalIndex, num as 1 | 2, 'video_explicativo_url', libEx.video_url)}>
+                                                            <div className="w-10 h-10 rounded bg-black overflow-hidden flex-shrink-0 relative border border-gray-200"><video src={`${libEx.video_url}#t=0.5`} className="w-full h-full object-cover opacity-60" muted preload="none" /></div>
+                                                            <div className="min-w-0"><p className="text-[10px] font-bold text-gray-700 dark:text-gray-200 uppercase truncate">{libEx.nome}</p><p className="text-[8px] text-gray-400 uppercase tracking-tighter">{libEx.categoria || 'Geral'}</p></div>
+                                                          </button>
+                                                        ))}
+                                                      </div>
+                                                    </PopoverContent>
+                                                  </Popover>
+                                                </div>
+                                              </div>
                                             </div>
 
                                             <div className="space-y-2">

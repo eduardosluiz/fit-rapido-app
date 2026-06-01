@@ -12,6 +12,7 @@ interface Exercicio {
   id: string;
   nome: string;
   video_url: string;
+  video_explicativo_url?: string;
   categoria: string;
   createdAt: string;
 }
@@ -43,6 +44,7 @@ export default function BibliotecaVideosPage() {
   const [newTitle, setNewTitle] = useState('');
   const [editExibirMobile, setEditExibirMobile] = useState(false);
   const [editCategorias, setEditCategorias] = useState<string[]>([]);
+  const [editVideoExplicativoUrl, setEditVideoExplicativoUrl] = useState('');
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false);
   
@@ -239,7 +241,8 @@ export default function BibliotecaVideosPage() {
         ...itemToEdit,
         nome: newTitle,
         exibir_mobile: editExibirMobile,
-        categoria: editCategorias.join(', ')
+        categoria: editCategorias.join(', '),
+        video_explicativo_url: editVideoExplicativoUrl
       });
       
       toast.success('Atualizado');
@@ -357,7 +360,7 @@ export default function BibliotecaVideosPage() {
                   <div className="flex items-center justify-between pt-3 border-t border-gray-50 dark:border-[#1a1a1a] mt-auto">
                     <button onClick={() => { setPreviewVideo(ex); setVideoError(false); setVideoIsLoading(true); }} className="text-[9px] font-black text-[#c8921a] hover:text-blue-500 transition-all uppercase tracking-widest">Acessar</button>
                     <div className="flex justify-end gap-2 px-6">
-                      <button onClick={() => { setItemToEdit(ex); setNewTitle(ex.nome); setEditExibirMobile(!!ex.exibir_mobile); setEditCategorias(ex.categoria ? ex.categoria.split(',').map((c: string) => c.trim()).filter(Boolean) : []); setIsEditModalOpen(true); }} className="text-blue-400 hover:text-blue-600 transition-colors" title="Editar"><Edit3 size={12} /></button>
+                      <button onClick={() => { setItemToEdit(ex); setNewTitle(ex.nome); setEditExibirMobile(!!ex.exibir_mobile); setEditCategorias(ex.categoria ? ex.categoria.split(',').map((c: string) => c.trim()).filter(Boolean) : []); setEditVideoExplicativoUrl(ex.video_explicativo_url || ''); setIsEditModalOpen(true); }} className="text-blue-400 hover:text-blue-600 transition-colors" title="Editar"><Edit3 size={12} /></button>
                       <button onClick={() => { setItemToDelete(ex); setIsDeleteModalOpen(true); }} className="text-gray-300 hover:text-red-500 transition-colors" title="Excluir"><X size={12} /></button>
                     </div>
                   </div>
@@ -456,7 +459,10 @@ export default function BibliotecaVideosPage() {
             </div>
             <div className="p-6">
               <label className="text-[8px] font-black text-gray-400 uppercase tracking-widest block mb-1">Título do Exercício</label>
-              <input type="text" value={newTitle} onChange={(e) => setNewTitle(e.target.value)} className="w-full bg-transparent border-t-0 border-l-0 border-r-0 border-b border-gray-300 dark:border-[#333] px-0 py-2 text-xs focus:outline-none focus:border-[#c8921a] text-gray-700 dark:text-white mb-2 font-medium" placeholder="Novo nome..." autoFocus />
+              <input type="text" value={newTitle} onChange={(e) => setNewTitle(e.target.value)} className="w-full bg-transparent border-t-0 border-l-0 border-r-0 border-b border-gray-300 dark:border-[#333] px-0 py-2 text-xs focus:outline-none focus:border-[#c8921a] text-gray-700 dark:text-white mb-4 font-medium" placeholder="Novo nome..." autoFocus />
+              
+              <label className="text-[8px] font-black text-gray-400 uppercase tracking-widest block mb-1 mt-2">Link do Vídeo Explicativo (Opcional)</label>
+              <input type="text" value={editVideoExplicativoUrl} onChange={(e) => setEditVideoExplicativoUrl(e.target.value)} className="w-full bg-transparent border-t-0 border-l-0 border-r-0 border-b border-gray-300 dark:border-[#333] px-0 py-2 text-xs focus:outline-none focus:border-[#c8921a] text-gray-700 dark:text-white mb-2 font-medium" placeholder="https://..." />
               
               <label className="flex items-center gap-2 cursor-pointer mt-4 mb-6 bg-gray-50 dark:bg-[#222] p-3 rounded-md border border-gray-200 dark:border-[#333] hover:border-[#c8921a] transition-colors">
                 <input 

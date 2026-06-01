@@ -71,6 +71,8 @@ export interface Treino {
   exercicios_detalhados?: any[];
   avaliacao?: number;
   total_avaliacoes?: number;
+  substituto_id_1?: string;
+  substituto_id_2?: string;
 }
 
 class ApiService {
@@ -196,6 +198,10 @@ class ApiService {
     } catch (e) {
       return { data: [] };
     }
+  }
+
+  async getExercicioBiblioteca(id: string) {
+    return this.request<any>(`/exercicios-biblioteca/${id}`);
   }
   
   async getFavoritos(tipo?: string) {

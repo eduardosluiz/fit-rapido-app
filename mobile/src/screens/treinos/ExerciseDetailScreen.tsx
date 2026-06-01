@@ -31,7 +31,9 @@ interface Substituto {
     repeticoes?: string;
     descanso?: string;
     peso?: string;
+    observacoes?: string;
   };
+  descricao?: string;
 }
 
 export default function ExerciseDetailScreen() {
@@ -67,7 +69,8 @@ export default function ExerciseDetailScreen() {
             id: sub1.id,
             nome: sub1.nome,
             video_url: sub1.video_url,
-            imagem_capa_url: data.substituto_1_info?.imagem_capa_url || sub1.imagem_url,
+            imagem_capa_url: data.substituto_1_info?.imagem_capa_url || sub1.imagem_capa_url || sub1.imagem_url,
+            descricao: data.substituto_1_info?.observacoes || sub1.descricao_tecnica || sub1.descricao,
             info: data.substituto_1_info
           });
         } catch (e) { console.error('Erro ao carregar substituto 1', e); }
@@ -79,7 +82,8 @@ export default function ExerciseDetailScreen() {
             id: sub2.id,
             nome: sub2.nome,
             video_url: sub2.video_url,
-            imagem_capa_url: data.substituto_2_info?.imagem_capa_url || sub2.imagem_url,
+            imagem_capa_url: data.substituto_2_info?.imagem_capa_url || sub2.imagem_capa_url || sub2.imagem_url,
+            descricao: data.substituto_2_info?.observacoes || sub2.descricao_tecnica || sub2.descricao,
             info: data.substituto_2_info
           });
         } catch (e) { console.error('Erro ao carregar substituto 2', e); }
@@ -133,7 +137,7 @@ export default function ExerciseDetailScreen() {
         repeticoes: sub.info?.repeticoes || '',
         descanso: sub.info?.descanso || '',
         peso: sub.info?.peso || '',
-        descricao: treino.descricao_tecnica // MANTÉM A DESCRIÇÃO DO TREINO
+        descricao: sub.descricao || treino.descricao_tecnica // USA DESCRIÇÃO DO SUBSTITUTO OU MANTÉM A DO TREINO
       };
     } else if (currentView === 'sub2' && substitutos[1]) {
       const sub = substitutos[1];
@@ -145,7 +149,7 @@ export default function ExerciseDetailScreen() {
         repeticoes: sub.info?.repeticoes || '',
         descanso: sub.info?.descanso || '',
         peso: sub.info?.peso || '',
-        descricao: treino.descricao_tecnica
+        descricao: sub.descricao || treino.descricao_tecnica
       };
     }
     return null;
@@ -159,7 +163,7 @@ export default function ExerciseDetailScreen() {
     <SafeAreaView style={styles.container} edges={['bottom']}>
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
-          <Ionicons name="chevron-back" size={24} color={colors.primary} />
+          <Ionicons name="chevron-back" size={24} color="#E7C48A" />
         </TouchableOpacity>
         <Text style={styles.headerTitle} numberOfLines={1}>{display.titulo}</Text>
         <View style={{ width: 40 }} />
@@ -306,7 +310,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 20,
-    backgroundColor: '#111',
+    backgroundColor: 'rgba(255,255,255,0.05)',
   },
   headerTitle: {
     flex: 1,
@@ -374,7 +378,7 @@ const styles = StyleSheet.create({
     marginBottom: 24,
   },
   subTitle: {
-    color: '#666',
+    color: '#9CA3AF',
     fontSize: 9,
     fontFamily: fonts.bold,
     letterSpacing: 1,
@@ -399,7 +403,7 @@ const styles = StyleSheet.create({
     borderColor: colors.primary,
   },
   tabText: {
-    color: '#666',
+    color: '#9CA3AF',
     fontSize: 9,
     fontFamily: fonts.bold,
   },
@@ -418,7 +422,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     padding: 16,
     borderWidth: 1,
-    borderColor: 'rgba(200, 146, 26, 0.2)', // BORDA DOURADA SUTIL
+    borderColor: 'rgba(231,196,138, 0.4)', // BORDA DOURADA MAIS VISÍVEL
     alignItems: 'center',
     marginBottom: 12,
   },
@@ -454,10 +458,10 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     padding: 20,
     borderWidth: 1,
-    borderColor: 'rgba(200, 146, 26, 0.15)', // BORDA DOURADA SUTIL
+    borderColor: 'rgba(231,196,138, 0.25)', // BORDA DOURADA MAIS VISÍVEL
   },
   descriptionText: {
-    color: '#999',
+    color: '#D1D5DB', // TEXTO MAIS CLARO PARA LEITURA
     fontSize: 13,
     fontFamily: fonts.body,
     lineHeight: 20,

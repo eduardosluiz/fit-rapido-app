@@ -328,7 +328,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   headerTitle: {
-    fontSize: 32,
+    fontSize: 24,
     fontFamily: fonts.title,
     color: '#ffffff',
     marginBottom: 8,

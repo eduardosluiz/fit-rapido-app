@@ -15,6 +15,9 @@ export class ExercicioBiblioteca {
   video_url: string;
 
   @Column({ nullable: true })
+  video_explicativo_url?: string;
+
+  @Column({ nullable: true })
   video_thumbnail_url: string;
 
   @Column({ nullable: true })
