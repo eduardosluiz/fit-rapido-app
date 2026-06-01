@@ -17,9 +17,9 @@ const nextConfig: NextConfig = {
     pagesBufferLength: 2,
   },
   // Configurações para melhorar performance e evitar problemas de hidratação
-  experimental: {
-    optimizePackageImports: ['@/lib/api'],
-  },
+  // experimental: {
+  //   optimizePackageImports: ['@/lib/api'],
+  // },
   async rewrites() {
     return [
       {

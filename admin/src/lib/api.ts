@@ -219,15 +219,13 @@ class ApiService {
         cleanData[key] = value;
       }
     }
-    console.log('📤 Enviando para API:', JSON.stringify(cleanData, null, 2));
-    console.log('📤 categoria_ids no cleanData:', cleanData.categoria_ids);
-    console.log('📤 URL:', `${API_URL}/receitas/${id}`);
+    // Removido logs excessivos de payload
     try {
       const resultado = await this.request<any>(`/receitas/${id}`, {
         method: 'PATCH',
         body: JSON.stringify(cleanData),
       });
-      console.log('✅ Resposta da API:', resultado);
+      // Removido log de payload
       return resultado;
     } catch (error: any) {
       console.error('❌ Erro ao atualizar receita:', error);
@@ -344,7 +342,7 @@ class ApiService {
       cleanData[key] = value;
     }
 
-    console.log('📤 Enviando Treino para API:', JSON.stringify(cleanData, null, 2));
+    // Removido log de payload
 
     try {
       const resultado = await this.request<any>(`/treinos/${id}`, {

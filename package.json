@@ -6,12 +6,16 @@
     "node": ">=20"
   },
   "scripts": {
-    "build": "npm run build:api",
-    "build:admin": "cd admin && npm install && npm run build",
-    "build:api": "cd api && npm install && npm run build",
-    "start": "cd api && npm run start:prod",
-    "install:admin": "cd admin && npm install",
-    "install:api": "cd api && npm install"
+    "build": "pnpm run build:api",
+    "build:admin": "cd admin && pnpm install && pnpm run build",
+    "build:api": "cd api && pnpm install && pnpm run build",
+    "start": "cd api && pnpm run start:prod",
+    "install:admin": "cd admin && pnpm install",
+    "install:api": "cd api && pnpm install",
+    "install:mobile": "cd mobile && pnpm install",
+    "start:mobile": "cd mobile && pnpm start",
+    "dev:admin": "cd admin && pnpm run dev",
+    "dev:api": "cd api && pnpm run start:dev"
   },
   "dependencies": {
     "next": "latest",

@@ -1,0 +1,9 @@
+packages:
+  - 'api'
+  - 'admin'
+  - 'mobile'
+allowBuilds:
+  '@nestjs/core': true
+  bcrypt: true
+  sharp: set this to true or false
+  unrs-resolver: true

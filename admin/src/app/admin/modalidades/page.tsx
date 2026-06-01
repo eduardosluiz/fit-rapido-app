@@ -334,7 +334,7 @@ export default function ModalidadesPage() {
         for (const key in grouped) {
           // Para cada grupo (ex: iniciante-segunda), atribuímos ordens sequenciais 0, 1, 2...
           // A ordem no array grouped[key] já é a ordem visual que o usuário vê.
-          const subList = grouped[key];
+          const subList = grouped[key].sort((a, b) => (a.ordem || 0) - (b.ordem || 0));
           for (let i = 0; i < subList.length; i++) {
             const video = subList[i];
             if (!video.titulo.trim() || !video.video_url.trim()) continue;
@@ -377,8 +377,9 @@ export default function ModalidadesPage() {
         }
       }
 
-      setShowForm(false);
-      setEditingId(null);
+      if (!editingId && modalidadeId) {
+        setEditingId(modalidadeId);
+      }
       setDeletedVideoIds([]);
       await loadData();
     } catch (err: any) {
@@ -647,12 +648,14 @@ export default function ModalidadesPage() {
                                     </select>
                                   </div>
 
-                                  <div className="space-y-2">
-                                    <label className="text-[9px] font-bold uppercase tracking-[0.15em] text-gray-800 dark:text-gray-200">Nível</label>
-                                    <select value={video.nivel} onChange={(e) => handleVideoChange(video.originalIndex, 'nivel', e.target.value)} className="w-full bg-gray-100 dark:bg-[#111] border border-gray-400 dark:border-[#333] rounded-md px-4 py-2.5 text-sm focus:border-[#c8921a] outline-none text-gray-900 dark:text-white font-medium appearance-none">
-                                      <option value="iniciante">Iniciante</option><option value="intermediario">Intermediário</option><option value="avancado">Avançado</option>
-                                    </select>
-                                  </div>
+                                  {formData.tem_nivelamento && (
+                                    <div className="space-y-2">
+                                      <label className="text-[9px] font-bold uppercase tracking-[0.15em] text-gray-800 dark:text-gray-200">Nível</label>
+                                      <select value={video.nivel} onChange={(e) => handleVideoChange(video.originalIndex, 'nivel', e.target.value)} className="w-full bg-gray-100 dark:bg-[#111] border border-gray-400 dark:border-[#333] rounded-md px-4 py-2.5 text-sm focus:border-[#c8921a] outline-none text-gray-900 dark:text-white font-medium appearance-none">
+                                        <option value="iniciante">Iniciante</option><option value="intermediario">Intermediário</option><option value="avancado">Avançado</option>
+                                      </select>
+                                    </div>
+                                  )}
                                 </div>
                                 
                                 <div className="lg:col-span-5 space-y-2">

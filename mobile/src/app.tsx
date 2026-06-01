@@ -13,8 +13,32 @@ import {
 import { AuthProvider } from './contexts/AuthContext';
 import Navigation from './navigation';
 import OfflineNotice from './components/OfflineNotice';
-import { ActivityIndicator, View, StyleSheet } from 'react-native';
+import { ActivityIndicator, View, StyleSheet, LogBox } from 'react-native';
 import colors from './constants/colors';
+
+// Oculta a caixa amarela de avisos na tela
+LogBox.ignoreLogs([
+  'Animated: `useNativeDriver` is not supported',
+  'props.pointerEvents is deprecated',
+  'style.resizeMode is deprecated',
+  'Video component from `expo-av` is deprecated',
+]);
+
+// Oculta os avisos diretamente no Console (F12) do navegador para manter limpo
+const originalWarn = console.warn;
+console.warn = (...args) => {
+  if (typeof args[0] === 'string') {
+    if (
+      args[0].includes('useNativeDriver') ||
+      args[0].includes('pointerEvents') ||
+      args[0].includes('resizeMode') ||
+      args[0].includes('expo-av')
+    ) {
+      return; // Ignora e não imprime
+    }
+  }
+  originalWarn(...args);
+};
 
 export default function App() {
   const [fontsLoaded] = useFonts({
