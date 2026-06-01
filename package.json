@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "next": "latest",
-    "typescript": "latest"
+    "typescript": "latest",
+    "ws": "^8.21.0"
   }
 }
