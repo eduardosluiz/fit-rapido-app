@@ -85,7 +85,7 @@ export default function BibliotecaTreinosScreen({ navigation }: any) {
           <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
             <Ionicons name="chevron-back" size={24} color="#E7C48A" />
           </TouchableOpacity>
-          <Text style={styles.headerTitle}>BIBLIOTECA</Text>
+          <Text style={styles.headerTitle}>BIBLIOTECA DE EXECUÇÕES</Text>
           <View style={{ width: 40 }} />
         </View>
 

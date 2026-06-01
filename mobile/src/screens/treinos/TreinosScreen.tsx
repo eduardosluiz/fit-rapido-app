@@ -125,8 +125,8 @@ export default function TreinosScreen() {
           style={{ flexDirection: 'row', alignItems: 'center', backgroundColor: 'rgba(231,196,138,0.1)', paddingHorizontal: 12, paddingVertical: 8, borderRadius: 20, borderWidth: 1, borderColor: 'rgba(231,196,138,0.3)', marginBottom: 8 }}
           onPress={() => (navigation as any).navigate('BibliotecaTreinos')}
         >
-          <Ionicons name="library-outline" size={16} color="#E7C48A" />
-          <Text style={{ color: '#E7C48A', fontSize: 12, marginLeft: 6, fontWeight: 'bold' }}>Biblioteca</Text>
+          <Ionicons name="play-circle-outline" size={16} color="#E7C48A" />
+          <Text style={{ color: '#E7C48A', fontSize: 12, marginLeft: 6, fontWeight: 'bold' }}>Biblioteca de Execuções</Text>
         </TouchableOpacity>
       </View>
 

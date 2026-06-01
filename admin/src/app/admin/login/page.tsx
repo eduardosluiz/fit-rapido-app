@@ -26,8 +26,8 @@ export default function Login() {
         throw new Error('Token não foi salvo. Verifique a conexão.');
       }
       
-      // Forçar redirecionamento para o dashboard
-      window.location.href = '/admin';
+      // Redirecionamento suave para evitar fechar a conexão de proxy abruptamente
+      router.replace('/admin');
     } catch (err: any) {
       console.error('❌ Erro no login:', err);
       setError(err.message || 'Erro ao fazer login. Verifique suas credenciais.');
