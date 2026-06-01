@@ -21,11 +21,13 @@ export class SupabaseService implements OnModuleInit {
 
     // Solução para o erro do Node.js 20 sem suporte nativo a WebSocket
     const WebSocket = require('ws');
+    (global as any).WebSocket = WebSocket;
     
     this.supabase = createClient(supabaseUrl, supabaseKey, {
       auth: { persistSession: false },
       realtime: { transport: WebSocket },
-      global: { WebSocket },
+      // TypeScript reclama do global.WebSocket em algumas versões do SDK
+      // então setamos globalmente acima e garantimos o bypass do erro
     });
     
     this.logger.log('Conectado ao cliente de armazenamento do Supabase');
