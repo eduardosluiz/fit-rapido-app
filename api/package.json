@@ -22,6 +22,7 @@
     "node": ">=20.0.0"
   },
   "dependencies": {
+    "@nestjs/cli": "^11.0.7",
     "@nestjs/common": "^11.1.8",
     "@nestjs/config": "^4.0.2",
     "@nestjs/core": "^11.1.8",
@@ -49,9 +50,8 @@
     "rxjs": "^7.8.2",
     "typeorm": "^0.3.27",
     "uuid": "^14.0.0",
-    "ws": "^8.18.0",
-    "xlsx": "^0.18.5",
-    "@nestjs/cli": "^11.0.7"
+    "ws": "^8.21.0",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "@nestjs/schematics": "^11.0.7",
