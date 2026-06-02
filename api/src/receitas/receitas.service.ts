@@ -209,79 +209,49 @@ export class ReceitasService {
 
     queryBuilder.orderBy('receita.created_at', 'DESC');
 
-    let receitas = await queryBuilder.getMany();
-    
-    const totalNoBanco = await this.receitaRepository.count({
-      where: incluirInativas ? {} : { ativa: true },
-    });
-    
-    if (receitas.length < totalNoBanco) {
-      const whereClause = incluirInativas ? {} : { ativa: true };
-      const todasReceitas = await this.receitaRepository.find({
-        where: whereClause,
-        relations: ['categorias'],
-        order: { created_at: 'DESC' },
-      });
+    if (page !== undefined && limit !== undefined) {
+      const skip = (page - 1) * limit;
+      queryBuilder.skip(skip).take(limit);
       
-      let receitasFiltradas = todasReceitas;
+      const [receitasList, total] = await queryBuilder.getManyAndCount();
+      receitas = receitasList;
       
-      if (categoriaId) {
-        receitasFiltradas = receitasFiltradas.filter(r => 
-          r.categorias && r.categorias.some(cat => cat.id === categoriaId)
-        );
+      let resultReceitas = receitas;
+
+      if (user) {
+        const isAdmin = user.role === UserRole.ADMIN || String(user.role) === 'admin' || String(user.role) === 'personal_trainer';
+        const isDaiAdmin = user.email === 'dai@gmail.com';
+        
+        if (!isAdmin && !isDaiAdmin) {
+          const tier = user.subscription_tier || SubscriptionTier.NONE;
+          const isInTrial = hasActiveTrial(user);
+
+          if (!isInTrial) {
+            if (tier === SubscriptionTier.FREE || tier === SubscriptionTier.NONE) {
+              resultReceitas = receitas.filter((r) => r.is_free === true);
+            } else if (tier === SubscriptionTier.BASIC) {
+              resultReceitas = receitas.filter((r) => r.is_premium === false);
+            }
+          }
+        }
+      } else {
+        resultReceitas = receitas.filter((r) => r.is_free === true);
       }
-      
-      if (search) {
-        const searchLower = search.toLowerCase();
-        receitasFiltradas = receitasFiltradas.filter(r => 
-          r.titulo.toLowerCase().includes(searchLower) ||
-          r.descricao?.toLowerCase().includes(searchLower)
-        );
-      }
-      
-      const isAdmin = user && (user.role === UserRole.ADMIN || String(user.role) === 'admin' || String(user.role) === 'personal_trainer' || user.email === 'dai@gmail.com');
-      if (isPremium !== undefined && !isAdmin) {
-        receitasFiltradas = receitasFiltradas.filter(r => r.is_premium === isPremium);
-      }
-      
-      if (dificuldade) {
-        receitasFiltradas = receitasFiltradas.filter(r => r.dificuldade === dificuldade);
-      }
-      
-      if (tipoRefeicao) {
-        receitasFiltradas = receitasFiltradas.filter(r => r.tipo_refeicao === tipoRefeicao);
-      }
-      
-      if (tempoMaximo) {
-        receitasFiltradas = receitasFiltradas.filter(r => r.tempo_preparo <= tempoMaximo);
-      }
-      
-      if (proteinasMin) {
-        receitasFiltradas = receitasFiltradas.filter(r => {
-          const valor = parseFloat(String(r.proteinas).replace(',', '.'));
-          return !isNaN(valor) && valor >= proteinasMin;
-        });
-      }
-      
-      if (semLactose) {
-        receitasFiltradas = receitasFiltradas.filter(r => 
-          r.descricao?.toLowerCase().includes('sem lactose') ||
-          r.tags?.some(tag => tag.toLowerCase().includes('sem lactose'))
-        );
-      }
-      
-      if (lowCarb) {
-        receitasFiltradas = receitasFiltradas.filter(r => {
-          const valor = parseFloat(String(r.carboidratos).replace(',', '.'));
-          return !isNaN(valor) && valor <= 30;
-        });
-      }
-      
-      receitas = receitasFiltradas;
+
+      return {
+        data: resultReceitas,
+        total,
+        page,
+        limit,
+        totalPages: Math.ceil(total / limit),
+      };
+    } else {
+      receitas = await queryBuilder.getMany();
     }
 
     let resultReceitas = receitas;
 
+    // Logica fallback (sem paginação requisitada)
     if (user) {
       const isAdmin = user.role === UserRole.ADMIN || String(user.role) === 'admin' || String(user.role) === 'personal_trainer';
       const isDaiAdmin = user.email === 'dai@gmail.com';
@@ -300,19 +270,6 @@ export class ReceitasService {
       }
     } else {
       resultReceitas = receitas.filter((r) => r.is_free === true);
-    }
-
-    if (page !== undefined && limit !== undefined) {
-      const skip = (page - 1) * limit;
-      const total = resultReceitas.length;
-      const data = resultReceitas.slice(skip, skip + limit);
-      return {
-        data,
-        total,
-        page,
-        limit,
-        totalPages: Math.ceil(total / limit),
-      };
     }
 
     return resultReceitas;

@@ -21,6 +21,10 @@ Este arquivo contém as diretrizes de desenvolvimento e decisões de design toma
     - Vídeo com thumbnail automática e fullscreen nativo.
 - **Botões de Ação:** Usar botões simples "Salvar" e "Cancelar" no final dos formulários, integrados ao fluxo da página. No Mobile, botões de assinatura usam gradiente dourado e formato pílula.
 
+## Infraestrutura e Comandos
+- **Gerenciador de Pacotes:** O projeto utiliza `pnpm` como padrão. Os comandos devem ser executados **sempre a partir da pasta raiz** (ex: `pnpm run dev:admin`, `pnpm run start:mobile`).
+- **Ambiente da API:** A API (backend) já roda online em produção. Para testes locais de front-end ou mobile, conecte-se diretamente à API em produção, a não ser que o desenvolvimento exija alterações exclusivas no servidor.
+
 ## Roadmap de Próximas Melhorias
 - **UI Categorias:** Tornar botões de categorias mais visíveis com efeito 3D/relevo.
 - **Layout de Cards:** Centralizar e ajustar o redimensionamento das imagens de capa das receitas para melhor exibição.

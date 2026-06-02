@@ -22,7 +22,6 @@ export default function EditarReceita() {
   const [saving, setSaving] = useState(false);
   const [categorias, setCategorias] = useState<any[]>([]);
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const [freeCount, setFreeCount] = useState<number | null>(null);
 
   const [formData, setFormData] = useState({
     titulo: '',
@@ -63,15 +62,12 @@ export default function EditarReceita() {
   const loadData = async () => {
     try {
       setLoading(true);
-      const [receita, cats, receitas] = await Promise.all([
+      const [receita, cats] = await Promise.all([
         api.getReceita(id),
         api.getCategorias(),
-        api.getReceitas({ incluirInativas: true }),
       ]);
       
       setCategorias(cats);
-      const freeRecipes = receitas.filter((r: any) => r.is_free && r.ativa);
-      setFreeCount(freeRecipes.length);
       
       // Processar substituições do formato objeto para array do form
       const subsArray: any[] = [];
@@ -200,6 +196,17 @@ export default function EditarReceita() {
       toast.error(err.message || 'Erro ao salvar');
     } finally {
       setSaving(false);
+    }
+  };
+
+  const handleDelete = async () => {
+    if (!window.confirm('Tem certeza que deseja excluir esta receita? Esta ação não pode ser desfeita.')) return;
+    try {
+      await api.deleteReceita(id);
+      toast.success('Receita excluída com sucesso');
+      router.push('/admin/receitas');
+    } catch (err: any) {
+      toast.error(err.message || 'Erro ao excluir receita');
     }
   };
 
@@ -623,11 +630,16 @@ export default function EditarReceita() {
             </div>
 
             {/* Ações Finais */}
-            <div className="flex gap-4 pt-10 border-t border-gray-200 dark:border-[#222] justify-end">
-              <button type="button" onClick={() => router.push('/admin/receitas')} className="px-8 py-2.5 rounded-md border border-gray-300 dark:border-[#444] text-[10px] font-bold uppercase tracking-widest text-gray-500 hover:bg-gray-50 transition-all">Cancelar</button>
-              <button type="submit" disabled={saving} className="px-12 py-2.5 rounded-md bg-[#c8921a] text-[#2d2106] text-[10px] font-bold uppercase tracking-widest shadow-md hover:shadow-xl transition-all disabled:opacity-50">
-                {saving ? 'Sincronizando...' : 'Salvar'}
+            <div className="flex gap-4 pt-10 border-t border-gray-200 dark:border-[#222] justify-between">
+              <button type="button" onClick={handleDelete} className="px-6 py-2.5 rounded-md border border-red-200 dark:border-red-900/30 text-red-600 bg-red-50 dark:bg-red-900/10 text-[10px] font-bold uppercase tracking-widest hover:bg-red-100 dark:hover:bg-red-900/20 transition-all flex items-center gap-2">
+                <Trash2 size={14} /> Excluir
               </button>
+              <div className="flex gap-4">
+                <button type="button" onClick={() => router.push('/admin/receitas')} className="px-8 py-2.5 rounded-md border border-gray-300 dark:border-[#444] text-[10px] font-bold uppercase tracking-widest text-gray-500 hover:bg-gray-50 transition-all">Cancelar</button>
+                <button type="submit" disabled={saving} className="px-12 py-2.5 rounded-md bg-[#c8921a] text-[#2d2106] text-[10px] font-bold uppercase tracking-widest shadow-md hover:shadow-xl transition-all disabled:opacity-50">
+                  {saving ? 'Sincronizando...' : 'Salvar'}
+                </button>
+              </div>
             </div>
           </form>
         </div>

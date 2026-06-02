@@ -252,16 +252,22 @@ class ApiService {
   }
 
   async createCategoria(data: any) {
+    const cleanData = Object.fromEntries(
+      Object.entries(data).filter(([_, v]) => v !== '')
+    );
     return this.request<any>('/categorias-receitas', {
       method: 'POST',
-      body: JSON.stringify(data),
+      body: JSON.stringify(cleanData),
     });
   }
 
   async updateCategoria(id: string, data: any) {
+    const cleanData = Object.fromEntries(
+      Object.entries(data).filter(([_, v]) => v !== '')
+    );
     return this.request<any>(`/categorias-receitas/${id}`, {
       method: 'PATCH',
-      body: JSON.stringify(data),
+      body: JSON.stringify(cleanData),
     });
   }
 

@@ -49,20 +49,24 @@ export function Pagination({ currentPage, totalPages, onPageChange, className }:
   };
 
   return (
-    <div className={cn("flex items-center justify-center gap-2", className)}>
+    <div className={cn("flex items-center justify-center gap-1 sm:gap-2 flex-wrap", className)}>
       <Button
         variant="outline"
         size="sm"
-        onClick={() => onPageChange(currentPage - 1)}
+        onClick={() => {
+          onPageChange(currentPage - 1);
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }}
         disabled={currentPage === 1}
         aria-label="Página anterior"
+        className="h-8 w-8 p-0 min-w-8 text-xs"
       >
         <i className="bx bx-chevron-left"></i>
       </Button>
 
       {getPageNumbers().map((page, index) => (
         page === '...' ? (
-          <span key={`ellipsis-${index}`} className="px-2 text-gray-500">
+          <span key={`ellipsis-${index}`} className="px-1 text-gray-500 text-xs">
             ...
           </span>
         ) : (
@@ -70,8 +74,12 @@ export function Pagination({ currentPage, totalPages, onPageChange, className }:
             key={page}
             variant={currentPage === page ? 'default' : 'outline'}
             size="sm"
-            onClick={() => onPageChange(page as number)}
+            onClick={() => {
+              onPageChange(page as number);
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
             className={cn(
+              "h-8 w-8 p-0 min-w-8 text-xs font-medium",
               currentPage === page && "bg-[#c8921a] hover:bg-[#b88217] text-white"
             )}
             aria-label={`Ir para página ${page}`}
@@ -85,9 +93,13 @@ export function Pagination({ currentPage, totalPages, onPageChange, className }:
       <Button
         variant="outline"
         size="sm"
-        onClick={() => onPageChange(currentPage + 1)}
+        onClick={() => {
+          onPageChange(currentPage + 1);
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }}
         disabled={currentPage === totalPages}
         aria-label="Próxima página"
+        className="h-8 w-8 p-0 min-w-8 text-xs"
       >
         <i className="bx bx-chevron-right"></i>
       </Button>

@@ -5,8 +5,12 @@
          rounded-2xl border border-gray-200 dark:border-[#222] shadow-sm;
 }
 
+.data-table-wrapper {
+  @apply w-full overflow-x-auto;
+}
+
 .data-table {
-  @apply w-full border-collapse text-left;
+  @apply w-full border-collapse text-left whitespace-nowrap;
 }
 
 .data-table thead th {
