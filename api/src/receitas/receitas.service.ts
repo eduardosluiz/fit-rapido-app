@@ -209,6 +209,7 @@ export class ReceitasService {
 
     queryBuilder.orderBy('receita.created_at', 'DESC');
 
+    let receitas;
     if (page !== undefined && limit !== undefined) {
       const skip = (page - 1) * limit;
       queryBuilder.skip(skip).take(limit);
