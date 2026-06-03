@@ -114,6 +114,7 @@ export default function AdminDashboard() {
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             {[
+              { label: 'Banners Mobile', href: '/admin/banners', icon: <Plus size={12} /> },
               { label: 'Nova Receita', href: '/admin/receitas/nova', icon: <Plus size={12} /> },
               { label: 'Novo Treino', href: '/admin/treinos/novo', icon: <Plus size={12} /> },
               { label: 'Biblioteca Cloud', href: '/admin/biblioteca', icon: <Activity size={12} /> },

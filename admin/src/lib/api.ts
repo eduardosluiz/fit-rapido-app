@@ -281,6 +281,18 @@ class ApiService {
     return this.request<any>('/stats');
   }
 
+  // Banners
+  async getBannersAdmin() {
+    return this.request<any[]>('/banners/admin');
+  }
+
+  async updateBanners(banners: any[]) {
+    return this.request<any>('/banners/bulk', {
+      method: 'PUT',
+      body: JSON.stringify({ banners }),
+    });
+  }
+
   // Treinos
   async getTreinos(params?: {
     categoria?: string;

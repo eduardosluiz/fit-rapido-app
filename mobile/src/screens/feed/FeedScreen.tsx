@@ -9,6 +9,7 @@ import {
   Image,
   ActivityIndicator,
   TextInput,
+  Dimensions,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useAuth } from '../../contexts/AuthContext';
@@ -35,9 +36,12 @@ interface Notification {
   message?: string;
 }
 
+const { width: SCREEN_WIDTH } = Dimensions.get('window');
+
 export default function FeedScreen() {
   const navigation = useNavigation();
   const { user } = useAuth();
+  const [banners, setBanners] = useState<Banner[]>([]);
   const [receitas, setReceitas] = useState<Receita[]>([]);
   const [treinos, setTreinos] = useState<Treino[]>([]);
   const [ultimaNotificacao, setUltimaNotificacao] = useState<Notification | null>(null);
@@ -53,7 +57,8 @@ export default function FeedScreen() {
       setLoading(true);
       const canAccessWorkouts = user?.subscription_tier === 'premium_fit';
       
-      const [receitasData, treinosData] = await Promise.all([
+      const [bannersData, receitasData, treinosData] = await Promise.all([
+        api.getBanners(),
         api.getReceitas({}),
         canAccessWorkouts 
           ? api.getTreinos({})
@@ -78,6 +83,7 @@ export default function FeedScreen() {
         .filter((t) => t && t.ativa)
         .slice(0, 6);
 
+      setBanners(Array.isArray(bannersData) ? bannersData : []);
       setReceitas(receitasOrdenadas);
       setTreinos(treinosOrdenados);
 
@@ -170,17 +176,57 @@ export default function FeedScreen() {
     );
   }
 
+  const renderBannerItem = (banner: Banner, index: number) => {
+    return (
+      <View key={banner.id || index} style={styles.carouselItem}>
+        <Image source={{ uri: getImageUrl(banner.imagem_url) }} style={styles.carouselImage} />
+        <View style={styles.carouselOverlay}>
+          <View style={styles.carouselContent}>
+            <Text style={styles.carouselTitle}>{banner.titulo}</Text>
+            <View style={styles.carouselUnderline} />
+            {banner.subtitulo ? <Text style={styles.carouselSubtitle}>{banner.subtitulo}</Text> : null}
+            <TouchableOpacity 
+              style={styles.carouselButton}
+              activeOpacity={0.8}
+              onPress={() => {
+                if (banner.acao === 'RECEITAS') (navigation as any).navigate('Tabs', { screen: 'Receitas' });
+                else if (banner.acao === 'TREINOS') (navigation as any).navigate('Tabs', { screen: 'Treinos' });
+                else if (banner.acao === 'FAVORITOS') (navigation as any).navigate('Tabs', { screen: 'Favoritos' });
+              }}
+            >
+              <Text style={styles.carouselButtonText}>Explorar Agora</Text>
+              <Ionicons name="arrow-forward" size={16} color="#000" />
+            </TouchableOpacity>
+          </View>
+        </View>
+      </View>
+    );
+  };
+
   return (
     <AppBackground>
       <SafeAreaView style={styles.container}>
         <View style={styles.bannerContainer}>
-          <ScreenBanner defaultImage={require('../../../assets/banners/bannerinicial.jpg')} />
-          <View style={styles.titleOverlay}>
-            <View style={styles.titleContainer}>
-              <Text style={styles.headerTitle}>Fit & Rápido</Text>
-              <View style={styles.titleUnderline} />
-            </View>
-          </View>
+          {banners.length > 0 ? (
+            <ScrollView
+              horizontal
+              pagingEnabled
+              showsHorizontalScrollIndicator={false}
+              style={{ width: '100%', height: '100%' }}
+            >
+              {banners.map((b, i) => renderBannerItem(b, i))}
+            </ScrollView>
+          ) : (
+            <>
+              <ScreenBanner defaultImage={require('../../../assets/banners/bannerinicial.jpg')} />
+              <View style={styles.titleOverlay}>
+                <View style={styles.titleContainer}>
+                  <Text style={styles.headerTitle}>Fit & Rápido</Text>
+                  <View style={styles.titleUnderline} />
+                </View>
+              </View>
+            </>
+          )}
         </View>
         <ScrollView
           style={styles.scrollView}
@@ -316,6 +362,69 @@ const styles = StyleSheet.create({
   bannerContainer: {
     position: 'relative',
     width: '100%',
+    height: 250,
+  },
+  carouselItem: {
+    width: SCREEN_WIDTH,
+    height: '100%',
+    position: 'relative',
+  },
+  carouselImage: {
+    width: '100%',
+    height: '100%',
+    resizeMode: 'cover',
+  },
+  carouselOverlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'rgba(0,0,0,0.4)',
+    justifyContent: 'flex-end',
+    padding: 20,
+    paddingBottom: 30,
+  },
+  carouselContent: {
+    width: '100%',
+  },
+  carouselTitle: {
+    fontSize: 28,
+    fontFamily: fonts.title,
+    color: '#ffffff',
+    marginBottom: 4,
+    textShadowColor: 'rgba(0, 0, 0, 0.75)',
+    textShadowOffset: { width: 0, height: 2 },
+    textShadowRadius: 4,
+  },
+  carouselUnderline: {
+    height: 3,
+    backgroundColor: colors.primary,
+    width: '30%',
+    borderRadius: 2,
+    marginBottom: 12,
+  },
+  carouselSubtitle: {
+    fontSize: 14,
+    fontFamily: fonts.body,
+    color: '#e0e0e0',
+    marginBottom: 16,
+    maxWidth: '80%',
+    textShadowColor: 'rgba(0, 0, 0, 0.75)',
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 2,
+  },
+  carouselButton: {
+    backgroundColor: colors.primary,
+    alignSelf: 'flex-start',
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderRadius: 20,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  carouselButtonText: {
+    color: '#000',
+    fontSize: 13,
+    fontWeight: 'bold',
+    fontFamily: fonts.bodySemiBold,
   },
   titleOverlay: {
     position: 'absolute',

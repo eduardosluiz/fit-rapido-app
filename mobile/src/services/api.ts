@@ -14,6 +14,25 @@ export function getImageUrl(url?: string | null): string | undefined {
   return `${API_URL}${cleanUrl}`;
 }
 
+export interface Favorito {
+  id: string;
+  item_id: string;
+  tipo: 'receita' | 'treino';
+  created_at: string;
+  receita?: Receita;
+  treino?: Treino;
+}
+
+export interface Banner {
+  id: string;
+  titulo: string;
+  subtitulo: string;
+  imagem_url: string;
+  acao: string;
+  ordem: number;
+  ativo: boolean;
+}
+
 export interface User {
   id: string;
   email: string;
@@ -233,6 +252,15 @@ class ApiService {
 
   async removeFavorito(tipo: string, itemId: string) {
     return this.toggleFavorito(itemId, tipo);
+  }
+
+  // Banners
+  async getBanners() {
+    try {
+      return await this.request<Banner[]>('/banners');
+    } catch (e) {
+      return [];
+    }
   }
 
   async getReceitaIngredientes(receitaId: string) {
