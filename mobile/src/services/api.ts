@@ -303,9 +303,15 @@ class ApiService {
   }
 
   async avaliar(itemId: string, tipo: string, nota: number, comentario?: string) {
-    return this.request<any>(`/avaliacoes/${tipo}/${itemId}`, {
+    return this.request<any>('/avaliacoes', {
       method: 'POST',
-      body: JSON.stringify({ nota, comentario }),
+      body: JSON.stringify({ item_id: itemId, tipo, nota, comentario }),
+    });
+  }
+
+  async removerAvaliacao(itemId: string, tipo: string) {
+    return this.request<any>(`/avaliacoes/${tipo}/${itemId}`, {
+      method: 'DELETE',
     });
   }
   

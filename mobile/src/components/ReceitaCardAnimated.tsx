@@ -70,7 +70,7 @@ export default function ReceitaCardAnimated({ item, isHorizontal, onPress, order
   };
 
   return (
-    <Pressable onPress={onPress} onPressIn={onPressIn} onPressOut={onPressOut} style={[isHorizontal && { width: 280, marginRight: 15 }]}>
+    <Pressable onPress={onPress} onPressIn={onPressIn} onPressOut={onPressOut} style={[isHorizontal && { width: 160, marginRight: 15 }]}>
       <Animated.View style={[styles.card, { transform: [{ scale }] }]}>
         <View style={styles.imageContainer}>
           {renderMedia()}

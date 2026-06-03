@@ -294,8 +294,14 @@ export default function ReceitaDetailScreen() {
     
     try {
       setLoadingAvaliacao(true);
-      await api.criarAvaliacao(receitaId, 'receita', nota);
-      setAvaliacaoUsuario(nota);
+      if (nota === avaliacaoUsuario) {
+        // Remove a avaliação se clicar na mesma nota novamente
+        await api.removerAvaliacao(receitaId, 'receita');
+        setAvaliacaoUsuario(null);
+      } else {
+        await api.avaliar(receitaId, 'receita', nota);
+        setAvaliacaoUsuario(nota);
+      }
       
       // Recarregar receita para atualizar média
       if (receita) {

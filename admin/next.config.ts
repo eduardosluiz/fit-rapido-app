@@ -17,9 +17,12 @@ const nextConfig: NextConfig = {
     pagesBufferLength: 2,
   },
   // Configurações para melhorar performance e evitar problemas de hidratação
-  // experimental: {
-  //   optimizePackageImports: ['@/lib/api'],
-  // },
+  experimental: {
+    // Reduzir consumo de memória e threads durante o build na nuvem
+    cpus: 1,
+    workerThreads: false,
+    memoryBasedWorkersCount: true,
+  },
   async rewrites() {
     return [
       {
