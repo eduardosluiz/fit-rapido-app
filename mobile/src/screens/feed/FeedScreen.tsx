@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import {
   View,
   Text,
@@ -51,6 +51,9 @@ export default function FeedScreen() {
   const [filtrosBusca, setFiltrosBusca] = useState<BuscaFilters>({});
   const [buscaRapida, setBuscaRapida] = useState('');
   const [buscaRapidaDebounced, setBuscaRapidaDebounced] = useState('');
+  
+  const scrollViewRef = useRef<ScrollView>(null);
+  const [currentBannerIndex, setCurrentBannerIndex] = useState(0);
 
   const loadFeed = useCallback(async () => {
     try {
@@ -124,6 +127,27 @@ export default function FeedScreen() {
       });
     }
   }, [buscaRapidaDebounced]);
+
+  // Autoplay Banners
+  useEffect(() => {
+    if (banners.length <= 1) return;
+    
+    const intervalId = setInterval(() => {
+      setCurrentBannerIndex((prevIndex) => (prevIndex + 1) % banners.length);
+    }, 5000);
+
+    return () => clearInterval(intervalId);
+  }, [banners.length]);
+
+  // Efeito separado para garantir que o ScrollView acompanhe o índice
+  useEffect(() => {
+    if (banners.length > 0 && scrollViewRef.current) {
+      scrollViewRef.current.scrollTo({
+        x: currentBannerIndex * SCREEN_WIDTH,
+        animated: true,
+      });
+    }
+  }, [currentBannerIndex, banners.length]);
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
@@ -206,34 +230,41 @@ export default function FeedScreen() {
   return (
     <AppBackground>
       <SafeAreaView style={styles.container}>
-        <View style={styles.bannerContainer}>
-          {banners.length > 0 ? (
-            <ScrollView
-              horizontal
-              pagingEnabled
-              showsHorizontalScrollIndicator={false}
-              style={{ width: '100%', height: '100%' }}
-            >
-              {banners.map((b, i) => renderBannerItem(b, i))}
-            </ScrollView>
-          ) : (
-            <>
-              <ScreenBanner defaultImage={require('../../../assets/banners/bannerinicial.jpg')} />
-              <View style={styles.titleOverlay}>
-                <View style={styles.titleContainer}>
-                  <Text style={styles.headerTitle}>Fit & Rápido</Text>
-                  <View style={styles.titleUnderline} />
-                </View>
-              </View>
-            </>
-          )}
-        </View>
         <ScrollView
           style={styles.scrollView}
           contentContainerStyle={styles.scrollContent}
           refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={colors.primary} />}
           showsVerticalScrollIndicator={false}
         >
+          {/* Banner Container movido para dentro do ScrollView para rolar junto com a página */}
+          <View style={styles.bannerContainer}>
+            {banners.length > 0 ? (
+              <ScrollView
+                ref={scrollViewRef}
+                horizontal
+                pagingEnabled
+                showsHorizontalScrollIndicator={false}
+                style={{ width: '100%', height: '100%' }}
+                onMomentumScrollEnd={(e) => {
+                  const newIndex = Math.round(e.nativeEvent.contentOffset.x / SCREEN_WIDTH);
+                  setCurrentBannerIndex(newIndex);
+                }}
+              >
+                {banners.map((b, i) => renderBannerItem(b, i))}
+              </ScrollView>
+            ) : (
+              <>
+                <ScreenBanner defaultImage={require('../../../assets/banners/bannerinicial.jpg')} />
+                <View style={styles.titleOverlay}>
+                  <View style={styles.titleContainer}>
+                    <Text style={styles.headerTitle}>Fit & Rápido</Text>
+                    <View style={styles.titleUnderline} />
+                  </View>
+                </View>
+              </>
+            )}
+          </View>
+
           {/* Barra de Busca Rápida - Estilizada como na página de Receitas */}
           <View style={styles.searchRow}>
             <View style={styles.searchContainer}>
@@ -405,7 +436,7 @@ const styles = StyleSheet.create({
     fontFamily: fonts.body,
     color: '#e0e0e0',
     marginBottom: 16,
-    maxWidth: '80%',
+    maxWidth: '45%',
     textShadowColor: 'rgba(0, 0, 0, 0.75)',
     textShadowOffset: { width: 0, height: 1 },
     textShadowRadius: 2,
@@ -414,7 +445,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.primary,
     alignSelf: 'flex-start',
     paddingHorizontal: 20,
-    paddingVertical: 10,
+    paddingVertical: 5,
     borderRadius: 20,
     flexDirection: 'row',
     alignItems: 'center',

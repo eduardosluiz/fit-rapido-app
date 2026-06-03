@@ -3,7 +3,8 @@
 import { useState, useEffect } from 'react';
 import { api } from '@/lib/api';
 import { useAuth } from '@/lib/useAuth';
-import { Loader2, Star, CheckCircle, XCircle } from 'lucide-react';
+import { Loader2, Star, CheckCircle, XCircle, Search } from 'lucide-react';
+import { Pagination } from '@/components/admin/Pagination';
 import Link from 'next/link';
 import { toast } from 'react-hot-toast';
 
@@ -12,6 +13,9 @@ export default function PopularesPage() {
   const [mounted, setMounted] = useState(false);
   const [loading, setLoading] = useState(true);
   const [receitas, setReceitas] = useState<any[]>([]);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
 
   useEffect(() => {
     setMounted(true);
@@ -51,6 +55,17 @@ export default function PopularesPage() {
     }
   };
 
+  const handleSearchChange = (val: string) => {
+    setSearchTerm(val);
+    setCurrentPage(1);
+  };
+
+  const filteredReceitas = receitas.filter(r => 
+    r.titulo?.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+  const totalPages = Math.ceil(filteredReceitas.length / itemsPerPage);
+  const currentReceitas = filteredReceitas.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+
   if (!mounted || loading) {
     return (
       <div className="min-h-screen bg-[#f4f7f9] flex items-center justify-center">
@@ -60,8 +75,8 @@ export default function PopularesPage() {
   }
 
   return (
-    <div className="p-4 sm:p-6 lg:p-10 bg-[#f4f7f9] dark:bg-[#0a0a0a] min-h-screen font-inter w-full">
-      <div className="w-full max-w-[1200px] mx-auto space-y-8">
+    <div className="p-6 sm:p-10 bg-[#f4f7f9] dark:bg-[#0a0a0a] min-h-screen font-inter w-full">
+      <div className="w-full max-w-[1400px] mx-auto space-y-6 md:space-y-10">
         
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-gray-200 dark:border-[#222] pb-6 gap-4">
@@ -72,6 +87,15 @@ export default function PopularesPage() {
             <p className="text-[10px] sm:text-xs text-gray-500 dark:text-gray-400 font-medium uppercase tracking-[0.2em] mt-1">
               Gerencie os destaques que aparecem no topo do app
             </p>
+          </div>
+          
+          <div className="relative w-full max-w-[300px] group">
+            <Search className="absolute left-0 top-1/2 -translate-y-1/2 text-gray-300 group-focus-within:text-[#c8921a] transition-colors" size={18} />
+            <input 
+              type="text" value={searchTerm} onChange={(e) => handleSearchChange(e.target.value)} 
+              placeholder="Buscar receita..." 
+              className="w-full pl-8 pr-4 py-2 bg-transparent border-t-0 border-l-0 border-r-0 border-b border-gray-300 dark:border-[#333] focus:border-[#c8921a] focus:ring-0 outline-none text-sm text-gray-800 dark:text-white font-normal placeholder-gray-400" 
+            />
           </div>
         </div>
 
@@ -88,7 +112,7 @@ export default function PopularesPage() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100 dark:divide-[#222]">
-                {receitas.map((receita) => (
+                {currentReceitas.map((receita) => (
                   <tr key={receita.id} className="hover:bg-gray-50/50 dark:hover:bg-[#1a1a1a]/50 transition-colors">
                     <td className="px-6 py-4 flex items-center gap-4">
                       {receita.imagem_url ? (
@@ -106,7 +130,7 @@ export default function PopularesPage() {
                     <td className="px-6 py-4 text-center">
                       <div className="flex items-center justify-center gap-1">
                         <Star size={14} className={receita.avaliacao > 0 ? "text-[#c8921a] fill-[#c8921a]" : "text-gray-300"} />
-                        <span className="font-bold text-gray-900 dark:text-white">{receita.avaliacao > 0 ? receita.avaliacao.toFixed(1) : '-'}</span>
+                        <span className="font-bold text-gray-900 dark:text-white">{Number(receita.avaliacao) > 0 ? Number(receita.avaliacao).toFixed(1) : '-'}</span>
                       </div>
                     </td>
                     <td className="px-6 py-4 text-center">
@@ -123,13 +147,13 @@ export default function PopularesPage() {
                     <td className="px-6 py-4 text-right">
                       <button
                         onClick={() => toggleDestaque(receita)}
-                        className={`px-4 py-2 rounded text-[10px] font-bold uppercase tracking-widest transition-all ${
+                        className={`px-3 py-1.5 rounded-md text-[9px] font-bold uppercase tracking-wider transition-all ${
                           receita.destaque_popular
                             ? 'bg-gray-100 text-gray-600 hover:bg-gray-200 dark:bg-[#222] dark:text-gray-400 dark:hover:bg-[#333]'
                             : 'bg-[#c8921a]/10 text-[#c8921a] hover:bg-[#c8921a]/20 border border-[#c8921a]/30'
                         }`}
                       >
-                        {receita.destaque_popular ? 'Remover Destaque' : 'Tornar Popular'}
+                        {receita.destaque_popular ? 'Remover' : 'Tornar Popular'}
                       </button>
                     </td>
                   </tr>
@@ -146,6 +170,16 @@ export default function PopularesPage() {
             </table>
           </div>
         </div>
+
+        {totalPages > 1 && (
+          <div className="mt-8 flex justify-center pb-8">
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={setCurrentPage}
+            />
+          </div>
+        )}
 
       </div>
     </div>

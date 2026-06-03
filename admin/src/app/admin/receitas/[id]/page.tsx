@@ -12,12 +12,14 @@ import { Switch } from '@/components/ui/switch';
 import { FileUpload } from '@/components/admin/FileUpload';
 import { MultipleImageUpload } from '@/components/admin/MultipleImageUpload';
 import { toast } from 'react-hot-toast';
+import { useConfirm } from '@/contexts/ConfirmContext';
 
 export default function EditarReceita() {
   const router = useRouter();
   const params = useParams();
   const id = params.id as string;
   const { isAuthenticated } = useAuth();
+  const confirm = useConfirm();
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [categorias, setCategorias] = useState<any[]>([]);
@@ -200,7 +202,7 @@ export default function EditarReceita() {
   };
 
   const handleDelete = async () => {
-    if (!window.confirm('Tem certeza que deseja excluir esta receita? Esta ação não pode ser desfeita.')) return;
+    if (!(await confirm('Tem certeza que deseja excluir esta receita? Esta ação não pode ser desfeita.'))) return;
     try {
       await api.deleteReceita(id);
       toast.success('Receita excluída com sucesso');

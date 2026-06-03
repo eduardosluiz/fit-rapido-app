@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { api } from '@/lib/api';
 import { useAuth } from '@/lib/useAuth';
+import { ConfirmProvider } from '@/contexts/ConfirmContext';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import './admin.css';
@@ -49,7 +50,11 @@ export default function AdminLayout({
 
   // Se estiver na página de login, não mostrar o menu/sidebar e retornar limpo
   if (pathname === '/admin/login') {
-    return <div className={isDarkTheme ? 'dark' : ''}>{children}</div>;
+    return (
+      <ConfirmProvider>
+        <div className={isDarkTheme ? 'dark' : ''}>{children}</div>
+      </ConfirmProvider>
+    );
   }
 
   const navItems = [
@@ -68,8 +73,9 @@ export default function AdminLayout({
   });
 
   return (
-    <div className={`admin-container ${isDarkTheme ? 'dark-theme' : ''}`}>
-      {/* Mobile Menu Button - Somente em Mobile */}
+    <ConfirmProvider>
+      <div className={`admin-container ${isDarkTheme ? 'dark-theme' : ''}`}>
+        {/* Mobile Menu Button - Somente em Mobile */}
       <button 
         type="button"
         className="admin-mobile-menu-btn md:hidden"
@@ -184,5 +190,6 @@ export default function AdminLayout({
         {children}
       </main>
     </div>
+    </ConfirmProvider>
   );
 }

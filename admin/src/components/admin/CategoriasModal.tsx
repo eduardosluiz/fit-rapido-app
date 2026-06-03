@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useConfirm } from '@/contexts/ConfirmContext';
 import { BaseModal } from '@/components/admin/BaseModal';
 import { DataTable } from '@/components/admin/DataTable';
 import { Switch } from '@/components/ui/switch';
@@ -118,7 +119,7 @@ export function CategoriasModal({
   };
 
   const handleDelete = async (id: string, nome: string) => {
-    if (!confirm(`Excluir categoria "${nome}"?`)) return;
+    if (!(await confirm(`Excluir categoria "${nome}"?`))) return;
     try {
       if (type === 'receitas') await api.deleteCategoria(id);
       else await api.deleteCategoriaTreino(id);

@@ -8,7 +8,8 @@ import { ListHeader } from '@/components/admin/ListHeader';
 import { FormSection } from '@/components/admin/FormSection';
 import { FormField } from '@/components/admin/FormField';
 import { EmptyState } from '@/components/admin/EmptyState';
-import { Button } from '@/components/admin/Button';
+import { Button as AdminButton } from '@/components/admin/Button';
+import { useConfirm } from '@/contexts/ConfirmContext';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -99,7 +100,7 @@ export default function ModalidadesTreinosPage() {
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm('Tem certeza que deseja excluir esta modalidade?')) return;
+    if (!(await confirm('Tem certeza que deseja excluir esta modalidade?'))) return;
     try {
       await api.deleteModalidadeTreino(id);
       await loadModalidades();

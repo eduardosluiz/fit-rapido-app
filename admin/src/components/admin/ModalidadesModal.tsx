@@ -9,6 +9,7 @@ import { getMediaUrl } from '@/lib/media';
 import { Plus, Edit3, Trash2, Image as ImageIcon } from 'lucide-react';
 import { FileUpload } from './FileUpload';
 import { toast } from 'react-hot-toast';
+import { useConfirm } from '@/contexts/ConfirmContext';
 import '@/app/admin/data-table.css';
 
 interface Modalidade {
@@ -36,6 +37,7 @@ export function ModalidadesModal({
   const [showForm, setShowForm] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
+  const confirm = useConfirm();
   const [formData, setFormData] = useState({
     nome: '',
     descricao: '',
@@ -98,7 +100,7 @@ export function ModalidadesModal({
   };
 
   const handleDelete = async (id: string, nome: string) => {
-    if (!confirm(`Excluir modalidade "${nome}"?`)) return;
+    if (!(await confirm(`Excluir modalidade "${nome}"?`))) return;
     try {
       await api.deleteModalidadeTreino(id);
       toast.success('Modalidade removida');

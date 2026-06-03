@@ -5,6 +5,7 @@ import { api } from '@/lib/api';
 import { useAuth } from '@/lib/useAuth';
 import { getMediaUrl } from '@/lib/media';
 import { Search, ChevronDown, Trash2, Play, Edit3, AlertTriangle, X, Upload, FolderPlus } from 'lucide-react';
+import { useConfirm } from '@/contexts/ConfirmContext';
 import { toast } from 'react-hot-toast';
 import '@/app/admin/item-card.css';
 
@@ -25,10 +26,12 @@ interface Categoria {
 interface UploadItem {
   file: File;
   categorias: string[];
+  exibir_mobile?: boolean;
 }
 
 export default function BibliotecaVideosPage() {
   const { isAuthenticated } = useAuth();
+  const confirm = useConfirm();
   const [exercicios, setExercicios] = useState<Exercicio[]>([]);
   const [categorias, setCategorias] = useState<Categoria[]>([]);
   const [loading, setLoading] = useState(true);
@@ -220,7 +223,7 @@ export default function BibliotecaVideosPage() {
   };
 
   const handleDeleteCategory = async (id: string) => {
-    if (!confirm('Tem certeza que deseja excluir esta categoria? Os vídeos que a utilizam não serão excluídos, apenas a categoria.')) return;
+    if (!(await confirm('Tem certeza que deseja excluir esta categoria? Os vídeos que a utilizam não serão excluídos, apenas a categoria.'))) return;
     setIsSaving(true);
     try {
       await api.deleteExercicioCategoria(id);

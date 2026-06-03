@@ -7,6 +7,7 @@ import { FileUpload } from '@/components/admin/FileUpload';
 import { api } from '@/lib/api';
 import { getMediaUrl } from '@/lib/media';
 import { Plus, Edit3, Trash2, Video, Search, X } from 'lucide-react';
+import { useConfirm } from '@/contexts/ConfirmContext';
 import { toast } from 'react-hot-toast';
 import '@/app/admin/data-table.css';
 
@@ -38,6 +39,7 @@ export function ExerciciosModal({
   const [editingId, setEditingId] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
   const [searchText, setSearchText] = useState('');
+  const confirm = useConfirm();
   
   const [formData, setFormData] = useState({
     nome: '',
@@ -118,7 +120,7 @@ export function ExerciciosModal({
   };
 
   const handleDelete = async (id: string, nome: string) => {
-    if (!confirm(`Excluir exercício "${nome}"?`)) return;
+    if (!(await confirm(`Excluir exercício "${nome}"?`))) return;
     try {
       await api.deleteExercicioBiblioteca(id);
       toast.success('Exercício removido');

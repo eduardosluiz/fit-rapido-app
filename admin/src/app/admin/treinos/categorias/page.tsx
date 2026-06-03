@@ -8,8 +8,9 @@ import { ListHeader } from '@/components/admin/ListHeader';
 import { FormSection } from '@/components/admin/FormSection';
 import { FormField } from '@/components/admin/FormField';
 import { EmptyState } from '@/components/admin/EmptyState';
-import { Button } from '@/components/admin/Button';
-import { Card, CardContent } from '@/components/ui/card';
+import { Button as AdminButton } from '@/components/admin/Button';
+import { useConfirm } from '@/contexts/ConfirmContext';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Switch } from '@/components/ui/switch';
@@ -132,7 +133,7 @@ export default function CategoriasTreinosPage() {
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm('Tem certeza que deseja excluir esta categoria?')) return;
+    if (!(await confirm('Tem certeza que deseja excluir esta categoria?'))) return;
     try {
       await api.deleteCategoriaTreino(id);
       await loadCategorias();

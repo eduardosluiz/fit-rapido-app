@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { api } from '@/lib/api';
 import { useAuth } from '@/lib/useAuth';
+import { useConfirm } from '@/contexts/ConfirmContext';
 import { DataTable } from '@/components/admin/DataTable';
 import { EditarUsuarioModal } from '@/components/admin/EditarUsuarioModal';
 import { TrocarSenhaModal } from '@/components/admin/TrocarSenhaModal';
@@ -24,6 +25,7 @@ interface Usuario {
 
 export default function UsuariosPage() {
   const { isAuthenticated } = useAuth();
+  const confirm = useConfirm();
   const [usuarios, setUsuarios] = useState<Usuario[]>([]);
   const [usuariosFiltrados, setUsuariosFiltrados] = useState<Usuario[]>([]);
   const [loading, setLoading] = useState(true);
@@ -61,8 +63,8 @@ export default function UsuariosPage() {
   }, [searchText, selectedRole, usuarios]);
 
   const handleToggleBlock = async (usuario: Usuario) => {
-    const action = usuario.ativo === false ? 'desbloquear' : 'bloquear';
-    if (!confirm(`Confirmar ${action} do usuário ${usuario.nome}?`)) return;
+    const action = usuario.ativo === false ? 'desbloqueio' : 'bloqueio';
+    if (!(await confirm(`Confirmar ${action} do usuário ${usuario.nome}?`))) return;
     try {
       await api.updateUser(usuario.id, { ativo: !usuario.ativo });
       toast.success('Status atualizado');

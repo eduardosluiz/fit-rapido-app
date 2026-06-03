@@ -6,7 +6,8 @@ import { useAuth } from '@/lib/useAuth';
 import { DataTable } from '@/components/admin/DataTable';
 import { Button as AdminButton } from '@/components/admin/Button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Search, Plus, Loader2, Edit3, Trash2 } from 'lucide-react';
+import { Plus, Search, Filter, Layers, Edit3, Trash2, Package, Loader2 } from 'lucide-react';
+import { useConfirm } from '@/contexts/ConfirmContext';
 import { toast } from 'react-hot-toast';
 import '@/app/admin/data-table.css';
 
@@ -37,6 +38,8 @@ export default function IngredientesPage() {
   const [formData, setFormData] = useState({
     nome: '', unidade_base: '100g', calorias: '', proteinas: '', carboidratos: '', gorduras: '', fibras: '', sodio: '', ativo: true,
   });
+
+  const confirm = useConfirm();
 
   useEffect(() => {
     if (isAuthenticated) loadIngredientes();
@@ -120,7 +123,7 @@ export default function IngredientesPage() {
       <div className="flex items-center gap-3">
         {/* Ícones com cores vivas por padrão */}
         <button onClick={() => handleOpenDialog(ing)} className="action-icon-edit"><Edit3 size={14} /></button>
-        <button onClick={async () => { if(confirm('Excluir?')){ await api.deleteIngrediente(ing.id); loadIngredientes(); toast.success('Removido'); } }} className="action-icon-delete"><Trash2 size={14} /></button>
+        <button onClick={async () => { if(await confirm('Excluir?')){ await api.deleteIngrediente(ing.id); loadIngredientes(); toast.success('Removido'); } }} className="action-icon-delete"><Trash2 size={14} /></button>
       </div>
     )},
   ];

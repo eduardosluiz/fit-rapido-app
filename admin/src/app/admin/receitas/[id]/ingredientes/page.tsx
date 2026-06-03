@@ -11,7 +11,8 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { ArrowLeft, Plus, Search, Package, Trash2, Edit2, GripVertical } from 'lucide-react';
+import { Plus, Trash2, Save, ArrowLeft, GripVertical, PlusCircle, Search, Package, Edit2 } from 'lucide-react';
+import { useConfirm } from '@/contexts/ConfirmContext';
 
 interface ReceitaIngrediente {
   id: string;
@@ -45,6 +46,7 @@ export default function ReceitaIngredientesPage() {
   const router = useRouter();
   const params = useParams();
   const { isAuthenticated } = useAuth();
+  const confirm = useConfirm();
   const receitaId = params.id as string;
   const [loading, setLoading] = useState(true);
   const [receitaIngredientes, setReceitaIngredientes] = useState<ReceitaIngrediente[]>([]);
@@ -175,7 +177,7 @@ export default function ReceitaIngredientesPage() {
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm('Tem certeza que deseja remover este ingrediente da receita?')) {
+    if (!(await confirm('Tem certeza que deseja remover este ingrediente da receita?'))) {
       return;
     }
 

@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { api } from '@/lib/api';
 import { useAuth } from '@/lib/useAuth';
+import { useConfirm } from '@/contexts/ConfirmContext';
 import { ListContainer } from '@/components/admin/ListContainer';
 import { ListHeader } from '@/components/admin/ListHeader';
 import { FormContainer } from '@/components/admin/FormContainer';
@@ -30,6 +31,7 @@ interface Categoria {
 
 export default function AdminCategorias() {
   const { isAuthenticated } = useAuth();
+  const confirm = useConfirm();
   const [categorias, setCategorias] = useState<Categoria[]>([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
@@ -140,7 +142,7 @@ export default function AdminCategorias() {
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm('Tem certeza que deseja excluir esta categoria?')) return;
+    if (!(await confirm('Tem certeza que deseja excluir esta categoria?'))) return;
     try {
       await api.deleteCategoria(id);
       await loadCategorias();

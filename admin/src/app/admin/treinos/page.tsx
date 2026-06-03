@@ -13,6 +13,7 @@ import { ModalidadesModal } from '@/components/admin/ModalidadesModal';
 import { ExerciciosModal } from '@/components/admin/ExerciciosModal';
 import { Card, CardContent } from '@/components/ui/card';
 import { toast } from 'react-hot-toast';
+import { useConfirm } from '@/contexts/ConfirmContext';
 import Link from 'next/link';
 import { Search, ChevronDown, Plus, FolderPlus, Dumbbell, Tag } from 'lucide-react';
 import '@/app/admin/item-card.css';
@@ -20,6 +21,7 @@ import '@/app/admin/item-card.css';
 export default function TreinosPage() {
   const router = useRouter();
   const { isAuthenticated } = useAuth();
+  const confirm = useConfirm();
   const [treinos, setTreinos] = useState<any[]>([]);
   const [categorias, setCategorias] = useState<any[]>([]);
   const [modalidades, setModalidades] = useState<any[]>([]);
@@ -134,7 +136,7 @@ export default function TreinosPage() {
   const treinosPaginated = treinos;
 
   const handleDelete = async (id: string) => {
-    if (!confirm('Excluir este treino?')) return;
+    if (!(await confirm('Excluir este treino?'))) return;
     try {
       setLoading(true);
       await api.deleteTreino(id);

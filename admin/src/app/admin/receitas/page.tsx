@@ -12,6 +12,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { toast } from 'react-hot-toast';
 import Link from 'next/link';
 import { Search, ChevronDown, Plus, FolderPlus, BookOpen } from 'lucide-react';
+import { useConfirm } from '@/contexts/ConfirmContext';
 import '@/app/admin/item-card.css';
 
 interface Receita {
@@ -146,7 +147,7 @@ export default function AdminReceitas() {
 
   const handleDelete = async (id: string) => {
     const receita = receitas.find(r => r.id === id);
-    if (!confirm(`Excluir "${receita?.titulo}"?`)) return;
+    if (!(await confirm(`Excluir "${receita?.titulo}"?`))) return;
     try {
       setLoading(true);
       await api.deleteReceita(id);
