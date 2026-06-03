@@ -2,17 +2,39 @@ import { Injectable, Logger, InternalServerErrorException } from '@nestjs/common
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Banner } from './entities/banner.entity';
+import { IsArray, IsString, IsOptional, IsBoolean, IsNumber, ValidateNested } from 'class-validator';
+import { Type } from 'class-transformer';
+
+export class BannerItemDto {
+  @IsOptional()
+  @IsString()
+  id?: string;
+
+  @IsString()
+  titulo: string;
+
+  @IsOptional()
+  @IsString()
+  subtitulo?: string;
+
+  @IsString()
+  imagem_url: string;
+
+  @IsString()
+  acao: string;
+
+  @IsNumber()
+  ordem: number;
+
+  @IsBoolean()
+  ativo: boolean;
+}
 
 export class UpdateBannersDto {
-  banners: {
-    id?: string;
-    titulo: string;
-    subtitulo?: string;
-    imagem_url: string;
-    acao: string;
-    ordem: number;
-    ativo: boolean;
-  }[];
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => BannerItemDto)
+  banners: BannerItemDto[];
 }
 
 @Injectable()
