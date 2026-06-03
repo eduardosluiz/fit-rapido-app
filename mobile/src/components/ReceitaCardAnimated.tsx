@@ -1,5 +1,5 @@
 import React, { useRef } from "react";
-import { View, Text, StyleSheet, Image, Animated, Pressable } from "react-native";
+import { View, Text, StyleSheet, Image, Animated, Pressable, Dimensions } from "react-native";
 import { Ionicons } from '@expo/vector-icons';
 import { Video, ResizeMode } from 'expo-av';
 import { colors } from "../constants/colors";
@@ -69,8 +69,11 @@ export default function ReceitaCardAnimated({ item, isHorizontal, onPress, order
     );
   };
 
+  const windowWidth = Dimensions.get('window').width;
+  const CARD_WIDTH = (windowWidth - 50) / 2;
+
   return (
-    <Pressable onPress={onPress} onPressIn={onPressIn} onPressOut={onPressOut} style={[isHorizontal && { width: 160, marginRight: 15 }]}>
+    <Pressable onPress={onPress} onPressIn={onPressIn} onPressOut={onPressOut} style={[isHorizontal && { width: CARD_WIDTH, marginRight: 15 }]}>
       <Animated.View style={[styles.card, { transform: [{ scale }] }]}>
         <View style={styles.imageContainer}>
           {renderMedia()}

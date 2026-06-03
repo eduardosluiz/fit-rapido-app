@@ -231,6 +231,11 @@ export default function ReceitasScreen() {
             contentContainerStyle={styles.horizontalScroll}
             renderItem={({ item }) => renderReceitaCard(item, true)}
           />
+          {receitasPopulares.length > 2 && (
+            <View style={[styles.scrollIndicator, { marginTop: -5 }]}>
+              <Ionicons name="arrow-forward" size={16} color="rgba(231,196,138,0.6)" />
+            </View>
+          )}
         </View>
       )}
 
@@ -253,6 +258,11 @@ export default function ReceitasScreen() {
             contentContainerStyle={styles.horizontalScroll}
             renderItem={({ item }) => renderReceitaCard(item, true)}
           />
+          {receitasRapidas.length > 2 && (
+            <View style={[styles.scrollIndicator, { marginTop: -5 }]}>
+              <Ionicons name="arrow-forward" size={16} color="rgba(231,196,138,0.6)" />
+            </View>
+          )}
         </View>
       )}
 

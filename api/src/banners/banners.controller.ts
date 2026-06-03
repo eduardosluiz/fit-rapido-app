@@ -1,10 +1,6 @@
 import { Controller, Get, Put, Body, UseGuards } from '@nestjs/common';
 import { BannersService, UpdateBannersDto } from './banners.service';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import { RolesGuard } from '../auth/guards/roles.guard';
-import { Roles } from '../auth/decorators/roles.decorator';
-import { Role } from '../auth/enums/role.enum';
-
 @Controller('banners')
 export class BannersController {
   constructor(private readonly bannersService: BannersService) {}
@@ -16,15 +12,13 @@ export class BannersController {
   }
 
   @Get('admin')
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.ADMIN)
+  @UseGuards(JwtAuthGuard)
   async findAllAdmin() {
     return this.bannersService.findAll();
   }
 
   @Put('bulk')
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.ADMIN)
+  @UseGuards(JwtAuthGuard)
   async bulkUpdate(@Body() dto: UpdateBannersDto) {
     return this.bannersService.bulkUpdate(dto);
   }
