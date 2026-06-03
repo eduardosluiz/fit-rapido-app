@@ -164,6 +164,7 @@ export function CategoriasModal({
     { 
       header: 'Slug', 
       accessor: 'slug', 
+      className: 'hidden md:table-cell',
       render: (cat: Categoria) => (
         <span className="text-[11px] font-medium text-gray-500 uppercase tracking-tighter">{cat.slug}</span>
       )
@@ -171,6 +172,7 @@ export function CategoriasModal({
     { 
       header: 'Status', 
       accessor: 'ativa', 
+      className: 'hidden sm:table-cell',
       render: (cat: Categoria) => (
         <span className={`badge-slim ${cat.ativa ? 'text-emerald-600' : 'text-gray-300'}`}>
           {cat.ativa ? 'Ativo' : 'Off'}
@@ -179,9 +181,10 @@ export function CategoriasModal({
     },
     { 
       header: 'Ações', 
-      accessor: 'actions', 
+      accessor: 'actions',
+      className: 'text-right',
       render: (cat: Categoria) => (
-        <div className="flex items-center gap-3">
+        <div className="flex items-center justify-end gap-3">
           <button onClick={() => handleEdit(cat)} className="action-icon-edit"><Edit3 size={14} /></button>
           <button onClick={() => handleDelete(cat.id, cat.nome)} className="action-icon-delete"><Trash2 size={14} /></button>
         </div>
