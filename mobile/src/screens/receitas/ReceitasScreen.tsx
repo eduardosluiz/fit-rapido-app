@@ -91,7 +91,7 @@ export default function ReceitasScreen() {
       
       // Calculamos apenas prévias para os carrosséis horizontais
       const populares = receitasAtivas
-        .filter(r => r.avaliacao > 0)
+        .filter(r => r.destaque_popular === true)
         .sort((a,b) => b.avaliacao - a.avaliacao);
       setReceitasPopulares(populares.slice(0, 8));
 
@@ -287,7 +287,7 @@ export default function ReceitasScreen() {
   const displayReceitas = React.useMemo(() => {
     if (filterMode === 'populares') {
       return receitas
-        .filter(r => r.avaliacao > 0)
+        .filter(r => r.destaque_popular === true)
         .sort((a,b) => b.avaliacao - a.avaliacao);
     }
     if (filterMode === 'rapidas') {

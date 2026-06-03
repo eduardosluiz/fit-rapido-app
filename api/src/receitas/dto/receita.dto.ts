@@ -113,6 +113,10 @@ export class CreateReceitaDto {
   @IsOptional()
   is_free?: boolean;
 
+  @IsBoolean()
+  @IsOptional()
+  destaque_popular?: boolean;
+
   @IsArray()
   @IsString({ each: true })
   @IsOptional()
@@ -292,6 +296,10 @@ export class UpdateReceitaDto {
   @IsBoolean()
   @IsOptional()
   is_free?: boolean;
+
+  @IsBoolean()
+  @IsOptional()
+  destaque_popular?: boolean;
 
   @IsOptional()
   tags?: any[];

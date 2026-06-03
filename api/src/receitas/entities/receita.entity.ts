@@ -143,6 +143,9 @@ export class Receita {
   @Column({ default: true })
   ativa: boolean;
 
+  @Column({ default: false })
+  destaque_popular: boolean;
+
   @CreateDateColumn()
   created_at: Date;
 
