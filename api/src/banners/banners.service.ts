@@ -38,9 +38,9 @@ export class BannersService {
   }
 
   async bulkUpdate(dto: UpdateBannersDto) {
-    // Usamos delete({}) em vez de clear() pois clear() executa TRUNCATE,
-    // que pode falhar no Supabase se o usuário do banco não for o dono da tabela.
-    await this.bannerRepository.delete({});
+    // Usamos delete() via queryBuilder pois o TypeORM não permite delete({}) sem critérios de segurança,
+    // e não queremos usar clear() para não acionar o TRUNCATE bloqueado pelo Supabase.
+    await this.bannerRepository.createQueryBuilder().delete().execute();
     
     const novosBanners = dto.banners.map(b => this.bannerRepository.create(b));
     return this.bannerRepository.save(novosBanners);
