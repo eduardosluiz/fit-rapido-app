@@ -38,9 +38,9 @@ export class BannersService {
   }
 
   async bulkUpdate(dto: UpdateBannersDto) {
-    // Para simplificar, vamos remover todos os banners existentes e criar os novos.
-    // Assim garantimos exatamente os 3 configurados no admin.
-    await this.bannerRepository.clear();
+    // Usamos delete({}) em vez de clear() pois clear() executa TRUNCATE,
+    // que pode falhar no Supabase se o usuário do banco não for o dono da tabela.
+    await this.bannerRepository.delete({});
     
     const novosBanners = dto.banners.map(b => this.bannerRepository.create(b));
     return this.bannerRepository.save(novosBanners);

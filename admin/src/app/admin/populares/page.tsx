@@ -5,6 +5,7 @@ import { api } from '@/lib/api';
 import { useAuth } from '@/lib/useAuth';
 import { Loader2, Star, CheckCircle, XCircle } from 'lucide-react';
 import Link from 'next/link';
+import { toast } from 'react-hot-toast';
 
 export default function PopularesPage() {
   const { isAuthenticated } = useAuth();
@@ -44,8 +45,9 @@ export default function PopularesPage() {
       setReceitas((prev) => 
         prev.map((r) => r.id === receita.id ? { ...r, destaque_popular: !isDestaque } : r)
       );
+      toast.success(isDestaque ? 'Removido dos populares' : 'Adicionado aos populares');
     } catch (error) {
-      alert('Erro ao atualizar destaque popular.');
+      toast.error('Erro ao atualizar destaque popular.');
     }
   };
 

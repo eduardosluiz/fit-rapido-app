@@ -6,6 +6,7 @@ import { useAuth } from '@/lib/useAuth';
 import { Loader2, Save, Upload, Info, Image as ImageIcon } from 'lucide-react';
 import { ImageCropper } from '@/components/admin/ImageCropper';
 import { uploadImagem } from '@/lib/upload';
+import { toast } from 'react-hot-toast';
 import '../admin.css';
 
 interface Banner {
@@ -98,7 +99,7 @@ export default function BannersPage() {
       handleChange(index, 'imagem_url', uploadResponse.url);
     } catch (error) {
       console.error('Erro no upload:', error);
-      alert('Erro ao fazer upload da imagem.');
+      toast.error('Erro ao fazer upload da imagem.');
     } finally {
       setUploading(null);
     }
@@ -110,16 +111,16 @@ export default function BannersPage() {
       // Validar
       const invalido = banners.find(b => !b.titulo || !b.imagem_url);
       if (invalido) {
-        alert('Preencha título e imagem de todos os banners.');
+        toast.error('Preencha título e imagem de todos os banners.');
         setSaving(false);
         return;
       }
 
       await api.updateBanners(banners);
-      alert('Banners salvos com sucesso!');
+      toast.success('Banners salvos com sucesso!');
       await loadBanners();
     } catch (error: any) {
-      alert(`Erro ao salvar: ${error.message}`);
+      toast.error(error.message || 'Erro interno ao salvar banners');
     } finally {
       setSaving(false);
     }
