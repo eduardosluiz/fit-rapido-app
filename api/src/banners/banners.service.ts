@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger, InternalServerErrorException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Banner } from './entities/banner.entity';
@@ -38,11 +38,21 @@ export class BannersService {
   }
 
   async bulkUpdate(dto: UpdateBannersDto) {
-    // Usamos delete() via queryBuilder pois o TypeORM não permite delete({}) sem critérios de segurança,
-    // e não queremos usar clear() para não acionar o TRUNCATE bloqueado pelo Supabase.
-    await this.bannerRepository.createQueryBuilder().delete().execute();
-    
-    const novosBanners = dto.banners.map(b => this.bannerRepository.create(b));
-    return this.bannerRepository.save(novosBanners);
+    try {
+      // Usar SQL puro para limpar a tabela ignorando verificações complexas do TypeORM
+      // DELETE não sofre a restrição de TRUNCATE no Supabase
+      await this.bannerRepository.query('DELETE FROM banners');
+      
+      const novosBanners = dto.banners.map(b => {
+        // Remover ID antigo para forçar o banco a gerar um novo UUID limpo no INSERT
+        const { id, ...rest } = b;
+        return this.bannerRepository.create(rest);
+      });
+      
+      return await this.bannerRepository.save(novosBanners);
+    } catch (error: any) {
+      this.logger.error(`Erro ao salvar banners: ${error.message}`);
+      throw new InternalServerErrorException(`Erro no DB: ${error.message}`);
+    }
   }
 }
