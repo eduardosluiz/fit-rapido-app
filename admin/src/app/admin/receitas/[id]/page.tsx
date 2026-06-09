@@ -632,13 +632,13 @@ export default function EditarReceita() {
             </div>
 
             {/* Ações Finais */}
-            <div className="flex gap-4 pt-10 border-t border-gray-200 dark:border-[#222] justify-between">
-              <button type="button" onClick={handleDelete} className="px-6 py-2.5 rounded-md border border-red-200 dark:border-red-900/30 text-red-600 bg-red-50 dark:bg-red-900/10 text-[10px] font-bold uppercase tracking-widest hover:bg-red-100 dark:hover:bg-red-900/20 transition-all flex items-center gap-2">
+            <div className="flex flex-col-reverse sm:flex-row gap-4 pt-10 border-t border-gray-200 dark:border-[#222] sm:justify-between sm:items-center">
+              <button type="button" onClick={handleDelete} className="w-full sm:w-auto px-4 py-2.5 rounded-md border border-red-200 dark:border-red-900/30 text-red-600 bg-red-50 dark:bg-red-900/10 text-[10px] font-bold uppercase tracking-widest hover:bg-red-100 dark:hover:bg-red-900/20 transition-all flex items-center justify-center gap-2">
                 <Trash2 size={14} /> Excluir
               </button>
-              <div className="flex gap-4">
-                <button type="button" onClick={() => router.push('/admin/receitas')} className="px-8 py-2.5 rounded-md border border-gray-300 dark:border-[#444] text-[10px] font-bold uppercase tracking-widest text-gray-500 hover:bg-gray-50 transition-all">Cancelar</button>
-                <button type="submit" disabled={saving} className="px-12 py-2.5 rounded-md bg-[#c8921a] text-[#2d2106] text-[10px] font-bold uppercase tracking-widest shadow-md hover:shadow-xl transition-all disabled:opacity-50">
+              <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
+                <button type="button" onClick={() => router.push('/admin/receitas')} className="w-full sm:w-auto px-6 py-2.5 rounded-md border border-gray-300 dark:border-[#444] text-[10px] font-bold uppercase tracking-widest text-gray-500 hover:bg-gray-50 transition-all text-center">Cancelar</button>
+                <button type="submit" disabled={saving} className="w-full sm:w-auto px-8 py-2.5 rounded-md bg-[#c8921a] text-[#2d2106] text-[10px] font-bold uppercase tracking-widest shadow-md hover:shadow-xl transition-all disabled:opacity-50 text-center">
                   {saving ? 'Sincronizando...' : 'Salvar'}
                 </button>
               </div>

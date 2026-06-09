@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { api } from '@/lib/api';
 import { useAuth } from '@/lib/useAuth';
 import { useConfirm } from '@/contexts/ConfirmContext';
@@ -36,11 +36,8 @@ export default function UsuariosPage() {
   const [usuarioEditandoId, setUsuarioEditandoId] = useState<string | null>(null);
   const [usuarioNome, setUsuarioNome] = useState('');
 
-  useEffect(() => {
-    if (isAuthenticated) loadUsuarios();
-  }, [isAuthenticated]);
 
-  const loadUsuarios = async () => {
+  const loadUsuarios = useCallback(async () => {
     try {
       setLoading(true);
       const data = await api.getUsers();
@@ -51,7 +48,11 @@ export default function UsuariosPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    if (isAuthenticated) loadUsuarios();
+  }, [isAuthenticated, loadUsuarios]);
 
   useEffect(() => {
     const filtered = (usuarios || []).filter(u => {
@@ -75,18 +76,17 @@ export default function UsuariosPage() {
   };
 
   const columns = [
-    { header: 'Nome de Usuário', accessor: 'nome', render: (u: Usuario) => <div className="font-elegant">{u.nome}</div> },
+    { header: 'Nome', accessor: 'nome', render: (u: Usuario) => <div className="font-elegant">{u.nome}</div> },
     { header: 'E-mail de Acesso', accessor: 'email', render: (u: Usuario) => <div className="text-gray-400 text-xs font-light">{u.email}</div> },
     { header: 'Perfil', accessor: 'role', render: (u: Usuario) => <span className={`badge-slim ${u.role === 'admin' ? 'text-purple-500' : 'text-blue-500'}`}>{u.role}</span> },
     { header: 'Assinatura', accessor: 'subscription_tier', render: (u: Usuario) => <span className="text-[10px] font-medium text-[#c8921a] tracking-tight uppercase">{u.subscription_tier || 'FREE'}</span> },
     { header: 'Status', accessor: 'ativo', render: (u: Usuario) => <span className={`text-[9px] font-normal uppercase tracking-widest ${u.ativo !== false ? 'text-emerald-600' : 'text-red-400'}`}>{u.ativo !== false ? 'Ativo' : 'Bloq.'}</span> },
-    { header: 'Ações', accessor: 'actions', render: (u: Usuario) => (
-      <div className="flex items-center gap-3">
-        {/* Ícones com cores vivas por padrão e inversão no hover via CSS */}
-        <button onClick={() => { setUsuarioEditandoId(u.id); setEditarModalOpen(true); }} className="action-icon-edit" title="Editar"><Edit3 size={14} /></button>
-        <button onClick={() => { setUsuarioEditandoId(u.id); setUsuarioNome(u.nome || u.email); setTrocarSenhaModalOpen(true); }} className="action-icon-edit text-yellow-500" title="Trocar Senha"><Key size={14} /></button>
+    { header: 'Ações', accessor: 'actions', className: 'text-center w-[120px]', render: (u: Usuario) => (
+      <div className="flex items-center justify-center gap-2">
+        <button onClick={() => { setUsuarioEditandoId(u.id); setEditarModalOpen(true); }} className="action-icon-edit" title="Editar"><Edit3 size={15} /></button>
+        <button onClick={() => { setUsuarioEditandoId(u.id); setUsuarioNome(u.nome || u.email); setTrocarSenhaModalOpen(true); }} className="action-icon-edit text-yellow-500" title="Trocar Senha"><Key size={15} /></button>
         <button onClick={() => handleToggleBlock(u)} className={u.ativo !== false ? 'action-icon-warning' : 'action-icon-success'} title={u.ativo !== false ? 'Bloquear' : 'Ativar'}>
-          {u.ativo !== false ? <Lock size={14} /> : <CheckCircle size={14} />}
+          {u.ativo !== false ? <Lock size={15} /> : <CheckCircle size={15} />}
         </button>
       </div>
     )},

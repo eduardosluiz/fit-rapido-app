@@ -61,3 +61,39 @@
 .data-table .badge-slim {
   @apply px-2 py-0.5 rounded-md text-[9px] font-normal uppercase tracking-widest;
 }
+
+/* Responsividade e visibilidade Mobile para as Tabelas */
+@media (max-width: 768px) {
+  /* Melhorar a UX nas células */
+  .data-table th, .data-table td {
+    padding: 1rem 0.75rem;
+  }
+  
+  /* Garantir que a última coluna (Ações) sempre fique visível */
+  .data-table th:last-child,
+  .data-table td:last-child {
+    position: sticky;
+    right: 0;
+    background-color: #ffffff;
+    z-index: 10;
+    box-shadow: -4px 0 8px rgba(0,0,0,0.05);
+  }
+
+  .dark .data-table th:last-child,
+  .dark .data-table td:last-child,
+  .dark-theme .data-table th:last-child,
+  .dark-theme .data-table td:last-child {
+    background-color: #111111;
+    box-shadow: -4px 0 8px rgba(0,0,0,0.3);
+  }
+  
+  /* Ajustar o fundo da coluna sticky no hover da linha */
+  .data-table tbody tr:hover td:last-child {
+    background-color: #f3f4f6; /* cor similar ao bg-gray-100/40 */
+  }
+  
+  .dark-theme .data-table tbody tr:hover td:last-child,
+  .dark .data-table tbody tr:hover td:last-child {
+    background-color: #1a1a1a;
+  }
+}

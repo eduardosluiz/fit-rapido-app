@@ -4,6 +4,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { api } from '@/lib/api';
 import { useAuth } from '@/lib/useAuth';
 import { getMediaUrl } from '@/lib/media';
+import { uploadVideo } from '@/lib/upload';
 import { Search, ChevronDown, Trash2, Play, Edit3, AlertTriangle, X, Upload, FolderPlus } from 'lucide-react';
 import { useConfirm } from '@/contexts/ConfirmContext';
 import { toast } from 'react-hot-toast';
@@ -170,26 +171,12 @@ export default function BibliotecaVideosPage() {
     setIsUploading(true);
     const toastId = toast.loading(`Sincronizando mídias...`);
     try {
-      const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
-      
       for (const item of uploadItems) {
-        const formData = new FormData();
-        formData.append('file', item.file);
+        const uploadResponse = await uploadVideo(item.file);
         
-        const token = localStorage.getItem('auth_token');
-        const uploadRes = await fetch(`${API_URL}/upload/video`, {
-          method: 'POST',
-          headers: { 'Authorization': `Bearer ${token}` },
-          body: formData
-        });
-        
-        const uploadData = await uploadRes.json();
-        
-        if (!uploadRes.ok) throw new Error(uploadData.message || 'Erro no upload');
-
         await api.createExercicioBiblioteca({
           nome: item.file.name.split('.')[0],
-          video_url: uploadData.url.startsWith('http') ? uploadData.url : `${API_URL}${uploadData.url}`,
+          video_url: uploadResponse.url,
           categoria: item.categorias.join(', '),
           exibir_mobile: item.exibir_mobile
         });

@@ -13,7 +13,7 @@ export default function AdminLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isDarkTheme, setIsDarkTheme] = useState(false);
   const { user, logout } = useAuth();
   const pathname = usePathname();
@@ -189,6 +189,23 @@ export default function AdminLayout({
       <main className="admin-main">
         {children}
       </main>
+
+      {/* Bottom Navigation Menu - Mobile Only */}
+      <div className="admin-bottom-nav md:hidden">
+        {visibleNavItems.map((item) => {
+          const isActive = pathname === item.href;
+          return (
+            <Link 
+              key={item.href} 
+              href={item.href}
+              className={`admin-bottom-nav-item ${isActive ? 'active' : ''}`}
+            >
+              <i className={`bx ${item.icon}`}></i>
+              <span>{item.label}</span>
+            </Link>
+          );
+        })}
+      </div>
     </div>
     </ConfirmProvider>
   );

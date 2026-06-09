@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { api } from '@/lib/api';
 import { useAuth } from '@/lib/useAuth';
 import { DataTable } from '@/components/admin/DataTable';
@@ -41,11 +41,8 @@ export default function IngredientesPage() {
 
   const confirm = useConfirm();
 
-  useEffect(() => {
-    if (isAuthenticated) loadIngredientes();
-  }, [isAuthenticated]);
 
-  const loadIngredientes = async () => {
+  const loadIngredientes = useCallback(async () => {
     try {
       setLoading(true);
       const data = await api.getIngredientes();
@@ -63,7 +60,11 @@ export default function IngredientesPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    if (isAuthenticated) loadIngredientes();
+  }, [isAuthenticated, loadIngredientes]);
 
   useEffect(() => {
     const filtered = ingredientes.filter(i => 
@@ -119,11 +120,11 @@ export default function IngredientesPage() {
     { header: 'Carb.', accessor: 'carboidratos', render: (ing: Ingrediente) => <div>{ing.carboidratos}g</div> },
     { header: 'Gord.', accessor: 'gorduras', render: (ing: Ingrediente) => <div>{ing.gorduras}g</div> },
     { header: 'Status', accessor: 'ativo', render: (ing: Ingrediente) => <span className={`badge-slim ${ing.ativo ? 'text-emerald-600' : 'text-gray-300'}`}>{ing.ativo ? 'Ativo' : 'Off'}</span> },
-    { header: 'Ações', accessor: 'actions', render: (ing: Ingrediente) => (
-      <div className="flex items-center gap-3">
+    { header: 'Ações', accessor: 'actions', className: 'text-center w-[120px]', render: (ing: Ingrediente) => (
+      <div className="flex items-center justify-center gap-2">
         {/* Ícones com cores vivas por padrão */}
-        <button onClick={() => handleOpenDialog(ing)} className="action-icon-edit"><Edit3 size={14} /></button>
-        <button onClick={async () => { if(await confirm('Excluir?')){ await api.deleteIngrediente(ing.id); loadIngredientes(); toast.success('Removido'); } }} className="action-icon-delete"><Trash2 size={14} /></button>
+        <button onClick={() => handleOpenDialog(ing)} className="action-icon-edit"><Edit3 size={15} /></button>
+        <button onClick={async () => { if(await confirm('Excluir?')){ await api.deleteIngrediente(ing.id); loadIngredientes(); toast.success('Removido'); } }} className="action-icon-delete"><Trash2 size={15} /></button>
       </div>
     )},
   ];

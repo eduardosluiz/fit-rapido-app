@@ -26,6 +26,10 @@ Este arquivo contém as diretrizes de desenvolvimento e decisões de design toma
 - **Ambiente da API:** A API (backend) já roda online em produção. Para testes locais de front-end ou mobile, conecte-se diretamente à API em produção, a não ser que o desenvolvimento exija alterações exclusivas no servidor.
 
 ## Roadmap de Próximas Melhorias
+- **Otimização de Performance (Prioridade):**
+  - Implementar paginação real no Back-end (limitar retorno de dados).
+  - Otimizar carregamento e tamanho de imagens (CDN/Redimensionamento).
+  - Adicionar estratégias de Cache para dados populares.
 - **UI Categorias:** Tornar botões de categorias mais visíveis com efeito 3D/relevo.
 - **Layout de Cards:** Centralizar e ajustar o redimensionamento das imagens de capa das receitas para melhor exibição.
 - **Filtros:** Corrigir bug onde o filtro de "Receitas de 10 minutos" não respeita outros filtros de categoria/refeição selecionados.
@@ -34,4 +38,4 @@ Este arquivo contém as diretrizes de desenvolvimento e decisões de design toma
 - **A estética Geral:** Adicionar mais elementos visuais e imagens de apoio para tornar o aplicativo mais colorido e vibrante.
 
 ---
-**Última Atualização:** 20/03/2026 - Correção da navegação de abas (reset stack), atualização dos planos de assinatura e definição do roadmap de melhorias.
+**Última Atualização:** 03/06/2026 - Padronização dos modais de confirmação no Admin, ajustes no banner do App Mobile, criação da lista e busca paginada em Receitas Populares e definição de metas de otimização de performance no roadmap.
