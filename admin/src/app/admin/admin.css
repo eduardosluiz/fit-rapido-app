@@ -1023,10 +1023,12 @@
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   display: flex;
   overflow-x: auto;
-  z-index: 900;
+  z-index: 40;
   padding: 0.5rem;
   scrollbar-width: none; /* Hide scrollbar for Firefox */
   padding-bottom: env(safe-area-inset-bottom, 0.5rem);
+  transform: translateZ(0); /* Forçar hardware acceleration para melhorar a lentidão no mobile */
+  will-change: transform;
 }
 
 .admin-bottom-nav::-webkit-scrollbar {
