@@ -41,8 +41,8 @@ export function ImageCropper({ image, onCropComplete, onCancel, aspect = 4 / 3 }
   };
 
   return (
-    <div className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-black/90 p-4">
-      <div className="relative w-full max-w-4xl h-[70vh] bg-[#111] rounded-xl overflow-hidden border border-[#333]">
+    <div className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-black/95 p-4 pb-12 sm:pb-4">
+      <div className="relative w-full max-w-4xl h-[55vh] md:h-[70vh] bg-[#111] rounded-xl overflow-hidden border border-[#333]">
         <Cropper
           image={image}
           crop={crop}
@@ -54,7 +54,7 @@ export function ImageCropper({ image, onCropComplete, onCancel, aspect = 4 / 3 }
         />
       </div>
       
-      <div className="mt-8 flex flex-col items-center gap-6 w-full max-w-xl">
+      <div className="mt-6 flex flex-col items-center gap-6 w-full max-w-xl">
         <div className="w-full space-y-2">
           <div className="flex justify-between text-[10px] font-bold uppercase tracking-widest text-gray-400">
             <span>Zoom</span>
@@ -68,23 +68,23 @@ export function ImageCropper({ image, onCropComplete, onCancel, aspect = 4 / 3 }
             step={0.1}
             aria-labelledby="Zoom"
             onChange={(e) => setZoom(Number(e.target.value))}
-            className="w-full h-1.5 bg-gray-800 rounded-lg appearance-none cursor-pointer accent-[#c8921a]"
+            className="w-full h-1.5 bg-gray-800 rounded-lg appearance-none cursor-pointer accent-blue-500"
           />
         </div>
 
-        <div className="flex gap-4">
+        <div className="flex flex-col sm:flex-row w-full gap-3 sm:gap-4 justify-center">
           <Button
             type="button"
             variant="outline"
             onClick={onCancel}
-            className="px-8 py-2 rounded-md border border-gray-600 text-gray-400 text-[10px] font-bold uppercase tracking-widest hover:bg-gray-800 transition-all"
+            className="w-full sm:w-auto px-8 py-3 rounded-md border-0 bg-red-900/50 text-red-200 text-[11px] font-bold uppercase tracking-widest hover:bg-red-800/60 transition-all"
           >
             Cancelar
           </Button>
           <Button
             type="button"
             onClick={handleCrop}
-            className="px-12 py-2 rounded-md bg-[#c8921a] text-[#2d2106] text-[10px] font-bold uppercase tracking-widest shadow-lg hover:shadow-xl transition-all"
+            className="w-full sm:w-auto px-12 py-3 rounded-md bg-blue-600 text-white text-[11px] font-bold uppercase tracking-widest shadow-lg hover:bg-blue-700 hover:shadow-xl transition-all"
           >
             Confirmar Recorte
           </Button>
