@@ -15,4 +15,5 @@ export { FileUpload } from './FileUpload';
 export { CategoriasModal } from './CategoriasModal';
 export { ModalidadesModal } from './ModalidadesModal';
 export { ExerciciosModal } from './ExerciciosModal';
+export { MediaSelectorPopover } from './MediaSelectorPopover';
 

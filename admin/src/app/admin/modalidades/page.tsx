@@ -5,8 +5,8 @@ import { api } from '@/lib/api';
 import { useAuth } from '@/lib/useAuth';
 import { Switch } from '@/components/ui/switch';
 import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover';
+import { MediaSelectorPopover } from '@/components/admin';
 import { FileUpload } from '@/components/admin/FileUpload';
-import { BaseModal } from '@/components/admin/BaseModal';
 import { toast } from 'react-hot-toast';
 import { 
   Plus, 
@@ -672,25 +672,14 @@ export default function ModalidadesPage() {
                                       </div>
                                       <div className="flex items-center gap-2 shrink-0">
                                         <FileUpload type="video" value={video.video_url} onChange={(url) => handleVideoChange(video.originalIndex, 'video_url', url)} hideUrlInput compact />
-                                        <Popover>
-                                          <PopoverTrigger asChild>
-                                            <button type="button" className="w-10 h-[42px] rounded-md border border-[#c8921a]/30 bg-white dark:bg-[#111] text-[#c8921a] flex items-center justify-center hover:bg-[#c8921a] hover:text-white transition-all"><LayoutGrid size={18} /></button>
-                                          </PopoverTrigger>
-                                          <PopoverContent className="w-[350px] p-0 bg-white dark:bg-[#0a0a0a] border border-gray-200 dark:border-[#333] shadow-2xl z-[200]">
-                                            <div className="p-4 border-b border-gray-100 dark:border-[#1a1a1a] space-y-3">
-                                              <p className="text-[9px] font-bold uppercase tracking-widest text-[#c8921a]">Mídias Privadas</p>
-                                              <input type="text" placeholder="Filtrar..." onChange={(e) => setSearchTerm(e.target.value.toLowerCase())} className="w-full h-9 px-3 bg-gray-50 dark:bg-[#111] border border-gray-300 dark:border-[#333] rounded text-xs focus:border-[#c8921a] outline-none" autoFocus />
-                                            </div>
-                                            <div className="max-h-[320px] overflow-y-auto custom-scrollbar p-2 space-y-1">
-                                              {bibliotecaExercicios.filter(ex => ex.nome.toLowerCase().includes(searchTerm.toLowerCase())).map((libEx: any) => (
-                                                <button key={libEx.id} type="button" className="w-full p-2.5 flex items-center gap-4 hover:bg-gray-50 dark:hover:bg-[#111] rounded-lg transition-all text-left" onClick={() => handleVideoChange(video.originalIndex, 'video_url', libEx.video_url)}>
-                                                  <div className="w-12 h-12 rounded-md bg-black overflow-hidden border border-gray-200 flex-shrink-0 relative"><video src={`${libEx.video_url}#t=0.5`} className="w-full h-full object-cover opacity-60" muted preload="none" /><Play className="absolute inset-0 m-auto text-white opacity-40" size={12} /></div>
-                                                  <div className="flex-1 min-w-0"><p className="text-[11px] font-bold text-gray-700 dark:text-gray-200 uppercase truncate mb-1">{libEx.nome}</p><p className="text-[9px] text-gray-400 uppercase">{libEx.categoria || 'Geral'}</p></div>
-                                                </button>
-                                              ))}
-                                            </div>
-                                          </PopoverContent>
-                                        </Popover>
+                                        <MediaSelectorPopover
+                                          bibliotecaExercicios={bibliotecaExercicios}
+                                          selectedValue={video.video_url}
+                                          compareKey="video_url"
+                                          onSelect={(libEx) => handleVideoChange(video.originalIndex, 'video_url', libEx.video_url)}
+                                        >
+                                          <button type="button" className="w-10 h-[42px] rounded-md border border-[#c8921a]/30 bg-white dark:bg-[#111] text-[#c8921a] flex items-center justify-center hover:bg-[#c8921a] hover:text-white transition-all"><LayoutGrid size={18} /></button>
+                                        </MediaSelectorPopover>
                                       </div>
                                     </div>
                                   </div>
@@ -703,25 +692,14 @@ export default function ModalidadesPage() {
                                       </div>
                                       <div className="flex items-center gap-2 shrink-0">
                                         <FileUpload type="video" value={video.video_explicativo_url} onChange={(url) => handleVideoChange(video.originalIndex, 'video_explicativo_url', url)} hideUrlInput compact />
-                                        <Popover>
-                                          <PopoverTrigger asChild>
-                                            <button type="button" className="w-10 h-[42px] rounded-md border border-[#c8921a]/30 bg-white dark:bg-[#111] text-[#c8921a] flex items-center justify-center hover:bg-[#c8921a] hover:text-white transition-all"><LayoutGrid size={18} /></button>
-                                          </PopoverTrigger>
-                                          <PopoverContent className="w-[350px] p-0 bg-white dark:bg-[#0a0a0a] border border-gray-200 dark:border-[#333] shadow-2xl z-[200]">
-                                            <div className="p-4 border-b border-gray-100 dark:border-[#1a1a1a] space-y-3">
-                                              <p className="text-[9px] font-bold uppercase tracking-widest text-[#c8921a]">Mídias Privadas</p>
-                                              <input type="text" placeholder="Filtrar..." onChange={(e) => setSearchTerm(e.target.value.toLowerCase())} className="w-full h-9 px-3 bg-gray-50 dark:bg-[#111] border border-gray-300 dark:border-[#333] rounded text-xs focus:border-[#c8921a] outline-none" autoFocus />
-                                            </div>
-                                            <div className="max-h-[320px] overflow-y-auto custom-scrollbar p-2 space-y-1">
-                                              {bibliotecaExercicios.filter(ex => ex.nome.toLowerCase().includes(searchTerm.toLowerCase())).map((libEx: any) => (
-                                                <button key={libEx.id} type="button" className="w-full p-2.5 flex items-center gap-4 hover:bg-gray-50 dark:hover:bg-[#111] rounded-lg transition-all text-left" onClick={() => handleVideoChange(video.originalIndex, 'video_explicativo_url', libEx.video_url)}>
-                                                  <div className="w-12 h-12 rounded-md bg-black overflow-hidden border border-gray-200 flex-shrink-0 relative"><video src={`${libEx.video_url}#t=0.5`} className="w-full h-full object-cover opacity-60" muted preload="none" /><Play className="absolute inset-0 m-auto text-white opacity-40" size={12} /></div>
-                                                  <div className="flex-1 min-w-0"><p className="text-[11px] font-bold text-gray-700 dark:text-gray-200 uppercase truncate mb-1">{libEx.nome}</p><p className="text-[9px] text-gray-400 uppercase">{libEx.categoria || 'Geral'}</p></div>
-                                                </button>
-                                              ))}
-                                            </div>
-                                          </PopoverContent>
-                                        </Popover>
+                                        <MediaSelectorPopover
+                                          bibliotecaExercicios={bibliotecaExercicios}
+                                          selectedValue={video.video_explicativo_url}
+                                          compareKey="video_url"
+                                          onSelect={(libEx) => handleVideoChange(video.originalIndex, 'video_explicativo_url', libEx.video_url)}
+                                        >
+                                          <button type="button" className="w-10 h-[42px] rounded-md border border-[#c8921a]/30 bg-white dark:bg-[#111] text-[#c8921a] flex items-center justify-center hover:bg-[#c8921a] hover:text-white transition-all"><LayoutGrid size={18} /></button>
+                                        </MediaSelectorPopover>
                                       </div>
                                     </div>
                                   </div>
@@ -815,57 +793,24 @@ export default function ModalidadesPage() {
                                           <div className="space-y-6">
                                             <div className="space-y-2">
                                               <label className="text-[9px] font-bold uppercase tracking-[0.2em] text-gray-500 ml-0.5">Vídeo de Execução (Substituto)</label>
-                                              <Popover>
-                                                <PopoverTrigger asChild>
-                                                  <button type="button" className="w-full h-[46px] px-4 rounded-md border border-gray-400 dark:border-[#333] bg-gray-50 dark:bg-[#111] flex items-center justify-between hover:border-[#c8921a] transition-all group shadow-inner">
-                                                    <span className="text-xs text-gray-600 dark:text-gray-300 truncate font-bold">
-                                                      {selectedEx ? selectedEx.nome : 'Selecionar da biblioteca...'}
-                                                    </span>
-                                                    <div className="flex items-center gap-3">
-                                                      {selectedEx && <div className="w-6 h-6 rounded bg-black overflow-hidden border border-gray-300"><video src={`${selectedEx.video_url}#t=0.5`} className="w-full h-full object-cover" muted /></div>}
-                                                      <LayoutGrid size={16} className="text-gray-400 group-hover:text-[#c8921a]" />
-                                                    </div>
-                                                  </button>
-                                                </PopoverTrigger>
-                                                <PopoverContent className="w-[300px] p-0 bg-white dark:bg-[#0a0a0a] border border-gray-200 dark:border-[#333] shadow-2xl z-[200]">
-                                                  <div className="p-3 border-b border-gray-100 dark:border-[#1a1a1a]">
-                                                    <input 
-                                                      type="text" 
-                                                      placeholder="Filtrar exercícios..." 
-                                                      onChange={(e) => setSearchTerm(e.target.value.toLowerCase())} 
-                                                      className="w-full h-8 px-3 bg-gray-50 dark:bg-[#111] border border-gray-300 dark:border-[#333] rounded text-[10px] focus:border-[#c8921a] outline-none" 
-                                                      autoFocus 
-                                                    />
+                                              <MediaSelectorPopover
+                                                title="Mídias Privadas"
+                                                bibliotecaExercicios={bibliotecaExercicios}
+                                                selectedValue={selectedId}
+                                                compareKey="id"
+                                                onSelect={(libEx) => handleVideoChange(video.originalIndex, substitutoIdField, libEx.id)}
+                                                onClear={() => handleVideoChange(video.originalIndex, substitutoIdField, '')}
+                                              >
+                                                <button type="button" className="w-full h-[46px] px-4 rounded-md border border-gray-400 dark:border-[#333] bg-gray-50 dark:bg-[#111] flex items-center justify-between hover:border-[#c8921a] transition-all group shadow-inner">
+                                                  <span className="text-xs text-gray-600 dark:text-gray-300 truncate font-bold">
+                                                    {selectedEx ? selectedEx.nome : 'Selecionar da biblioteca...'}
+                                                  </span>
+                                                  <div className="flex items-center gap-3">
+                                                    {selectedEx && <div className="w-6 h-6 rounded bg-black overflow-hidden border border-gray-300"><video src={`${selectedEx.video_url}#t=0.5`} className="w-full h-full object-cover" muted /></div>}
+                                                    <LayoutGrid size={16} className="text-gray-400 group-hover:text-[#c8921a]" />
                                                   </div>
-                                                  <div className="max-h-[250px] overflow-y-auto custom-scrollbar p-1">
-                                                    <button 
-                                                      type="button" 
-                                                      className="w-full p-2 text-left text-[10px] uppercase font-bold text-red-500 hover:bg-red-50 dark:hover:bg-red-950/20 rounded mb-1"
-                                                      onClick={() => handleVideoChange(video.originalIndex, substitutoIdField, '')}
-                                                    >
-                                                      Limpar Seleção
-                                                    </button>
-                                                    {bibliotecaExercicios
-                                                      .filter(ex => ex.nome.toLowerCase().includes(searchTerm.toLowerCase()))
-                                                      .map((libEx: any) => (
-                                                        <button 
-                                                          key={libEx.id} 
-                                                          type="button" 
-                                                          className={`w-full p-2.5 flex items-center gap-4 hover:bg-gray-50 dark:hover:bg-[#111] rounded transition-all text-left ${selectedId === libEx.id ? 'bg-[#c8921a]/10 border-l-2 border-[#c8921a]' : ''}`}
-                                                          onClick={() => handleVideoChange(video.originalIndex, substitutoIdField, libEx.id)}
-                                                        >
-                                                          <div className="w-10 h-10 rounded bg-black overflow-hidden flex-shrink-0 relative border border-gray-200">
-                                                            <video src={`${libEx.video_url}#t=0.5`} className="w-full h-full object-cover opacity-60" muted preload="none" />
-                                                          </div>
-                                                          <div className="min-w-0">
-                                                            <p className="text-[10px] font-bold text-gray-700 dark:text-gray-200 uppercase truncate">{libEx.nome}</p>
-                                                            <p className="text-[8px] text-gray-400 uppercase tracking-tighter">{libEx.categoria || 'Geral'}</p>
-                                                          </div>
-                                                        </button>
-                                                      ))}
-                                                  </div>
-                                                </PopoverContent>
-                                              </Popover>
+                                                </button>
+                                              </MediaSelectorPopover>
                                             </div>
 
                                             <div className="space-y-2">
@@ -876,24 +821,14 @@ export default function ModalidadesPage() {
                                                 </div>
                                                 <div className="flex items-center gap-2 shrink-0">
                                                   <FileUpload type="video" value={info.video_explicativo_url || ''} onChange={(url) => handleSubstitutoInfoChange(video.originalIndex, num as 1 | 2, 'video_explicativo_url', url)} hideUrlInput compact />
-                                                  <Popover>
-                                                    <PopoverTrigger asChild>
-                                                      <button type="button" className="w-[46px] h-[46px] rounded-md border border-[#c8921a]/30 bg-white dark:bg-[#111] text-[#c8921a] flex items-center justify-center hover:bg-[#c8921a] hover:text-white transition-all"><LayoutGrid size={18} /></button>
-                                                    </PopoverTrigger>
-                                                    <PopoverContent className="w-[300px] p-0 bg-white dark:bg-[#0a0a0a] border border-gray-200 dark:border-[#333] shadow-2xl z-[200]">
-                                                      <div className="p-3 border-b border-gray-100 dark:border-[#1a1a1a]">
-                                                        <input type="text" placeholder="Filtrar exercícios..." onChange={(e) => setSearchTerm(e.target.value.toLowerCase())} className="w-full h-8 px-3 bg-gray-50 dark:bg-[#111] border border-gray-300 dark:border-[#333] rounded text-[10px] focus:border-[#c8921a] outline-none" autoFocus />
-                                                      </div>
-                                                      <div className="max-h-[250px] overflow-y-auto custom-scrollbar p-1">
-                                                        {bibliotecaExercicios.filter(ex => ex.nome.toLowerCase().includes(searchTerm.toLowerCase())).map((libEx: any) => (
-                                                          <button key={libEx.id} type="button" className={`w-full p-2.5 flex items-center gap-4 hover:bg-gray-50 dark:hover:bg-[#111] rounded transition-all text-left ${info.video_explicativo_url === libEx.video_url ? 'bg-[#c8921a]/10 border-l-2 border-[#c8921a]' : ''}`} onClick={() => handleSubstitutoInfoChange(video.originalIndex, num as 1 | 2, 'video_explicativo_url', libEx.video_url)}>
-                                                            <div className="w-10 h-10 rounded bg-black overflow-hidden flex-shrink-0 relative border border-gray-200"><video src={`${libEx.video_url}#t=0.5`} className="w-full h-full object-cover opacity-60" muted preload="none" /></div>
-                                                            <div className="min-w-0"><p className="text-[10px] font-bold text-gray-700 dark:text-gray-200 uppercase truncate">{libEx.nome}</p><p className="text-[8px] text-gray-400 uppercase tracking-tighter">{libEx.categoria || 'Geral'}</p></div>
-                                                          </button>
-                                                        ))}
-                                                      </div>
-                                                    </PopoverContent>
-                                                  </Popover>
+                                                  <MediaSelectorPopover
+                                                    bibliotecaExercicios={bibliotecaExercicios}
+                                                    selectedValue={info.video_explicativo_url}
+                                                    compareKey="video_url"
+                                                    onSelect={(libEx) => handleSubstitutoInfoChange(video.originalIndex, num as 1 | 2, 'video_explicativo_url', libEx.video_url)}
+                                                  >
+                                                    <button type="button" className="w-[46px] h-[46px] rounded-md border border-[#c8921a]/30 bg-white dark:bg-[#111] text-[#c8921a] flex items-center justify-center hover:bg-[#c8921a] hover:text-white transition-all"><LayoutGrid size={18} /></button>
+                                                  </MediaSelectorPopover>
                                                 </div>
                                               </div>
                                             </div>

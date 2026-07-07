@@ -8,6 +8,7 @@ import { useAuth } from '@/lib/useAuth';
 import { Switch } from '@/components/ui/switch';
 import { FileUpload } from '@/components/admin/FileUpload';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { MediaSelectorPopover } from '@/components/admin';
 import { Checkbox } from '@/components/ui/checkbox';
 import { ChevronsUpDown, Trash2, Dumbbell, PlusCircle } from 'lucide-react';
 import { toast } from 'react-hot-toast';
@@ -394,45 +395,21 @@ function NovoTreinoForm() {
                                     onMouseOut={(e) => { e.currentTarget.pause(); e.currentTarget.currentTime = 0.5; }}
                                   />
                                   <div className="absolute inset-0 bg-black/40 opacity-0 group-hover/media:opacity-100 transition-opacity flex items-center justify-center gap-2">
-                                    <Popover>
-                                      <PopoverTrigger asChild>
-                                        <button type="button" className="w-8 h-8 rounded bg-[#c8921a] flex items-center justify-center text-white transition-all shadow-lg">
-                                          <i className="bx bx-library text-lg"></i>
-                                        </button>
-                                      </PopoverTrigger>
-                                      <PopoverContent className="w-[350px] p-0 bg-white dark:bg-[#0a0a0a] border border-gray-200 dark:border-[#333] shadow-2xl z-[200]">
-                                        <div className="p-3 border-b border-gray-100 dark:border-[#1a1a1a] space-y-3">
-                                          <p className="text-[9px] font-bold uppercase tracking-widest text-gray-400">Selecionar da Biblioteca</p>
-                                          <input 
-                                            type="text"
-                                            placeholder="Buscar..."
-                                            value={searchTerm}
-                                            onChange={(e) => setSearchTerm(e.target.value)}
-                                            className="w-full h-8 px-3 bg-gray-50 dark:bg-[#111] border border-gray-200 dark:border-[#333] rounded text-xs focus:border-[#c8921a] outline-none"
-                                            autoFocus
-                                          />
-                                        </div>
-                                        <div className="max-h-[300px] overflow-y-auto custom-scrollbar">
-                                          {filteredBiblioteca.map((libEx: any) => (
-                                            <button
-                                              key={libEx.id}
-                                              type="button"
-                                              className="w-full p-2 flex items-center gap-3 hover:bg-gray-50 dark:hover:bg-[#111] transition-all text-left border-b border-gray-50 dark:border-[#0f0f0f] last:border-0"
-                                              onClick={() => {
-                                                const novos = [...formData.exercicios_detalhados];
-                                                novos[index].imagem_url = libEx.video_url || libEx.imagem_url || '';
-                                                setFormData({ ...formData, exercicios_detalhados: novos });
-                                              }}
-                                            >
-                                              <div className="w-10 h-10 rounded bg-black overflow-hidden border border-gray-200 dark:border-[#333] flex-shrink-0">
-                                                <video src={`${libEx.video_url}#t=0.5`} className="w-full h-full object-cover" muted preload="none" />
-                                              </div>
-                                              <p className="text-[10px] font-bold text-gray-700 dark:text-gray-300 uppercase truncate">{libEx.nome}</p>
-                                            </button>
-                                          ))}
-                                        </div>
-                                      </PopoverContent>
-                                    </Popover>
+                                    <MediaSelectorPopover
+                                      title="Selecionar da Biblioteca"
+                                      bibliotecaExercicios={bibliotecaExercicios}
+                                      selectedValue={ex.imagem_url}
+                                      compareKey="video_url"
+                                      onSelect={(libEx) => {
+                                        const novos = [...formData.exercicios_detalhados];
+                                        novos[index].imagem_url = libEx.video_url || libEx.imagem_url || '';
+                                        setFormData({ ...formData, exercicios_detalhados: novos });
+                                      }}
+                                    >
+                                      <button type="button" className="w-8 h-8 rounded bg-[#c8921a] flex items-center justify-center text-white transition-all shadow-lg">
+                                        <i className="bx bx-library text-lg"></i>
+                                      </button>
+                                    </MediaSelectorPopover>
                                     <button 
                                       type="button"
                                       onClick={() => {
@@ -448,48 +425,24 @@ function NovoTreinoForm() {
                                 </>
                               ) : (
                                 <div className="w-full h-full flex items-center justify-center">
-                                  <Popover>
-                                    <PopoverTrigger asChild>
-                                      <button type="button" className="flex flex-col items-center justify-center gap-1 group/btn">
-                                        <div className="w-7 h-7 rounded-full bg-[#c8921a]/10 group-hover/btn:bg-[#c8921a]/20 flex items-center justify-center transition-all">
-                                          <i className="bx bx-library text-[#c8921a] text-base"></i>
-                                        </div>
-                                        <p className="text-[6px] font-bold uppercase text-gray-500 group-hover/btn:text-[#c8921a]">Escolher</p>
-                                      </button>
-                                    </PopoverTrigger>
-                                    <PopoverContent className="w-[350px] p-0 bg-white dark:bg-[#0a0a0a] border border-gray-200 dark:border-[#333] shadow-2xl z-[200]">
-                                      <div className="p-3 border-b border-gray-100 dark:border-[#1a1a1a] space-y-3">
-                                        <p className="text-[9px] font-bold uppercase tracking-widest text-gray-400">Selecionar da Biblioteca</p>
-                                        <input 
-                                          type="text"
-                                          placeholder="Buscar..."
-                                          value={searchTerm}
-                                          onChange={(e) => setSearchTerm(e.target.value)}
-                                          className="w-full h-8 px-3 bg-gray-50 dark:bg-[#111] border border-gray-200 dark:border-[#333] rounded text-xs focus:border-[#c8921a] outline-none"
-                                          autoFocus
-                                        />
+                                  <MediaSelectorPopover
+                                    title="Selecionar da Biblioteca"
+                                    bibliotecaExercicios={bibliotecaExercicios}
+                                    selectedValue={ex.imagem_url}
+                                    compareKey="video_url"
+                                    onSelect={(libEx) => {
+                                      const novos = [...formData.exercicios_detalhados];
+                                      novos[index].imagem_url = libEx.video_url || libEx.imagem_url || '';
+                                      setFormData({ ...formData, exercicios_detalhados: novos });
+                                    }}
+                                  >
+                                    <button type="button" className="flex flex-col items-center justify-center gap-1 group/btn">
+                                      <div className="w-7 h-7 rounded-full bg-[#c8921a]/10 group-hover/btn:bg-[#c8921a]/20 flex items-center justify-center transition-all">
+                                        <i className="bx bx-library text-[#c8921a] text-base"></i>
                                       </div>
-                                      <div className="max-h-[300px] overflow-y-auto custom-scrollbar">
-                                        {filteredBiblioteca.map((libEx: any) => (
-                                          <button
-                                            key={libEx.id}
-                                            type="button"
-                                            className="w-full p-2 flex items-center gap-3 hover:bg-gray-50 dark:hover:bg-[#111] transition-all text-left border-b border-gray-50 dark:border-[#0f0f0f] last:border-0"
-                                            onClick={() => {
-                                              const novos = [...formData.exercicios_detalhados];
-                                              novos[index].imagem_url = libEx.video_url || libEx.imagem_url || '';
-                                              setFormData({ ...formData, exercicios_detalhados: novos });
-                                            }}
-                                          >
-                                            <div className="w-10 h-10 rounded bg-black overflow-hidden border border-gray-200 dark:border-[#333] flex-shrink-0">
-                                              <video src={`${libEx.video_url}#t=0.5`} className="w-full h-full object-cover" muted preload="none" />
-                                            </div>
-                                            <p className="text-[10px] font-bold text-gray-700 dark:text-gray-300 uppercase truncate">{libEx.nome}</p>
-                                          </button>
-                                        ))}
-                                      </div>
-                                    </PopoverContent>
-                                  </Popover>
+                                      <p className="text-[6px] font-bold uppercase text-gray-500 group-hover/btn:text-[#c8921a]">Escolher</p>
+                                    </button>
+                                  </MediaSelectorPopover>
                                 </div>
                               )}
                             </div>
@@ -513,45 +466,21 @@ function NovoTreinoForm() {
                                     onMouseOut={(e) => { e.currentTarget.pause(); e.currentTarget.currentTime = 0.5; }}
                                   />
                                   <div className="absolute inset-0 bg-black/40 opacity-0 group-hover/media:opacity-100 transition-opacity flex items-center justify-center gap-2">
-                                    <Popover>
-                                      <PopoverTrigger asChild>
-                                        <button type="button" className="w-8 h-8 rounded bg-[#c8921a] flex items-center justify-center text-white transition-all shadow-lg">
-                                          <i className="bx bx-library text-lg"></i>
-                                        </button>
-                                      </PopoverTrigger>
-                                      <PopoverContent className="w-[350px] p-0 bg-white dark:bg-[#0a0a0a] border border-gray-200 dark:border-[#333] shadow-2xl z-[200]">
-                                        <div className="p-3 border-b border-gray-100 dark:border-[#1a1a1a] space-y-3">
-                                          <p className="text-[9px] font-bold uppercase tracking-widest text-gray-400">Selecionar da Biblioteca</p>
-                                          <input 
-                                            type="text"
-                                            placeholder="Buscar..."
-                                            value={searchTerm}
-                                            onChange={(e) => setSearchTerm(e.target.value)}
-                                            className="w-full h-8 px-3 bg-gray-50 dark:bg-[#111] border border-gray-200 dark:border-[#333] rounded text-xs focus:border-[#c8921a] outline-none"
-                                            autoFocus
-                                          />
-                                        </div>
-                                        <div className="max-h-[300px] overflow-y-auto custom-scrollbar">
-                                          {filteredBiblioteca.map((libEx: any) => (
-                                            <button
-                                              key={libEx.id}
-                                              type="button"
-                                              className="w-full p-2 flex items-center gap-3 hover:bg-gray-50 dark:hover:bg-[#111] transition-all text-left border-b border-gray-50 dark:border-[#0f0f0f] last:border-0"
-                                              onClick={() => {
-                                                const novos = [...formData.exercicios_detalhados];
-                                                novos[index].video_url = libEx.video_url || '';
-                                                setFormData({ ...formData, exercicios_detalhados: novos });
-                                              }}
-                                            >
-                                              <div className="w-10 h-10 rounded bg-black overflow-hidden border border-gray-200 dark:border-[#333] flex-shrink-0">
-                                                <video src={`${libEx.video_url}#t=0.5`} className="w-full h-full object-cover" muted preload="none" />
-                                              </div>
-                                              <p className="text-[10px] font-bold text-gray-700 dark:text-gray-300 uppercase truncate">{libEx.nome}</p>
-                                            </button>
-                                          ))}
-                                        </div>
-                                      </PopoverContent>
-                                    </Popover>
+                                    <MediaSelectorPopover
+                                      title="Selecionar da Biblioteca"
+                                      bibliotecaExercicios={bibliotecaExercicios}
+                                      selectedValue={ex.video_url}
+                                      compareKey="video_url"
+                                      onSelect={(libEx) => {
+                                        const novos = [...formData.exercicios_detalhados];
+                                        novos[index].video_url = libEx.video_url || '';
+                                        setFormData({ ...formData, exercicios_detalhados: novos });
+                                      }}
+                                    >
+                                      <button type="button" className="w-8 h-8 rounded bg-[#c8921a] flex items-center justify-center text-white transition-all shadow-lg">
+                                        <i className="bx bx-library text-lg"></i>
+                                      </button>
+                                    </MediaSelectorPopover>
                                     <button 
                                       type="button"
                                       onClick={() => {
@@ -567,48 +496,24 @@ function NovoTreinoForm() {
                                 </>
                               ) : (
                                 <div className="w-full h-full flex items-center justify-center">
-                                  <Popover>
-                                    <PopoverTrigger asChild>
-                                      <button type="button" className="flex flex-col items-center justify-center gap-1 group/btn">
-                                        <div className="w-7 h-7 rounded-full bg-[#c8921a]/10 group-hover/btn:bg-[#c8921a]/20 flex items-center justify-center transition-all">
-                                          <i className="bx bx-library text-[#c8921a] text-base"></i>
-                                        </div>
-                                        <p className="text-[6px] font-bold uppercase text-gray-500 group-hover/btn:text-[#c8921a]">Escolher</p>
-                                      </button>
-                                    </PopoverTrigger>
-                                    <PopoverContent className="w-[350px] p-0 bg-white dark:bg-[#0a0a0a] border border-gray-200 dark:border-[#333] shadow-2xl z-[200]">
-                                      <div className="p-3 border-b border-gray-100 dark:border-[#1a1a1a] space-y-3">
-                                        <p className="text-[9px] font-bold uppercase tracking-widest text-gray-400">Selecionar da Biblioteca</p>
-                                        <input 
-                                          type="text"
-                                          placeholder="Buscar..."
-                                          value={searchTerm}
-                                          onChange={(e) => setSearchTerm(e.target.value)}
-                                          className="w-full h-8 px-3 bg-gray-50 dark:bg-[#111] border border-gray-200 dark:border-[#333] rounded text-xs focus:border-[#c8921a] outline-none"
-                                          autoFocus
-                                        />
+                                  <MediaSelectorPopover
+                                    title="Selecionar da Biblioteca"
+                                    bibliotecaExercicios={bibliotecaExercicios}
+                                    selectedValue={ex.video_url}
+                                    compareKey="video_url"
+                                    onSelect={(libEx) => {
+                                      const novos = [...formData.exercicios_detalhados];
+                                      novos[index].video_url = libEx.video_url || '';
+                                      setFormData({ ...formData, exercicios_detalhados: novos });
+                                    }}
+                                  >
+                                    <button type="button" className="flex flex-col items-center justify-center gap-1 group/btn">
+                                      <div className="w-7 h-7 rounded-full bg-[#c8921a]/10 group-hover/btn:bg-[#c8921a]/20 flex items-center justify-center transition-all">
+                                        <i className="bx bx-library text-[#c8921a] text-base"></i>
                                       </div>
-                                      <div className="max-h-[300px] overflow-y-auto custom-scrollbar">
-                                        {filteredBiblioteca.map((libEx: any) => (
-                                          <button
-                                            key={libEx.id}
-                                            type="button"
-                                            className="w-full p-2 flex items-center gap-3 hover:bg-gray-50 dark:hover:bg-[#111] transition-all text-left border-b border-gray-50 dark:border-[#0f0f0f] last:border-0"
-                                            onClick={() => {
-                                              const novos = [...formData.exercicios_detalhados];
-                                              novos[index].video_url = libEx.video_url || '';
-                                              setFormData({ ...formData, exercicios_detalhados: novos });
-                                            }}
-                                          >
-                                            <div className="w-10 h-10 rounded bg-black overflow-hidden border border-gray-200 dark:border-[#333] flex-shrink-0">
-                                              <video src={`${libEx.video_url}#t=0.5`} className="w-full h-full object-cover" muted preload="none" />
-                                            </div>
-                                            <p className="text-[10px] font-bold text-gray-700 dark:text-gray-300 uppercase truncate">{libEx.nome}</p>
-                                          </button>
-                                        ))}
-                                      </div>
-                                    </PopoverContent>
-                                  </Popover>
+                                      <p className="text-[6px] font-bold uppercase text-gray-500 group-hover/btn:text-[#c8921a]">Escolher</p>
+                                    </button>
+                                  </MediaSelectorPopover>
                                 </div>
                               )}
                             </div>
