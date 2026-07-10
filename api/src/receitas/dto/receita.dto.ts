@@ -31,7 +31,7 @@ export class CreateReceitaDto {
 
   @IsObject()
   @IsOptional()
-  substituicoes_ingredientes?: Record<string, string | string[]>;
+  substituicoes_ingredientes?: Record<string, any>;
 
   @IsArray()
   @IsString({ each: true })
@@ -188,7 +188,7 @@ export class UpdateReceitaDto {
 
   @IsObject()
   @IsOptional()
-  substituicoes_ingredientes?: Record<string, string | string[]>;
+  substituicoes_ingredientes?: Record<string, any>;
 
   @IsOptional()
   modo_preparo?: any[];

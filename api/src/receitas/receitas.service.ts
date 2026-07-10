@@ -13,6 +13,7 @@ import { CreateReceitaDto, UpdateReceitaDto } from './dto/receita.dto';
 import { NotificationsService } from '../notifications/notifications.service';
 import { User, SubscriptionTier, UserRole } from '../auth/entities/user.entity';
 import { hasActiveTrial } from '../common/helpers/subscription.helper';
+import { IAService } from '../ia/ia.service';
 
 @Injectable()
 export class ReceitasService {
@@ -23,6 +24,8 @@ export class ReceitasService {
     private categoriaRepository: Repository<CategoriaReceita>,
     @Inject(forwardRef(() => NotificationsService))
     private notificationsService: NotificationsService,
+    @Inject(forwardRef(() => IAService))
+    private iaService: IAService,
   ) {}
 
   async create(createReceitaDto: CreateReceitaDto): Promise<Receita> {
@@ -70,6 +73,21 @@ export class ReceitasService {
       if (receitaData[field] !== undefined && receitaData[field] !== null) {
         receitaData[field] = String(receitaData[field]);
       }
+    }
+
+    // Processar deltas de substituição com IA
+    if (receitaData.substituicoes_ingredientes && Array.isArray(receitaData.substituicoes_ingredientes) && receitaData.substituicoes_ingredientes.length > 0) {
+      const ingredientesArray = receitaData.ingredientes || [];
+      const deltas = await this.iaService.calcularDeltaSubstituicoes(ingredientesArray, receitaData.substituicoes_ingredientes);
+      
+      // Mesclar os deltas de volta para o array de substituições (que é salvo no jsonb)
+      receitaData.substituicoes_ingredientes = receitaData.substituicoes_ingredientes.map((sub: any) => {
+        const calculatedDelta = deltas[sub.ingrediente] || deltas[sub.substituto];
+        if (calculatedDelta && calculatedDelta.delta) {
+          return { ...sub, delta: calculatedDelta.delta };
+        }
+        return sub;
+      });
     }
 
     const receita = this.receitaRepository.create(receitaData as any);
@@ -358,6 +376,21 @@ export class ReceitasService {
       } catch (e) {
         // Se falhar o parse, mantém como está ou limpa
       }
+    }
+
+    // Processar deltas de substituição com IA
+    if (updateData.substituicoes_ingredientes && Array.isArray(updateData.substituicoes_ingredientes) && updateData.substituicoes_ingredientes.length > 0) {
+      // Se não enviou ingredientes na atualização, pegamos da base
+      const ingredientesArray = updateData.ingredientes || receita.ingredientes || [];
+      const deltas = await this.iaService.calcularDeltaSubstituicoes(ingredientesArray, updateData.substituicoes_ingredientes);
+      
+      updateData.substituicoes_ingredientes = updateData.substituicoes_ingredientes.map((sub: any) => {
+        const calculatedDelta = deltas[sub.ingrediente] || deltas[sub.substituto];
+        if (calculatedDelta && calculatedDelta.delta) {
+          return { ...sub, delta: calculatedDelta.delta };
+        }
+        return sub;
+      });
     }
 
     Object.assign(receita, updateData);

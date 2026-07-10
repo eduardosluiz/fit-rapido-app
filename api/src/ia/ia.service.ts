@@ -33,7 +33,7 @@ export class IAService {
 
     try {
       const response = await this.openai.chat.completions.create({
-        model: 'gpt-3.5-turbo', // ou gpt-4 se preferir
+        model: 'gpt-4o-mini',
         messages: [
           { role: 'system', content: 'Você é um assistente especializado em nutrição e culinária saudável.' },
           { role: 'user', content: prompt },
@@ -48,6 +48,52 @@ export class IAService {
     } catch (error) {
       console.error('Erro na OpenAI:', error);
       throw new Error('Não foi possível processar sua dúvida agora.');
+    }
+  }
+
+  async calcularDeltaSubstituicoes(ingredientes: string[], substituicoes: any[]) {
+    const prompt = `Você é um calculista nutricional. Dada uma lista de ingredientes e uma lista de substituições sugeridas, calcule a diferença (delta) aproximada de macronutrientes para cada substituição.
+A diferença deve ser o (Valor do Substituto) - (Valor do Ingrediente Original).
+Retorne ESTRITAMENTE um objeto JSON onde a chave é o nome exato do ingrediente original, e o valor é um objeto contendo "substituto" (string) e "delta" (objeto com calorias, proteinas, carboidratos, gorduras, fibras, sodio - todos numéricos).
+
+Ingredientes originais:
+${ingredientes.join('\n')}
+
+Substituições:
+${JSON.stringify(substituicoes, null, 2)}
+
+Exemplo de retorno JSON:
+{
+  "2 fatias de muçarela de búfala": {
+    "substituto": "Tradicional",
+    "delta": {
+      "calorias": 30,
+      "proteinas": 2,
+      "carboidratos": 0,
+      "gorduras": 4,
+      "fibras": 0,
+      "sodio": 120
+    }
+  }
+}
+`;
+
+    try {
+      const response = await this.openai.chat.completions.create({
+        model: 'gpt-4o-mini',
+        response_format: { type: 'json_object' },
+        messages: [
+          { role: 'system', content: 'Você é uma API que retorna apenas JSON válido.' },
+          { role: 'user', content: prompt },
+        ],
+        temperature: 0.2,
+      });
+
+      const content = response.choices[0].message.content;
+      return JSON.parse(content || '{}');
+    } catch (error) {
+      console.error('Erro ao calcular deltas com IA:', error);
+      return {};
     }
   }
 }

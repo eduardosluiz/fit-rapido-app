@@ -39,7 +39,7 @@ export class Receita {
   ingredientes: string[];
 
   @Column('jsonb', { nullable: true })
-  substituicoes_ingredientes: Record<string, string | string[]>; // Mapeia ingrediente -> substituição(ões) sugerida(s)
+  substituicoes_ingredientes: Record<string, any>; // Mapeia ingrediente -> substituição(ões) sugerida(s)
 
   @Column('text', { array: true, default: [] })
   modo_preparo: string[];

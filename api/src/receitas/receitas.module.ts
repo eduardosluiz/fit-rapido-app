@@ -9,11 +9,13 @@ import { Receita } from './entities/receita.entity';
 import { CategoriaReceita } from './entities/categoria-receita.entity';
 import { NotificationsModule } from '../notifications/notifications.module';
 import { AuthModule } from '../auth/auth.module';
+import { IAModule } from '../ia/ia.module';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Receita, CategoriaReceita]),
     forwardRef(() => NotificationsModule),
+    forwardRef(() => IAModule),
     AuthModule,
   ],
   controllers: [ReceitasController, CategoriasReceitasController],
