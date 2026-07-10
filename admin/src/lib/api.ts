@@ -484,7 +484,11 @@ class ApiService {
     if (params?.ativo !== undefined) queryParams.append('ativo', String(params.ativo));
 
     const query = queryParams.toString();
-    return this.request<any[]>(`/ingredientes${query ? `?${query}` : ''}`);
+    const data = await this.request<any[]>(`/ingredientes${query ? `?${query}` : ''}`);
+    return data.map(ing => ({
+      ...ing,
+      nome: ing.nome ? ing.nome.replace(/,\s*/g, ' ') : ing.nome
+    }));
   }
 
   async getIngrediente(id: string) {

@@ -40,6 +40,9 @@ export default function Login() {
       style={{
         minHeight: '100vh',
         backgroundColor: '#0f0f0f',
+        backgroundImage: "url('/banner-receitas.png')",
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
