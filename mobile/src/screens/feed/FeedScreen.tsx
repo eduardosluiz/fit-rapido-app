@@ -50,7 +50,6 @@ export default function FeedScreen() {
   const [buscaAvancadaVisible, setBuscaAvancadaVisible] = useState(false);
   const [filtrosBusca, setFiltrosBusca] = useState<BuscaFilters>({});
   const [buscaRapida, setBuscaRapida] = useState('');
-  const [buscaRapidaDebounced, setBuscaRapidaDebounced] = useState('');
   
   const scrollViewRef = useRef<ScrollView>(null);
   const [currentBannerIndex, setCurrentBannerIndex] = useState(0);
@@ -111,22 +110,6 @@ export default function FeedScreen() {
   useEffect(() => {
     loadFeed();
   }, [loadFeed]);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setBuscaRapidaDebounced(buscaRapida);
-    }, 500);
-    return () => clearTimeout(timer);
-  }, [buscaRapida]);
-
-  useEffect(() => {
-    if (buscaRapidaDebounced.trim()) {
-      (navigation as any).navigate('Tabs', { 
-        screen: 'Receitas',
-        params: { searchQuery: buscaRapidaDebounced.trim() }
-      });
-    }
-  }, [buscaRapidaDebounced]);
 
   // Autoplay Banners
   useEffect(() => {
@@ -278,10 +261,8 @@ export default function FeedScreen() {
                 returnKeyType="search"
                 onSubmitEditing={() => {
                   if (buscaRapida.trim()) {
-                    setBuscaRapidaDebounced(buscaRapida.trim());
-                    (navigation as any).navigate('Tabs', { 
-                      screen: 'Receitas',
-                      params: { searchQuery: buscaRapida.trim() }
+                    (navigation as any).navigate('Receitas', { 
+                      searchQuery: buscaRapida.trim() 
                     });
                   }
                 }}
@@ -304,7 +285,7 @@ export default function FeedScreen() {
                   <Text style={styles.sectionTitle}>🍽️ Novas Receitas</Text>
                   <View style={styles.sectionTitleUnderline} />
                 </View>
-                <TouchableOpacity onPress={() => (navigation as any).navigate('Tabs', { screen: 'Receitas' })}>
+                <TouchableOpacity onPress={() => (navigation as any).navigate('Receitas')}>
                   <Text style={styles.seeAllText}>Ver todas</Text>
                 </TouchableOpacity>
               </View>

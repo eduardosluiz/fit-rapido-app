@@ -18,11 +18,19 @@ export class CreateTreinoModalidadeDto {
 
   @IsString()
   @IsOptional()
+  subtitulo?: string;
+
+  @IsString()
+  @IsOptional()
   icone?: string;
 
   @IsNumber()
   @IsOptional()
   ordem?: number;
+
+  @IsNumber()
+  @IsOptional()
+  ordem_modalidade?: number;
 
   @IsBoolean()
   @IsOptional()

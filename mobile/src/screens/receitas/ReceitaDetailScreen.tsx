@@ -1184,13 +1184,13 @@ export default function ReceitaDetailScreen() {
           ) : null}
 
           {/* Finalização */}
-          {receita.finalizacao && receita.finalizacao.trim() ? (
-            <View style={[styles.dicaContainer, { backgroundColor: '#f0f9ff', borderColor: '#bae6fd', marginTop: 12 }]}>
+          {receita.finalizacao && receita.finalizacao.replace(/<[^>]*>?/gm, '').trim() ? (
+            <View style={[styles.dicaContainer, { backgroundColor: '#FDF8EE', borderColor: '#EEDFC8', marginTop: 12 }]}>
               <View style={styles.dicaHeader}>
-                <Ionicons name="star" size={20} color="#0284c7" />
-                <Text style={[styles.dicaTitle, { color: '#0284c7' }]}>Finalização</Text>
+                <Ionicons name="star" size={20} color="#D49D37" />
+                <Text style={[styles.dicaTitle, { color: '#D49D37', textTransform: 'uppercase' }]}>FINALIZAÇÃO</Text>
               </View>
-              <Text style={styles.dicaText}>{receita.finalizacao.trim()}</Text>
+              <Text style={[styles.dicaText, { color: '#4A3C31' }]}>{receita.finalizacao.trim()}</Text>
             </View>
           ) : null}
         </View>

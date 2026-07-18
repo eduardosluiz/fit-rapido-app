@@ -24,6 +24,7 @@ class ApiService {
       const response = await fetch(`${API_URL}${endpoint}`, {
         ...options,
         headers,
+        signal: AbortSignal.timeout(15000)
       });
 
       if (!response.ok) {
@@ -90,6 +91,9 @@ class ApiService {
         throw new Error(
           `Não foi possível conectar ao servidor. Verifique se a API está rodando em ${API_URL}`
         );
+      }
+      if (error.name === 'TimeoutError') {
+        throw new Error(`A requisição para ${endpoint} demorou muito e foi cancelada pelo servidor.`);
       }
       throw error;
     }

@@ -14,7 +14,8 @@ import { AuthProvider } from './contexts/AuthContext';
 import Navigation from './navigation';
 import OfflineNotice from './components/OfflineNotice';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { ActivityIndicator, View, StyleSheet, LogBox } from 'react-native';
+import { ActivityIndicator, View, StyleSheet, LogBox, Platform } from 'react-native';
+import { Audio } from 'expo-av';
 import colors from './constants/colors';
 
 // Oculta a caixa amarela de avisos na tela
@@ -49,6 +50,23 @@ export default function App() {
     Montserrat_600SemiBold,
     Montserrat_700Bold,
   });
+
+  useEffect(() => {
+    async function configureAudio() {
+      try {
+        await Audio.setAudioModeAsync({
+          playsInSilentModeIOS: true,
+          allowsRecordingIOS: false,
+          staysActiveInBackground: false,
+          shouldDuckAndroid: true,
+          playThroughEarpieceAndroid: false,
+        });
+      } catch (e) {
+        console.warn('Erro ao configurar áudio:', e);
+      }
+    }
+    configureAudio();
+  }, []);
 
   if (!fontsLoaded) {
     return (

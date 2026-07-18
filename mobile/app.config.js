@@ -1,4 +1,4 @@
-require('dotenv').config();
+// require('dotenv').config();
 
 module.exports = {
   expo: {
@@ -19,28 +19,27 @@ module.exports = {
     ],
     ios: {
       supportsTablet: true,
-      bundleIdentifier: "com.fitrapido.app"
+      bundleIdentifier: "com.fitrapido.app",
+      infoPlist: {
+        ITSAppUsesNonExemptEncryption: false
+      }
     },
     android: {
       adaptiveIcon: {
         foregroundImage: "./assets/adaptive-icon.png",
         backgroundColor: "#0f0f0f"
       },
-      package: "com.fitrapido.app",
-      googleServicesFile: "./google-services.json"
+      package: "com.fitrapido.app"
     },
     plugins: [
       [
         "expo-notifications",
         {
-          icon: "./assets/notification-icon.png",
-          color: "#c8921a",
-          sounds: ["./assets/notification-sound.wav"]
+          color: "#c8921a"
         }
       ]
     ],
     notification: {
-      icon: "./assets/notification-icon.png",
       color: "#c8921a",
       iosDisplayInForeground: true,
       androidMode: "default",
@@ -52,7 +51,7 @@ module.exports = {
     scheme: "fitrapido",
     extra: {
       eas: {
-        projectId: "fit-rapido-mobile"
+        projectId: "c2166955-d2b7-4832-be31-d36ef521afda"
       },
       // Expor variáveis de ambiente para o app
       EXPO_PUBLIC_API_URL: process.env.EXPO_PUBLIC_API_URL || "http://10.0.2.2:3001"

@@ -8,6 +8,7 @@ import {
   ActivityIndicator,
   Image,
   ScrollView,
+  Platform,
 } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { api, Treino, getImageUrl } from '../../services/api';
@@ -17,7 +18,7 @@ import { Ionicons } from '@expo/vector-icons';
 import colors from '../../constants/colors';
 import fonts from '../../constants/fonts';
 import AppBackground from '../../components/AppBackground';
-import ReceitaCardAnimated from '../../components/ReceitaCardAnimated';
+import { Video, ResizeMode } from 'expo-av';
 
 interface ModalityParams {
   modalityId: string;
@@ -28,6 +29,80 @@ interface ModalityParams {
   descricao_intermediario?: string;
   descricao_avancado?: string;
 }
+
+const TreinoListItem = ({ item, index }: { item: Treino, index: number }) => {
+  const [expanded, setExpanded] = useState(false);
+  const [detail, setDetail] = useState<Treino | null>(null);
+  const [loading, setLoading] = useState(false);
+
+  const handleExpand = async () => {
+    if (!expanded && !detail && !item.video_url) {
+      setLoading(true);
+      try {
+        const fullTreino = await api.getTreino(item.id);
+        setDetail(fullTreino);
+      } catch(e) {}
+      setLoading(false);
+    }
+    setExpanded(!expanded);
+  };
+
+  const displayData = detail || item;
+  const tecnico = displayData.exercicios_detalhados?.[0] || {};
+  const series = tecnico.series || displayData.series || '';
+  const repeticoes = tecnico.repeticoes || displayData.repeticoes || '';
+  const descanso = tecnico.intervalo || displayData.descanso || '';
+  const descricao = displayData.descricao_tecnica || displayData.descricao || '';
+  const videoUrl = displayData.video_url;
+
+  return (
+    <View style={styles.accordionCard}>
+      <Text style={styles.accordionTitle}>{index + 1}. {displayData.titulo}</Text>
+      
+      {(series || repeticoes) ? (
+         <Text style={styles.accordionInfo}>{series} Séries | {repeticoes} repetições</Text>
+      ) : null}
+      
+      {descricao ? (
+         <Text style={styles.accordionDesc}>Instruções: {descricao.replace(/<[^>]*>?/gm, '')}</Text>
+      ) : null}
+      
+      {descanso ? (
+         <Text style={styles.accordionInfo}>Descanso: {descanso}</Text>
+      ) : null}
+
+      <TouchableOpacity onPress={handleExpand} style={styles.expandButton}>
+        <Ionicons name={expanded ? "chevron-up-circle" : "chevron-down-circle"} size={16} color="#FFF" />
+        <Text style={styles.expandText}>{expanded ? "Ocultar vídeo" : "Ver vídeo"}</Text>
+      </TouchableOpacity>
+
+      {expanded && (
+        <View style={styles.videoContainer}>
+          {loading ? <ActivityIndicator color={colors.primary} /> : 
+             videoUrl ? (
+               Platform.OS === 'web' ? (
+                 React.createElement('video', {
+                   src: getImageUrl(videoUrl),
+                   controls: true,
+                   style: { width: '100%', height: '100%', backgroundColor: '#000', objectFit: 'cover' }
+                 })
+               ) : (
+                 <Video
+                   key={`video-${item.id}`}
+                   source={{ uri: getImageUrl(videoUrl) }}
+                   style={{ width: '100%', height: '100%', backgroundColor: '#000' }}
+                   useNativeControls
+                   resizeMode={ResizeMode.COVER}
+                   shouldPlay={false}
+                 />
+               )
+             ) : <Text style={{color: '#888', textAlign: 'center'}}>Vídeo não disponível</Text>
+          }
+        </View>
+      )}
+    </View>
+  );
+};
 
 export default function ModalityWorkoutsScreen() {
   const navigation = useNavigation();
@@ -75,25 +150,7 @@ export default function ModalityWorkoutsScreen() {
 
   useEffect(() => { loadTreinos(); }, [loadTreinos]);
 
-  const renderTreinoCard = (item: Treino, index?: number, isHorizontal?: boolean) => {
-    const displayData: any = {
-      ...item,
-      tempo_preparo: item.duracao_minutos,
-      calorias: null,
-      dificuldade: item.nivel,
-      imagem_url: item.imagem_capa_url || item.imagem_url, // PRIORIZA A CAPA
-    };
-
-    return (
-      <View style={[styles.gridContainer, isHorizontal && { width: 280, marginRight: 15 }]}>
-        <ReceitaCardAnimated
-          item={displayData}
-          onPress={() => navigation.navigate('ExerciseDetail' as never, { treinoId: item.id } as never)}
-          orderNumber={index !== undefined ? index + 1 : undefined}
-        />
-      </View>
-    );
-  };
+    // Componente renderTreinoCard removido pois agora usamos TreinoListItem
 
   const diasSemana = [
     'TREINO 1 (Segunda)',
@@ -171,7 +228,9 @@ export default function ModalityWorkoutsScreen() {
               <Ionicons name="information-circle-outline" size={16} color="#E7C48A" />
               <Text style={styles.nivelDescTitle}>ORIENTAÇÕES DA TRILHA</Text>
             </View>
-            <Text style={styles.nivelDescText}>{currentDescricao}</Text>
+            <Text style={styles.nivelDescText}>
+              {currentDescricao.replace(/\s*(\d+\))/g, '\n$1').trim()}
+            </Text>
           </View>
         ) : null}
       </View>
@@ -222,11 +281,9 @@ export default function ModalityWorkoutsScreen() {
         </View>
 
         {isExpanded && temTreino && (
-          <View style={{ flexDirection: 'row', flexWrap: 'wrap', paddingHorizontal: 15, marginTop: 15 }}>
+          <View style={{ paddingHorizontal: 15, marginTop: 15 }}>
             {treinosDoDia.map((treino, tIndex) => (
-              <View key={treino.id} style={{ width: '50%', padding: 5, marginBottom: 10 }}>
-                {renderTreinoCard(treino, tIndex, false)}
-              </View>
+              <TreinoListItem key={treino.id} item={treino} index={tIndex} />
             ))}
           </View>
         )}
@@ -251,11 +308,10 @@ export default function ModalityWorkoutsScreen() {
           <FlatList
             data={treinos.sort((a, b) => (a.ordem || 0) - (b.ordem || 0))}
             keyExtractor={(item) => item.id}
-            numColumns={2}
             ListHeaderComponent={renderHeader}
             renderItem={({ item, index }) => (
-              <View style={{ width: '50%', paddingLeft: index % 2 === 0 ? 20 : 5, paddingRight: index % 2 === 0 ? 5 : 20, marginBottom: 15 }}>
-                {renderTreinoCard(item, index)}
+              <View style={{ width: '100%', paddingHorizontal: 15, marginBottom: 15 }}>
+                <TreinoListItem item={item} index={index} />
               </View>
             )}
             contentContainerStyle={styles.list}
@@ -380,5 +436,50 @@ const styles = StyleSheet.create({
     fontFamily: fonts.body,
     color: 'rgba(255,255,255,0.7)',
     lineHeight: 20,
+  },
+  accordionCard: {
+    backgroundColor: '#262626',
+    borderRadius: 8,
+    padding: 15,
+    marginBottom: 10,
+    width: '100%',
+  },
+  accordionTitle: {
+    color: '#FFF',
+    fontSize: 14,
+    fontFamily: fonts.bodySemiBold,
+    marginBottom: 8,
+  },
+  accordionInfo: {
+    color: '#CCC',
+    fontSize: 12,
+    fontFamily: fonts.body,
+    marginBottom: 6,
+  },
+  accordionDesc: {
+    color: '#AAA',
+    fontSize: 12,
+    fontFamily: fonts.body,
+    marginBottom: 6,
+  },
+  expandButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 8,
+  },
+  expandText: {
+    color: '#FFF',
+    fontSize: 12,
+    marginLeft: 4,
+    fontFamily: fonts.bodySemiBold,
+  },
+  videoContainer: {
+    marginTop: 15,
+    width: '100%',
+    height: 200,
+    backgroundColor: '#000',
+    borderRadius: 8,
+    overflow: 'hidden',
+    justifyContent: 'center',
   },
 });

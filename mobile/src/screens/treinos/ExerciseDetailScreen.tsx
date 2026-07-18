@@ -160,7 +160,7 @@ export default function ExerciseDetailScreen() {
   if (!display) return null;
 
   return (
-    <SafeAreaView style={styles.container} edges={['bottom']}>
+    <SafeAreaView style={styles.container} edges={['top', 'bottom']}>
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
           <Ionicons name="chevron-back" size={24} color="#E7C48A" />
@@ -183,8 +183,9 @@ export default function ExerciseDetailScreen() {
               resizeMode="cover"
             />
           ) : (
-            <View style={[styles.coverImage, { backgroundColor: '#111', justifyContent: 'center', alignItems: 'center' }]}>
-              <Ionicons name="barbell-outline" size={60} color="#333" />
+            <View style={[styles.coverImage, { backgroundColor: '#262626', justifyContent: 'center', alignItems: 'center' }]}>
+              <Ionicons name="videocam-outline" size={60} color="#666" />
+              <Text style={{ color: '#999', marginTop: 8, fontSize: 14, fontWeight: '500' }}>Tocar Vídeo</Text>
             </View>
           )}
           

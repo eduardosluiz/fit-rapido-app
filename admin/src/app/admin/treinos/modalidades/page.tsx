@@ -22,6 +22,8 @@ import '@/app/admin/item-card.css';
 interface ModalidadeTreino {
   id: string;
   nome: string;
+  subtitulo?: string;
+  ordem_modalidade?: number;
   descricao?: string;
   imagem_url?: string;
   ativo: boolean; // Usando 'ativo' conforme regra de negócio
@@ -35,6 +37,8 @@ export default function ModalidadesTreinosPage() {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [formData, setFormData] = useState({
     nome: '',
+    subtitulo: '',
+    ordem_modalidade: 0,
     descricao: '',
     imagem_url: '',
     ativo: true,
@@ -81,7 +85,7 @@ export default function ModalidadesTreinosPage() {
       }
       setShowForm(false);
       setEditingId(null);
-      setFormData({ nome: '', descricao: '', imagem_url: '', ativo: true });
+      setFormData({ nome: '', subtitulo: '', ordem_modalidade: 0, descricao: '', imagem_url: '', ativo: true });
       await loadModalidades();
     } catch (err: any) {
       alert(err.message || 'Erro ao salvar modalidade');
@@ -92,6 +96,8 @@ export default function ModalidadesTreinosPage() {
     setEditingId(modalidade.id);
     setFormData({
       nome: modalidade.nome,
+      subtitulo: modalidade.subtitulo || '',
+      ordem_modalidade: modalidade.ordem_modalidade || 0,
       descricao: modalidade.descricao || '',
       imagem_url: modalidade.imagem_url || '',
       ativo: modalidade.ativo ?? (modalidade as any).ativa ?? true,
@@ -151,6 +157,22 @@ export default function ModalidadesTreinosPage() {
                       value={formData.nome}
                       onChange={(e) => setFormData({ ...formData, nome: e.target.value })}
                       placeholder="Ex: Musculação, Yoga, Crossfit..."
+                    />
+                  </FormField>
+                  <FormField label="Subtítulo do Card" fullWidth>
+                    <Input
+                      type="text"
+                      value={formData.subtitulo}
+                      onChange={(e) => setFormData({ ...formData, subtitulo: e.target.value })}
+                      placeholder="Ex: Ajuste seu nível de treinamento"
+                    />
+                  </FormField>
+                  <FormField label="Ordem de Exibição" fullWidth>
+                    <Input
+                      type="number"
+                      value={formData.ordem_modalidade}
+                      onChange={(e) => setFormData({ ...formData, ordem_modalidade: parseInt(e.target.value) || 0 })}
+                      placeholder="Ex: 1"
                     />
                   </FormField>
 

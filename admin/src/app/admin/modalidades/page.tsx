@@ -115,6 +115,8 @@ export default function ModalidadesPage() {
   
   const [formData, setFormData] = useState({
     nome: '',
+    subtitulo: '',
+    ordem_modalidade: 0,
     descricao: '',
     imagem_url: '',
     tem_nivelamento: false,
@@ -302,6 +304,8 @@ export default function ModalidadesPage() {
       
       const modData = {
         nome: formData.nome,
+        subtitulo: formData.subtitulo,
+        ordem_modalidade: Number(formData.ordem_modalidade),
         descricao: formData.descricao,
         imagem_url: formData.imagem_url,
         tem_nivelamento: formData.tem_nivelamento,
@@ -404,6 +408,8 @@ export default function ModalidadesPage() {
     setDeletedVideoIds([]); // Reset
     setFormData({
       nome: mod.nome,
+      subtitulo: mod.subtitulo || '',
+      ordem_modalidade: mod.ordem_modalidade || 0,
       descricao: mod.descricao || '',
       imagem_url: mod.imagem_url || '',
       tem_nivelamento: mod.tem_nivelamento || false,
@@ -1031,14 +1037,36 @@ export default function ModalidadesPage() {
 
                   <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
                     <div className="lg:col-span-7 space-y-8">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="space-y-2">
+                          <label className="text-[9px] font-bold uppercase tracking-[0.15em] text-gray-800 dark:text-gray-200">Nome da Modalidade (Exibido no App)</label>
+                          <input
+                            value={formData.nome}
+                            onChange={(e) => setFormData({ ...formData, nome: e.target.value })}
+                            placeholder="Ex: MUSCULAÇÃO FEMININA"
+                            className="w-full bg-gray-100 dark:bg-[#111] border border-gray-400 dark:border-[#444] rounded-md px-4 py-3 text-sm focus:outline-none focus:border-[#c8921a] text-gray-900 dark:text-white font-medium transition-all"
+                            required
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <label className="text-[9px] font-bold uppercase tracking-[0.15em] text-gray-800 dark:text-gray-200">Ordem de Exibição (Numérico)</label>
+                          <input
+                            type="number"
+                            value={formData.ordem_modalidade}
+                            onChange={(e) => setFormData({ ...formData, ordem_modalidade: parseInt(e.target.value) || 0 })}
+                            placeholder="Ex: 1"
+                            className="w-full bg-gray-100 dark:bg-[#111] border border-gray-400 dark:border-[#444] rounded-md px-4 py-3 text-sm focus:outline-none focus:border-[#c8921a] text-gray-900 dark:text-white font-medium transition-all"
+                          />
+                        </div>
+                      </div>
+
                       <div className="space-y-2">
-                        <label className="text-[9px] font-bold uppercase tracking-[0.15em] text-gray-800 dark:text-gray-200">Nome da Modalidade (Exibido no App)</label>
+                        <label className="text-[9px] font-bold uppercase tracking-[0.15em] text-gray-800 dark:text-gray-200">Subtítulo do Card (Exibido no App)</label>
                         <input
-                          value={formData.nome}
-                          onChange={(e) => setFormData({ ...formData, nome: e.target.value })}
-                          placeholder="Ex: MUSCULAÇÃO FEMININA"
+                          value={formData.subtitulo}
+                          onChange={(e) => setFormData({ ...formData, subtitulo: e.target.value })}
+                          placeholder="Ex: Ajuste seu nível de treinamento"
                           className="w-full bg-gray-100 dark:bg-[#111] border border-gray-400 dark:border-[#444] rounded-md px-4 py-3 text-sm focus:outline-none focus:border-[#c8921a] text-gray-900 dark:text-white font-medium transition-all"
-                          required
                         />
                       </div>
 

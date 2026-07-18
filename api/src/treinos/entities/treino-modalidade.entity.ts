@@ -16,10 +16,16 @@ export class TreinoModalidade {
   imagem_url: string;
 
   @Column({ nullable: true })
+  subtitulo: string;
+
+  @Column({ nullable: true })
   icone: string; // Nome do ícone (ex: 'bx-home')
 
   @Column({ default: 0 })
   ordem: number;
+
+  @Column({ default: 0 })
+  ordem_modalidade: number;
 
   @Column({ default: false })
   tem_nivelamento: boolean;
