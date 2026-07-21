@@ -50,12 +50,17 @@ export default function ReceitasScreen() {
 
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const translateY = useRef(new Animated.Value(30)).current;
+  const searchTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   
   useEffect(() => {
     Animated.parallel([
       Animated.timing(fadeAnim, { toValue: 1, duration: 600, useNativeDriver: false }),
       Animated.timing(translateY, { toValue: 0, duration: 600, useNativeDriver: false }),
     ]).start();
+    
+    return () => {
+      if (searchTimeoutRef.current) clearTimeout(searchTimeoutRef.current);
+    };
   }, []);
   
   useEffect(() => {
@@ -72,12 +77,20 @@ export default function ReceitasScreen() {
     }
   }, []);
 
-  const loadReceitas = useCallback(async () => {
+  const loadReceitas = useCallback(async (currentSearch = searchText) => {
     try {
       setLoading(true);
       const params: any = {};
-      if (searchText.trim()) params.search = searchText.trim();
+      if (currentSearch.trim()) params.search = currentSearch.trim();
       if (selectedCategoria) params.categoria = selectedCategoria;
+      
+      // Aplicar filtros da busca avançada
+      if (filtrosBusca.nome) params.nome = filtrosBusca.nome;
+      if (filtrosBusca.ingrediente) params.ingrediente = filtrosBusca.ingrediente;
+      if (filtrosBusca.proteinasMin) params.proteinasMin = filtrosBusca.proteinasMin;
+      if (filtrosBusca.tempoMaximo) params.tempoMaximo = filtrosBusca.tempoMaximo;
+      if (filtrosBusca.semLactose) params.semLactose = true;
+      if (filtrosBusca.lowCarb) params.lowCarb = true;
 
       const todasReceitasRaw = await api.getReceitas(params);
       const todasReceitas = Array.isArray(todasReceitasRaw) ? todasReceitasRaw : [];
@@ -104,10 +117,22 @@ export default function ReceitasScreen() {
     } finally {
       setLoading(false);
     }
-  }, [searchText, selectedCategoria, user?.subscription_tier]);
+  }, [searchText, selectedCategoria, user?.subscription_tier, filtrosBusca]);
 
   useEffect(() => { loadCategorias(); }, [loadCategorias]);
-  useEffect(() => { loadReceitas(); }, [loadReceitas]);
+  
+  // Use effect apenas para carregar inicialmente ou quando a categoria/filtros mudarem
+  useEffect(() => { 
+    loadReceitas(searchText); 
+  }, [selectedCategoria, filtrosBusca, user?.subscription_tier]);
+
+  const handleSearchTextChange = (text: string) => {
+    setSearchText(text);
+    if (searchTimeoutRef.current) clearTimeout(searchTimeoutRef.current);
+    searchTimeoutRef.current = setTimeout(() => {
+      loadReceitas(text);
+    }, 600);
+  };
 
   const handleScroll = (event: any) => {
     const offsetY = event.nativeEvent.contentOffset.y;
@@ -152,7 +177,7 @@ export default function ReceitasScreen() {
             placeholder="Buscar receitas..."
             placeholderTextColor={colors.textMuted}
             value={searchText}
-            onChangeText={setSearchText}
+            onChangeText={handleSearchTextChange}
           />
         </View>
         <TouchableOpacity style={styles.filterButton} onPress={() => setBuscaAvancadaVisible(true)} activeOpacity={0.7}>

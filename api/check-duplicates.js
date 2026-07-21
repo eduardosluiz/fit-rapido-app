@@ -12,6 +12,20 @@ async function main() {
       }
     });
     
+    const treinosCategoriasRes = await fetch(`${SUPABASE_URL}/rest/v1/treinos_categorias_categorias_treino?select=*`, {
+      headers: {
+        'apikey': SUPABASE_SERVICE_ROLE_KEY,
+        'Authorization': `Bearer ${SUPABASE_SERVICE_ROLE_KEY}`,
+      }
+    });
+
+    const categoriasRes = await fetch(`${SUPABASE_URL}/rest/v1/categorias_treino?select=*`, {
+      headers: {
+        'apikey': SUPABASE_SERVICE_ROLE_KEY,
+        'Authorization': `Bearer ${SUPABASE_SERVICE_ROLE_KEY}`,
+      }
+    });
+
     const modRes = await fetch(`${SUPABASE_URL}/rest/v1/treinos_modalidades?select=id,nome`, {
       headers: {
         'apikey': SUPABASE_SERVICE_ROLE_KEY,
@@ -19,41 +33,28 @@ async function main() {
       }
     });
 
-    if (!treinosRes.ok) {
-      throw new Error(`Failed to fetch treinos: ${treinosRes.status} ${treinosRes.statusText}`);
-    }
-    if (!modRes.ok) {
-      throw new Error(`Failed to fetch modalidades: ${modRes.status} ${modRes.statusText}`);
-    }
-
     const treinos = await treinosRes.json();
+    const treinosCategorias = await treinosCategoriasRes.json();
+    const categorias = await categoriasRes.json();
     const modalidades = await modRes.json();
+
+    const catMap = {};
+    for (const c of categorias) catMap[c.id] = c.nome;
     const modMap = {};
     for (const m of modalidades) modMap[m.id] = m.nome;
-    
-    // Process duplicates
-    const counts = {};
+
+    // Build relations
     for (const t of treinos) {
-      const modNome = modMap[t.modalidade_id];
-      if (!modNome || (!modNome.toLowerCase().includes('academia') && !modNome.toLowerCase().includes('em casa'))) {
-        continue;
-      }
-      
-      const key = `${modNome}::${t.titulo}`;
-      if (!counts[key]) counts[key] = { titulo: t.titulo, modalidade: modNome, count: 0, ids: [] };
-      counts[key].count++;
-      counts[key].ids.push(t.id);
+      t.modalidade = modMap[t.modalidade_id];
+      t.categorias = treinosCategorias
+        .filter(tc => tc.treinoId === t.id || tc.treinosId === t.id)
+        .map(tc => catMap[tc.categoriaTreinoId || tc.categoriasTreinoId]);
     }
 
-    const duplicates = Object.values(counts).filter(c => c.count > 1).sort((a, b) => b.count - a.count);
+    console.log(JSON.stringify(treinos.slice(0, 5), null, 2));
 
-    console.log("--- RESULTADOS DE TREINOS REPETIDOS ---");
-    console.log(JSON.stringify(duplicates, null, 2));
-    if (duplicates.length === 0) {
-      console.log("Nenhum treino repetido encontrado.");
-    }
   } catch (err) {
-    console.error("Error running script:", err);
+    console.error("Error:", err);
   }
 }
 

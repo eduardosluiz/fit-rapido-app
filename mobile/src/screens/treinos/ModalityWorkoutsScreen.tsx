@@ -30,10 +30,25 @@ interface ModalityParams {
   descricao_avancado?: string;
 }
 
-const TreinoListItem = ({ item, index }: { item: Treino, index: number }) => {
-  const [expanded, setExpanded] = useState(false);
+const TreinoListItem = ({ item, index, initiallyExpanded }: { item: Treino, index: number, initiallyExpanded?: boolean }) => {
+  const [expanded, setExpanded] = useState(initiallyExpanded || false);
   const [detail, setDetail] = useState<Treino | null>(null);
   const [loading, setLoading] = useState(false);
+
+  // Se inicialmente expandido, carrega os detalhes automaticamente
+  useEffect(() => {
+    if (initiallyExpanded && !detail && !item.video_url) {
+      const fetchDetail = async () => {
+        setLoading(true);
+        try {
+          const fullTreino = await api.getTreino(item.id);
+          setDetail(fullTreino);
+        } catch(e) {}
+        setLoading(false);
+      };
+      fetchDetail();
+    }
+  }, [initiallyExpanded]);
 
   const handleExpand = async () => {
     if (!expanded && !detail && !item.video_url) {
@@ -82,14 +97,18 @@ const TreinoListItem = ({ item, index }: { item: Treino, index: number }) => {
              videoUrl ? (
                Platform.OS === 'web' ? (
                  React.createElement('video', {
+                   key: `video-${item.id}`,
                    src: getImageUrl(videoUrl),
                    controls: true,
+                   poster: getImageUrl(displayData.imagem_url),
                    style: { width: '100%', height: '100%', backgroundColor: '#000', objectFit: 'cover' }
                  })
                ) : (
                  <Video
                    key={`video-${item.id}`}
                    source={{ uri: getImageUrl(videoUrl) }}
+                   posterSource={displayData.imagem_url ? { uri: getImageUrl(displayData.imagem_url) } : undefined}
+                   usePoster={!!displayData.imagem_url}
                    style={{ width: '100%', height: '100%', backgroundColor: '#000' }}
                    useNativeControls
                    resizeMode={ResizeMode.COVER}
@@ -115,8 +134,9 @@ export default function ModalityWorkoutsScreen() {
     hasNivelamento,
     descricao_iniciante,
     descricao_intermediario,
-    descricao_avancado
-  } = route.params as ModalityParams;
+    descricao_avancado,
+    expandTreinoId
+  } = route.params as ModalityParams & { expandTreinoId?: string };
   
   const [treinos, setTreinos] = useState<Treino[]>([]);
   const [loading, setLoading] = useState(true);
@@ -141,12 +161,23 @@ export default function ModalityWorkoutsScreen() {
       }
       
       setTreinos(treinosAtivos);
+      
+      // Auto-scroll to the expanded workout if specified
+      if (expandTreinoId) {
+        const foundTreino = treinosAtivos.find(t => t.id === expandTreinoId);
+        if (foundTreino && hasNivelamento) {
+          // ensure we are on the correct level tab if the workout belongs to a specific level
+          if (foundTreino.nivel && ['iniciante', 'intermediario', 'avancado'].includes(foundTreino.nivel)) {
+            setSelectedNivel(foundTreino.nivel as any);
+          }
+        }
+      }
     } catch (error) {
       console.error('Erro ao carregar treinos da modalidade:', error);
     } finally {
       setLoading(false);
     }
-  }, [modalityId, hasNivelamento, selectedNivel, user?.subscription_tier]);
+  }, [modalityId, hasNivelamento, selectedNivel, user?.subscription_tier, expandTreinoId]);
 
   useEffect(() => { loadTreinos(); }, [loadTreinos]);
 
@@ -282,8 +313,13 @@ export default function ModalityWorkoutsScreen() {
 
         {isExpanded && temTreino && (
           <View style={{ paddingHorizontal: 15, marginTop: 15 }}>
-            {treinosDoDia.map((treino, tIndex) => (
-              <TreinoListItem key={treino.id} item={treino} index={tIndex} />
+            {treinosDoDia.map((treino) => (
+              <TreinoListItem 
+                key={treino.id} 
+                item={treino} 
+                index={treinosDoDia.indexOf(treino)}
+                initiallyExpanded={expandTreinoId === treino.id} 
+              />
             ))}
           </View>
         )}
@@ -311,7 +347,11 @@ export default function ModalityWorkoutsScreen() {
             ListHeaderComponent={renderHeader}
             renderItem={({ item, index }) => (
               <View style={{ width: '100%', paddingHorizontal: 15, marginBottom: 15 }}>
-                <TreinoListItem item={item} index={index} />
+                <TreinoListItem 
+                  item={item} 
+                  index={index} 
+                  initiallyExpanded={expandTreinoId === item.id} 
+                />
               </View>
             )}
             contentContainerStyle={styles.list}
@@ -339,9 +379,12 @@ const styles = StyleSheet.create({
   backButton: { width: 40, height: 40, borderRadius: 20, backgroundColor: 'rgba(255,255,255,0.05)', justifyContent: 'center', alignItems: 'center', marginRight: 15 },
   titleWrapper: {
     flex: 1,
-    justifyContent: 'center',
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
   },
   headerTitle: { 
+    flexShrink: 1,
     fontSize: 20, 
     fontFamily: fonts.title, 
     color: '#E7C48A', 
@@ -350,9 +393,8 @@ const styles = StyleSheet.create({
   premiumBadgeRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 4,
     backgroundColor: 'rgba(231,196,138,0.1)',
-    alignSelf: 'flex-start',
+    alignSelf: 'center',
     paddingHorizontal: 8,
     paddingVertical: 4,
     borderRadius: 12,
@@ -476,7 +518,7 @@ const styles = StyleSheet.create({
   videoContainer: {
     marginTop: 15,
     width: '100%',
-    height: 200,
+    height: 400,
     backgroundColor: '#000',
     borderRadius: 8,
     overflow: 'hidden',

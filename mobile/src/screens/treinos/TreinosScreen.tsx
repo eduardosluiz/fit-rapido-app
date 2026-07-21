@@ -44,6 +44,13 @@ export default function TreinosScreen() {
   const [buscaAvancadaVisible, setBuscaAvancadaVisible] = useState(false);
   const [filtrosBusca, setFiltrosBusca] = useState<BuscaFilters>({});
   const [activeFilter, setActiveFilter] = useState('Todos');
+  const searchTimeoutRef = React.useRef<NodeJS.Timeout | null>(null);
+
+  React.useEffect(() => {
+    return () => {
+      if (searchTimeoutRef.current) clearTimeout(searchTimeoutRef.current);
+    };
+  }, []);
 
   const loadModalidades = useCallback(async () => {
     try {
@@ -66,11 +73,16 @@ export default function TreinosScreen() {
     });
   };
 
-  const loadTreinos = useCallback(async () => {
+  const loadTreinos = useCallback(async (currentSearch = searchText) => {
     try {
       setLoading(true);
       const params: any = {};
-      if (searchText.trim()) params.search = searchText.trim();
+      if (currentSearch.trim()) params.search = currentSearch.trim();
+
+      // Aplicar filtros da busca avançada
+      if (filtrosBusca.nome) params.nome = filtrosBusca.nome;
+      if (filtrosBusca.categoria) params.categoria = filtrosBusca.categoria;
+      if (filtrosBusca.tempoMaximo) params.tempoMaximo = filtrosBusca.tempoMaximo;
 
       const treinosRaw = await api.getTreinos(params);
       const data = Array.isArray(treinosRaw) ? treinosRaw : [];
@@ -89,10 +101,21 @@ export default function TreinosScreen() {
     } finally {
       setLoading(false);
     }
-  }, [searchText, user?.subscription_tier]);
+  }, [searchText, user?.subscription_tier, filtrosBusca]);
 
   useEffect(() => { loadModalidades(); }, [loadModalidades]);
-  useEffect(() => { loadTreinos(); }, [loadTreinos]);
+  
+  useEffect(() => { 
+    loadTreinos(searchText); 
+  }, [filtrosBusca, user?.subscription_tier]);
+
+  const handleSearchTextChange = (text: string) => {
+    setSearchText(text);
+    if (searchTimeoutRef.current) clearTimeout(searchTimeoutRef.current);
+    searchTimeoutRef.current = setTimeout(() => {
+      loadTreinos(text);
+    }, 600);
+  };
 
   const featuredWorkout = treinos.length > 0 ? treinos[0] : null;
   const listWorkouts = treinos.length > 1 ? treinos.slice(1) : treinos;
@@ -172,7 +195,12 @@ export default function TreinosScreen() {
       ? (windowWidth - totalPaddings - (gap * (visibleCount - 1))) / visibleCount 
       : 115;
 
-    const sortedModalidades = [...modalidades].sort((a, b) => (a.ordem_modalidade || 0) - (b.ordem_modalidade || 0));
+    const sortedModalidades = [...modalidades].sort((a, b) => {
+      const orderA = a.ordem_modalidade ?? 0;
+      const orderB = b.ordem_modalidade ?? 0;
+      if (orderA !== orderB) return orderA - orderB;
+      return (a.nome || '').localeCompare(b.nome || '');
+    });
 
     return (
       <ScrollView 
@@ -222,10 +250,11 @@ export default function TreinosScreen() {
             style={styles.libButton}
             onPress={() => (navigation as any).navigate('BibliotecaTreinos')}
           >
-            <Ionicons name="play-circle-outline" size={16} color={colors.primarySoft} />
+            <Ionicons name="play-circle-outline" size={16} color="#E7C48A" />
             <Text style={styles.libButtonText}>Biblioteca de Execuções</Text>
           </TouchableOpacity>
         </View>
+        <View style={styles.headerDivider} />
       </View>
 
       {!canAccessWorkouts ? (
@@ -252,7 +281,7 @@ export default function TreinosScreen() {
                 placeholder="Buscar treino"
                 placeholderTextColor={colors.textMuted}
                 value={searchText}
-                onChangeText={setSearchText}
+                onChangeText={handleSearchTextChange}
               />
             </View>
             <TouchableOpacity
@@ -273,7 +302,7 @@ export default function TreinosScreen() {
 
           <View style={styles.sectionHeaderRow}>
             <Text style={styles.sectionTitle}>Todos os treinos</Text>
-            <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.inlineFilters}>
+            <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ flex: 1 }} contentContainerStyle={styles.inlineFilters}>
                {['Todos', 'Iniciante', 'Intermediário', 'Avançado'].map(filter => (
                  <TouchableOpacity 
                    key={filter}
@@ -332,18 +361,24 @@ const styles = StyleSheet.create({
   container: { flex: 1 },
   headerContainer: {
     paddingHorizontal: 20,
-    marginTop: 20,
-    marginBottom: 10,
+    marginTop: 30,
+    marginBottom: 20,
   },
   headerRow: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+    marginBottom: 15,
   },
   headerTitle: { 
-    fontSize: 28, 
+    fontSize: 24, 
     fontFamily: fonts.title, 
-    color: colors.primarySoft, 
+    color: '#E7C48A', 
+  },
+  headerDivider: {
+    height: 1,
+    backgroundColor: 'rgba(255,255,255,0.1)',
+    width: '100%',
   },
   libButton: {
     flexDirection: 'row', 
@@ -356,7 +391,7 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(201,162,74,0.3)'
   },
   libButtonText: { 
-    color: colors.primarySoft, 
+    color: '#E7C48A', 
     fontSize: 12, 
     marginLeft: 6, 
     fontFamily: fonts.bold 
@@ -370,7 +405,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     marginBottom: 20,
     borderWidth: 1,
-    borderColor: colors.border,
+    borderColor: 'rgba(231,196,138,0.35)',
   },
   featuredContent: {
     flex: 1,
@@ -494,30 +529,31 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-start',
   },
   sectionTitle: { 
-    fontSize: 16, 
+    fontSize: 14, 
     fontFamily: fonts.title, 
     color: colors.textPrimary,
     marginBottom: 0,
+    marginRight: 8,
+    flexShrink: 0,
   },
   inlineFilters: {
     flexDirection: 'row',
-    gap: 8,
+    gap: 4,
   },
   inlineFilterChip: {
-    paddingHorizontal: 14,
-    paddingVertical: 6,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
     borderRadius: 20,
     borderWidth: 1,
     borderColor: colors.border,
     backgroundColor: 'transparent',
-    marginRight: 8,
   },
   inlineFilterText: {
     color: colors.textSecondary,
-    fontSize: 12,
+    fontSize: 9,
     fontFamily: fonts.medium,
   },
 

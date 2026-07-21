@@ -1,17 +1,33 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { api } from '@/lib/api';
 
 export default function Login() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const [coverUrl, setCoverUrl] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [formData, setFormData] = useState({
     email: '',
     senha: '',
   });
+
+  useEffect(() => {
+    const fetchCover = async () => {
+      try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/configuracoes/public/login_cover_url`);
+        const data = await response.json();
+        if (data && data.valor) {
+          setCoverUrl(data.valor);
+        }
+      } catch (e) {
+        console.error('Error fetching login cover', e);
+      }
+    };
+    fetchCover();
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -40,7 +56,7 @@ export default function Login() {
       style={{
         minHeight: '100vh',
         backgroundColor: '#0f0f0f',
-        backgroundImage: "url('/banner-receitas.png')",
+        backgroundImage: `url('${coverUrl || '/banner-receitas.png'}')`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         display: 'flex',

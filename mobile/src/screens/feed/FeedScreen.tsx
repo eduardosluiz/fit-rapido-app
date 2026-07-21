@@ -158,7 +158,21 @@ export default function FeedScreen() {
         key={treino.id}
         item={displayData}
         isHorizontal={true}
-        onPress={() => (navigation as any).navigate('Treinos', { screen: 'TreinoDetail', params: { treinoId: treino.id } })}
+        onPress={() => {
+          if (treino.modalidade_id) {
+            (navigation as any).navigate('Treinos', { 
+              screen: 'ModalityWorkouts', 
+              params: { 
+                modalityId: treino.modalidade_id,
+                modalityName: treino.modalidade?.nome || 'Treino da Modalidade',
+                hasNivelamento: treino.modalidade?.has_nivelamento || false,
+                expandTreinoId: treino.id
+              } 
+            });
+          } else {
+            (navigation as any).navigate('Treinos', { screen: 'TreinoDetail', params: { treinoId: treino.id } });
+          }
+        }}
       />
     );
   };
@@ -167,14 +181,7 @@ export default function FeedScreen() {
     return (
       <AppBackground>
         <SafeAreaView style={styles.container}>
-          <View style={styles.bannerContainer}>
-            <ScreenBanner defaultImage={require('../../../assets/banners/bannerinicial.jpg')} />
-            <View style={styles.titleOverlay}>
-              <Text style={styles.headerTitle}>Fit & Rápido</Text>
-              <View style={styles.titleUnderline} />
-            </View>
-          </View>
-          <View style={styles.loadingContainer}>
+          <View style={[styles.loadingContainer, { flex: 1, justifyContent: 'center' }]}>
             <ActivityIndicator size="large" color={colors.primary} />
             <Text style={styles.loadingText}>Carregando feed...</Text>
           </View>
@@ -323,43 +330,19 @@ export default function FeedScreen() {
           )}
         </ScrollView>
 
-        {/* Última Notificação */}
-        {ultimaNotificacao && (
-          <TouchableOpacity
-            style={styles.notificationContainer}
-            onPress={() => {
-              const itemId = ultimaNotificacao.item_id || ultimaNotificacao.itemId;
-              if (itemId) {
-                if (ultimaNotificacao.tipo === 'receita') {
-                  (navigation as any).navigate('Receitas', { screen: 'ReceitaDetail', params: { receitaId: itemId } });
-                } else if (ultimaNotificacao.tipo === 'treino') {
-                  (navigation as any).navigate('Treinos', { screen: 'TreinoDetail', params: { treinoId: itemId } });
-                }
-              }
-            }}
-            activeOpacity={0.7}
-          >
-            <View style={styles.notificationContent}>
-              <View style={styles.notificationIconContainer}>
-                <Ionicons name="notifications" size={20} color={colors.primary} />
-              </View>
-              <View style={styles.notificationTextContainer}>
-                <Text style={styles.notificationTitle} numberOfLines={1}>
-                  {ultimaNotificacao.titulo || 'Nova atualização'}
-                </Text>
-                <Text style={styles.notificationMessage} numberOfLines={1}>
-                  {ultimaNotificacao.mensagem || ultimaNotificacao.message || 'Receita nova disponível!'}
-                </Text>
-              </View>
-              <Ionicons name="chevron-forward" size={18} color={colors.textMuted} />
-            </View>
-          </TouchableOpacity>
-        )}
 
         <BuscaAvancada
           visible={buscaAvancadaVisible}
           onClose={() => setBuscaAvancadaVisible(false)}
-          onSearch={(filters) => setFiltrosBusca(filters)}
+          onSearch={(filters) => {
+            setFiltrosBusca(filters);
+            (navigation as any).navigate('Receitas', {
+              searchQuery: buscaRapida.trim() || undefined,
+            });
+            // We can't easily pass the entire object via navigation params without stringifying, 
+            // but ReceitasScreen now has its own advanced filter logic.
+            // Ideally they should use advanced filters within the respective screens.
+          }}
           initialFilters={filtrosBusca}
         />
       </SafeAreaView>

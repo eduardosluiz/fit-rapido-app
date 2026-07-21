@@ -22,6 +22,23 @@ export default function LoginScreen() {
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
   const [loading, setLoading] = useState(false);
+  const [coverUrl, setCoverUrl] = useState<string | null>(null);
+
+  React.useEffect(() => {
+    const fetchCover = async () => {
+      try {
+        const { API_URL } = require('../../services/api');
+        const response = await fetch(`${API_URL}/configuracoes/public/login_cover_url`);
+        const data = await response.json();
+        if (data && data.valor) {
+          setCoverUrl(data.valor);
+        }
+      } catch (e) {
+        console.error('Error fetching login cover:', e);
+      }
+    };
+    fetchCover();
+  }, []);
 
   const handleLogin = async () => {
     if (!email || !senha) {
@@ -69,7 +86,7 @@ export default function LoginScreen() {
           {/* Banner acima do título */}
           <View style={styles.bannerContainer}>
             <Image
-              source={require('../../../assets/banners/bannerinicial.jpg')}
+              source={coverUrl ? { uri: coverUrl } : require('../../../assets/banners/bannerinicial.jpg')}
               style={styles.bannerImage}
               resizeMode="cover"
             />

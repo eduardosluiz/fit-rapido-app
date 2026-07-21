@@ -40,7 +40,7 @@ export class TreinosModalidadesController {
   @Get()
   async findAll() {
     return this.repository.find({
-      order: { ordem: 'ASC', nome: 'ASC' },
+      order: { ordem_modalidade: 'ASC', nome: 'ASC' },
       relations: ['treinos']
     });
   }

@@ -5,6 +5,7 @@ import { api } from '@/lib/api';
 import { useAuth } from '@/lib/useAuth';
 import Link from 'next/link';
 import { Loader2, Activity, Users, BookOpen, Dumbbell, Zap, Plus, FolderPlus, ArrowRight } from 'lucide-react';
+import { CapaLoginButton } from '@/components/CapaLoginButton';
 import './admin.css';
 
 export default function AdminDashboard() {
@@ -128,6 +129,7 @@ export default function AdminDashboard() {
                 </div>
               </Link>
             ))}
+            <CapaLoginButton />
           </div>
         </div>
       </div>

@@ -3,7 +3,7 @@ import { Platform } from 'react-native';
 import NetInfo from '@react-native-community/netinfo';
 
 const PROD_URL = 'https://backend.daipohlmann.com.br';
-const API_URL = PROD_URL;
+export const API_URL = PROD_URL;
 
 export function getImageUrl(url?: string | null): string | undefined {
   if (!url) return undefined;

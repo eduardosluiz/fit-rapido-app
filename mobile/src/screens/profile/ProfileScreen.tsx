@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Alert, Image, ActivityIndicator } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Alert, Image, ActivityIndicator, Platform, Linking } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useAuth } from '../../contexts/AuthContext';
 import { api, getImageUrl } from '../../services/api';
@@ -84,6 +84,16 @@ export default function ProfileScreen() {
     return 'Nenhum';
   };
 
+  const handleManageSubscription = () => {
+    if (Platform.OS === 'ios') {
+      Linking.openURL('https://apps.apple.com/account/subscriptions');
+    } else if (Platform.OS === 'android') {
+      Linking.openURL('https://play.google.com/store/account/subscriptions');
+    } else {
+      navigation.navigate('Subscriptions' as never);
+    }
+  };
+
   const getPlanColor = () => {
     if (user?.subscription_tier === 'premium_fit' || user?.subscription_tier === 'premium') {
       return colors.primary;
@@ -164,7 +174,7 @@ export default function ProfileScreen() {
             <View style={styles.actionsContainer}>
               <TouchableOpacity
                 style={styles.actionButton}
-                onPress={() => navigation.navigate('Subscriptions' as never)}
+                onPress={handleManageSubscription}
               >
                 <View style={styles.actionButtonContent}>
                   <View style={[styles.actionIconContainer, { backgroundColor: `${colors.primary}20` }]}>

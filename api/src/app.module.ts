@@ -15,6 +15,7 @@ import { AvaliacoesModule } from './avaliacoes/avaliacoes.module';
 import { IAModule } from './ia/ia.module';
 import { StatsModule } from './stats/stats.module';
 import { BannersModule } from './banners/banners.module';
+import { ConfiguracoesModule } from './configuracoes/configuracoes.module';
 
 @Module({
   imports: [
@@ -43,6 +44,7 @@ import { BannersModule } from './banners/banners.module';
     IAModule,
     StatsModule,
     BannersModule,
+    ConfiguracoesModule,
   ],
 })
 export class AppModule {}

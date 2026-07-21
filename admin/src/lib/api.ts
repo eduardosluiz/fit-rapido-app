@@ -586,6 +586,14 @@ class ApiService {
       method: 'DELETE',
     });
   }
+
+  // Configurações
+  async saveConfiguracao(chave: string, valor: string) {
+    return this.request<any>(`/configuracoes/${chave}`, {
+      method: 'POST',
+      body: JSON.stringify({ valor }),
+    });
+  }
 }
 
 export const api = new ApiService();
