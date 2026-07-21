@@ -264,86 +264,81 @@ export default function ModalityWorkoutsScreen() {
             </Text>
           </View>
         ) : null}
-
-        {/* Horizontal Day Cards */}
-        {hasNivelamento && (
-          <ScrollView
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={styles.daysScrollContainer}
-          >
-            {diasSemana.map((dia, index) => {
-              const treinosDoDia = treinos
-                .filter((t) => t.dia_semana === index)
-                .sort((a, b) => (a.ordem || 0) - (b.ordem || 0));
-                
-              const isSelected = expandedDay === index;
-              const temTreino = treinosDoDia.length > 0;
-              const title = dia.split(' ')[2]?.replace('(', '').replace(')', '') || dia.split('-')[0].trim();
-
-              return (
-                <TouchableOpacity
-                  key={index}
-                  style={[
-                    styles.dayCard,
-                    isSelected && temTreino && styles.dayCardActive,
-                    isSelected && !temTreino && styles.dayCardActiveRest
-                  ]}
-                  onPress={() => handleDayPress(index, treinosDoDia)}
-                  activeOpacity={0.7}
-                >
-                  <Text style={[
-                    styles.dayCardTitle, 
-                    { color: temTreino ? '#FFFFFF' : 'rgba(255,255,255,0.4)' },
-                    isSelected && { color: temTreino ? colors.primary : '#FFFFFF' }
-                  ]}>
-                    {title.substring(0, 3).toUpperCase()}
-                  </Text>
-                  {temTreino ? (
-                    <View style={[styles.dayCardDot, isSelected && { backgroundColor: colors.primary }]} />
-                  ) : (
-                    <View style={styles.dayCardRestDot} />
-                  )}
-                </TouchableOpacity>
-              );
-            })}
-          </ScrollView>
-        )}
       </View>
     );
   };
 
-  const renderWorkoutForSelectedDay = ({ item, index }: { item: Treino, index: number }) => (
-    <View style={{ width: '100%', paddingHorizontal: 15, marginBottom: 15 }}>
-      <TreinoListItem 
-        item={item} 
-        index={index} 
-        initiallyExpanded={expandTreinoId === item.id} 
-      />
-    </View>
-  );
+  const renderDayItem = ({ item: dia, index }: { item: string, index: number }) => {
+    // Ordenar treinos do dia pelo campo ordem
+    const treinosDoDia = treinos
+      .filter((t) => t.dia_semana === index)
+      .sort((a, b) => (a.ordem || 0) - (b.ordem || 0));
+      
+    const isExpanded = expandedDay === index;
+    const temTreino = treinosDoDia.length > 0;
 
+    return (
+      <View style={{ marginBottom: 12 }}>
+        <View style={{ paddingHorizontal: 0 }}>
+          <TouchableOpacity 
+            style={[
+              styles.glassCard, 
+              isExpanded && temTreino && styles.glassCardActive,
+              { borderRadius: 0, borderLeftWidth: 0, borderRightWidth: 0 }
+            ]}
+            onPress={() => handleDayPress(index, treinosDoDia)}
+            activeOpacity={0.7}
+          >
+            <View style={[styles.glassContent, { paddingHorizontal: 20 }]}>
+              <View style={styles.glassInfo}>
+                <Text style={[styles.glassDayTitle, { color: temTreino ? '#FFFFFF' : 'rgba(255,255,255,0.4)' }]}>
+                  {dia.split('-')[0].toUpperCase()}
+                </Text>
+                <Text style={[styles.glassStatusText, { color: temTreino ? '#fff' : 'rgba(255,255,255,0.3)' }]}>
+                  {temTreino 
+                    ? (treinosDoDia.length === 1 ? treinosDoDia[0].titulo.toUpperCase() : `${treinosDoDia.length} TREINOS DISPONÍVEIS`)
+                    : 'DESCANSO'}
+                </Text>
+              </View>
+              <View style={[styles.glassIconContainer, { borderColor: temTreino ? colors.primary : 'rgba(255,255,255,0.1)' }]}>
+                <Ionicons 
+                  name={isExpanded && temTreino ? "chevron-up" : "chevron-down"} 
+                  size={20} 
+                  color={temTreino ? colors.primary : 'rgba(255,255,255,0.2)'} 
+                />
+              </View>
+            </View>
+          </TouchableOpacity>
+        </View>
 
+        {isExpanded && temTreino && (
+          <View style={{ paddingHorizontal: 15, marginTop: 15 }}>
+            {treinosDoDia.map((treino) => (
+              <TreinoListItem 
+                key={treino.id} 
+                item={treino} 
+                index={treinosDoDia.indexOf(treino)}
+                initiallyExpanded={expandTreinoId === treino.id} 
+              />
+            ))}
+          </View>
+        )}
+      </View>
+    );
+  };
 
   return (
     <AppBackground>
       <SafeAreaView style={styles.container}>
         {hasNivelamento ? (
           <FlatList
-            data={expandedDay !== null ? treinos.filter(t => t.dia_semana === expandedDay).sort((a, b) => (a.ordem || 0) - (b.ordem || 0)) : []}
-            keyExtractor={(item) => item.id}
+            data={diasSemana}
+            keyExtractor={(item) => item}
             ListHeaderComponent={renderHeader}
-            renderItem={renderWorkoutForSelectedDay}
+            renderItem={renderDayItem}
             contentContainerStyle={styles.list}
             showsVerticalScrollIndicator={false}
-            ListEmptyComponent={
-              loading ? <ActivityIndicator color={colors.primary} /> : 
-              (expandedDay !== null && treinos.filter(t => t.dia_semana === expandedDay).length === 0) ? 
-              <View style={{padding: 40, alignItems: 'center'}}>
-                <Ionicons name="cafe-outline" size={48} color="rgba(255,255,255,0.2)" />
-                <Text style={{color: '#999', textAlign: 'center', marginTop: 16, fontFamily: fonts.body}}>Hoje é dia de descanso!{'\n'}Aproveite para recarregar as energias.</Text>
-              </View> : null
-            }
+            ListEmptyComponent={loading ? <ActivityIndicator color={colors.primary} /> : null}
           />
         ) : (
           <FlatList
@@ -425,49 +420,19 @@ const styles = StyleSheet.create({
   nivelTabText: { fontSize: 11, fontFamily: fonts.body, color: '#FFFFFF', textTransform: 'uppercase', letterSpacing: 1 },
   nivelTabTextActive: { color: colors.primary, fontFamily: fonts.bold },
   nivelTabIndicator: { position: 'absolute', bottom: 0, height: 3, width: '100%', backgroundColor: colors.primary },
-  
-  daysScrollContainer: {
-    paddingHorizontal: 20,
-    paddingTop: 10,
-    paddingBottom: 20,
-    gap: 12,
+  glassCard: {
+    backgroundColor: 'rgba(255, 255, 255, 0.08)',
+    borderRadius: 20,
+    borderWidth: 1.2,
+    borderColor: 'rgba(231,196,138, 0.2)',
+    overflow: 'hidden',
   },
-  dayCard: {
-    width: 65,
-    height: 85,
-    backgroundColor: 'rgba(255, 255, 255, 0.05)',
-    borderRadius: 16,
-    borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.05)',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  dayCardActive: {
-    backgroundColor: 'rgba(231,196,138, 0.15)',
-    borderColor: 'rgba(231,196,138, 0.5)',
-  },
-  dayCardActiveRest: {
-    backgroundColor: 'rgba(255, 255, 255, 0.15)',
-    borderColor: 'rgba(255, 255, 255, 0.3)',
-  },
-  dayCardTitle: {
-    fontSize: 14,
-    fontFamily: fonts.title,
-    marginBottom: 8,
-  },
-  dayCardDot: {
-    width: 6,
-    height: 6,
-    borderRadius: 3,
-    backgroundColor: 'rgba(255,255,255,0.3)',
-  },
-  dayCardRestDot: {
-    width: 6,
-    height: 2,
-    borderRadius: 1,
-    backgroundColor: 'rgba(255,255,255,0.2)',
-  },
-  
+  glassCardActive: { backgroundColor: 'rgba(231,196,138, 0.1)', borderColor: 'rgba(231,196,138, 0.5)' },
+  glassContent: { flexDirection: 'row', alignItems: 'center', padding: 18, justifyContent: 'space-between' },
+  glassInfo: { flex: 1 },
+  glassDayTitle: { fontSize: 20, fontFamily: fonts.title, fontWeight: 'bold' },
+  glassStatusText: { fontSize: 10, fontFamily: fonts.body, fontWeight: 'bold', marginTop: 4 },
+  glassIconContainer: { width: 48, height: 48, borderRadius: 24, borderWidth: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(255, 255, 255, 0.03)' },
   expandedContent: { marginTop: 5 },
   gridContainer: { width: '100%' },
   list: { paddingBottom: 40 },
