@@ -46,6 +46,9 @@ export default function ReceitasScreen() {
   // Novos estados para funcionalidades solicitadas
   const [filterMode, setFilterMode] = useState<'todos' | 'populares' | 'rapidas'>('todos');
   const [showBackToTop, setShowBackToTop] = useState(false);
+  const [page, setPage] = useState(1);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
   const flatListRef = useRef<FlatList>(null);
 
   const fadeAnim = useRef(new Animated.Value(0)).current;
@@ -77,60 +80,89 @@ export default function ReceitasScreen() {
     }
   }, []);
 
-  const loadReceitas = useCallback(async (currentSearch = searchText) => {
+  const loadReceitas = useCallback(async (currentSearch = searchText, pageNum = 1) => {
     try {
-      setLoading(true);
-      const params: any = {};
+      if (pageNum === 1) setLoading(true);
+      else setLoadingMore(true);
+
+      const params: any = { page: pageNum, limit: 15 };
       if (currentSearch.trim()) params.search = currentSearch.trim();
       if (selectedCategoria) params.categoria = selectedCategoria;
       
       // Aplicar filtros da busca avançada
-      if (filtrosBusca.nome) params.nome = filtrosBusca.nome;
-      if (filtrosBusca.ingrediente) params.ingrediente = filtrosBusca.ingrediente;
+      if (filtrosBusca.nome) {
+        params.nome = filtrosBusca.nome;
+        if (!params.search) params.search = filtrosBusca.nome;
+      }
+      if (filtrosBusca.ingrediente) {
+        params.ingrediente = filtrosBusca.ingrediente;
+        if (!params.search) params.search = filtrosBusca.ingrediente;
+      }
       if (filtrosBusca.proteinasMin) params.proteinasMin = filtrosBusca.proteinasMin;
       if (filtrosBusca.tempoMaximo) params.tempoMaximo = filtrosBusca.tempoMaximo;
       if (filtrosBusca.semLactose) params.semLactose = true;
       if (filtrosBusca.lowCarb) params.lowCarb = true;
 
-      const todasReceitasRaw = await api.getReceitas(params);
-      const todasReceitas = Array.isArray(todasReceitasRaw) ? todasReceitasRaw : [];
-      let receitasAtivas = todasReceitas.filter((r) => r && r.ativa);
+      const response = await api.getReceitas(params);
+      
+      const isPaginated = !Array.isArray(response) && response && response.data;
+      const todasReceitasRaw = isPaginated ? response.data : (Array.isArray(response) ? response : []);
+      const totalPages = isPaginated ? response.totalPages : 1;
+      
+      let receitasAtivas = todasReceitasRaw.filter((r: any) => r && r.ativa);
       
       if (user?.subscription_tier !== 'premium_fit') {
-        receitasAtivas = receitasAtivas.filter(r => r.is_free === true);
+        receitasAtivas = receitasAtivas.filter((r: any) => r.is_free === true);
       }
       
-      setReceitas(receitasAtivas);
-      
-      // Calculamos apenas prévias para os carrosséis horizontais
-      const populares = receitasAtivas
-        .filter(r => r.destaque_popular === true)
-        .sort((a,b) => b.avaliacao - a.avaliacao);
-      setReceitasPopulares(populares.slice(0, 8));
+      if (pageNum === 1) {
+        setReceitas(receitasAtivas);
+        
+        // Calculamos apenas prévias para os carrosséis horizontais
+        const populares = receitasAtivas
+          .filter((r: any) => r.destaque_popular === true)
+          .sort((a: any, b: any) => b.avaliacao - a.avaliacao);
+        setReceitasPopulares(populares.slice(0, 8));
 
-      const rapidas = receitasAtivas
-        .filter(r => (r.tempo_preparo || 0) <= 10);
-      setReceitasRapidas(rapidas.slice(0, 8));
+        const rapidas = receitasAtivas
+          .filter((r: any) => (r.tempo_preparo || 0) <= 10);
+        setReceitasRapidas(rapidas.slice(0, 8));
+      } else {
+        setReceitas(prev => {
+          const newItems = receitasAtivas.filter((r: any) => !prev.some(p => p.id === r.id));
+          return [...prev, ...newItems];
+        });
+      }
+      
+      setHasMore(pageNum < totalPages || (!isPaginated && receitasAtivas.length === 15));
+      setPage(pageNum);
       
     } catch (error) {
       console.error('Erro ao carregar receitas:', error);
     } finally {
       setLoading(false);
+      setLoadingMore(false);
     }
   }, [searchText, selectedCategoria, user?.subscription_tier, filtrosBusca]);
+
+  const loadMore = () => {
+    if (!loadingMore && hasMore && !loading && filterMode === 'todos') {
+      loadReceitas(searchText, page + 1);
+    }
+  };
 
   useEffect(() => { loadCategorias(); }, [loadCategorias]);
   
   // Use effect apenas para carregar inicialmente ou quando a categoria/filtros mudarem
   useEffect(() => { 
-    loadReceitas(searchText); 
+    loadReceitas(searchText, 1); 
   }, [selectedCategoria, filtrosBusca, user?.subscription_tier]);
 
   const handleSearchTextChange = (text: string) => {
     setSearchText(text);
     if (searchTimeoutRef.current) clearTimeout(searchTimeoutRef.current);
     searchTimeoutRef.current = setTimeout(() => {
-      loadReceitas(text);
+      loadReceitas(text, 1);
     }, 600);
   };
 
@@ -346,6 +378,13 @@ export default function ReceitasScreen() {
           windowSize={5}
           showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.list}
+          onEndReached={loadMore}
+          onEndReachedThreshold={0.5}
+          ListFooterComponent={
+            loadingMore ? (
+              <ActivityIndicator color={colors.primary} style={{ marginVertical: 20 }} />
+            ) : null
+          }
           ListEmptyComponent={!loading ? <View style={styles.emptyContainer}><Text style={styles.emptyText}>Nenhuma receita encontrada</Text></View> : <ActivityIndicator color={colors.primary} style={{ marginTop: 20 }} />}
         />
 

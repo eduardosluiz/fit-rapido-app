@@ -125,6 +125,8 @@ export class ReceitasService {
   async findAll(
     categoriaId?: string,
     search?: string,
+    nome?: string,
+    ingrediente?: string,
     isPremium?: boolean,
     dificuldade?: string,
     incluirInativas?: boolean,
@@ -171,6 +173,18 @@ export class ReceitasService {
         '(receita.titulo ILIKE :search OR receita.descricao ILIKE :search)',
         { search: `%${search}%` },
       );
+    }
+
+    if (nome) {
+      queryBuilder.andWhere('receita.titulo ILIKE :nome', { nome: `%${nome}%` });
+    }
+
+    if (ingrediente) {
+      // ingredientes é um array de strings no banco de dados. Para buscar dentro de elementos de array em PostgreSQL com typeorm usando ILIKE:
+      // O TypeORM para arrays de strings com postgres suporta array_to_string
+      queryBuilder.andWhere('array_to_string(receita.ingredientes, \', \') ILIKE :ingrediente', {
+        ingrediente: `%${ingrediente}%`,
+      });
     }
 
     if (isPremium !== undefined) {

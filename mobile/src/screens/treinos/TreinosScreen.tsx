@@ -6,10 +6,10 @@ import {
   TouchableOpacity,
   FlatList,
   ActivityIndicator,
-  Image,
   TextInput,
   ScrollView,
   Dimensions,
+  Image,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useAuth } from '../../contexts/AuthContext';
@@ -44,6 +44,9 @@ export default function TreinosScreen() {
   const [buscaAvancadaVisible, setBuscaAvancadaVisible] = useState(false);
   const [filtrosBusca, setFiltrosBusca] = useState<BuscaFilters>({});
   const [activeFilter, setActiveFilter] = useState('Todos');
+  const [page, setPage] = useState(1);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
   const searchTimeoutRef = React.useRef<NodeJS.Timeout | null>(null);
 
   React.useEffect(() => {
@@ -73,10 +76,12 @@ export default function TreinosScreen() {
     });
   };
 
-  const loadTreinos = useCallback(async (currentSearch = searchText) => {
+  const loadTreinos = useCallback(async (currentSearch = searchText, pageNum = 1) => {
     try {
-      setLoading(true);
-      const params: any = {};
+      if (pageNum === 1) setLoading(true);
+      else setLoadingMore(true);
+
+      const params: any = { page: pageNum, limit: 15 };
       if (currentSearch.trim()) params.search = currentSearch.trim();
 
       // Aplicar filtros da busca avançada
@@ -84,24 +89,44 @@ export default function TreinosScreen() {
       if (filtrosBusca.categoria) params.categoria = filtrosBusca.categoria;
       if (filtrosBusca.tempoMaximo) params.tempoMaximo = filtrosBusca.tempoMaximo;
 
-      const treinosRaw = await api.getTreinos(params);
-      const data = Array.isArray(treinosRaw) ? treinosRaw : [];
+      const response = await api.getTreinos(params);
+      const isPaginated = !Array.isArray(response) && response && response.data;
+      const treinosRaw = isPaginated ? response.data : (Array.isArray(response) ? response : []);
+      const totalPages = isPaginated ? response.totalPages : 1;
       
-      let treinosAtivos = data.filter((t: any) => 
+      let treinosAtivos = treinosRaw.filter((t: any) => 
         t && (t.ativa === true || t.ativo === true) && !t.modalidade_id && !t.modalidade
       );
       
       if (user?.subscription_tier !== 'premium_fit') {
-        treinosAtivos = treinosAtivos.filter(t => t.is_premium === false);
+        treinosAtivos = treinosAtivos.filter((t: any) => t.is_premium === false);
       }
       
-      setTreinos(treinosAtivos);
+      if (pageNum === 1) {
+        setTreinos(treinosAtivos);
+      } else {
+        setTreinos(prev => {
+          const newItems = treinosAtivos.filter((t: any) => !prev.some(p => p.id === t.id));
+          return [...prev, ...newItems];
+        });
+      }
+      
+      setHasMore(pageNum < totalPages || (!isPaginated && treinosAtivos.length === 15));
+      setPage(pageNum);
+
     } catch (error) {
       console.error('Erro ao carregar treinos:', error);
     } finally {
       setLoading(false);
+      setLoadingMore(false);
     }
   }, [searchText, user?.subscription_tier, filtrosBusca]);
+
+  const loadMore = () => {
+    if (!loadingMore && hasMore && !loading) {
+      loadTreinos(searchText, page + 1);
+    }
+  };
 
   useEffect(() => { loadModalidades(); }, [loadModalidades]);
   
@@ -343,6 +368,13 @@ export default function TreinosScreen() {
           renderItem={({ item, index }) => renderTreinoCard(item, index)}
           contentContainerStyle={styles.list}
           showsVerticalScrollIndicator={false}
+          onEndReached={loadMore}
+          onEndReachedThreshold={0.5}
+          ListFooterComponent={
+            loadingMore ? (
+              <ActivityIndicator color={colors.primary} style={{ marginVertical: 20 }} />
+            ) : null
+          }
           ListEmptyComponent={!loading && canAccessWorkouts ? (
             <View style={styles.emptyContainer}>
               <Ionicons name="alert-circle-outline" size={48} color="rgba(255,255,255,0.1)" />

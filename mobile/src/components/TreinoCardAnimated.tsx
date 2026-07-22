@@ -1,5 +1,5 @@
 import React, { useRef } from "react";
-import { View, Text, StyleSheet, Image, Animated, Pressable, Dimensions } from "react-native";
+import { View, Text, StyleSheet, Animated, Pressable, Dimensions, Image } from "react-native";
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from "expo-linear-gradient";
 import { colors, radius, shadows, spacing } from "../constants/colors";

@@ -1,5 +1,5 @@
 import React, { useRef } from "react";
-import { View, Text, StyleSheet, Image, Animated, Pressable, Dimensions } from "react-native";
+import { View, Text, StyleSheet, Animated, Pressable, Dimensions, Image } from "react-native";
 import { Ionicons } from '@expo/vector-icons';
 import { Video, ResizeMode } from 'expo-av';
 import { colors } from "../constants/colors";
@@ -33,7 +33,11 @@ export default function ReceitaCardAnimated({ item, isHorizontal, onPress, order
   const renderMedia = () => {
     if (item.imagem_url) {
       return (
-        <Image source={{ uri: getImageUrl(item.imagem_url) || '' }} style={styles.image} />
+        <Image 
+          source={{ uri: getImageUrl(item.imagem_url) || '' }} 
+          style={styles.image} 
+          resizeMode="cover" 
+        />
       );
     }
     

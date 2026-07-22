@@ -167,9 +167,9 @@ class ApiService {
   async getReceitas(params?: any) {
     try {
       const query = params ? `?${new URLSearchParams(params).toString()}` : '';
-      return await this.request<Receita[]>(`/receitas${query}`);
+      return await this.request<any>(`/receitas${query}`);
     } catch (e) {
-      return [];
+      return params?.page ? { data: [], totalPages: 0 } : [];
     }
   }
   
@@ -186,9 +186,9 @@ class ApiService {
   async getTreinos(params?: any) {
     try {
       const query = params ? `?${new URLSearchParams(params).toString()}` : '';
-      return await this.request<Treino[]>(`/treinos${query}`);
+      return await this.request<any>(`/treinos${query}`);
     } catch (e) {
-      return [];
+      return params?.page ? { data: [], totalPages: 0 } : [];
     }
   }
   

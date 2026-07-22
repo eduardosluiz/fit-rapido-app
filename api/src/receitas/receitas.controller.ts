@@ -40,6 +40,8 @@ export class ReceitasController {
     @Request() req: any,
     @Query('categoria') categoriaId?: string,
     @Query('search') search?: string,
+    @Query('nome') nome?: string,
+    @Query('ingrediente') ingrediente?: string,
     @Query('premium') isPremium?: string,
     @Query('dificuldade') dificuldade?: string,
     @Query('incluirInativas') incluirInativas?: string,
@@ -66,6 +68,8 @@ export class ReceitasController {
     const result = await this.receitasService.findAll(
       categoriaId,
       search,
+      nome,
+      ingrediente,
       isPremium === 'true',
       dificuldade,
       incluirInativas === 'true',
