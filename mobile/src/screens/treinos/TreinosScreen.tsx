@@ -10,6 +10,7 @@ import {
   ScrollView,
   Dimensions,
   Image,
+  ImageBackground,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useAuth } from '../../contexts/AuthContext';
@@ -19,7 +20,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { colors, radius, spacing } from '../../constants/colors';
 import fonts from '../../constants/fonts';
-import BuscaAvancada, { BuscaFilters } from '../../components/BuscaAvancada';
+import BuscaAvancadaTreinos, { BuscaFiltersTreino } from '../../components/BuscaAvancadaTreinos';
 import AppBackground from '../../components/AppBackground';
 import TreinoCardAnimated from '../../components/TreinoCardAnimated';
 
@@ -42,7 +43,7 @@ export default function TreinosScreen() {
   const [loading, setLoading] = useState(true);
   const [searchText, setSearchText] = useState('');
   const [buscaAvancadaVisible, setBuscaAvancadaVisible] = useState(false);
-  const [filtrosBusca, setFiltrosBusca] = useState<BuscaFilters>({});
+  const [filtrosBusca, setFiltrosBusca] = useState<BuscaFiltersTreino>({});
   const [activeFilter, setActiveFilter] = useState('Todos');
   const [page, setPage] = useState(1);
   const [loadingMore, setLoadingMore] = useState(false);
@@ -85,8 +86,15 @@ export default function TreinosScreen() {
       if (currentSearch.trim()) params.search = currentSearch.trim();
 
       // Aplicar filtros da busca avançada
-      if (filtrosBusca.nome) params.nome = filtrosBusca.nome;
-      if (filtrosBusca.categoria) params.categoria = filtrosBusca.categoria;
+      if (filtrosBusca.nome) {
+        params.nome = filtrosBusca.nome;
+        if (!params.search) params.search = filtrosBusca.nome;
+      }
+      if (filtrosBusca.categoria) {
+        // Since backend expects categoriaId, we will append categoria text to search for now
+        if (!params.search) params.search = filtrosBusca.categoria;
+        else params.search += ` ${filtrosBusca.categoria}`;
+      }
       if (filtrosBusca.tempoMaximo) params.tempoMaximo = filtrosBusca.tempoMaximo;
 
       const response = await api.getTreinos(params);
@@ -151,50 +159,36 @@ export default function TreinosScreen() {
     
     return (
       <TouchableOpacity 
-        style={styles.featuredCard} 
+        style={styles.featuredBannerContainer} 
         activeOpacity={0.9}
         onPress={() => (navigation as any).navigate('TreinoDetail', { treinoId: featuredWorkout.id })}
       >
         {thumbnail ? (
-          <Image source={{ uri: thumbnail }} style={StyleSheet.absoluteFillObject} resizeMode="cover" />
+          <ImageBackground source={{ uri: thumbnail }} style={styles.bannerImage} resizeMode="cover">
+            <LinearGradient 
+              colors={['transparent', 'rgba(0,0,0,0.6)', 'rgba(0,0,0,0.9)']} 
+              style={StyleSheet.absoluteFillObject} 
+            />
+            <View style={styles.bannerOverlay}>
+              <Text style={styles.bannerBadge}>✨ NOVO TREINO</Text>
+              <Text style={styles.headerTitleBanner} numberOfLines={2}>{featuredWorkout.titulo}</Text>
+              <View style={styles.titleUnderline} />
+              <Text style={styles.bannerSubtitle}>{featuredWorkout.duracao_minutos} min • {
+                  featuredWorkout.nivel === 'facil' || featuredWorkout.nivel === 'iniciante' ? 'Iniciante' : 
+                   featuredWorkout.nivel === 'medio' || featuredWorkout.nivel === 'intermediario' ? 'Intermediário' : 'Avançado'
+              }</Text>
+              <TouchableOpacity 
+                style={styles.bannerButton}
+                onPress={() => (navigation as any).navigate('TreinoDetail', { treinoId: featuredWorkout.id })}
+              >
+                <Text style={styles.bannerButtonText}>Explorar Agora</Text>
+                <Ionicons name="arrow-forward" size={16} color="#000" />
+              </TouchableOpacity>
+            </View>
+          </ImageBackground>
         ) : (
-          <View style={[StyleSheet.absoluteFillObject, { backgroundColor: colors.backgroundElevated }]} />
+          <View style={[styles.bannerImage, { backgroundColor: colors.backgroundElevated }]} />
         )}
-        <LinearGradient 
-          colors={['transparent', 'rgba(28,27,30,0.8)', 'rgba(28,27,30,1)']} 
-          style={StyleSheet.absoluteFillObject} 
-        />
-        
-        <View style={styles.featuredContent}>
-          <View style={styles.featuredBadge}>
-            <Ionicons name="sparkles" size={12} color={colors.primary} />
-            <Text style={styles.featuredBadgeText}>NOVO TREINO</Text>
-          </View>
-          
-          <Text style={styles.featuredTitle} numberOfLines={2}>{featuredWorkout.titulo}</Text>
-          
-          <View style={styles.featuredMetaRow}>
-            <View style={styles.metaItem}>
-              <Ionicons name="time-outline" size={14} color={colors.textSecondary} />
-              <Text style={styles.featuredMetaText}>{featuredWorkout.duracao_minutos} min</Text>
-            </View>
-            <View style={styles.metaItem}>
-              <Ionicons name="stats-chart" size={14} color={colors.textSecondary} />
-              <Text style={styles.featuredMetaText}>
-                {featuredWorkout.nivel === 'facil' || featuredWorkout.nivel === 'iniciante' ? 'Iniciante' : 
-                 featuredWorkout.nivel === 'medio' || featuredWorkout.nivel === 'intermediario' ? 'Intermediário' : 'Avançado'}
-              </Text>
-            </View>
-          </View>
-
-          <TouchableOpacity 
-            style={styles.featuredButton}
-            onPress={() => (navigation as any).navigate('TreinoDetail', { treinoId: featuredWorkout.id })}
-          >
-            <Text style={styles.featuredButtonText}>Começar treino</Text>
-            <Ionicons name="chevron-forward" size={18} color="#000" />
-          </TouchableOpacity>
-        </View>
       </TouchableOpacity>
     );
   };
@@ -268,19 +262,9 @@ export default function TreinosScreen() {
 
   const renderHeader = () => (
     <View style={{ paddingBottom: 10 }}>
-      <View style={styles.headerContainer}>
-        <View style={styles.headerRow}>
-          <Text style={styles.headerTitle}>Treinos</Text>
-          <TouchableOpacity 
-            style={styles.libButton}
-            onPress={() => (navigation as any).navigate('BibliotecaTreinos')}
-          >
-            <Ionicons name="play-circle-outline" size={16} color="#E7C48A" />
-            <Text style={styles.libButtonText}>Biblioteca de Execuções</Text>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.headerDivider} />
-      </View>
+      {canAccessWorkouts && renderFeaturedWorkout()}
+
+      <View style={{ height: canAccessWorkouts ? 20 : 0 }} />
 
       {!canAccessWorkouts ? (
         <View style={styles.lockedContainer}>
@@ -295,7 +279,6 @@ export default function TreinosScreen() {
         </View>
       ) : (
         <>
-          {renderFeaturedWorkout()}
           {renderCategories()}
 
           <View style={styles.searchRow}>
@@ -311,6 +294,13 @@ export default function TreinosScreen() {
             </View>
             <TouchableOpacity
               style={styles.filterButton}
+              onPress={() => (navigation as any).navigate('BibliotecaTreinos')}
+              activeOpacity={0.7}
+            >
+              <Ionicons name="play-circle-outline" size={24} color={colors.textPrimary} />
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.filterButton}
               onPress={() => setBuscaAvancadaVisible(true)}
               activeOpacity={0.7}
             >
@@ -318,10 +308,12 @@ export default function TreinosScreen() {
             </TouchableOpacity>
           </View>
 
-          <BuscaAvancada
+          <BuscaAvancadaTreinos
             visible={buscaAvancadaVisible}
             onClose={() => setBuscaAvancadaVisible(false)}
-            onSearch={(filters) => setFiltrosBusca(filters)}
+            onSearch={(filters) => {
+              setFiltrosBusca(filters);
+            }}
             initialFilters={filtrosBusca}
           />
 
@@ -430,68 +422,71 @@ const styles = StyleSheet.create({
   },
   
   // Featured Workout
-  featuredCard: {
-    marginHorizontal: 12,
-    height: 190,
-    borderRadius: radius.lg,
+  featuredBannerContainer: {
+    width: Dimensions.get('window').width,
+    height: 250,
+    position: 'relative',
     overflow: 'hidden',
-    marginBottom: 20,
-    borderWidth: 1,
-    borderColor: 'rgba(231,196,138,0.35)',
   },
-  featuredContent: {
-    flex: 1,
-    justifyContent: 'flex-end',
-    padding: spacing.lg,
+  bannerImage: {
+    width: '100%',
+    height: '100%',
   },
-  featuredBadge: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 8,
+  bannerOverlay: {
+    position: 'absolute',
+    bottom: 25,
+    left: 20,
+    right: 20,
+    zIndex: 10,
   },
-  featuredBadgeText: {
-    color: colors.primary,
-    fontSize: 10,
-    fontFamily: fonts.bold,
-    marginLeft: 4,
-    letterSpacing: 0.5,
-  },
-  featuredTitle: {
-    color: colors.textPrimary,
-    fontSize: 24,
+  headerTitleBanner: {
+    fontSize: 26,
     fontFamily: fonts.title,
+    color: '#ffffff',
     marginBottom: 8,
-    lineHeight: 28,
+    textShadowColor: 'rgba(0, 0, 0, 0.75)',
+    textShadowOffset: { width: 0, height: 2 },
+    textShadowRadius: 4,
   },
-  featuredMetaRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 16,
-  },
-  metaItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginRight: 16,
-  },
-  featuredMetaText: {
-    color: colors.textSecondary,
-    fontSize: 13,
-    marginLeft: 4,
-    fontFamily: fonts.medium,
-  },
-  featuredButton: {
-    backgroundColor: colors.primary,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: 12,
-    borderRadius: radius.md,
-  },
-  featuredButtonText: {
-    color: '#000',
-    fontSize: 14,
+  bannerBadge: {
+    color: colors.primary,
+    fontSize: 12,
     fontFamily: fonts.bold,
-    marginRight: 6,
+    marginBottom: 4,
+    letterSpacing: 1,
+    textTransform: 'uppercase',
+  },
+  titleUnderline: {
+    height: 3,
+    backgroundColor: colors.primary,
+    width: '30%',
+    borderRadius: 2,
+    marginBottom: 8,
+  },
+  bannerSubtitle: {
+    fontSize: 14,
+    fontFamily: fonts.body,
+    color: '#e0e0e0',
+    marginBottom: 16,
+    textShadowColor: 'rgba(0, 0, 0, 0.75)',
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 2,
+  },
+  bannerButton: {
+    backgroundColor: colors.primary,
+    alignSelf: 'flex-start',
+    paddingHorizontal: 20,
+    paddingVertical: 8,
+    borderRadius: 20,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  bannerButtonText: {
+    color: '#000',
+    fontSize: 13,
+    fontWeight: 'bold',
+    fontFamily: fonts.bodySemiBold,
   },
 
   // Categories

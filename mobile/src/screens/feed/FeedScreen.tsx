@@ -59,11 +59,11 @@ export default function FeedScreen() {
       setLoading(true);
       const canAccessWorkouts = user?.subscription_tier === 'premium_fit';
       
-      const [bannersData, receitasData, treinosData] = await Promise.all([
+      const [bannersData, receitasResp, treinosResp] = await Promise.all([
         api.getBanners(),
-        api.getReceitas({}),
+        api.getReceitas({ page: 1, limit: 6 }),
         canAccessWorkouts 
-          ? api.getTreinos({})
+          ? api.getTreinos({ page: 1, limit: 6 })
           : Promise.resolve([]),
       ]);
 
@@ -73,6 +73,9 @@ export default function FeedScreen() {
       } catch (error) {
         console.error('Erro ao carregar notificações:', error);
       }
+
+      const receitasData = !Array.isArray(receitasResp) && receitasResp && receitasResp.data ? receitasResp.data : (Array.isArray(receitasResp) ? receitasResp : []);
+      const treinosData = !Array.isArray(treinosResp) && treinosResp && treinosResp.data ? treinosResp.data : (Array.isArray(treinosResp) ? treinosResp : []);
 
       const safeReceitasData = Array.isArray(receitasData) ? receitasData : [];
       const safeTreinosData = Array.isArray(treinosData) ? treinosData : [];

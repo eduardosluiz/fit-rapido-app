@@ -170,7 +170,7 @@ export class ReceitasService {
 
     if (search) {
       queryBuilder.andWhere(
-        '(receita.titulo ILIKE :search OR receita.descricao ILIKE :search)',
+        '(receita.titulo ILIKE :search OR array_to_string(receita.ingredientes, \' \') ILIKE :search OR array_to_string(receita.tags, \' \') ILIKE :search OR categorias.nome ILIKE :search)',
         { search: `%${search}%` },
       );
     }
