@@ -104,6 +104,21 @@ export class TreinosService {
     }
     const queryBuilder = this.treinoRepository
       .createQueryBuilder('treino')
+      .select([
+        'treino.id',
+        'treino.titulo',
+        'treino.imagem_url',
+        'treino.imagem_capa_url',
+        'treino.video_url',
+        'treino.nivel',
+        'treino.duracao_minutos',
+        'treino.is_premium',
+        'treino.is_inedito',
+        'treino.avaliacao',
+        'treino.popular',
+        'treino.ativa',
+        'treino.modalidade_id',
+      ])
       .leftJoinAndSelect('treino.categorias', 'categorias');
 
     if (apenasAvulsos) {

@@ -151,9 +151,25 @@ export class ReceitasService {
     // O queryBuilder com leftJoin pode estar causando problemas
     const queryBuilder = this.receitaRepository
       .createQueryBuilder('receita')
-      .leftJoinAndSelect('receita.categorias', 'categorias')
-      .addSelect('receita.is_premium')
-      .addSelect('receita.is_free');
+      .select([
+        'receita.id',
+        'receita.titulo',
+        'receita.imagem_url',
+        'receita.imagens_url',
+        'receita.video_url',
+        'receita.video_thumbnail_url',
+        'receita.is_inedito',
+        'receita.avaliacao',
+        'receita.destaque_popular',
+        'receita.dificuldade',
+        'receita.tempo_preparo',
+        'receita.calorias',
+        'receita.is_premium',
+        'receita.is_free',
+        'receita.ativa',
+        'receita.created_at',
+      ])
+      .leftJoinAndSelect('receita.categorias', 'categorias');
 
     // Filtrar por ativa apenas se não for para incluir inativas
     if (!incluirInativas) {

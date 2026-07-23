@@ -359,6 +359,10 @@ export default function TreinosScreen() {
           ListHeaderComponent={renderHeader()}
           renderItem={({ item, index }) => renderTreinoCard(item, index)}
           contentContainerStyle={styles.list}
+          initialNumToRender={10}
+          maxToRenderPerBatch={10}
+          windowSize={5}
+          removeClippedSubviews={true}
           showsVerticalScrollIndicator={false}
           onEndReached={loadMore}
           onEndReachedThreshold={0.5}
