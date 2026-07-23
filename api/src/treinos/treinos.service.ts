@@ -73,16 +73,21 @@ export class TreinosService {
     search?: string,
     isPremium?: boolean,
     nivel?: string,
-    user?: User, // Usuário atual para filtrar por plano
     incluirInativas?: boolean,
     tipoTreino?: 'ponto_partida' | 'academia' | 'casa',
     tipoDica?: 'ajuste_carga' | 'mobilidade' | 'cardio',
     tipoEquipamentoCasa?: 'sem_equipamentos' | 'com_halteres' | 'rapido',
     mostrarPontoPartida?: boolean,
+    apenasAvulsos?: boolean,
+    user?: any,
     page?: number,
     limit?: number,
-    apenasAvulsos?: boolean,
-  ): Promise<any> {
+    nome?: string,
+    categoriaNome?: string,
+    tempoMaximo?: number,
+  ) {
+    if (incluirInativas === undefined) incluirInativas = false;
+    
     // IMPORTANTE: Admins sempre veem todos os treinos, independente do plano
     if (user && (user.role === UserRole.ADMIN || String(user.role) === 'admin' || String(user.role) === 'personal_trainer')) {
       // Admin vê tudo, continuar sem filtro de acesso
@@ -121,9 +126,21 @@ export class TreinosService {
 
     if (search) {
       queryBuilder.andWhere(
-        '(treino.titulo ILIKE :search OR treino.descricao ILIKE :search)',
+        '(treino.titulo ILIKE :search OR treino.descricao ILIKE :search OR categorias.nome ILIKE :search)',
         { search: `%${search}%` },
       );
+    }
+
+    if (nome) {
+      queryBuilder.andWhere('treino.titulo ILIKE :nome', { nome: `%${nome}%` });
+    }
+
+    if (categoriaNome) {
+      queryBuilder.andWhere('categorias.nome ILIKE :categoriaNome', { categoriaNome: `%${categoriaNome}%` });
+    }
+
+    if (tempoMaximo) {
+      queryBuilder.andWhere('treino.duracao_minutos <= :tempoMaximo', { tempoMaximo });
     }
 
     if (isPremium !== undefined) {

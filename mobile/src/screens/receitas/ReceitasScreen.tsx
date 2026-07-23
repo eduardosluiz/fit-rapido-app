@@ -92,11 +92,9 @@ export default function ReceitasScreen() {
       // Aplicar filtros da busca avançada
       if (filtrosBusca.nome) {
         params.nome = filtrosBusca.nome;
-        if (!params.search) params.search = filtrosBusca.nome;
       }
       if (filtrosBusca.ingrediente) {
         params.ingrediente = filtrosBusca.ingrediente;
-        if (!params.search) params.search = filtrosBusca.ingrediente;
       }
       if (filtrosBusca.proteinasMin) params.proteinasMin = filtrosBusca.proteinasMin;
       if (filtrosBusca.tempoMaximo) params.tempoMaximo = filtrosBusca.tempoMaximo;

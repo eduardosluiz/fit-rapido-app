@@ -224,19 +224,17 @@ export class ReceitasService {
     }
 
     if (semLactose) {
-      // Filtrar receitas que não contenham ingredientes com lactose
-      // Isso requer uma busca mais complexa, por enquanto vamos usar tags ou descrição
       queryBuilder.andWhere(
-        '(receita.descricao ILIKE :semLactose OR receita.tags::text ILIKE :semLactose)',
+        '(array_to_string(receita.tags, \' \') ILIKE :semLactose OR categorias.nome ILIKE :semLactose)',
         { semLactose: '%sem lactose%' },
       );
     }
 
     if (lowCarb) {
-      // Filtrar receitas low carb (carboidratos <= 30g por porção)
-      queryBuilder.andWhere('receita.carboidratos <= :lowCarbMax', {
-        lowCarbMax: 30,
-      });
+      queryBuilder.andWhere(
+        '(receita.carboidratos <= :lowCarbMax OR array_to_string(receita.tags, \' \') ILIKE :lowCarbText OR categorias.nome ILIKE :lowCarbText)',
+        { lowCarbMax: 30, lowCarbText: '%low carb%' },
+      );
     }
 
     queryBuilder.orderBy('receita.created_at', 'DESC');

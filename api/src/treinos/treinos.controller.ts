@@ -46,6 +46,9 @@ export class TreinosController {
     @Query('tipoEquipamentoCasa') tipoEquipamentoCasa?: 'sem_equipamentos' | 'com_halteres' | 'rapido',
     @Query('mostrarPontoPartida') mostrarPontoPartida?: string,
     @Query('apenasAvulsos') apenasAvulsos?: string,
+    @Query('nome') nome?: string,
+    @Query('categoriaNome') categoriaNome?: string,
+    @Query('tempoMaximo') tempoMaximo?: string,
     @Query('page') page?: string,
     @Query('limit') limit?: string,
   ) {
@@ -61,15 +64,18 @@ export class TreinosController {
       search,
       premium !== undefined ? premium === 'true' : undefined,
       nivel,
-      user,
       incluirInativas === 'true',
       tipoTreino,
       tipoDica,
       tipoEquipamentoCasa,
       mostrarPontoPartida !== undefined ? mostrarPontoPartida === 'true' : undefined,
+      apenasAvulsos === 'true',
+      user || undefined,
       page ? parseInt(page, 10) : undefined,
       limit ? parseInt(limit, 10) : undefined,
-      apenasAvulsos === 'true',
+      nome,
+      categoriaNome,
+      tempoMaximo ? parseInt(tempoMaximo, 10) : undefined,
     );
   }
 

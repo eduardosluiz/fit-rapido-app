@@ -96,13 +96,13 @@ export default function ReceitaCardAnimated({ item, isHorizontal, onPress, order
         </View>
 
         <View style={styles.content}>
-          <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6, minHeight: 24 }}>
             <Text style={[styles.title, { flex: 1, marginBottom: 0, marginRight: 8 }]} numberOfLines={1}>
               {item.titulo}
             </Text>
             {(item.substituto_id_1 || item.substituto_id_2) && (
               <View style={{ backgroundColor: 'rgba(231,196,138, 0.15)', padding: 4, borderRadius: 6, borderWidth: 1, borderColor: 'rgba(231,196,138, 0.4)' }}>
-                <Ionicons name="swap-horizontal" size={14} color="#E7C48A" />
+                <Ionicons name="swap-horizontal" size={12} color="#E7C48A" />
               </View>
             )}
           </View>

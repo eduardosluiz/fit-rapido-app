@@ -88,12 +88,11 @@ export default function TreinosScreen() {
       // Aplicar filtros da busca avançada
       if (filtrosBusca.nome) {
         params.nome = filtrosBusca.nome;
-        if (!params.search) params.search = filtrosBusca.nome;
       }
       if (filtrosBusca.categoria) {
-        // Since backend expects categoriaId, we will append categoria text to search for now
-        if (!params.search) params.search = filtrosBusca.categoria;
-        else params.search += ` ${filtrosBusca.categoria}`;
+        // Since backend expects categoriaId, we pass it properly or wait for backend support.
+        // If it's used as a filter, pass it as category text without mixing with general search.
+        params.categoriaNome = filtrosBusca.categoria;
       }
       if (filtrosBusca.tempoMaximo) params.tempoMaximo = filtrosBusca.tempoMaximo;
 
