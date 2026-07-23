@@ -13,11 +13,17 @@ import { Ionicons } from '@expo/vector-icons';
 import colors from '../constants/colors';
 import fonts from '../constants/fonts';
 
+interface Categoria {
+  id: string;
+  nome: string;
+}
+
 interface BuscaAvancadaProps {
   visible: boolean;
   onClose: () => void;
   onSearch: (filters: BuscaFiltersTreino) => void;
   initialFilters?: BuscaFiltersTreino;
+  availableCategories?: Categoria[];
 }
 
 export interface BuscaFiltersTreino {
@@ -32,8 +38,10 @@ export default function BuscaAvancadaTreinos({
   onClose,
   onSearch,
   initialFilters = {},
+  availableCategories = [],
 }: BuscaAvancadaProps) {
   const [filters, setFilters] = useState<BuscaFiltersTreino>(initialFilters);
+  const [showCategorySelect, setShowCategorySelect] = useState(false);
 
   const handleSearch = () => {
     onSearch(filters);
@@ -81,12 +89,62 @@ export default function BuscaAvancadaTreinos({
               {/* Categoria */}
               <View style={styles.inputGroup}>
                 <Text style={styles.label}>Categoria (Modalidade)</Text>
-                <TextInput
-                  style={styles.input}
-                  placeholder="Ex: Musculação, Em casa"
-                  value={filters.categoria}
-                  onChangeText={(text) => setFilters({ ...filters, categoria: text })}
-                />
+                {availableCategories && availableCategories.length > 0 ? (
+                  <View>
+                    <TouchableOpacity 
+                      style={[styles.input, styles.selectInput]} 
+                      onPress={() => setShowCategorySelect(!showCategorySelect)}
+                    >
+                      <Text style={[styles.selectInputText, !filters.categoria && styles.placeholderText]}>
+                        {filters.categoria || "Selecione uma categoria..."}
+                      </Text>
+                      <Ionicons name={showCategorySelect ? "chevron-up" : "chevron-down"} size={20} color={colors.textMuted} />
+                    </TouchableOpacity>
+
+                    {showCategorySelect && (
+                      <View style={styles.dropdownContainer}>
+                        <TouchableOpacity
+                          style={styles.dropdownItem}
+                          onPress={() => {
+                            setFilters({ ...filters, categoria: undefined });
+                            setShowCategorySelect(false);
+                          }}
+                        >
+                          <Text style={[styles.dropdownItemText, !filters.categoria && styles.dropdownItemSelectedText]}>
+                            Todas as modalidades
+                          </Text>
+                          {!filters.categoria && <Ionicons name="checkmark" size={18} color="#E7C48A" />}
+                        </TouchableOpacity>
+                        
+                        {availableCategories.map((cat) => {
+                          const isSelected = filters.categoria === cat.nome;
+                          return (
+                            <TouchableOpacity
+                              key={cat.id}
+                              style={styles.dropdownItem}
+                              onPress={() => {
+                                setFilters({ ...filters, categoria: cat.nome });
+                                setShowCategorySelect(false);
+                              }}
+                            >
+                              <Text style={[styles.dropdownItemText, isSelected && styles.dropdownItemSelectedText]}>
+                                {cat.nome}
+                              </Text>
+                              {isSelected && <Ionicons name="checkmark" size={18} color="#E7C48A" />}
+                            </TouchableOpacity>
+                          );
+                        })}
+                      </View>
+                    )}
+                  </View>
+                ) : (
+                  <TextInput
+                    style={styles.input}
+                    placeholder="Ex: Musculação, Em casa"
+                    value={filters.categoria}
+                    onChangeText={(text) => setFilters({ ...filters, categoria: text })}
+                  />
+                )}
               </View>
 
               {/* Tempo de preparo */}
@@ -185,6 +243,45 @@ const styles = StyleSheet.create({
     fontFamily: fonts.regular,
     color: colors.text,
     backgroundColor: colors.cardBackground,
+  },
+  selectInput: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  selectInputText: {
+    fontSize: 14,
+    fontFamily: fonts.regular,
+    color: colors.text,
+  },
+  placeholderText: {
+    color: '#999',
+  },
+  dropdownContainer: {
+    marginTop: 4,
+    backgroundColor: '#1E1B18',
+    borderWidth: 1,
+    borderColor: colors.border,
+    borderRadius: 8,
+    overflow: 'hidden',
+  },
+  dropdownItem: {
+    paddingVertical: 14,
+    paddingHorizontal: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: 'rgba(255,255,255,0.05)',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  dropdownItemText: {
+    color: '#aaa',
+    fontSize: 14,
+    fontFamily: fonts.regular,
+  },
+  dropdownItemSelectedText: {
+    color: '#E7C48A',
+    fontFamily: fonts.bold,
   },
   switchGroup: {
     flexDirection: 'row',

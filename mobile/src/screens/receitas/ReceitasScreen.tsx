@@ -215,11 +215,12 @@ export default function ReceitasScreen() {
         </TouchableOpacity>
       </View>
 
-      <BuscaAvancada
+      <BuscaAvancada 
         visible={buscaAvancadaVisible}
         onClose={() => setBuscaAvancadaVisible(false)}
         onSearch={(filters) => setFiltrosBusca(filters)}
         initialFilters={filtrosBusca}
+        availableCategories={categorias}
       />
 
       {categorias.length > 0 && (
