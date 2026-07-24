@@ -4,7 +4,7 @@ import { Repository } from 'typeorm';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { User, UserRole, SubscriptionTier } from './entities/user.entity';
-import { RegisterDto, LoginDto, UpdateUserDto, UpdatePasswordDto } from './dto/auth.dto';
+import { RegisterDto, LoginDto, UpdateUserDto, UpdatePasswordDto, SocialLoginDto } from './dto/auth.dto';
 import { canManuallyChangeSubscription, getSubscriptionChangeErrorMessage } from '../common/helpers/subscription-validation.helper';
 
 @Injectable()
