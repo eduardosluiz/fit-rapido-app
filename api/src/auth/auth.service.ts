@@ -91,6 +91,69 @@ export class AuthService {
     };
   }
 
+  async socialLogin(socialDto: SocialLoginDto) {
+    const { provider, token, email, name } = socialDto;
+    
+    let decodedEmail = email;
+    let socialId = null;
+    
+    if (token) {
+      try {
+        const decoded = this.jwtService.decode(token) as any;
+        if (decoded) {
+           decodedEmail = decoded.email || email;
+           socialId = decoded.sub;
+        }
+      } catch (e) {
+        // Ignorar erro de decode
+      }
+    }
+    
+    if (!decodedEmail) {
+       throw new BadRequestException('Email não fornecido pelo provedor social.');
+    }
+    
+    let user = await this.userRepository.findOne({
+      where: { email: decodedEmail },
+    });
+    
+    if (!user) {
+      const now = new Date();
+      const trialExpiresAt = new Date(now);
+      trialExpiresAt.setDate(trialExpiresAt.getDate() + 7);
+
+      user = this.userRepository.create({
+        email: decodedEmail,
+        nome: name || 'Usuário',
+        role: UserRole.USER,
+        subscription_tier: SubscriptionTier.FREE, 
+        trial_expires_at: trialExpiresAt,
+        apple_id: provider === 'apple' ? socialId : null,
+        google_id: provider === 'google' ? socialId : null,
+      });
+      await this.userRepository.save(user);
+    } else {
+      if (socialId) {
+        let saveRequired = false;
+        if (provider === 'apple' && !user.apple_id) { user.apple_id = socialId; saveRequired = true; }
+        if (provider === 'google' && !user.google_id) { user.google_id = socialId; saveRequired = true; }
+        if (saveRequired) {
+          await this.userRepository.save(user);
+        }
+      }
+    }
+    
+    const payload = { sub: user.id, email: user.email, role: user.role };
+    const access_token = this.jwtService.sign(payload);
+
+    const { senha_hash: _, ...userWithoutPassword } = user;
+
+    return {
+      user: userWithoutPassword,
+      access_token,
+    };
+  }
+
   async validateUser(userId: string): Promise<User | null> {
     const user = await this.userRepository.findOne({
       where: { id: userId },

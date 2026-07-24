@@ -2,6 +2,8 @@ import React, { createContext, useContext, useState, useEffect, ReactNode } from
 import { api, User } from '../services/api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { notificationService } from '../services/notifications';
+import Purchases from 'react-native-purchases';
+import { Platform } from 'react-native';
 
 interface AuthContextType {
   user: User | null;
@@ -9,6 +11,7 @@ interface AuthContextType {
   isAuthenticated: boolean;
   login: (email: string, senha: string) => Promise<void>;
   register: (email: string, nome: string, senha: string) => Promise<void>;
+  socialLogin: (provider: string, token: string, email?: string, name?: string) => Promise<void>;
   logout: () => Promise<void>;
 }
 
@@ -22,12 +25,24 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     loadUser();
   }, []);
 
+  const configureRevenueCatUser = async (userId: string) => {
+    if (Platform.OS === 'web') return;
+    try {
+      await Purchases.logIn(userId);
+    } catch (e) {
+      console.warn('Erro ao fazer login no RevenueCat:', e);
+    }
+  };
+
   const loadUser = async () => {
     try {
       const token = await AsyncStorage.getItem('auth_token');
       if (token) {
         const profile = await api.getProfile();
         setUser(profile);
+        if (profile?.id) {
+          await configureRevenueCatUser(profile.id.toString());
+        }
       }
     } catch (error) {
       console.error('Erro ao carregar usuário:', error);
@@ -47,21 +62,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         throw new Error('Resposta inválida do servidor: token não recebido');
       }
       
-      console.log('Login response:', { 
-        hasUser: !!data.user, 
-        hasToken: !!data.access_token,
-        userId: data.user?.id,
-        userEmail: data.user?.email 
-      });
-      
       // Verificar se o token foi salvo
       const savedToken = await AsyncStorage.getItem('auth_token');
-      console.log('Token salvo no AsyncStorage:', !!savedToken, savedToken ? 'Token presente' : 'Token ausente');
       
       // Atualizar o estado do usuário
       if (data.user) {
         setUser(data.user);
-        console.log('Estado do usuário atualizado:', data.user ? 'Usuário definido' : 'Usuário null');
+        if (data.user.id) {
+          await configureRevenueCatUser(data.user.id.toString());
+        }
       } else {
         throw new Error('Dados do usuário não recebidos');
       }
@@ -69,21 +78,42 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       // Aguardar um pouco para garantir que o estado foi atualizado
       await new Promise(resolve => setTimeout(resolve, 100));
       
-      // Verificar o estado após atualização
-      const currentUser = await AsyncStorage.getItem('auth_token');
-      console.log('Verificação final - Token ainda presente:', !!currentUser);
-      
       // Registrar token de notificação após login
       try {
         await notificationService.registerToken();
       } catch (notifError) {
         console.warn('Erro ao registrar token de notificação:', notifError);
-        // Não falhar o login se o registro de notificação falhar
       }
     } catch (error: any) {
       console.error('Erro no login:', error);
-      // Re-lançar o erro para que o LoginScreen possa tratá-lo
       throw error;
+    }
+  };
+
+  const socialLogin = async (provider: string, token: string, email?: string, name?: string) => {
+    try {
+      const data = await api.socialLogin(provider, token, email, name);
+      
+      if (!data || !data.access_token) {
+        throw new Error('Resposta inválida do servidor: token não recebido');
+      }
+      
+      if (data.user) {
+        setUser(data.user);
+        if (data.user.id) {
+          await configureRevenueCatUser(data.user.id.toString());
+        }
+      } else {
+        throw new Error('Dados do usuário não recebidos');
+      }
+      
+      try {
+        await notificationService.registerToken();
+      } catch (notifError) {
+        console.warn('Erro ao registrar token de notificação:', notifError);
+      }
+    } catch (error: any) {
+      console.error(`Erro no login via ${provider}:`, error);
       throw error;
     }
   };
@@ -91,6 +121,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const register = async (email: string, nome: string, senha: string) => {
     const data = await api.register(email, nome, senha);
     setUser(data.user);
+    if (data.user?.id) {
+      await configureRevenueCatUser(data.user.id.toString());
+    }
     // Registrar token de notificação após registro
     await notificationService.registerToken();
   };
@@ -100,6 +133,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     await notificationService.unregisterToken();
     await api.logout();
     setUser(null);
+    if (Platform.OS !== 'web') {
+      try {
+        await Purchases.logOut();
+      } catch (e) {
+        console.warn('Erro ao fazer logout no RevenueCat:', e);
+      }
+    }
   };
 
   return (

@@ -14,6 +14,7 @@ import { useNavigation } from '@react-navigation/native';
 import { useAuth } from '../../contexts/AuthContext';
 import { api } from '../../services/api';
 import { Ionicons } from '@expo/vector-icons';
+import SocialLoginButtons from '../../components/SocialLoginButtons';
 
 export default function RegisterScreen() {
   const navigation = useNavigation();
@@ -161,6 +162,8 @@ export default function RegisterScreen() {
                 Já tem conta? <Text style={styles.linkTextBold}>Entrar</Text>
               </Text>
             </TouchableOpacity>
+
+            <SocialLoginButtons onLoading={setLoading} />
           </View>
         </View>
       </ScrollView>

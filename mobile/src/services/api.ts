@@ -139,6 +139,17 @@ class ApiService {
       method: 'POST',
       body: JSON.stringify({ email, senha }),
     });
+    if (data.access_token) {
+      await AsyncStorage.setItem('auth_token', data.access_token);
+    }
+    return data;
+  }
+
+  async socialLogin(provider: string, token: string, email?: string, name?: string) {
+    const data = await this.request<any>('/auth/social', {
+      method: 'POST',
+      body: JSON.stringify({ provider, token, email, name }),
+    });
     if (data && data.access_token) {
       await AsyncStorage.setItem('auth_token', data.access_token);
     }

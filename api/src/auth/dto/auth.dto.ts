@@ -44,6 +44,24 @@ export class LoginDto {
   senha: string;
 }
 
+export class SocialLoginDto {
+  @IsString()
+  @IsNotEmpty()
+  provider: string; // 'apple' or 'google'
+
+  @IsString()
+  @IsNotEmpty()
+  token: string;
+
+  @IsOptional()
+  @IsString()
+  email?: string;
+
+  @IsOptional()
+  @IsString()
+  name?: string;
+}
+
 export class UpdateProfileDto {
   @IsOptional()
   @IsString()

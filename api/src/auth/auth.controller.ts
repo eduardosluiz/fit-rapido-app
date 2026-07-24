@@ -18,7 +18,7 @@ import {
 } from '@nestjs/common';
 import { Throttle } from '@nestjs/throttler';
 import { AuthService } from './auth.service';
-import { RegisterDto, LoginDto, UpdateUserDto, UpdatePasswordDto } from './dto/auth.dto';
+import { RegisterDto, LoginDto, UpdateUserDto, UpdatePasswordDto, SocialLoginDto } from './dto/auth.dto';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { ThrottleExceptionFilter } from '../common/guards/throttle-exception.filter';
 
@@ -73,6 +73,14 @@ export class AuthController {
   @UseFilters(ThrottleExceptionFilter)
   async login(@Body() loginDto: LoginDto) {
     return this.authService.login(loginDto);
+  }
+
+  @Post('social')
+  @HttpCode(HttpStatus.OK)
+  @Throttle({ short: { ttl: 60000, limit: 5 } })
+  @UseFilters(ThrottleExceptionFilter)
+  async socialLogin(@Body() socialDto: SocialLoginDto) {
+    return this.authService.socialLogin(socialDto);
   }
 
   @Get('profile')

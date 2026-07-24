@@ -18,6 +18,8 @@ import { ActivityIndicator, View, StyleSheet, LogBox, Platform } from 'react-nat
 import { Audio } from 'expo-av';
 import colors from './constants/colors';
 
+import { configurePurchases } from './services/purchases';
+
 // Oculta a caixa amarela de avisos na tela
 LogBox.ignoreLogs([
   'Animated: `useNativeDriver` is not supported',
@@ -52,7 +54,7 @@ export default function App() {
   });
 
   useEffect(() => {
-    async function configureAudio() {
+    async function setupApp() {
       try {
         await Audio.setAudioModeAsync({
           playsInSilentModeIOS: true,
@@ -64,8 +66,14 @@ export default function App() {
       } catch (e) {
         console.warn('Erro ao configurar áudio:', e);
       }
+      
+      try {
+        await configurePurchases();
+      } catch (e) {
+        console.warn('Erro ao configurar purchases:', e);
+      }
     }
-    configureAudio();
+    setupApp();
   }, []);
 
   if (!fontsLoaded) {

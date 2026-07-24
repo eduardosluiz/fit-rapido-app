@@ -362,7 +362,7 @@ export default function TreinosScreen() {
           initialNumToRender={10}
           maxToRenderPerBatch={10}
           windowSize={5}
-          removeClippedSubviews={true}
+          removeClippedSubviews={false}
           showsVerticalScrollIndicator={false}
           onEndReached={loadMore}
           onEndReachedThreshold={0.5}

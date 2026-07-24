@@ -375,7 +375,7 @@ export default function ReceitasScreen() {
           initialNumToRender={10}
           maxToRenderPerBatch={10}
           windowSize={5}
-          removeClippedSubviews={true}
+          removeClippedSubviews={false}
           showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.list}
           onEndReached={loadMore}

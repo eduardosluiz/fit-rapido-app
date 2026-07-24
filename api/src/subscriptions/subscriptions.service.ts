@@ -59,6 +59,35 @@ export class SubscriptionsService {
     return savedSubscription;
   }
 
+  async processRevenueCatWebhook(event: any): Promise<void> {
+    try {
+      console.log('Recebido Webhook do RevenueCat:', event.type, event.app_user_id);
+      
+      const usuarioId = event.app_user_id;
+      if (!usuarioId) return;
+
+      const user = await this.userRepository.findOne({ where: { id: usuarioId } });
+      if (!user) return;
+
+      const isPremium = event.type === 'INITIAL_PURCHASE' || event.type === 'RENEWAL' || event.type === 'UNCANCELLATION' || event.type === 'NON_RENEWING_PURCHASE';
+      
+      if (isPremium || event.entitlement_id === 'premium') {
+        const dataFim = event.expiration_at_ms ? new Date(event.expiration_at_ms) : new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
+        
+        await this.userRepository.update(usuarioId, {
+          subscription_tier: SubscriptionTier.PREMIUM,
+          subscription_expires_at: dataFim,
+        });
+      } else if (event.type === 'EXPIRATION') {
+        await this.userRepository.update(usuarioId, {
+          subscription_tier: SubscriptionTier.BASIC,
+        });
+      }
+    } catch (e) {
+      console.error('Erro ao processar webhook do RevenueCat', e);
+    }
+  }
+
   async validateIosReceipt(usuarioId: string, dto: ValidateIosReceiptDto): Promise<Subscription> {
     // TODO: Implementar validação real com Apple quando tiver conta de desenvolvedor
     // Por enquanto, validação mock

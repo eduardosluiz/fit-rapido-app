@@ -1,6 +1,5 @@
 import React, { useRef } from "react";
-import { View, Text, StyleSheet, Animated, Pressable, Dimensions } from "react-native";
-import { Image } from "expo-image";
+import { View, Text, StyleSheet, Animated, Pressable, Dimensions, Image } from "react-native";
 import { Ionicons } from '@expo/vector-icons';
 import { Video, ResizeMode } from 'expo-av';
 import { colors } from "../constants/colors";
@@ -37,8 +36,7 @@ export default function ReceitaCardAnimated({ item, isHorizontal, onPress, order
         <Image 
           source={{ uri: getImageUrl(item.imagem_url) || '' }} 
           style={styles.image} 
-          contentFit="cover" 
-          transition={200}
+          resizeMode="cover" 
         />
       );
     }

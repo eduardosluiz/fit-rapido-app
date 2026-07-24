@@ -26,6 +26,14 @@ export class SubscriptionsController {
     private readonly periodService: SubscriptionPeriodService,
   ) {}
 
+  @Post('webhook/revenuecat')
+  async revenueCatWebhook(@Body() payload: any) {
+    if (payload && payload.event) {
+      await this.subscriptionsService.processRevenueCatWebhook(payload.event);
+    }
+    return { received: true };
+  }
+
   @Post('validate-ios')
   @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.OK)

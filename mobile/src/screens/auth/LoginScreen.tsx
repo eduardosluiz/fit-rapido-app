@@ -15,6 +15,7 @@ import { useNavigation } from '@react-navigation/native';
 import { useAuth } from '../../contexts/AuthContext';
 import colors from '../../constants/colors';
 import fonts from '../../constants/fonts';
+import SocialLoginButtons from '../../components/SocialLoginButtons';
 
 export default function LoginScreen() {
   const navigation = useNavigation();
@@ -135,6 +136,8 @@ export default function LoginScreen() {
                 Não tem conta? <Text style={styles.linkTextBold}>Cadastre-se</Text>
               </Text>
             </TouchableOpacity>
+
+            <SocialLoginButtons onLoading={setLoading} />
           </View>
         </View>
       </ScrollView>

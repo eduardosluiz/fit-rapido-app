@@ -7,7 +7,9 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   Alert,
+  Platform,
 } from 'react-native';
+import Purchases from 'react-native-purchases';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
 import { useAuth } from '../../contexts/AuthContext';
@@ -74,21 +76,44 @@ export default function SubscriptionsScreen() {
     try {
       setLoading(true);
       
-      // TODO: Implementar compra real quando tiver contas de desenvolvedor
-      Alert.alert(
-        'Compra em Desenvolvimento',
-        'A funcionalidade de compra será ativada em breve. Por enquanto, você pode testar o app com conteúdo gratuito.',
-        [{ text: 'OK', onPress: () => setLoading(false) }]
-      );
+      const productId = `${planTier.toLowerCase()}_${periodo.toLowerCase()}`;
       
-      // Quando implementar IAP real:
-      // 1. Iniciar compra com expo-in-app-purchases
-      // 2. Obter receipt
-      // 3. Enviar para API para validação com periodo
-      // 4. Atualizar status local
+      if (Platform.OS === 'web') {
+         Alert.alert(
+           'Plataforma Web',
+           'As compras na plataforma web serão disponibilizadas em breve via Pix/Cartão.',
+           [{ text: 'OK', onPress: () => setLoading(false) }]
+         );
+         return;
+      }
       
+      const offerings = await Purchases.getOfferings();
+      
+      if (offerings.current && offerings.current.availablePackages.length !== 0) {
+        // Encontra o pacote pelo identifier do RevenueCat
+        const packageToBuy = offerings.current.availablePackages.find(p => p.identifier === productId || p.product.identifier === productId);
+        
+        if (!packageToBuy) {
+           Alert.alert('Produto não encontrado', `O plano ${productId} ainda não foi configurado nas lojas.`);
+           setLoading(false);
+           return;
+        }
+
+        const { customerInfo } = await Purchases.purchasePackage(packageToBuy);
+        
+        // Verifica se o usuário ganhou a permissão premium
+        if (typeof customerInfo.entitlements.active['premium'] !== "undefined") {
+          Alert.alert('Sucesso!', 'Sua assinatura foi ativada com sucesso. Aproveite o Fit & Rápido Premium!');
+          await loadData();
+        }
+      } else {
+         Alert.alert('Indisponível', 'Nenhum plano disponível para compra no momento. Configure o painel do RevenueCat.');
+      }
     } catch (error: any) {
-      Alert.alert('Erro', error.message || 'Erro ao processar compra');
+      if (!error.userCancelled) {
+        Alert.alert('Erro', error.message || 'Erro ao processar compra');
+      }
+    } finally {
       setLoading(false);
     }
   };
@@ -96,14 +121,21 @@ export default function SubscriptionsScreen() {
   const handleRestore = async () => {
     try {
       setLoading(true);
-      // TODO: Implementar restauração de compras
-      Alert.alert(
-        'Restaurar Compras',
-        'Funcionalidade de restauração será implementada em breve.',
-        [{ text: 'OK', onPress: () => setLoading(false) }]
-      );
+      if (Platform.OS === 'web') {
+        Alert.alert('Plataforma Web', 'Restauração indisponível na web.', [{ text: 'OK', onPress: () => setLoading(false) }]);
+        return;
+      }
+      
+      const customerInfo = await Purchases.restorePurchases();
+      if (typeof customerInfo.entitlements.active['premium'] !== "undefined") {
+        Alert.alert('Sucesso', 'Suas compras foram restauradas com sucesso!');
+        await loadData();
+      } else {
+        Alert.alert('Aviso', 'Nenhuma assinatura ativa encontrada para esta conta nas lojas da Apple/Google.');
+      }
     } catch (error: any) {
       Alert.alert('Erro', error.message || 'Erro ao restaurar compras');
+    } finally {
       setLoading(false);
     }
   };
