@@ -49,7 +49,7 @@ module.exports = {
         "expo-build-properties",
         {
           "ios": {
-            "useModularHeaders": true,
+            "useFrameworks": "static",
             "deploymentTarget": "16.4"
           }
         }
