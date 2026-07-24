@@ -15,7 +15,12 @@ module.exports = {
       backgroundColor: "#0f0f0f"
     },
     updates: {
-      url: "https://u.expo.dev/c2166955-d2b7-4832-be31-d36ef521afda"
+      url: "https://u.expo.dev/eeccc68a-8c18-48ee-a4f1-89c4bd5389b3"
+    },
+    extra: {
+      eas: {
+        projectId: "eeccc68a-8c18-48ee-a4f1-89c4bd5389b3"
+      }
     },
     assetBundlePatterns: [
       "**/*"
