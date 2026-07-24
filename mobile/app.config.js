@@ -44,6 +44,15 @@ module.exports = {
         {
           "iosUrlScheme": "com.googleusercontent.apps.1234567890-dummy"
         }
+      ],
+      [
+        "expo-build-properties",
+        {
+          "ios": {
+            "useModularHeaders": true,
+            "deploymentTarget": "15.1"
+          }
+        }
       ]
     ],
     notification: {
