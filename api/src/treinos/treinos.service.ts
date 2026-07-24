@@ -115,7 +115,6 @@ export class TreinosService {
         'treino.is_premium',
         'treino.is_inedito',
         'treino.avaliacao',
-        'treino.popular',
         'treino.ativa',
         'treino.modalidade_id',
       ])
