@@ -50,7 +50,7 @@ module.exports = {
         {
           "ios": {
             "useModularHeaders": true,
-            "deploymentTarget": "15.1"
+            "deploymentTarget": "16.4"
           }
         }
       ]
