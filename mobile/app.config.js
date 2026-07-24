@@ -17,11 +17,7 @@ module.exports = {
     updates: {
       url: "https://u.expo.dev/eeccc68a-8c18-48ee-a4f1-89c4bd5389b3"
     },
-    extra: {
-      eas: {
-        projectId: "eeccc68a-8c18-48ee-a4f1-89c4bd5389b3"
-      }
-    },
+
     assetBundlePatterns: [
       "**/*"
     ],
@@ -79,7 +75,7 @@ module.exports = {
     scheme: "fitrapido",
     extra: {
       eas: {
-        projectId: "c2166955-d2b7-4832-be31-d36ef521afda"
+        projectId: "eeccc68a-8c18-48ee-a4f1-89c4bd5389b3"
       },
       // Expor variáveis de ambiente para o app
       EXPO_PUBLIC_API_URL: process.env.EXPO_PUBLIC_API_URL || "http://10.0.2.2:3001"
