@@ -117,6 +117,8 @@ export class TreinosService {
         'treino.avaliacao',
         'treino.ativa',
         'treino.modalidade_id',
+        'treino.ordem',
+        'treino.created_at',
       ])
       .leftJoinAndSelect('treino.categorias', 'categorias');
 
