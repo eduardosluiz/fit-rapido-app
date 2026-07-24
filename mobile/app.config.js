@@ -14,10 +14,16 @@ module.exports = {
       resizeMode: "contain",
       backgroundColor: "#0f0f0f"
     },
+    updates: {
+      url: "https://u.expo.dev/c2166955-d2b7-4832-be31-d36ef521afda"
+    },
     assetBundlePatterns: [
       "**/*"
     ],
     ios: {
+      runtimeVersion: {
+        policy: "appVersion"
+      },
       supportsTablet: true,
       bundleIdentifier: "com.fitrapido.app",
       infoPlist: {
@@ -25,6 +31,7 @@ module.exports = {
       }
     },
     android: {
+      runtimeVersion: "1.0.0",
       adaptiveIcon: {
         foregroundImage: "./assets/adaptive-icon.png",
         backgroundColor: "#0f0f0f"
