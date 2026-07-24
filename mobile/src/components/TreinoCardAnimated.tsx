@@ -1,5 +1,6 @@
 import React, { useRef } from "react";
-import { View, Text, StyleSheet, Animated, Pressable, Dimensions, Image } from "react-native";
+import { View, Text, StyleSheet, Animated, Pressable, Dimensions } from "react-native";
+import { Image } from "expo-image";
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from "expo-linear-gradient";
 import { colors, radius, shadows, spacing } from "../constants/colors";
@@ -70,7 +71,7 @@ export default function TreinoCardAnimated({ item, isHorizontal, onPress }: Trei
         
         {/* Background Media */}
         {thumbnail ? (
-          <Image source={{ uri: thumbnail }} style={StyleSheet.absoluteFillObject} resizeMode="cover" />
+          <Image source={{ uri: thumbnail }} style={StyleSheet.absoluteFillObject} contentFit="cover" transition={200} />
         ) : (
           <View style={[StyleSheet.absoluteFillObject, { justifyContent: 'center', alignItems: 'center', backgroundColor: colors.backgroundElevated }]}>
             <Ionicons name="barbell-outline" size={40} color="rgba(255, 210, 111, 0.15)" />
