@@ -102,7 +102,7 @@ export default function TreinosScreen() {
       const totalPages = isPaginated ? response.totalPages : 1;
       
       let treinosAtivos = treinosRaw.filter((t: any) => 
-        t && (t.ativa === true || t.ativo === true) && !t.modalidade_id && !t.modalidade
+        t && (t.ativa === true || t.ativo === true)
       );
       
       if (user?.subscription_tier !== 'premium_fit') {
