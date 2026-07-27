@@ -244,7 +244,7 @@ export default function ModalityWorkoutsScreen() {
                 onPress={() => setSelectedNivel(nivel)}
               >
                 <Text style={[styles.nivelTabText, selectedNivel === nivel && styles.nivelTabTextActive]}>
-                  {nivel === 'iniciante' ? 'Básico' : nivel === 'intermediario' ? 'Intermediário' : 'Avançado'}
+                  {nivel === 'iniciante' ? 'Iniciante' : nivel === 'intermediario' ? 'Intermediário' : 'Avançado'}
                 </Text>
                 {selectedNivel === nivel && <View style={styles.nivelTabIndicator} />}
               </TouchableOpacity>
