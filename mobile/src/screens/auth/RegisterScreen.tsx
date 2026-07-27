@@ -37,6 +37,12 @@ export default function RegisterScreen() {
       return;
     }
 
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/;
+    if (!passwordRegex.test(senha)) {
+      Alert.alert('Erro', 'A senha deve conter pelo menos uma letra maiúscula, uma minúscula e um número');
+      return;
+    }
+
     if (!aceitaTermos || !aceitaPrivacidade) {
       Alert.alert('Erro', 'Você deve aceitar os Termos de Uso e a Política de Privacidade');
       return;
