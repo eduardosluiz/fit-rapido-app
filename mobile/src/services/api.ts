@@ -361,6 +361,26 @@ class ApiService {
       return null;
     }
   }
+
+  async createConsentimento(tipo: string, aceito: boolean) {
+    return this.request<any>('/legal/consent', {
+      method: 'POST',
+      body: JSON.stringify({ tipo, aceito }),
+    });
+  }
+
+  async registerNotificationToken(token: string, plataforma: string) {
+    return this.request<any>('/notifications/register-token', {
+      method: 'POST',
+      body: JSON.stringify({ token, plataforma }),
+    });
+  }
+
+  async removeNotificationToken(token: string) {
+    return this.request<any>(`/notifications/remove-token/${token}`, {
+      method: 'DELETE',
+    });
+  }
 }
 
 export const api = new ApiService();
