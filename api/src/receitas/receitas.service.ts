@@ -186,7 +186,7 @@ export class ReceitasService {
 
     if (search) {
       queryBuilder.andWhere(
-        '(receita.titulo ILIKE :search OR array_to_string(receita.ingredientes, \' \') ILIKE :search OR array_to_string(receita.tags, \' \') ILIKE :search OR categorias.nome ILIKE :search)',
+        '(receita.titulo ILIKE :search OR CAST(receita.ingredientes AS text) ILIKE :search OR CAST(receita.tags AS text) ILIKE :search)',
         { search: `%${search}%` },
       );
     }
@@ -196,9 +196,7 @@ export class ReceitasService {
     }
 
     if (ingrediente) {
-      // ingredientes é um array de strings no banco de dados. Para buscar dentro de elementos de array em PostgreSQL com typeorm usando ILIKE:
-      // O TypeORM para arrays de strings com postgres suporta array_to_string
-      queryBuilder.andWhere('array_to_string(receita.ingredientes, \', \') ILIKE :ingrediente', {
+      queryBuilder.andWhere('CAST(receita.ingredientes AS text) ILIKE :ingrediente', {
         ingrediente: `%${ingrediente}%`,
       });
     }
@@ -241,14 +239,14 @@ export class ReceitasService {
 
     if (semLactose) {
       queryBuilder.andWhere(
-        '(array_to_string(receita.tags, \' \') ILIKE :semLactose OR categorias.nome ILIKE :semLactose)',
+        '(CAST(receita.tags AS text) ILIKE :semLactose OR categorias.nome ILIKE :semLactose)',
         { semLactose: '%sem lactose%' },
       );
     }
 
     if (lowCarb) {
       queryBuilder.andWhere(
-        '(receita.carboidratos <= :lowCarbMax OR array_to_string(receita.tags, \' \') ILIKE :lowCarbText OR categorias.nome ILIKE :lowCarbText)',
+        '(receita.carboidratos <= :lowCarbMax OR CAST(receita.tags AS text) ILIKE :lowCarbText OR categorias.nome ILIKE :lowCarbText)',
         { lowCarbMax: 30, lowCarbText: '%low carb%' },
       );
     }
