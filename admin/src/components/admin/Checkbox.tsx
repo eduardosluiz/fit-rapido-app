@@ -20,7 +20,7 @@ export function Checkbox({ label, error, className = '', ...props }: CheckboxPro
           {...props}
         />
         {label && (
-          <span className={`text-sm font-medium ${error ? 'text-red-600' : 'text-gray-700'}`}>
+          <span className={`text-sm font-normal ${error ? 'text-red-600' : 'text-gray-700'}`}>
             {label}
           </span>
         )}

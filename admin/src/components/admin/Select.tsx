@@ -21,7 +21,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
       <div className="mb-4">
         {label && (
           <label 
-            className="block text-sm font-bold text-gray-800 mb-2.5"
+            className="block text-sm font-normal text-gray-800 mb-2.5"
             style={{
               fontWeight: '600',
               fontSize: '14px',
@@ -30,14 +30,14 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
             }}
           >
             {label}
-            {props.required && <span className="text-red-600 ml-1 font-bold">*</span>}
+            {props.required && <span className="text-red-600 ml-1 font-normal">*</span>}
           </label>
         )}
         <div className="relative">
           <select
             ref={ref}
             className={`
-              block w-full appearance-none border-2 rounded-lg px-4 py-2.5 text-sm font-medium pr-8
+              block w-full appearance-none border-2 rounded-lg px-4 py-2.5 text-sm font-normal pr-8
               focus:outline-none focus:ring-2 focus:ring-[#c8921a]/30 transition-all
               bg-white text-gray-900 cursor-pointer
               ${error 

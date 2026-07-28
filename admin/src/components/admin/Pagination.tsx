@@ -79,7 +79,7 @@ export function Pagination({ currentPage, totalPages, onPageChange, className }:
               window.scrollTo({ top: 0, behavior: 'smooth' });
             }}
             className={cn(
-              "h-8 w-8 p-0 min-w-8 text-xs font-medium",
+              "h-8 w-8 p-0 min-w-8 text-xs font-normal",
               currentPage === page && "bg-[#c8921a] hover:bg-[#b88217] text-white"
             )}
             aria-label={`Ir para página ${page}`}

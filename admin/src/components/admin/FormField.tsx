@@ -30,9 +30,9 @@ export function FormField({
       className
     )} style={className?.includes('flex-1') ? { display: 'flex', flexDirection: 'column', flex: 1 } : undefined}>
       {label && (
-        <Label className="text-sm font-bold text-gray-900 dark:text-white flex items-center gap-1.5 mb-2 block flex-shrink-0">
+        <Label className="text-sm font-normal text-gray-900 dark:text-white flex items-center gap-1.5 mb-2 block flex-shrink-0">
           {label}
-          {required && <span className="text-red-500 text-base font-bold ml-1">*</span>}
+          {required && <span className="text-red-500 text-base font-normal ml-1">*</span>}
         </Label>
       )}
       <div className="relative w-full flex-shrink-0">
@@ -42,7 +42,7 @@ export function FormField({
       {(error || helperText) && (
         <div className="mt-1.5 flex items-start flex-shrink-0">
           {error && (
-            <p className="text-xs text-destructive flex items-center gap-1.5 font-medium">
+            <p className="text-xs text-destructive flex items-center gap-1.5 font-normal">
               <i className="bx bx-error-circle text-sm"></i>
               {error}
             </p>

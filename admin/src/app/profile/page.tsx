@@ -56,13 +56,13 @@ export default function Profile() {
 
                 {/* User Info */}
                 <div className="flex-1 text-center md:text-left">
-                  <h1 className="font-heading text-4xl font-bold text-text mb-2">
+                  <h1 className="font-heading text-4xl font-normal text-text mb-2">
                     {user.name}
                   </h1>
                   <p className="text-text-light text-lg mb-4">{user.email}</p>
                   
                   <div className="flex flex-col sm:flex-row gap-4 items-center justify-center md:justify-start">
-                    <div className="bg-primary/20 text-primary px-4 py-2 rounded-full font-semibold">
+                    <div className="bg-primary/20 text-primary px-4 py-2 rounded-full font-normal">
                       <i className="bx bx-crown mr-2"></i>
                       Plano Premium
                     </div>
@@ -92,32 +92,32 @@ export default function Profile() {
         <section className="py-16">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto">
-              <h2 className="font-heading text-3xl font-bold text-text text-center mb-12">
+              <h2 className="font-heading text-3xl font-normal text-text text-center mb-12">
                 Suas Estatísticas
               </h2>
               
               <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
                 <div className="stat-card text-center">
                   <i className="bx bx-bowl-hot text-3xl text-primary mb-3"></i>
-                  <div className="text-2xl font-bold text-text mb-1">{user.stats.recipesCompleted}</div>
+                  <div className="text-2xl font-normal text-text mb-1">{user.stats.recipesCompleted}</div>
                   <div className="text-sm text-text-light">Receitas Concluídas</div>
                 </div>
                 
                 <div className="stat-card text-center">
                   <i className="bx bx-dumbbell text-3xl text-primary mb-3"></i>
-                  <div className="text-2xl font-bold text-text mb-1">{user.stats.workoutsCompleted}</div>
+                  <div className="text-2xl font-normal text-text mb-1">{user.stats.workoutsCompleted}</div>
                   <div className="text-sm text-text-light">Treinos Concluídos</div>
                 </div>
                 
                 <div className="stat-card text-center">
                   <i className="bx bx-flame text-3xl text-orange-400 mb-3"></i>
-                  <div className="text-2xl font-bold text-text mb-1">{user.stats.streakDays}</div>
+                  <div className="text-2xl font-normal text-text mb-1">{user.stats.streakDays}</div>
                   <div className="text-sm text-text-light">Dias de Streak</div>
                 </div>
                 
                 <div className="stat-card text-center">
                   <i className="bx bx-trending-up text-3xl text-green-400 mb-3"></i>
-                  <div className="text-2xl font-bold text-text mb-1">{user.stats.caloriesBurned}</div>
+                  <div className="text-2xl font-normal text-text mb-1">{user.stats.caloriesBurned}</div>
                   <div className="text-sm text-text-light">Calorias Queimadas</div>
                 </div>
               </div>
@@ -132,7 +132,7 @@ export default function Profile() {
               <div className="flex border-b border-card-border mb-8">
                 <button
                   onClick={() => setActiveTab('profile')}
-                  className={`px-6 py-3 font-semibold transition-colors ${
+                  className={`px-6 py-3 font-normal transition-colors ${
                     activeTab === 'profile'
                       ? 'text-primary border-b-2 border-primary'
                       : 'text-text-light hover:text-primary'
@@ -142,7 +142,7 @@ export default function Profile() {
                 </button>
                 <button
                   onClick={() => setActiveTab('activity')}
-                  className={`px-6 py-3 font-semibold transition-colors ${
+                  className={`px-6 py-3 font-normal transition-colors ${
                     activeTab === 'activity'
                       ? 'text-primary border-b-2 border-primary'
                       : 'text-text-light hover:text-primary'
@@ -152,7 +152,7 @@ export default function Profile() {
                 </button>
                 <button
                   onClick={() => setActiveTab('settings')}
-                  className={`px-6 py-3 font-semibold transition-colors ${
+                  className={`px-6 py-3 font-normal transition-colors ${
                     activeTab === 'settings'
                       ? 'text-primary border-b-2 border-primary'
                       : 'text-text-light hover:text-primary'
@@ -167,7 +167,7 @@ export default function Profile() {
                 <div className={`animate-on-scroll ${isVisible ? 'visible' : ''}`}>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <div className="bg-card-bg border border-card-border rounded-2xl p-6">
-                      <h3 className="font-heading text-xl font-bold text-text mb-4">
+                      <h3 className="font-heading text-xl font-normal text-text mb-4">
                         Informações Pessoais
                       </h3>
                       <div className="space-y-4">
@@ -198,7 +198,7 @@ export default function Profile() {
                     </div>
 
                     <div className="bg-card-bg border border-card-border rounded-2xl p-6">
-                      <h3 className="font-heading text-xl font-bold text-text mb-4">
+                      <h3 className="font-heading text-xl font-normal text-text mb-4">
                         Preferências
                       </h3>
                       <div className="space-y-4">
@@ -236,7 +236,7 @@ export default function Profile() {
 
               {activeTab === 'activity' && (
                 <div className={`animate-on-scroll ${isVisible ? 'visible' : ''}`}>
-                  <h3 className="font-heading text-2xl font-bold text-text mb-6">
+                  <h3 className="font-heading text-2xl font-normal text-text mb-6">
                     Atividade Recente
                   </h3>
                   <div className="space-y-4">
@@ -246,7 +246,7 @@ export default function Profile() {
                           <i className={`bx ${activity.icon} text-primary text-xl`}></i>
                         </div>
                         <div className="flex-1">
-                          <h4 className="font-semibold text-text">{activity.title}</h4>
+                          <h4 className="font-normal text-text">{activity.title}</h4>
                           <p className="text-text-light text-sm">{activity.time}</p>
                         </div>
                         <button className="text-primary hover:text-yellow-400 transition-colors">
@@ -262,7 +262,7 @@ export default function Profile() {
                 <div className={`animate-on-scroll ${isVisible ? 'visible' : ''}`}>
                   <div className="space-y-6">
                     <div className="bg-card-bg border border-card-border rounded-2xl p-6">
-                      <h3 className="font-heading text-xl font-bold text-text mb-4">
+                      <h3 className="font-heading text-xl font-normal text-text mb-4">
                         Notificações
                       </h3>
                       <div className="space-y-4">
@@ -282,7 +282,7 @@ export default function Profile() {
                     </div>
 
                     <div className="bg-card-bg border border-card-border rounded-2xl p-6">
-                      <h3 className="font-heading text-xl font-bold text-text mb-4">
+                      <h3 className="font-heading text-xl font-normal text-text mb-4">
                         Privacidade
                       </h3>
                       <div className="space-y-4">

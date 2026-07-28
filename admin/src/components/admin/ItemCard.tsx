@@ -68,11 +68,11 @@ export function ItemCard({
       )}
       <div className="item-card-content" style={{ padding: '16px' }}>
         <div className="flex items-start justify-between mb-2">
-          <h3 className="text-lg font-bold text-gray-900 flex-1 pr-2 line-clamp-2 item-card-title" style={{ fontSize: '18px', fontWeight: '700', marginBottom: '8px' }}>
+          <h3 className="text-lg font-normal text-gray-900 flex-1 pr-2 line-clamp-2 item-card-title" style={{ fontSize: '18px', fontWeight: '700', marginBottom: '8px' }}>
             {title.length > 16 ? `${title.substring(0, 16)}...` : title}
           </h3>
           {isPremium && (
-            <span className="bg-[#c8921a] text-white px-1.5 py-0.5 rounded text-xs font-bold whitespace-nowrap flex-shrink-0" style={{ fontSize: '10px' }}>
+            <span className="bg-[#c8921a] text-white px-1.5 py-0.5 rounded text-xs font-normal whitespace-nowrap flex-shrink-0" style={{ fontSize: '10px' }}>
               PREMIUM
             </span>
           )}
@@ -99,7 +99,7 @@ export function ItemCard({
           {badges.map((badge, index) => (
             <span
               key={index}
-              className={`px-1.5 py-0.5 rounded-full text-xs font-medium ${badge.color} item-card-badge`}
+              className={`px-1.5 py-0.5 rounded-full text-xs font-normal ${badge.color} item-card-badge`}
               style={{ fontSize: '10px', padding: '4px 6px' }}
             >
               {badge.label}
@@ -107,10 +107,10 @@ export function ItemCard({
           ))}
           {status && (
             <span
-              className={`px-1.5 py-0.5 rounded-full text-xs font-medium item-card-badge ${
+              className={`px-1.5 py-0.5 rounded-full text-xs font-normal item-card-badge ${
                 status === 'active'
                   ? 'bg-green-100 text-green-700'
-                  : 'bg-gray-100 text-gray-600'
+                  : 'bg-white text-gray-600'
               }`}
               style={{ fontSize: '10px', padding: '4px 6px' }}
             >
@@ -122,7 +122,7 @@ export function ItemCard({
         <div className="flex items-center gap-3 pt-3 border-t border-gray-200 item-card-actions" style={{ paddingTop: '12px', fontSize: '14px', marginTop: 'auto', display: 'flex', alignItems: 'center', gap: '12px' }}>
           <Link
             href={editHref}
-            className="flex-1 text-center font-semibold text-gray-700 hover:text-[#c8921a] transition-colors flex items-center justify-center gap-1.5"
+            className="flex-1 text-center font-normal text-gray-700 hover:text-[#c8921a] transition-colors flex items-center justify-center gap-1.5"
             style={{ fontSize: '14px', fontWeight: '600' }}
           >
             <i className="bx bx-edit" style={{ fontSize: '16px' }}></i>

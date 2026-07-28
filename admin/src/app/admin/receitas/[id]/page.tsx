@@ -231,19 +231,19 @@ export default function EditarReceita() {
             </div>
             <div>
               <h1 className="text-xl font-light text-gray-400 dark:text-gray-500 tracking-tight uppercase">
-                Editar <span className="text-gray-800 dark:text-white font-semibold">Receita</span>
+                Editar <span className="text-gray-800 dark:text-white font-normal">Receita</span>
               </h1>
-              <p className="text-[10px] text-gray-400 font-medium uppercase tracking-[0.2em] mt-1">Atualização de Registro</p>
+              <p className="text-[10px] text-gray-400 font-normal uppercase tracking-[0.2em] mt-1">Atualização de Registro</p>
             </div>
           </div>
           <div className="flex items-center justify-end gap-3">
             <Link href={`/admin/receitas/${id}/ingredientes`}>
-              <button className="px-4 py-2 rounded-md border border-[#c8921a]/20 text-[#c8921a] text-[10px] font-bold uppercase tracking-widest hover:bg-[#c8921a] hover:text-white transition-all flex items-center gap-2">
+              <button className="px-4 py-2 rounded-md border border-[#c8921a]/20 text-[#c8921a] text-[10px] font-normal uppercase tracking-widest hover:bg-[#c8921a] hover:text-white transition-all flex items-center gap-2">
                 <Package size={14} /> Ingredientes
               </button>
             </Link>
             <Link href="/admin/receitas">
-              <button className="px-4 py-2 rounded-md border border-gray-300 dark:border-[#333] text-gray-500 dark:text-gray-400 text-[10px] font-bold uppercase tracking-widest hover:bg-gray-50 transition-all">
+              <button className="px-4 py-2 rounded-md border border-gray-300 dark:border-[#333] text-gray-500 dark:text-gray-400 text-[10px] font-normal uppercase tracking-widest hover:bg-gray-50 transition-all">
                 Voltar
               </button>
             </Link>
@@ -255,7 +255,7 @@ export default function EditarReceita() {
             {/* Seção: Informações Básicas */}
             <div className="space-y-8">
               <div className="border-b border-gray-100 dark:border-[#1a1a1a] pb-4">
-                <h3 className="text-[11px] font-bold uppercase tracking-[0.3em] text-gray-400 flex items-center gap-3">
+                <h3 className="text-[11px] font-normal uppercase tracking-[0.3em] text-gray-400 flex items-center gap-3">
                   <div className="w-1.5 h-1.5 rounded-full bg-[#c8921a]"></div>
                   Informações Estratégicas
                 </h3>
@@ -264,31 +264,31 @@ export default function EditarReceita() {
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
                 <div className="space-y-8">
                   <div className="space-y-2">
-                    <label className="text-[9px] font-bold uppercase tracking-[0.15em] text-gray-800 dark:text-gray-200 ml-0.5">Título da Receita</label>
+                    <label className="text-[9px] font-normal uppercase tracking-[0.15em] text-gray-800 dark:text-gray-200 ml-0.5">Título da Receita</label>
                     <input
                       value={formData.titulo}
                       onChange={(e) => setFormData({ ...formData, titulo: e.target.value })}
                       placeholder="Ex: BOLO DE CHOCOLATE FIT"
-                      className="w-full bg-gray-100 dark:bg-[#111] border border-gray-400 dark:border-[#555] rounded-md px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#c8921a]/20 focus:border-[#c8921a] text-gray-900 dark:text-white font-medium transition-all"
+                      className="w-full bg-white dark:bg-[#111] border border-gray-400 dark:border-[#555] rounded-md px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#c8921a]/20 focus:border-[#c8921a] text-gray-900 dark:text-white font-normal transition-all"
                       required
                     />
                   </div>
 
                   <div className="space-y-2">
-                    <label className="text-[9px] font-bold uppercase tracking-[0.15em] text-gray-800 dark:text-gray-200 ml-0.5">Descrição Editorial</label>
+                    <label className="text-[9px] font-normal uppercase tracking-[0.15em] text-gray-800 dark:text-gray-200 ml-0.5">Descrição Editorial</label>
                     <textarea
                       value={formData.descricao}
                       onChange={(e) => setFormData({ ...formData, descricao: e.target.value })}
                       placeholder="Breve resumo atrativo..."
-                      className="w-full min-h-[150px] bg-gray-100 dark:bg-[#111] border border-gray-400 dark:border-[#555] rounded-md px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#c8921a]/20 focus:border-[#c8921a] text-gray-800 dark:text-gray-200 resize-none font-normal leading-relaxed transition-all"
+                      className="w-full min-h-[150px] bg-white dark:bg-[#111] border border-gray-400 dark:border-[#555] rounded-md px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#c8921a]/20 focus:border-[#c8921a] text-gray-800 dark:text-gray-200 resize-none font-normal leading-relaxed transition-all"
                     />
                   </div>
 
                   <div className="space-y-2">
-                    <label className="text-[9px] font-bold uppercase tracking-[0.15em] text-gray-800 dark:text-gray-200 ml-0.5">Mídias da Receita (Imagens e Vídeo)</label>
+                    <label className="text-[9px] font-normal uppercase tracking-[0.15em] text-gray-800 dark:text-gray-200 ml-0.5">Mídias da Receita (Imagens e Vídeo)</label>
                     <div className="p-6 rounded-xl border border-gray-200 dark:border-[#333] bg-gray-50/30 dark:bg-[#0a0a0a] shadow-inner space-y-8">
                       <div className="space-y-2">
-                        <label className="text-[8px] font-bold uppercase tracking-widest text-gray-400 flex items-center gap-2">
+                        <label className="text-[8px] font-normal uppercase tracking-widest text-gray-400 flex items-center gap-2">
                           Galeria de Imagens
                         </label>
                         <MultipleImageUpload
@@ -299,7 +299,7 @@ export default function EditarReceita() {
                       </div>
                       
                       <div className="pt-6 border-t border-gray-200 dark:border-[#222] space-y-2">
-                        <label className="text-[9px] font-bold uppercase tracking-[0.15em] text-gray-800 dark:text-gray-200 flex items-center gap-2">
+                        <label className="text-[9px] font-normal uppercase tracking-[0.15em] text-gray-800 dark:text-gray-200 flex items-center gap-2">
                           <Video size={14} className="text-[#c8921a]" /> Vídeo Aula da Receita (Opcional)
                         </label>
                         <FileUpload
@@ -315,19 +315,19 @@ export default function EditarReceita() {
 
                 <div className="space-y-8">
                   <div className="space-y-2">
-                    <label className="text-[9px] font-bold uppercase tracking-[0.15em] text-gray-800 dark:text-gray-200 ml-0.5">Tags</label>
+                    <label className="text-[9px] font-normal uppercase tracking-[0.15em] text-gray-800 dark:text-gray-200 ml-0.5">Tags</label>
                     <input
                       value={formData.tags}
                       onChange={(e) => setFormData({ ...formData, tags: e.target.value })}
                       placeholder="proteico, sem glúten..."
-                      className="w-full bg-gray-100 dark:bg-[#111] border border-gray-400 dark:border-[#555] rounded-md px-4 py-3 text-sm focus:outline-none focus:border-[#c8921a] text-gray-700 dark:text-gray-300 transition-all"
+                      className="w-full bg-white dark:bg-[#111] border border-gray-400 dark:border-[#555] rounded-md px-4 py-3 text-sm focus:outline-none focus:border-[#c8921a] text-gray-700 dark:text-gray-300 transition-all"
                     />
                   </div>
 
                   <div className="space-y-4">
-                    <div className="flex items-center justify-between p-5 rounded-xl border border-gray-400 dark:border-[#444] bg-gray-100/50 dark:bg-[#0f0f0f] shadow-sm">
+                    <div className="flex items-center justify-between p-5 rounded-xl border border-gray-400 dark:border-[#444] bg-white/50 dark:bg-[#0f0f0f] shadow-sm">
                       <div className="space-y-1">
-                        <p className="text-[10px] font-bold uppercase tracking-widest text-gray-800 dark:text-gray-200 flex items-center gap-2 text-emerald-600">Status Ativo</p>
+                        <p className="text-[10px] font-normal uppercase tracking-widest text-gray-800 dark:text-gray-200 flex items-center gap-2 text-emerald-600">Status Ativo</p>
                       </div>
                       <Switch
                         checked={formData.ativa}
@@ -335,9 +335,9 @@ export default function EditarReceita() {
                         className="data-[state=unchecked]:bg-gray-400 border border-gray-500 shadow-sm"
                       />
                     </div>
-                    <div className="flex items-center justify-between p-5 rounded-xl border border-gray-400 dark:border-[#444] bg-gray-100/50 dark:bg-[#0f0f0f] shadow-sm">
+                    <div className="flex items-center justify-between p-5 rounded-xl border border-gray-400 dark:border-[#444] bg-white/50 dark:bg-[#0f0f0f] shadow-sm">
                       <div className="space-y-1">
-                        <p className="text-[10px] font-bold uppercase tracking-widest text-gray-800 dark:text-gray-200 flex items-center gap-2">Conteúdo Premium</p>
+                        <p className="text-[10px] font-normal uppercase tracking-widest text-gray-800 dark:text-gray-200 flex items-center gap-2">Conteúdo Premium</p>
                       </div>
                       <Switch
                         checked={formData.is_premium}
@@ -345,9 +345,9 @@ export default function EditarReceita() {
                         className="data-[state=unchecked]:bg-gray-400 border border-gray-500 shadow-sm"
                       />
                     </div>
-                    <div className="flex items-center justify-between p-5 rounded-xl border border-gray-400 dark:border-[#444] bg-gray-100/50 dark:bg-[#0f0f0f] shadow-sm">
+                    <div className="flex items-center justify-between p-5 rounded-xl border border-gray-400 dark:border-[#444] bg-white/50 dark:bg-[#0f0f0f] shadow-sm">
                       <div className="space-y-1">
-                        <p className="text-[10px] font-bold uppercase tracking-widest text-gray-800 dark:text-gray-200 flex items-center gap-2 text-[#c8921a]">Selo Inédito</p>
+                        <p className="text-[10px] font-normal uppercase tracking-widest text-gray-800 dark:text-gray-200 flex items-center gap-2 text-[#c8921a]">Selo Inédito</p>
                       </div>
                       <Switch
                         checked={formData.is_inedito}
@@ -355,9 +355,9 @@ export default function EditarReceita() {
                         className="data-[state=unchecked]:bg-gray-400 border border-gray-500 shadow-sm"
                       />
                     </div>
-                    <div className="flex items-center justify-between p-5 rounded-xl border border-gray-400 dark:border-[#444] bg-gray-100/50 dark:bg-[#0f0f0f] shadow-sm">
+                    <div className="flex items-center justify-between p-5 rounded-xl border border-gray-400 dark:border-[#444] bg-white/50 dark:bg-[#0f0f0f] shadow-sm">
                       <div className="space-y-1">
-                        <p className="text-[10px] font-bold uppercase tracking-widest text-gray-800 dark:text-gray-200 flex items-center gap-2 text-blue-600">Amostra Grátis (FREE)</p>
+                        <p className="text-[10px] font-normal uppercase tracking-widest text-gray-800 dark:text-gray-200 flex items-center gap-2 text-blue-600">Amostra Grátis (FREE)</p>
                       </div>
                       <Switch
                         checked={formData.is_free}
@@ -369,20 +369,20 @@ export default function EditarReceita() {
 
                   <div className="grid grid-cols-2 gap-8">
                     <div className="space-y-2">
-                      <label className="text-[9px] font-bold uppercase tracking-[0.15em] text-gray-800 dark:text-gray-200 ml-0.5">Tempo (min)</label>
+                      <label className="text-[9px] font-normal uppercase tracking-[0.15em] text-gray-800 dark:text-gray-200 ml-0.5">Tempo (min)</label>
                       <input
                         type="number"
                         value={formData.tempo_preparo}
                         onChange={(e) => setFormData({ ...formData, tempo_preparo: e.target.value })}
-                        className="w-full bg-gray-100 dark:bg-[#111] border border-gray-400 dark:border-[#555] rounded-md px-4 py-3 text-sm focus:outline-none focus:border-[#c8921a] text-gray-900 dark:text-white"
+                        className="w-full bg-white dark:bg-[#111] border border-gray-400 dark:border-[#555] rounded-md px-4 py-3 text-sm focus:outline-none focus:border-[#c8921a] text-gray-900 dark:text-white"
                       />
                     </div>
                     <div className="space-y-2">
-                      <label className="text-[9px] font-bold uppercase tracking-[0.15em] text-gray-800 dark:text-gray-200 ml-0.5">Dificuldade</label>
+                      <label className="text-[9px] font-normal uppercase tracking-[0.15em] text-gray-800 dark:text-gray-200 ml-0.5">Dificuldade</label>
                       <select
                         value={formData.dificuldade}
                         onChange={(e) => setFormData({ ...formData, dificuldade: e.target.value })}
-                        className="w-full h-[46px] bg-gray-100 dark:bg-[#111] border border-gray-400 dark:border-[#555] rounded-md px-4 text-sm focus:outline-none focus:border-[#c8921a] text-gray-900 dark:text-white font-medium appearance-none"
+                        className="w-full h-[46px] bg-white dark:bg-[#111] border border-gray-400 dark:border-[#555] rounded-md px-4 text-sm focus:outline-none focus:border-[#c8921a] text-gray-900 dark:text-white font-normal appearance-none"
                       >
                         <option value="facil">Fácil</option>
                         <option value="medio">Médio</option>
@@ -393,10 +393,10 @@ export default function EditarReceita() {
 
                   <div className="grid grid-cols-2 gap-8">
                     <div className="space-y-2">
-                      <label className="text-[9px] font-bold uppercase tracking-[0.15em] text-gray-800 dark:text-gray-200 ml-0.5">Categorias</label>
+                      <label className="text-[9px] font-normal uppercase tracking-[0.15em] text-gray-800 dark:text-gray-200 ml-0.5">Categorias</label>
                       <Popover>
                         <PopoverTrigger asChild>
-                          <button className="w-full h-[46px] bg-gray-100 dark:bg-[#111] border border-gray-400 dark:border-[#555] rounded-md px-4 text-sm focus:outline-none focus:border-[#c8921a] text-gray-700 dark:text-gray-300 font-medium flex items-center justify-between">
+                          <button className="w-full h-[46px] bg-white dark:bg-[#111] border border-gray-400 dark:border-[#555] rounded-md px-4 text-sm focus:outline-none focus:border-[#c8921a] text-gray-700 dark:text-gray-300 font-normal flex items-center justify-between">
                             {formData.categoria_ids.length > 0 ? `${formData.categoria_ids.length} selecionada(s)` : 'Vincular...'}
                             <ChevronsUpDown size={14} />
                           </button>
@@ -409,7 +409,7 @@ export default function EditarReceita() {
                                 setFormData({ ...formData, categoria_ids: newIds });
                               }}>
                                 <Checkbox checked={formData.categoria_ids.includes(cat.id)} className="border-gray-400" />
-                                <span className="text-[12px] font-bold uppercase tracking-tighter text-gray-700 dark:text-gray-300">{cat.nome}</span>
+                                <span className="text-[12px] font-normal uppercase tracking-tighter text-gray-700 dark:text-gray-300">{cat.nome}</span>
                               </div>
                             ))}
                           </div>
@@ -417,12 +417,12 @@ export default function EditarReceita() {
                       </Popover>
                     </div>
                     <div className="space-y-2">
-                      <label className="text-[9px] font-bold uppercase tracking-[0.15em] text-gray-800 dark:text-gray-200 ml-0.5">Porções</label>
+                      <label className="text-[9px] font-normal uppercase tracking-[0.15em] text-gray-800 dark:text-gray-200 ml-0.5">Porções</label>
                       <input
                         type="number"
                         value={formData.porcoes}
                         onChange={(e) => setFormData({ ...formData, porcoes: e.target.value })}
-                        className="w-full bg-gray-100 dark:bg-[#111] border border-gray-400 dark:border-[#555] rounded-md px-4 py-3 text-sm focus:outline-none focus:border-[#c8921a] text-gray-900 dark:text-white"
+                        className="w-full bg-white dark:bg-[#111] border border-gray-400 dark:border-[#555] rounded-md px-4 py-3 text-sm focus:outline-none focus:border-[#c8921a] text-gray-900 dark:text-white"
                       />
                     </div>
                   </div>
@@ -433,7 +433,7 @@ export default function EditarReceita() {
             {/* Seção: Ingredientes e Preparo */}
             <div className="space-y-8 pt-10 border-t border-gray-100 dark:border-[#1a1a1a]">
               <div className="pb-4">
-                <h3 className="text-[11px] font-bold uppercase tracking-[0.3em] text-gray-400 flex items-center gap-3">
+                <h3 className="text-[11px] font-normal uppercase tracking-[0.3em] text-gray-400 flex items-center gap-3">
                   <div className="w-1.5 h-1.5 rounded-full bg-[#c8921a]"></div>
                   Ficha Técnica & Instruções
                 </h3>
@@ -441,20 +441,20 @@ export default function EditarReceita() {
 
               <div className="space-y-10">
                 <div className="space-y-2">
-                  <label className="text-[9px] font-bold uppercase tracking-[0.15em] text-gray-800 dark:text-gray-200 ml-0.5">Lista de Ingredientes (um por linha)</label>
+                  <label className="text-[9px] font-normal uppercase tracking-[0.15em] text-gray-800 dark:text-gray-200 ml-0.5">Lista de Ingredientes (um por linha)</label>
                   <textarea
                     value={formData.ingredientes}
                     onChange={(e) => setFormData({ ...formData, ingredientes: e.target.value })}
                     rows={8}
-                    className="w-full bg-gray-100 dark:bg-[#111] border border-gray-400 dark:border-[#555] rounded-md px-4 py-4 text-sm focus:outline-none focus:ring-2 focus:ring-[#c8921a]/20 focus:border-[#c8921a] text-gray-800 dark:text-gray-200 resize-y font-mono transition-all"
+                    className="w-full bg-white dark:bg-[#111] border border-gray-400 dark:border-[#555] rounded-md px-4 py-4 text-sm focus:outline-none focus:ring-2 focus:ring-[#c8921a]/20 focus:border-[#c8921a] text-gray-800 dark:text-gray-200 resize-y font-mono transition-all"
                   />
                 </div>
 
                 {/* SUBSTITUIÇÕES DE INGREDIENTES */}
                 <div className="p-8 rounded-xl border border-gray-300 dark:border-[#333] bg-gray-50/50 dark:bg-[#0a0a0a] space-y-6">
                   <div className="flex items-center justify-between border-b border-gray-200 dark:border-[#222] pb-4">
-                    <h4 className="text-[10px] font-bold uppercase tracking-widest text-[#c8921a]">Substituições Inteligentes (Opcional)</h4>
-                    <button type="button" onClick={() => setFormData({...formData, substituicoes_ingredientes: [...formData.substituicoes_ingredientes, { ingrediente: '', substituto: '' }]})} className="text-[9px] font-bold uppercase text-[#c8921a] flex items-center gap-1 hover:opacity-70 transition-opacity">
+                    <h4 className="text-[10px] font-normal uppercase tracking-widest text-[#c8921a]">Substituições Inteligentes (Opcional)</h4>
+                    <button type="button" onClick={() => setFormData({...formData, substituicoes_ingredientes: [...formData.substituicoes_ingredientes, { ingrediente: '', substituto: '' }]})} className="text-[9px] font-normal uppercase text-[#c8921a] flex items-center gap-1 hover:opacity-70 transition-opacity">
                       <PlusCircle size={14} /> Adicionar Nova
                     </button>
                   </div>
@@ -465,7 +465,7 @@ export default function EditarReceita() {
                       return (
                         <div key={index} className="grid grid-cols-1 md:grid-cols-12 gap-4 items-end animate-in fade-in duration-300">
                           <div className="md:col-span-5 space-y-1.5">
-                            <label className="text-[8px] font-bold uppercase text-gray-400 ml-0.5">Ingrediente da Receita</label>
+                            <label className="text-[8px] font-normal uppercase text-gray-400 ml-0.5">Ingrediente da Receita</label>
                             <input
                               list={`ingredientes-list-${index}`}
                               value={sub.ingrediente}
@@ -490,7 +490,7 @@ export default function EditarReceita() {
                             </datalist>
                           </div>
                           <div className="md:col-span-6 space-y-1.5">
-                            <label className="text-[8px] font-bold uppercase text-gray-400 ml-0.5">Opção Substituta</label>
+                            <label className="text-[8px] font-normal uppercase text-gray-400 ml-0.5">Opção Substituta</label>
                             <input type="text" value={sub.substituto} onChange={(e) => {
                               const novas = [...formData.substituicoes_ingredientes];
                               novas[index].substituto = e.target.value;
@@ -510,34 +510,34 @@ export default function EditarReceita() {
                 </div>
 
                 <div className="space-y-2">
-                  <label className="text-[9px] font-bold uppercase tracking-[0.15em] text-gray-800 dark:text-gray-200 ml-0.5">Modo de Preparo (um passo por linha)</label>
+                  <label className="text-[9px] font-normal uppercase tracking-[0.15em] text-gray-800 dark:text-gray-200 ml-0.5">Modo de Preparo (um passo por linha)</label>
                   <textarea
                     value={formData.modo_preparo}
                     onChange={(e) => setFormData({ ...formData, modo_preparo: e.target.value })}
                     rows={10}
-                    className="w-full bg-gray-100 dark:bg-[#111] border border-gray-400 dark:border-[#555] rounded-md px-4 py-4 text-sm focus:outline-none focus:ring-2 focus:ring-[#c8921a]/20 focus:border-[#c8921a] text-gray-800 dark:text-gray-200 resize-y transition-all"
+                    className="w-full bg-white dark:bg-[#111] border border-gray-400 dark:border-[#555] rounded-md px-4 py-4 text-sm focus:outline-none focus:ring-2 focus:ring-[#c8921a]/20 focus:border-[#c8921a] text-gray-800 dark:text-gray-200 resize-y transition-all"
                   />
                 </div>
 
                 <div className="space-y-2">
-                  <label className="text-[9px] font-bold uppercase tracking-[0.15em] text-gray-800 dark:text-gray-200 ml-0.5">Dica de Ouro (Exibida com ícone de lâmpada)</label>
+                  <label className="text-[9px] font-normal uppercase tracking-[0.15em] text-gray-800 dark:text-gray-200 ml-0.5">Dica de Ouro (Exibida com ícone de lâmpada)</label>
                   <textarea
                     value={formData.dica}
                     onChange={(e) => setFormData({ ...formData, dica: e.target.value })}
                     rows={3}
                     placeholder="Dica extra para o preparo ou conservação..."
-                    className="w-full bg-gray-100 dark:bg-[#111] border border-gray-400 dark:border-[#555] rounded-md px-4 py-4 text-sm focus:outline-none focus:ring-2 focus:ring-[#c8921a]/20 focus:border-[#c8921a] text-gray-800 dark:text-gray-200 resize-none transition-all"
+                    className="w-full bg-white dark:bg-[#111] border border-gray-400 dark:border-[#555] rounded-md px-4 py-4 text-sm focus:outline-none focus:ring-2 focus:ring-[#c8921a]/20 focus:border-[#c8921a] text-gray-800 dark:text-gray-200 resize-none transition-all"
                   />
                 </div>
 
                 <div className="space-y-2">
-                  <label className="text-[9px] font-bold uppercase tracking-[0.15em] text-gray-800 dark:text-gray-200 ml-0.5">Finalização (Exibida após o modo de preparo)</label>
+                  <label className="text-[9px] font-normal uppercase tracking-[0.15em] text-gray-800 dark:text-gray-200 ml-0.5">Finalização (Exibida após o modo de preparo)</label>
                   <textarea
                     value={formData.finalizacao}
                     onChange={(e) => setFormData({ ...formData, finalizacao: e.target.value })}
                     rows={3}
                     placeholder="Sugestões para finalizar o prato..."
-                    className="w-full bg-gray-100 dark:bg-[#111] border border-gray-400 dark:border-[#555] rounded-md px-4 py-4 text-sm focus:outline-none focus:ring-2 focus:ring-[#c8921a]/20 focus:border-[#c8921a] text-gray-800 dark:text-gray-200 resize-none transition-all"
+                    className="w-full bg-white dark:bg-[#111] border border-gray-400 dark:border-[#555] rounded-md px-4 py-4 text-sm focus:outline-none focus:ring-2 focus:ring-[#c8921a]/20 focus:border-[#c8921a] text-gray-800 dark:text-gray-200 resize-none transition-all"
                   />
                 </div>
               </div>
@@ -546,7 +546,7 @@ export default function EditarReceita() {
             {/* Seção: Dashboard Nutricional */}
             <div className="space-y-8 pt-10 border-t border-gray-100 dark:border-[#1a1a1a]">
               <div className="pb-4">
-                <h3 className="text-[11px] font-bold uppercase tracking-[0.3em] text-gray-400 flex items-center gap-3">
+                <h3 className="text-[11px] font-normal uppercase tracking-[0.3em] text-gray-400 flex items-center gap-3">
                   <div className="w-1.5 h-1.5 rounded-full bg-[#c8921a]"></div>
                   Dashboard Nutricional
                 </h3>
@@ -554,78 +554,78 @@ export default function EditarReceita() {
 
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
                 <div className="space-y-3">
-                  <label className="text-[9px] font-bold uppercase tracking-[0.15em] text-gray-800 dark:text-gray-200 ml-0.5">Macronutrientes (por porção)</label>
+                  <label className="text-[9px] font-normal uppercase tracking-[0.15em] text-gray-800 dark:text-gray-200 ml-0.5">Macronutrientes (por porção)</label>
                   <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-1.5">
-                      <label className="text-[8px] font-bold uppercase text-gray-400 ml-0.5">Calorias (kcal)</label>
+                      <label className="text-[8px] font-normal uppercase text-gray-400 ml-0.5">Calorias (kcal)</label>
                       <input 
                         type="text" 
                         value={formData.calorias} 
                         onChange={(e) => setFormData({...formData, calorias: e.target.value})}
                         placeholder="Ex: 90" 
-                        className="w-full h-[42px] bg-gray-100 dark:bg-[#111] border border-gray-400 dark:border-[#555] rounded-md px-4 text-sm focus:outline-none focus:border-[#c8921a] text-gray-900 dark:text-white font-medium"
+                        className="w-full h-[42px] bg-white dark:bg-[#111] border border-gray-400 dark:border-[#555] rounded-md px-4 text-sm focus:outline-none focus:border-[#c8921a] text-gray-900 dark:text-white font-normal"
                       />
                     </div>
                     <div className="space-y-1.5">
-                      <label className="text-[8px] font-bold uppercase text-gray-400 ml-0.5">Proteínas (g)</label>
+                      <label className="text-[8px] font-normal uppercase text-gray-400 ml-0.5">Proteínas (g)</label>
                       <input 
                         type="text" 
                         value={formData.proteinas} 
                         onChange={(e) => setFormData({...formData, proteinas: e.target.value})}
                         placeholder="Ex: 5.5" 
-                        className="w-full h-[42px] bg-gray-100 dark:bg-[#111] border border-gray-400 dark:border-[#555] rounded-md px-4 text-sm focus:outline-none focus:border-[#c8921a] text-gray-900 dark:text-white font-medium"
+                        className="w-full h-[42px] bg-white dark:bg-[#111] border border-gray-400 dark:border-[#555] rounded-md px-4 text-sm focus:outline-none focus:border-[#c8921a] text-gray-900 dark:text-white font-normal"
                       />
                     </div>
                     <div className="space-y-1.5">
-                      <label className="text-[8px] font-bold uppercase text-gray-400 ml-0.5">Carboidratos (g)</label>
+                      <label className="text-[8px] font-normal uppercase text-gray-400 ml-0.5">Carboidratos (g)</label>
                       <input 
                         type="text" 
                         value={formData.carboidratos} 
                         onChange={(e) => setFormData({...formData, carboidratos: e.target.value})}
                         placeholder="Ex: 2.5" 
-                        className="w-full h-[42px] bg-gray-100 dark:bg-[#111] border border-gray-400 dark:border-[#555] rounded-md px-4 text-sm focus:outline-none focus:border-[#c8921a] text-gray-900 dark:text-white font-medium"
+                        className="w-full h-[42px] bg-white dark:bg-[#111] border border-gray-400 dark:border-[#555] rounded-md px-4 text-sm focus:outline-none focus:border-[#c8921a] text-gray-900 dark:text-white font-normal"
                       />
                     </div>
                     <div className="space-y-1.5">
-                      <label className="text-[8px] font-bold uppercase text-gray-400 ml-0.5">Gorduras (g)</label>
+                      <label className="text-[8px] font-normal uppercase text-gray-400 ml-0.5">Gorduras (g)</label>
                       <input 
                         type="text" 
                         value={formData.gorduras} 
                         onChange={(e) => setFormData({...formData, gorduras: e.target.value})}
                         placeholder="Ex: 6.0" 
-                        className="w-full h-[42px] bg-gray-100 dark:bg-[#111] border border-gray-400 dark:border-[#555] rounded-md px-4 text-sm focus:outline-none focus:border-[#c8921a] text-gray-900 dark:text-white font-medium"
+                        className="w-full h-[42px] bg-white dark:bg-[#111] border border-gray-400 dark:border-[#555] rounded-md px-4 text-sm focus:outline-none focus:border-[#c8921a] text-gray-900 dark:text-white font-normal"
                       />
                     </div>
                     <div className="space-y-1.5">
-                      <label className="text-[8px] font-bold uppercase text-gray-400 ml-0.5">Fibras (g)</label>
+                      <label className="text-[8px] font-normal uppercase text-gray-400 ml-0.5">Fibras (g)</label>
                       <input 
                         type="text" 
                         value={formData.fibras} 
                         onChange={(e) => setFormData({...formData, fibras: e.target.value})}
                         placeholder="Ex: 2.0" 
-                        className="w-full h-[42px] bg-gray-100 dark:bg-[#111] border border-gray-400 dark:border-[#555] rounded-md px-4 text-sm focus:outline-none focus:border-[#c8921a] text-gray-900 dark:text-white font-medium"
+                        className="w-full h-[42px] bg-white dark:bg-[#111] border border-gray-400 dark:border-[#555] rounded-md px-4 text-sm focus:outline-none focus:border-[#c8921a] text-gray-900 dark:text-white font-normal"
                       />
                     </div>
                     <div className="space-y-1.5">
-                      <label className="text-[8px] font-bold uppercase text-gray-400 ml-0.5">Sódio (mg)</label>
+                      <label className="text-[8px] font-normal uppercase text-gray-400 ml-0.5">Sódio (mg)</label>
                       <input 
                         type="text" 
                         value={formData.sodio} 
                         onChange={(e) => setFormData({...formData, sodio: e.target.value})}
                         placeholder="Ex: 150" 
-                        className="w-full h-[42px] bg-gray-100 dark:bg-[#111] border border-gray-400 dark:border-[#555] rounded-md px-4 text-sm focus:outline-none focus:border-[#c8921a] text-gray-900 dark:text-white font-medium"
+                        className="w-full h-[42px] bg-white dark:bg-[#111] border border-gray-400 dark:border-[#555] rounded-md px-4 text-sm focus:outline-none focus:border-[#c8921a] text-gray-900 dark:text-white font-normal"
                       />
                     </div>
                   </div>
                 </div>
                 <div className="space-y-2">
-                  <label className="text-[9px] font-bold uppercase tracking-[0.15em] text-gray-800 dark:text-gray-200 ml-0.5">Aviso Nutricional Customizado</label>
+                  <label className="text-[9px] font-normal uppercase tracking-[0.15em] text-gray-800 dark:text-gray-200 ml-0.5">Aviso Nutricional Customizado</label>
                   <textarea
                     value={formData.aviso_nutricional}
                     onChange={(e) => setFormData({ ...formData, aviso_nutricional: e.target.value })}
                     rows={6}
                     placeholder="Ex: Os valores podem variar dependendo da marca..."
-                    className="w-full bg-gray-100 dark:bg-[#111] border border-gray-400 dark:border-[#555] rounded-md px-4 py-4 text-sm focus:outline-none focus:border-[#c8921a] text-gray-800 dark:text-gray-200 resize-none transition-all"
+                    className="w-full bg-white dark:bg-[#111] border border-gray-400 dark:border-[#555] rounded-md px-4 py-4 text-sm focus:outline-none focus:border-[#c8921a] text-gray-800 dark:text-gray-200 resize-none transition-all"
                   />
                 </div>
               </div>
@@ -633,12 +633,12 @@ export default function EditarReceita() {
 
             {/* Ações Finais */}
             <div className="flex flex-col-reverse sm:flex-row gap-4 pt-10 border-t border-gray-200 dark:border-[#222] sm:justify-between sm:items-center">
-              <button type="button" onClick={handleDelete} className="w-full sm:w-auto px-4 py-2.5 rounded-md border border-red-200 dark:border-red-900/30 text-red-600 bg-red-50 dark:bg-red-900/10 text-[10px] font-bold uppercase tracking-widest hover:bg-red-100 dark:hover:bg-red-900/20 transition-all flex items-center justify-center gap-2">
+              <button type="button" onClick={handleDelete} className="w-full sm:w-auto px-4 py-2.5 rounded-md border border-red-200 dark:border-red-900/30 text-red-600 bg-red-50 dark:bg-red-900/10 text-[10px] font-normal uppercase tracking-widest hover:bg-red-100 dark:hover:bg-red-900/20 transition-all flex items-center justify-center gap-2">
                 <Trash2 size={14} /> Excluir
               </button>
               <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
-                <button type="button" onClick={() => router.push('/admin/receitas')} className="w-full sm:w-auto px-6 py-2.5 rounded-md border border-gray-300 dark:border-[#444] text-[10px] font-bold uppercase tracking-widest text-gray-500 hover:bg-gray-50 transition-all text-center">Cancelar</button>
-                <button type="submit" disabled={saving} className="w-full sm:w-auto px-8 py-2.5 rounded-md bg-[#c8921a] text-[#2d2106] text-[10px] font-bold uppercase tracking-widest shadow-md hover:shadow-xl transition-all disabled:opacity-50 text-center">
+                <button type="button" onClick={() => router.push('/admin/receitas')} className="w-full sm:w-auto px-6 py-2.5 rounded-md border border-gray-300 dark:border-[#444] text-[10px] font-normal uppercase tracking-widest text-gray-500 hover:bg-gray-50 transition-all text-center">Cancelar</button>
+                <button type="submit" disabled={saving} className="w-full sm:w-auto px-8 py-2.5 rounded-md bg-[#c8921a] text-[#2d2106] text-[10px] font-normal uppercase tracking-widest shadow-md hover:shadow-xl transition-all disabled:opacity-50 text-center">
                   {saving ? 'Sincronizando...' : 'Salvar'}
                 </button>
               </div>

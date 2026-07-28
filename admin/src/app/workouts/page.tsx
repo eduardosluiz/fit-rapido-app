@@ -110,7 +110,7 @@ export default function Workouts() {
         <section className="py-8 md:py-16 bg-gray-50">
           <div className="container mx-auto px-4">
             <div className="text-center mb-8 md:mb-12">
-              <h1 className="text-2xl md:text-4xl font-bold text-gray-800 mb-3 md:mb-4">
+              <h1 className="text-2xl md:text-4xl font-normal text-gray-800 mb-3 md:mb-4">
                 Treinos de <span className="text-green-500">Musculação</span>
               </h1>
               <p className="text-base md:text-xl text-gray-600 max-w-2xl mx-auto mb-6 md:mb-8">
@@ -158,7 +158,7 @@ export default function Workouts() {
         <section className="py-8 md:py-16">
           <div className="container mx-auto px-4">
             <div className="flex flex-col md:flex-row md:items-center justify-between mb-6 md:mb-8 gap-4">
-              <h2 className="text-xl md:text-3xl font-bold text-gray-800">
+              <h2 className="text-xl md:text-3xl font-normal text-gray-800">
                 {selectedCategory === 'all' ? 'Todos os Treinos' : categories.find(c => c.id === selectedCategory)?.name}
                 <span className="text-green-500 ml-2">({filteredWorkouts.length})</span>
               </h2>
@@ -197,7 +197,7 @@ export default function Workouts() {
         <section className="py-8 md:py-16 bg-gray-50">
           <div className="container mx-auto px-4">
             <div className="bg-white border border-gray-200 rounded-2xl p-6 md:p-12 text-center max-w-4xl mx-auto">
-              <h3 className="text-xl md:text-3xl font-bold text-gray-800 mb-3 md:mb-4">
+              <h3 className="text-xl md:text-3xl font-normal text-gray-800 mb-3 md:mb-4">
                 Quer Treinos de Musculação Personalizados?
               </h3>
               <p className="text-gray-600 mb-6 md:mb-8 text-base md:text-lg">

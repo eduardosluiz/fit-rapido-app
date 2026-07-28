@@ -48,13 +48,13 @@ export default function WorkoutCard({ workout }: WorkoutCardProps) {
         </div>
 
         {/* Category Badge */}
-        <div className="absolute top-2 left-2 bg-green-500/90 text-white px-2 py-1 rounded-full text-xs font-semibold">
+        <div className="absolute top-2 left-2 bg-green-500/90 text-white px-2 py-1 rounded-full text-xs font-normal">
           {workout.category}
         </div>
       </div>
 
       <div className="p-4">
-        <h3 className="text-base md:text-lg font-semibold text-gray-800 mb-2 line-clamp-2">
+        <h3 className="text-base md:text-lg font-normal text-gray-800 mb-2 line-clamp-2">
           {workout.title}
         </h3>
         

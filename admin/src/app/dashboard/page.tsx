@@ -87,7 +87,7 @@ export default function Dashboard() {
         <section className="hero-gradient py-16">
           <div className="container mx-auto px-4">
             <div className="text-center mb-12">
-              <h1 className="font-heading text-4xl md:text-6xl font-bold text-text mb-4">
+              <h1 className="font-heading text-4xl md:text-6xl font-normal text-text mb-4">
                 Bem-vinda, <span className="text-primary">Maria!</span>
               </h1>
               <p className="text-xl text-text-light max-w-2xl mx-auto">
@@ -102,7 +102,7 @@ export default function Dashboard() {
                   <div className={`text-3xl mb-2 ${stat.color}`}>
                     <i className={`bx ${stat.icon}`}></i>
                   </div>
-                  <div className="text-2xl font-bold text-text mb-1">{stat.value}</div>
+                  <div className="text-2xl font-normal text-text mb-1">{stat.value}</div>
                   <div className="text-sm text-text-light">{stat.label}</div>
                 </div>
               ))}
@@ -114,7 +114,7 @@ export default function Dashboard() {
         <section className="py-16">
           <div className="container mx-auto px-4">
             <div className="flex items-center justify-between mb-8">
-              <h2 className="font-heading text-3xl font-bold text-text">
+              <h2 className="font-heading text-3xl font-normal text-text">
                 Receitas Recentes
               </h2>
               <button className="text-primary hover:text-yellow-400 transition-colors">
@@ -136,7 +136,7 @@ export default function Dashboard() {
         <section className="py-16 bg-background-alt">
           <div className="container mx-auto px-4">
             <div className="flex items-center justify-between mb-8">
-              <h2 className="font-heading text-3xl font-bold text-text">
+              <h2 className="font-heading text-3xl font-normal text-text">
                 Treinos de Hoje
               </h2>
               <button className="text-primary hover:text-yellow-400 transition-colors">
@@ -157,7 +157,7 @@ export default function Dashboard() {
         {/* Quick Actions */}
         <section className="py-16">
           <div className="container mx-auto px-4">
-            <h2 className="font-heading text-3xl font-bold text-text text-center mb-12">
+            <h2 className="font-heading text-3xl font-normal text-text text-center mb-12">
               Ações Rápidas
             </h2>
 
@@ -166,7 +166,7 @@ export default function Dashboard() {
                 <div className="w-16 h-16 bg-primary/20 rounded-full flex items-center justify-center mx-auto mb-6">
                   <i className="bx bx-search text-3xl text-primary"></i>
                 </div>
-                <h3 className="font-heading text-xl font-semibold mb-3">Buscar Receitas</h3>
+                <h3 className="font-heading text-xl font-normal mb-3">Buscar Receitas</h3>
                 <p className="text-text-light mb-6">Encontre receitas por ingredientes, categoria ou dificuldade</p>
                 <button className="btn-primary w-full">Buscar</button>
               </div>
@@ -175,7 +175,7 @@ export default function Dashboard() {
                 <div className="w-16 h-16 bg-primary/20 rounded-full flex items-center justify-center mx-auto mb-6">
                   <i className="bx bx-calendar text-3xl text-primary"></i>
                 </div>
-                <h3 className="font-heading text-xl font-semibold mb-3">Agendar Treino</h3>
+                <h3 className="font-heading text-xl font-normal mb-3">Agendar Treino</h3>
                 <p className="text-text-light mb-6">Marque uma sessão com nossa personal trainer</p>
                 <button className="btn-primary w-full">Agendar</button>
               </div>
@@ -184,7 +184,7 @@ export default function Dashboard() {
                 <div className="w-16 h-16 bg-primary/20 rounded-full flex items-center justify-center mx-auto mb-6">
                   <i className="bx bx-shopping-bag text-3xl text-primary"></i>
                 </div>
-                <h3 className="font-heading text-xl font-semibold mb-3">Lista de Compras</h3>
+                <h3 className="font-heading text-xl font-normal mb-3">Lista de Compras</h3>
                 <p className="text-text-light mb-6">Gere sua lista baseada nas receitas favoritas</p>
                 <button className="btn-primary w-full">Gerar Lista</button>
               </div>

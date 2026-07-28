@@ -31,17 +31,17 @@ export function Button({
   // Se não tem children (texto), ajusta para botão apenas com ícone
   const isIconOnly = !children;
   const baseClasses = cn(
-    'admin-btn-modern inline-flex items-center justify-center font-medium transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed relative',
+    'admin-btn-modern inline-flex items-center justify-center font-normal transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed relative',
     variant === 'magic' ? 'rounded-lg' : 'rounded-xl',
     isIconOnly ? '' : variant === 'magic' ? 'gap-1.5' : 'gap-2'
   );
   
   const variantClasses = {
-    primary: 'admin-btn-modern-primary bg-gradient-to-r from-[#c8921a] to-[#d4a020] hover:from-[#b88217] hover:to-[#c8921a] text-white shadow-lg hover:shadow-xl hover:shadow-[#c8921a]/25 border border-[#b88217]/30 hover:border-[#c8921a]/50 backdrop-blur-md bg-opacity-95',
-    magic: 'font-medium rounded-lg transition-all duration-200',
-    secondary: 'admin-btn-modern-secondary bg-white/90 dark:bg-[#1a1a1a]/90 backdrop-blur-md text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-gray-700 shadow-lg hover:shadow-xl hover:bg-white dark:hover:bg-[#1a1a1a]',
-    danger: 'bg-red-600 hover:bg-red-700 active:bg-red-800 text-white font-bold border-2 border-red-700 shadow-lg',
-    outline: 'admin-btn-back bg-white dark:bg-[#1a1a1a] border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:bg-white dark:hover:bg-[#1a1a1a] shadow-lg hover:shadow-xl backdrop-blur-md',
+    primary: 'admin-btn-modern-primary bg-gradient-to-r from-[#c8921a] to-[#d4a020] hover:from-[#b88217] hover:to-[#c8921a] text-white shadow-sm hover:shadow-xl hover:shadow-[#c8921a]/25 border border-[#b88217]/30 hover:border-[#c8921a]/50 backdrop-blur-md bg-opacity-95',
+    magic: 'font-normal rounded-lg transition-all duration-200',
+    secondary: 'admin-btn-modern-secondary bg-white/90 dark:bg-[#1a1a1a]/90 backdrop-blur-md text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-xl hover:bg-white dark:hover:bg-[#1a1a1a]',
+    danger: 'bg-red-600 hover:bg-red-700 active:bg-red-800 text-white font-normal border-2 border-red-700 shadow-sm',
+    outline: 'admin-btn-back bg-white dark:bg-[#1a1a1a] border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:bg-white dark:hover:bg-[#1a1a1a] shadow-sm hover:shadow-xl backdrop-blur-md',
   };
 
   const sizeClasses = {

@@ -14,7 +14,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       <div className="mb-4">
         {label && (
           <label 
-            className="block text-sm font-bold text-gray-800 dark:text-gray-200 mb-2.5"
+            className="block text-sm font-normal text-gray-800 dark:text-gray-200 mb-2.5"
             style={{
               fontWeight: '600',
               fontSize: '14px',
@@ -22,13 +22,13 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             }}
           >
             {label}
-            {props.required && <span className="text-red-600 ml-1 font-bold">*</span>}
+            {props.required && <span className="text-red-600 ml-1 font-normal">*</span>}
           </label>
         )}
         <input
           ref={ref}
           className={`
-            w-full border-2 rounded-lg px-4 py-2.5 text-sm font-medium
+            w-full border-2 rounded-lg px-4 py-2.5 text-sm font-normal
             focus:outline-none focus:ring-2 focus:ring-[#c8921a]/30 transition-all
             bg-white dark:bg-[#252525] text-gray-900 dark:text-white
             placeholder-gray-400 dark:placeholder-gray-500

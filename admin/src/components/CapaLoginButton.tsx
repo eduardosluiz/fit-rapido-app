@@ -62,7 +62,7 @@ export function CapaLoginButton() {
         style={{ border: '1px solid #c8921a' }}
         className="flex items-center justify-between p-4 bg-white dark:bg-[#111] rounded-xl hover:shadow-sm transition-all group w-full"
       >
-        <span className="text-[10px] font-medium text-gray-600 dark:text-gray-400 group-hover:text-black dark:group-hover:text-white uppercase tracking-wider">
+        <span className="text-[10px] font-normal text-gray-600 dark:text-gray-400 group-hover:text-black dark:group-hover:text-white uppercase tracking-wider">
           Capa de Login
         </span>
         <div className="text-gray-200 group-hover:text-[#c8921a] transition-all transform group-hover:translate-x-1">
@@ -72,8 +72,8 @@ export function CapaLoginButton() {
 
       {isOpen && (
         <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
-          <div className="bg-[#111] border border-[#2e7fb9]/60 rounded-md shadow-lg p-6 max-w-sm w-full relative">
-            <h3 className="text-white text-lg font-bold mb-4 uppercase tracking-widest text-[11px]">Alterar Capa de Login</h3>
+          <div className="bg-[#111] border border-[#2e7fb9]/60 rounded-md shadow-sm p-6 max-w-sm w-full relative">
+            <h3 className="text-white text-lg font-normal mb-4 uppercase tracking-widest text-[11px]">Alterar Capa de Login</h3>
             
             <div className="flex gap-2 mb-4 bg-gray-900 p-1 rounded-lg">
               <button
@@ -83,7 +83,7 @@ export function CapaLoginButton() {
                    setPreview(null);
                    setSuccess(false);
                 }}
-                className={`flex-1 flex items-center justify-center gap-2 py-2 text-[10px] font-bold uppercase rounded-md transition-colors ${target === 'admin' ? 'bg-[#c8921a] text-black' : 'text-gray-400 hover:text-white'}`}
+                className={`flex-1 flex items-center justify-center gap-2 py-2 text-[10px] font-normal uppercase rounded-md transition-colors ${target === 'admin' ? 'bg-[#c8921a] text-black' : 'text-gray-400 hover:text-white'}`}
               >
                 <Monitor size={12} />
                 Painel Admin
@@ -95,7 +95,7 @@ export function CapaLoginButton() {
                    setPreview(null);
                    setSuccess(false);
                 }}
-                className={`flex-1 flex items-center justify-center gap-2 py-2 text-[10px] font-bold uppercase rounded-md transition-colors ${target === 'mobile' ? 'bg-[#c8921a] text-black' : 'text-gray-400 hover:text-white'}`}
+                className={`flex-1 flex items-center justify-center gap-2 py-2 text-[10px] font-normal uppercase rounded-md transition-colors ${target === 'mobile' ? 'bg-[#c8921a] text-black' : 'text-gray-400 hover:text-white'}`}
               >
                 <Smartphone size={12} />
                 App Mobile
@@ -122,14 +122,14 @@ export function CapaLoginButton() {
             <div className="flex gap-2 justify-end">
               <button 
                 onClick={() => setIsOpen(false)}
-                className="px-4 py-2 bg-gray-800 text-white text-[9px] font-bold uppercase rounded-md hover:bg-gray-700 transition-colors"
+                className="px-4 py-2 bg-gray-800 text-white text-[9px] font-normal uppercase rounded-md hover:bg-gray-700 transition-colors"
               >
                 Cancelar
               </button>
               <button 
                 onClick={handleUpload}
                 disabled={!file || loading}
-                className="px-4 py-2 bg-[#c8921a] text-black text-[9px] font-bold uppercase rounded-md hover:bg-[#d49e25] transition-colors disabled:opacity-50 flex items-center justify-center min-w-[80px]"
+                className="px-4 py-2 bg-[#c8921a] text-black text-[9px] font-normal uppercase rounded-md hover:bg-[#d49e25] transition-colors disabled:opacity-50 flex items-center justify-center min-w-[80px]"
               >
                 {loading ? <Loader2 size={12} className="animate-spin" /> : 'Salvar'}
               </button>

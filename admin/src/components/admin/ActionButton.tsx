@@ -64,7 +64,7 @@ export function ActionButton({
     <button
       onClick={onClick}
       className={cn(
-        "flex items-center justify-center font-semibold transition-all rounded-lg border",
+        "flex items-center justify-center font-normal transition-all rounded-lg border",
         size === 'sm' ? 'px-2 py-1.5 text-xs w-8 h-8' : size === 'lg' ? 'px-6 py-3 text-base gap-2' : 'px-4 py-2.5 text-sm gap-1.5',
         variant !== 'custom' && config?.className,
         className

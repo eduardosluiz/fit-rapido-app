@@ -114,7 +114,7 @@ export default function RecipeDetail() {
 
                 {/* Recipe Info */}
                 <div className={`animate-on-scroll ${isVisible ? 'visible' : ''}`}>
-                  <h1 className="font-heading text-4xl font-bold text-gray-800 mb-4">
+                  <h1 className="font-heading text-4xl font-normal text-gray-800 mb-4">
                     {recipe.title}
                   </h1>
                   
@@ -127,22 +127,22 @@ export default function RecipeDetail() {
                     <div className="bg-white border border-orange-200 rounded-xl p-4 text-center">
                       <i className="bx bx-time text-2xl text-orange-600 mb-2"></i>
                       <div className="text-sm text-gray-600">Preparo</div>
-                      <div className="font-semibold text-gray-800">{recipe.prepTime}min</div>
+                      <div className="font-normal text-gray-800">{recipe.prepTime}min</div>
                     </div>
                     <div className="bg-white border border-orange-200 rounded-xl p-4 text-center">
                       <i className="bx bx-timer text-2xl text-orange-600 mb-2"></i>
                       <div className="text-sm text-gray-600">Cozimento</div>
-                      <div className="font-semibold text-gray-800">{recipe.cookTime}min</div>
+                      <div className="font-normal text-gray-800">{recipe.cookTime}min</div>
                     </div>
                     <div className="bg-white border border-orange-200 rounded-xl p-4 text-center">
                       <i className="bx bx-user text-2xl text-orange-600 mb-2"></i>
                       <div className="text-sm text-gray-600">Porções</div>
-                      <div className="font-semibold text-gray-800">{recipe.servings}</div>
+                      <div className="font-normal text-gray-800">{recipe.servings}</div>
                     </div>
                     <div className="bg-white border border-orange-200 rounded-xl p-4 text-center">
                       <i className={`bx bx-dumbbell text-2xl ${difficultyColors[recipe.difficulty]} mb-2`}></i>
                       <div className="text-sm text-gray-600">Dificuldade</div>
-                      <div className={`font-semibold ${difficultyColors[recipe.difficulty]}`}>
+                      <div className={`font-normal ${difficultyColors[recipe.difficulty]}`}>
                         {difficultyLabels[recipe.difficulty]}
                       </div>
                     </div>
@@ -188,7 +188,7 @@ export default function RecipeDetail() {
                   <div className="flex border-b border-orange-200 mb-8">
                     <button
                       onClick={() => setActiveTab('ingredients')}
-                      className={`px-6 py-3 font-semibold transition-colors ${
+                      className={`px-6 py-3 font-normal transition-colors ${
                         activeTab === 'ingredients'
                           ? 'text-orange-600 border-b-2 border-orange-600'
                           : 'text-gray-600 hover:text-orange-600'
@@ -198,7 +198,7 @@ export default function RecipeDetail() {
                     </button>
                     <button
                       onClick={() => setActiveTab('instructions')}
-                      className={`px-6 py-3 font-semibold transition-colors ${
+                      className={`px-6 py-3 font-normal transition-colors ${
                         activeTab === 'instructions'
                           ? 'text-orange-600 border-b-2 border-orange-600'
                           : 'text-gray-600 hover:text-orange-600'
@@ -211,7 +211,7 @@ export default function RecipeDetail() {
                   {/* Tab Content */}
                   {activeTab === 'ingredients' && (
                     <div className={`animate-on-scroll ${isVisible ? 'visible' : ''}`}>
-                      <h3 className="font-heading text-2xl font-bold text-gray-800 mb-6">
+                      <h3 className="font-heading text-2xl font-normal text-gray-800 mb-6">
                         Ingredientes
                       </h3>
                       <ul className="space-y-3">
@@ -227,13 +227,13 @@ export default function RecipeDetail() {
 
                   {activeTab === 'instructions' && (
                     <div className={`animate-on-scroll ${isVisible ? 'visible' : ''}`}>
-                      <h3 className="font-heading text-2xl font-bold text-gray-800 mb-6">
+                      <h3 className="font-heading text-2xl font-normal text-gray-800 mb-6">
                         Modo de Preparo
                       </h3>
                       <ol className="space-y-4">
                         {recipe.instructions.map((instruction, index) => (
                           <li key={index} className="flex gap-4">
-                            <span className="bg-orange-600 text-white rounded-full w-8 h-8 flex items-center justify-center font-semibold text-sm flex-shrink-0">
+                            <span className="bg-orange-600 text-white rounded-full w-8 h-8 flex items-center justify-center font-normal text-sm flex-shrink-0">
                               {index + 1}
                             </span>
                             <span className="text-gray-600">{instruction}</span>
@@ -248,36 +248,36 @@ export default function RecipeDetail() {
                 <div className="space-y-6">
                   {/* Nutrition Info */}
                   <div className="bg-white border border-orange-200 rounded-2xl p-6">
-                    <h4 className="font-heading text-xl font-bold text-gray-800 mb-4">
+                    <h4 className="font-heading text-xl font-normal text-gray-800 mb-4">
                       Informações Nutricionais
                     </h4>
                     <div className="space-y-3">
                       <div className="flex justify-between">
                         <span className="text-gray-600">Calorias</span>
-                        <span className="text-gray-800 font-semibold">{recipe.nutrition.calories}</span>
+                        <span className="text-gray-800 font-normal">{recipe.nutrition.calories}</span>
                       </div>
                       <div className="flex justify-between">
                         <span className="text-gray-600">Proteínas</span>
-                        <span className="text-gray-800 font-semibold">{recipe.nutrition.protein}g</span>
+                        <span className="text-gray-800 font-normal">{recipe.nutrition.protein}g</span>
                       </div>
                       <div className="flex justify-between">
                         <span className="text-gray-600">Carboidratos</span>
-                        <span className="text-gray-800 font-semibold">{recipe.nutrition.carbs}g</span>
+                        <span className="text-gray-800 font-normal">{recipe.nutrition.carbs}g</span>
                       </div>
                       <div className="flex justify-between">
                         <span className="text-gray-600">Gorduras</span>
-                        <span className="text-gray-800 font-semibold">{recipe.nutrition.fat}g</span>
+                        <span className="text-gray-800 font-normal">{recipe.nutrition.fat}g</span>
                       </div>
                       <div className="flex justify-between">
                         <span className="text-gray-600">Fibras</span>
-                        <span className="text-gray-800 font-semibold">{recipe.nutrition.fiber}g</span>
+                        <span className="text-gray-800 font-normal">{recipe.nutrition.fiber}g</span>
                       </div>
                     </div>
                   </div>
 
                   {/* Related Recipes */}
                   <div className="bg-white border border-orange-200 rounded-2xl p-6">
-                    <h4 className="font-heading text-xl font-bold text-gray-800 mb-4">
+                    <h4 className="font-heading text-xl font-normal text-gray-800 mb-4">
                       Receitas Relacionadas
                     </h4>
                     <div className="space-y-4">
@@ -289,7 +289,7 @@ export default function RecipeDetail() {
                             className="w-16 h-16 rounded-lg object-cover"
                           />
                           <div className="flex-1">
-                            <h5 className="font-semibold text-gray-800 text-sm mb-1">
+                            <h5 className="font-normal text-gray-800 text-sm mb-1">
                               Receita Relacionada {i}
                             </h5>
                             <p className="text-gray-600 text-xs">

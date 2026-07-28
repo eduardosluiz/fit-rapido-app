@@ -69,7 +69,7 @@ export default function ModalidadesTreinosPage() {
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
           <div className="w-12 h-12 border-4 border-[#c8921a] border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-gray-600 font-medium">Carregando modalidades...</p>
+          <p className="text-gray-600 font-normal">Carregando modalidades...</p>
         </div>
       </div>
     );
@@ -144,7 +144,7 @@ export default function ModalidadesTreinosPage() {
           <Card className="shadow-md border border-gray-200 dark:border-[#333]">
             <CardContent className="p-6 sm:p-8 lg:p-10">
               <div className="mb-8 pb-4 border-b border-gray-200 dark:border-[#333]">
-                <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+                <h2 className="text-2xl font-normal text-gray-900 dark:text-white">
                   {editingId ? 'Editar Modalidade' : 'Nova Modalidade'}
                 </h2>
               </div>
@@ -200,7 +200,7 @@ export default function ModalidadesTreinosPage() {
                       checked={formData.ativo}
                       onCheckedChange={(checked) => setFormData({ ...formData, ativo: checked })}
                     />
-                    <label htmlFor="ativo" className="text-sm font-bold uppercase text-gray-500 cursor-pointer">
+                    <label htmlFor="ativo" className="text-sm font-normal uppercase text-gray-500 cursor-pointer">
                       Exibir no App (Ativo)
                     </label>
                   </div>
@@ -232,7 +232,7 @@ export default function ModalidadesTreinosPage() {
             ) : (
               modalidades.map((mod) => (
                 <Card key={mod.id} className="overflow-hidden border-2 border-gray-100 hover:border-[#c8921a] transition-all">
-                  <div className="h-32 bg-gray-100 relative">
+                  <div className="h-32 bg-white relative">
                     {mod.imagem_url ? (
                       <img src={mod.imagem_url} alt={mod.nome} className="w-full h-full object-cover" />
                     ) : (
@@ -242,7 +242,7 @@ export default function ModalidadesTreinosPage() {
                     )}
                     <div className="absolute top-2 right-2">
                       <span className={cn(
-                        "px-2 py-1 rounded text-[10px] font-bold uppercase",
+                        "px-2 py-1 rounded text-[10px] font-normal uppercase",
                         mod.ativo || (mod as any).ativa ? "bg-green-500 text-white" : "bg-gray-400 text-white"
                       )}>
                         {mod.ativo || (mod as any).ativa ? 'Ativo' : 'Inativo'}
@@ -250,7 +250,7 @@ export default function ModalidadesTreinosPage() {
                     </div>
                   </div>
                   <CardContent className="p-4">
-                    <h3 className="font-bold text-lg mb-1">{mod.nome}</h3>
+                    <h3 className="font-normal text-lg mb-1">{mod.nome}</h3>
                     <p className="text-gray-500 text-xs line-clamp-2 mb-4">{mod.descricao || 'Sem descrição'}</p>
                     <div className="flex gap-2">
                       <ActionButton variant="edit" onClick={() => handleEdit(mod)} className="flex-1" />

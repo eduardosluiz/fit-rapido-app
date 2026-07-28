@@ -71,7 +71,7 @@ export function FileUpload({ type, value, onChange, label, accept }: FileUploadP
   return (
     <div>
       {label && (
-        <label className="block text-text font-semibold mb-2">
+        <label className="block text-text font-normal mb-2">
           {label}
         </label>
       )}

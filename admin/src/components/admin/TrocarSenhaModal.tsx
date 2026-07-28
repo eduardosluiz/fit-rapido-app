@@ -52,7 +52,7 @@ export function TrocarSenhaModal({ open, onOpenChange, usuarioId, usuarioNome }:
                 <Lock size={18} />
               </div>
               <div>
-                <Dialog.Title className="text-sm font-bold uppercase tracking-widest text-gray-800 dark:text-white">
+                <Dialog.Title className="text-sm font-normal uppercase tracking-widest text-gray-800 dark:text-white">
                   Trocar Senha
                 </Dialog.Title>
                 <p className="text-[10px] text-gray-500 uppercase tracking-widest mt-0.5">
@@ -67,7 +67,7 @@ export function TrocarSenhaModal({ open, onOpenChange, usuarioId, usuarioNome }:
 
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
-              <label className="text-[9px] font-bold uppercase tracking-[0.15em] text-gray-800 dark:text-gray-200 block mb-2">
+              <label className="text-[9px] font-normal uppercase tracking-[0.15em] text-gray-800 dark:text-gray-200 block mb-2">
                 Nova Senha
               </label>
               <input
@@ -85,13 +85,13 @@ export function TrocarSenhaModal({ open, onOpenChange, usuarioId, usuarioNome }:
             </div>
 
             <div className="pt-2 flex justify-end gap-3">
-              <Dialog.Close type="button" className="px-5 py-2.5 rounded-md border border-gray-300 dark:border-[#333] text-[10px] font-bold uppercase tracking-widest text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-[#111] transition-all">
+              <Dialog.Close type="button" className="px-5 py-2.5 rounded-md border border-gray-300 dark:border-[#333] text-[10px] font-normal uppercase tracking-widest text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-[#111] transition-all">
                 Cancelar
               </Dialog.Close>
               <button
                 type="submit"
                 disabled={loading || novaSenha.length < 6}
-                className="px-5 py-2.5 rounded-md bg-[#c8921a] text-[#2d2106] text-[10px] font-bold uppercase tracking-widest shadow-lg shadow-[#c8921a]/20 hover:scale-105 transition-all disabled:opacity-50 disabled:hover:scale-100 flex items-center gap-2"
+                className="px-5 py-2.5 rounded-md bg-[#c8921a] text-[#2d2106] text-[10px] font-normal uppercase tracking-widest shadow-sm shadow-[#c8921a]/20 hover:scale-105 transition-all disabled:opacity-50 disabled:hover:scale-100 flex items-center gap-2"
               >
                 {loading ? <Loader2 size={14} className="animate-spin" /> : <Check size={14} />}
                 Confirmar Troca

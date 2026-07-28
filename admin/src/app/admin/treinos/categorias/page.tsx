@@ -68,7 +68,7 @@ export default function CategoriasTreinosPage() {
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
           <div className="w-12 h-12 border-4 border-[#c8921a] border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-gray-600 font-medium">Carregando...</p>
+          <p className="text-gray-600 font-normal">Carregando...</p>
         </div>
       </div>
     );
@@ -190,7 +190,7 @@ export default function CategoriasTreinosPage() {
           <Card id="categoria-form" className="shadow-md border border-gray-200 dark:border-[#333]">
             <CardContent className="p-6 sm:p-8 lg:p-10">
               <div className="mb-8 pb-4 border-b border-gray-200 dark:border-[#333]">
-                <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+                <h2 className="text-2xl font-normal text-gray-900 dark:text-white">
                   Nova Categoria
                 </h2>
               </div>
@@ -251,14 +251,14 @@ export default function CategoriasTreinosPage() {
                     />
                     <label 
                       htmlFor="ativa" 
-                      className="text-sm font-semibold text-foreground cursor-pointer"
+                      className="text-sm font-normal text-foreground cursor-pointer"
                     >
                       Categoria Ativa
                     </label>
                   </div>
                 </FormSection>
 
-                <div className="inline-flex items-center bg-gray-100 dark:bg-gray-800 rounded-lg p-1 gap-0.5 border border-gray-200 dark:border-gray-700 w-full pt-6 border-t border-gray-200 dark:border-[#333] mt-8">
+                <div className="inline-flex items-center bg-white dark:bg-gray-800 rounded-lg p-1 gap-0.5 border border-gray-200 dark:border-gray-700 w-full pt-6 border-t border-gray-200 dark:border-[#333] mt-8">
                   <Button
                     type="button"
                     onClick={handleCancel}
@@ -305,15 +305,15 @@ export default function CategoriasTreinosPage() {
                 {categorias.map((categoria) => (
                   <div key={categoria.id}>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                      <Card id={`categoria-${categoria.id}`} className="border-2 border-gray-200 dark:border-[#333] dark:bg-[#1a1a1a] shadow-lg hover:shadow-xl transition-all cursor-pointer hover:border-[#c8921a]">
+                      <Card id={`categoria-${categoria.id}`} className="border-2 border-gray-200 dark:border-[#333] dark:bg-[#1a1a1a] shadow-sm hover:shadow-xl transition-all cursor-pointer hover:border-[#c8921a]">
                         <div className="mb-5">
                           <div className="flex items-start justify-between mb-4">
-                            <h3 className="text-xl font-bold text-gray-900 dark:text-white pr-2">{categoria.nome}</h3>
+                            <h3 className="text-xl font-normal text-gray-900 dark:text-white pr-2">{categoria.nome}</h3>
                             <span
-                              className={`px-3 py-1.5 rounded-full text-xs font-bold whitespace-nowrap ${
+                              className={`px-3 py-1.5 rounded-full text-xs font-normal whitespace-nowrap ${
                                 categoria.ativa
                                   ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300'
-                                  : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400'
+                                  : 'bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-400'
                               }`}
                             >
                               {categoria.ativa ? 'Ativa' : 'Inativa'}
@@ -354,7 +354,7 @@ export default function CategoriasTreinosPage() {
                       <Card id="categoria-form" className="shadow-md border border-gray-200 dark:border-[#333] mt-4">
                         <CardContent className="p-6 sm:p-8 lg:p-10">
                           <div className="mb-8 pb-4 border-b border-gray-200 dark:border-[#333]">
-                            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+                            <h2 className="text-2xl font-normal text-gray-900 dark:text-white">
                               Editar Categoria
                             </h2>
                           </div>
@@ -415,14 +415,14 @@ export default function CategoriasTreinosPage() {
                                 />
                                 <label 
                                   htmlFor="ativa" 
-                                  className="text-sm font-semibold text-foreground cursor-pointer"
+                                  className="text-sm font-normal text-foreground cursor-pointer"
                                 >
                                   Categoria Ativa
                                 </label>
                               </div>
                             </FormSection>
 
-                            <div className="inline-flex items-center bg-gray-100 dark:bg-gray-800 rounded-lg p-1 gap-0.5 border border-gray-200 dark:border-gray-700 w-full pt-6 border-t border-gray-200 dark:border-[#333] mt-8">
+                            <div className="inline-flex items-center bg-white dark:bg-gray-800 rounded-lg p-1 gap-0.5 border border-gray-200 dark:border-gray-700 w-full pt-6 border-t border-gray-200 dark:border-[#333] mt-8">
                               <Button
                                 type="button"
                                 onClick={handleCancel}

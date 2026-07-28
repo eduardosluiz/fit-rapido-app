@@ -161,8 +161,8 @@ export function ExerciciosModal({
             )}
           </div>
           <div>
-            <div className="font-bold text-[11px] uppercase tracking-tight text-gray-800 dark:text-white">{ex.nome}</div>
-            <div className="text-[9px] text-gray-400 font-medium uppercase tracking-widest">{ex.categoria || 'Geral'}</div>
+            <div className="font-normal text-[11px] uppercase tracking-tight text-gray-800 dark:text-white">{ex.nome}</div>
+            <div className="text-[9px] text-gray-400 font-normal uppercase tracking-widest">{ex.categoria || 'Geral'}</div>
           </div>
         </div>
       )
@@ -171,7 +171,7 @@ export function ExerciciosModal({
       header: 'Equipamento', 
       accessor: 'equipamento', 
       render: (ex: Exercicio) => (
-        <span className="text-[10px] font-medium text-gray-500 uppercase tracking-tighter">{ex.equipamento || '-'}</span>
+        <span className="text-[10px] font-normal text-gray-500 uppercase tracking-tighter">{ex.equipamento || '-'}</span>
       )
     },
     { 
@@ -197,7 +197,7 @@ export function ExerciciosModal({
       headerAction={
         <button
           onClick={() => { setShowForm(true); setEditingId(null); resetForm(); }}
-          className="px-4 py-2 rounded-md border border-[#c8921a] text-[#c8921a] text-[10px] font-semibold uppercase tracking-widest hover:bg-[#c8921a] hover:text-white transition-all duration-300 flex items-center gap-2"
+          className="px-4 py-2 rounded-md border border-[#c8921a] text-[#c8921a] text-[10px] font-normal uppercase tracking-widest hover:bg-[#c8921a] hover:text-white transition-all duration-300 flex items-center gap-2"
         >
           <Plus size={14} /> Novo Exercício
         </button>
@@ -207,7 +207,7 @@ export function ExerciciosModal({
         {showForm && (
           <div className="p-8 rounded-xl border border-gray-300 dark:border-[#333] bg-white dark:bg-[#0a0a0a] shadow-sm animate-in fade-in slide-in-from-top-2 duration-300 mb-6">
             <div className="flex items-center justify-between mb-8 pb-4 border-b border-gray-100 dark:border-[#1a1a1a]">
-              <h3 className="text-[11px] font-bold uppercase tracking-[0.2em] text-gray-800 dark:text-gray-200">
+              <h3 className="text-[11px] font-normal uppercase tracking-[0.2em] text-gray-800 dark:text-gray-200">
                 {editingId ? 'Editar Exercício' : 'Cadastro de Exercício'}
               </h3>
               <button onClick={() => setShowForm(false)} className="text-gray-400 hover:text-red-500 transition-colors">
@@ -219,23 +219,23 @@ export function ExerciciosModal({
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 <div className="space-y-6">
                   <div className="space-y-2">
-                    <label className="text-[9px] font-bold uppercase tracking-[0.15em] text-gray-800 dark:text-gray-200 ml-0.5">Nome do Exercício</label>
+                    <label className="text-[9px] font-normal uppercase tracking-[0.15em] text-gray-800 dark:text-gray-200 ml-0.5">Nome do Exercício</label>
                     <input 
                       value={formData.nome} 
                       onChange={(e) => setFormData({...formData, nome: e.target.value})} 
                       placeholder="Ex: SUPINO RETO COM BARRA"
-                      className="w-full bg-gray-50/80 dark:bg-[#111] border border-gray-400 dark:border-[#444] rounded-md px-4 py-2 text-sm focus:outline-none focus:border-[#c8921a] text-gray-900 dark:text-white font-medium transition-all"
+                      className="w-full bg-gray-50/80 dark:bg-[#111] border border-gray-400 dark:border-[#444] rounded-md px-4 py-2 text-sm focus:outline-none focus:border-[#c8921a] text-gray-900 dark:text-white font-normal transition-all"
                       required
                     />
                   </div>
 
                   <div className="grid grid-cols-2 gap-6">
                     <div className="space-y-2">
-                      <label className="text-[9px] font-bold uppercase tracking-[0.15em] text-gray-800 dark:text-gray-200 ml-0.5">Grupo Muscular</label>
+                      <label className="text-[9px] font-normal uppercase tracking-[0.15em] text-gray-800 dark:text-gray-200 ml-0.5">Grupo Muscular</label>
                       <select 
                         value={formData.categoria} 
                         onChange={(e) => setFormData({...formData, categoria: e.target.value})}
-                        className="w-full bg-gray-50/80 dark:bg-[#111] border border-gray-400 dark:border-[#444] rounded-md px-4 py-2 text-sm focus:outline-none focus:border-[#c8921a] text-gray-900 dark:text-white font-medium transition-all"
+                        className="w-full bg-gray-50/80 dark:bg-[#111] border border-gray-400 dark:border-[#444] rounded-md px-4 py-2 text-sm focus:outline-none focus:border-[#c8921a] text-gray-900 dark:text-white font-normal transition-all"
                       >
                         <option value="">Selecione...</option>
                         {categorias.map(cat => (
@@ -244,18 +244,18 @@ export function ExerciciosModal({
                       </select>
                     </div>
                     <div className="space-y-2">
-                      <label className="text-[9px] font-bold uppercase tracking-[0.15em] text-gray-800 dark:text-gray-200 ml-0.5">Equipamento</label>
+                      <label className="text-[9px] font-normal uppercase tracking-[0.15em] text-gray-800 dark:text-gray-200 ml-0.5">Equipamento</label>
                       <input 
                         value={formData.equipamento} 
                         onChange={(e) => setFormData({...formData, equipamento: e.target.value})} 
                         placeholder="Ex: BARRA, HALTERES"
-                        className="w-full bg-gray-50/80 dark:bg-[#111] border border-gray-400 dark:border-[#444] rounded-md px-4 py-2 text-sm focus:outline-none focus:border-[#c8921a] text-gray-900 dark:text-white font-medium transition-all"
+                        className="w-full bg-gray-50/80 dark:bg-[#111] border border-gray-400 dark:border-[#444] rounded-md px-4 py-2 text-sm focus:outline-none focus:border-[#c8921a] text-gray-900 dark:text-white font-normal transition-all"
                       />
                     </div>
                   </div>
 
                   <div className="space-y-2">
-                    <label className="text-[9px] font-bold uppercase tracking-[0.15em] text-gray-800 dark:text-gray-200 ml-0.5">Instruções / Descrição</label>
+                    <label className="text-[9px] font-normal uppercase tracking-[0.15em] text-gray-800 dark:text-gray-200 ml-0.5">Instruções / Descrição</label>
                     <textarea 
                       value={formData.descricao} 
                       onChange={(e) => setFormData({...formData, descricao: e.target.value})} 
@@ -273,12 +273,12 @@ export function ExerciciosModal({
                       onChange={(url) => setFormData({...formData, video_url: url})} 
                     />
                     {!formData.video_url && (
-                      <p className="mt-4 text-[9px] text-gray-500 text-center px-4 font-bold uppercase tracking-widest">Vídeo de Demonstração (Obrigatório)</p>
+                      <p className="mt-4 text-[9px] text-gray-500 text-center px-4 font-normal uppercase tracking-widest">Vídeo de Demonstração (Obrigatório)</p>
                     )}
                   </div>
 
                   <div className="p-4 bg-[#c8921a]/5 border border-[#c8921a]/20 rounded-lg">
-                    <p className="text-[9px] text-[#c8921a] font-bold uppercase tracking-widest leading-relaxed">
+                    <p className="text-[9px] text-[#c8921a] font-normal uppercase tracking-widest leading-relaxed">
                       💡 Você pode fazer o upload de um novo vídeo ou colar a URL de um vídeo existente da biblioteca.
                     </p>
                   </div>
@@ -289,14 +289,14 @@ export function ExerciciosModal({
                 <button 
                   type="button" 
                   onClick={() => setShowForm(false)} 
-                  className="text-[10px] font-bold uppercase tracking-widest text-gray-400 hover:text-red-500 transition-colors px-4 py-2"
+                  className="text-[10px] font-normal uppercase tracking-widest text-gray-400 hover:text-red-500 transition-colors px-4 py-2"
                 >
                   Cancelar
                 </button>
                 <button 
                   type="submit" 
                   disabled={saving} 
-                  className="px-8 py-2.5 rounded-md bg-[#c8921a] text-white text-[10px] font-bold uppercase tracking-widest shadow-md hover:bg-[#b88217] transition-all disabled:opacity-50"
+                  className="px-8 py-2.5 rounded-md bg-[#c8921a] text-white text-[10px] font-normal uppercase tracking-widest shadow-md hover:bg-[#b88217] transition-all disabled:opacity-50"
                 >
                   {saving ? 'SALVANDO...' : 'Salvar Exercício'}
                 </button>

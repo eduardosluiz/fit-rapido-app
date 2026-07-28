@@ -175,7 +175,7 @@ export function EditarUsuarioModal({
               <div className="p-1.5 bg-gradient-to-br from-[#c8921a]/10 to-[#c8921a]/5 dark:from-[#c8921a]/20 dark:to-[#c8921a]/10 rounded-lg">
                 <i className="bx bx-info-circle text-[#c8921a] text-base"></i>
               </div>
-              <h3 className="font-bold text-sm text-gray-900 dark:text-white">
+              <h3 className="font-normal text-sm text-gray-900 dark:text-white">
                 Informações Básicas
               </h3>
             </div>
@@ -215,7 +215,7 @@ export function EditarUsuarioModal({
               <div className="p-1.5 bg-gradient-to-br from-[#c8921a]/10 to-[#c8921a]/5 dark:from-[#c8921a]/20 dark:to-[#c8921a]/10 rounded-lg">
                 <i className="bx bx-cog text-[#c8921a] text-base"></i>
               </div>
-              <h3 className="font-bold text-sm text-gray-900 dark:text-white">
+              <h3 className="font-normal text-sm text-gray-900 dark:text-white">
                 Permissões e Assinatura
               </h3>
             </div>
@@ -263,7 +263,7 @@ export function EditarUsuarioModal({
                 <div className="p-1 bg-gradient-to-br from-green-500/10 to-green-500/5 dark:from-green-500/20 dark:to-green-500/10 rounded">
                   <i className="bx bx-check-circle text-green-600 dark:text-green-400 text-sm"></i>
                 </div>
-                <label className="text-sm font-semibold text-gray-900 dark:text-white cursor-pointer">
+                <label className="text-sm font-normal text-gray-900 dark:text-white cursor-pointer">
                   Usuário Ativo
                 </label>
               </div>
@@ -275,7 +275,7 @@ export function EditarUsuarioModal({
           </div>
 
           {/* Botões de Ação */}
-          <div className="inline-flex items-center bg-gray-100 dark:bg-gray-800 rounded-lg p-1 gap-0.5 border border-gray-200 dark:border-gray-700 w-full pt-2 border-t-0">
+          <div className="inline-flex items-center bg-white dark:bg-gray-800 rounded-lg p-1 gap-0.5 border border-gray-200 dark:border-gray-700 w-full pt-2 border-t-0">
             <Button
               type="button"
               onClick={handleCancel}

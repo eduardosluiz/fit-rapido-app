@@ -169,6 +169,7 @@ export default function FeedScreen() {
                 modalityId: treino.modalidade_id,
                 modalityName: treino.modalidade?.nome || 'Treino da Modalidade',
                 hasNivelamento: treino.modalidade?.has_nivelamento || false,
+                descricao: treino.modalidade?.descricao,
                 expandTreinoId: treino.id
               } 
             });

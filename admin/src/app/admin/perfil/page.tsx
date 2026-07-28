@@ -49,7 +49,7 @@ export default function PerfilPage() {
             <KeyRound size={24} />
           </div>
           <div>
-            <h1 className="text-xl font-bold text-gray-900 dark:text-white uppercase tracking-tight">
+            <h1 className="text-xl font-normal text-gray-900 dark:text-white uppercase tracking-tight">
               Meu Perfil
             </h1>
             <p className="text-[11px] text-gray-500 uppercase tracking-widest mt-1">
@@ -62,11 +62,11 @@ export default function PerfilPage() {
         {user && (
           <div className="bg-white dark:bg-[#111] p-6 rounded-2xl border border-gray-200 dark:border-[#222] shadow-sm flex items-center justify-between">
             <div>
-              <p className="text-[10px] text-gray-400 uppercase tracking-widest font-semibold mb-1">Conta Atual</p>
-              <h2 className="text-lg font-bold text-gray-900 dark:text-white">{user.nome}</h2>
+              <p className="text-[10px] text-gray-400 uppercase tracking-widest font-normal mb-1">Conta Atual</p>
+              <h2 className="text-lg font-normal text-gray-900 dark:text-white">{user.nome}</h2>
               <p className="text-sm text-gray-500">{user.email}</p>
             </div>
-            <div className="px-3 py-1 bg-[#c8921a]/10 rounded-full border border-[#c8921a]/30 text-[#c8921a] text-[10px] font-bold uppercase tracking-wider">
+            <div className="px-3 py-1 bg-[#c8921a]/10 rounded-full border border-[#c8921a]/30 text-[#c8921a] text-[10px] font-normal uppercase tracking-wider">
               {user.role === 'admin' ? 'Administrador' : 'Equipe'}
             </div>
           </div>
@@ -74,14 +74,14 @@ export default function PerfilPage() {
 
         {/* Form Mudar Senha */}
         <div className="bg-white dark:bg-[#111] p-6 rounded-2xl border border-gray-200 dark:border-[#222] shadow-sm">
-          <h3 className="text-sm font-bold text-gray-900 dark:text-white uppercase tracking-wider mb-6 flex items-center gap-2">
+          <h3 className="text-sm font-normal text-gray-900 dark:text-white uppercase tracking-wider mb-6 flex items-center gap-2">
             <KeyRound size={16} className="text-[#c8921a]" />
             Alterar Senha
           </h3>
 
           <form onSubmit={handleSubmit} className="space-y-5">
             <div>
-              <label className="block text-[10px] font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest mb-2">
+              <label className="block text-[10px] font-normal text-gray-500 dark:text-gray-400 uppercase tracking-widest mb-2">
                 Senha Atual
               </label>
               <input
@@ -96,7 +96,7 @@ export default function PerfilPage() {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
               <div>
-                <label className="block text-[10px] font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest mb-2">
+                <label className="block text-[10px] font-normal text-gray-500 dark:text-gray-400 uppercase tracking-widest mb-2">
                   Nova Senha
                 </label>
                 <input
@@ -110,7 +110,7 @@ export default function PerfilPage() {
               </div>
 
               <div>
-                <label className="block text-[10px] font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest mb-2">
+                <label className="block text-[10px] font-normal text-gray-500 dark:text-gray-400 uppercase tracking-widest mb-2">
                   Confirmar Nova Senha
                 </label>
                 <input
@@ -128,7 +128,7 @@ export default function PerfilPage() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full sm:w-auto bg-[#c8921a] hover:bg-[#b07f15] text-white text-xs font-bold uppercase tracking-widest py-3 px-8 rounded-lg transition-all flex items-center justify-center gap-2 disabled:opacity-50"
+                className="w-full sm:w-auto bg-[#c8921a] hover:bg-[#b07f15] text-white text-xs font-normal uppercase tracking-widest py-3 px-8 rounded-lg transition-all flex items-center justify-center gap-2 disabled:opacity-50"
               >
                 {loading ? (
                   <>

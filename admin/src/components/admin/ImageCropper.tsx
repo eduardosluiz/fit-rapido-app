@@ -56,7 +56,7 @@ export function ImageCropper({ image, onCropComplete, onCancel, aspect = 4 / 3 }
       
       <div className="mt-6 flex flex-col items-center gap-6 w-full max-w-xl">
         <div className="w-full space-y-2">
-          <div className="flex justify-between text-[10px] font-bold uppercase tracking-widest text-gray-400">
+          <div className="flex justify-between text-[10px] font-normal uppercase tracking-widest text-gray-400">
             <span>Zoom</span>
             <span>{(zoom * 100).toFixed(0)}%</span>
           </div>
@@ -77,14 +77,14 @@ export function ImageCropper({ image, onCropComplete, onCancel, aspect = 4 / 3 }
             type="button"
             variant="outline"
             onClick={onCancel}
-            className="w-full sm:w-auto px-8 py-3 rounded-md border-0 bg-red-900/50 text-red-200 text-[11px] font-bold uppercase tracking-widest hover:bg-red-800/60 transition-all"
+            className="w-full sm:w-auto px-8 py-3 rounded-md border-0 bg-red-900/50 text-red-200 text-[11px] font-normal uppercase tracking-widest hover:bg-red-800/60 transition-all"
           >
             Cancelar
           </Button>
           <Button
             type="button"
             onClick={handleCrop}
-            className="w-full sm:w-auto px-12 py-3 rounded-md bg-blue-600 text-white text-[11px] font-bold uppercase tracking-widest shadow-lg hover:bg-blue-700 hover:shadow-xl transition-all"
+            className="w-full sm:w-auto px-12 py-3 rounded-md bg-blue-600 text-white text-[11px] font-normal uppercase tracking-widest shadow-sm hover:bg-blue-700 hover:shadow-xl transition-all"
           >
             Confirmar Recorte
           </Button>

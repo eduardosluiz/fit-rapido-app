@@ -74,12 +74,12 @@ export function MediaSelectorPopover({
             {selectedCategory && !searchTerm && (
               <button 
                 onClick={() => setSelectedCategory(null)} 
-                className="p-1 hover:bg-gray-100 dark:hover:bg-[#111] rounded text-gray-500 transition-colors"
+                className="p-1 hover:bg-white dark:hover:bg-[#111] rounded text-gray-500 transition-colors"
               >
                 <ChevronLeft size={16} />
               </button>
             )}
-            <p className="text-[9px] font-bold uppercase tracking-widest text-[#c8921a]">
+            <p className="text-[9px] font-normal uppercase tracking-widest text-[#c8921a]">
               {selectedCategory && !searchTerm ? `Categoria: ${selectedCategory}` : title}
             </p>
           </div>
@@ -99,7 +99,7 @@ export function MediaSelectorPopover({
               {onClear && selectedValue && (
                 <button 
                   type="button" 
-                  className="w-full p-2 text-left text-[10px] uppercase font-bold text-red-500 hover:bg-red-50 dark:hover:bg-red-950/20 rounded mb-1 transition-colors"
+                  className="w-full p-2 text-left text-[10px] uppercase font-normal text-red-500 hover:bg-red-50 dark:hover:bg-red-950/20 rounded mb-1 transition-colors"
                   onClick={() => {
                     onClear();
                     setIsOpen(false);
@@ -128,7 +128,7 @@ export function MediaSelectorPopover({
                     <Play className="absolute inset-0 m-auto text-white opacity-40" size={12} />
                   </div>
                   <div className="min-w-0 flex-1">
-                    <p className="text-[10px] font-bold text-gray-700 dark:text-gray-200 uppercase truncate">{libEx.nome}</p>
+                    <p className="text-[10px] font-normal text-gray-700 dark:text-gray-200 uppercase truncate">{libEx.nome}</p>
                     <p className="text-[8px] text-gray-400 uppercase tracking-tighter">{libEx.categoria || 'Geral'}</p>
                   </div>
                 </button>
@@ -145,8 +145,8 @@ export function MediaSelectorPopover({
                     className="w-full p-3 flex items-center justify-between hover:bg-gray-50 dark:hover:bg-[#111] rounded-lg transition-all text-left group border border-transparent hover:border-gray-200 dark:hover:border-[#333]"
                     onClick={() => setSelectedCategory(cat)}
                   >
-                    <span className="text-[11px] font-bold text-gray-700 dark:text-gray-200 uppercase tracking-wider">{cat}</span>
-                    <span className="text-[10px] text-gray-500 group-hover:text-[#c8921a] font-medium transition-colors bg-gray-100 dark:bg-[#1a1a1a] px-2 py-0.5 rounded-full">
+                    <span className="text-[11px] font-normal text-gray-700 dark:text-gray-200 uppercase tracking-wider">{cat}</span>
+                    <span className="text-[10px] text-gray-500 group-hover:text-[#c8921a] font-normal transition-colors bg-white dark:bg-[#1a1a1a] px-2 py-0.5 rounded-full">
                       {count}
                     </span>
                   </button>

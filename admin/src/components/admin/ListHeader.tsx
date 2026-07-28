@@ -39,7 +39,7 @@ export function ListHeader({
             )}
             <div className="flex-1 space-y-3">
               <h1 className={cn(
-                "text-4xl sm:text-5xl font-bold tracking-tight",
+                "text-4xl sm:text-5xl font-normal tracking-tight",
                 "bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 dark:from-white dark:via-gray-100 dark:to-white",
                 "[background-clip:text] [-webkit-background-clip:text] text-transparent"
               )}>
@@ -48,13 +48,13 @@ export function ListHeader({
               
               <div className="flex flex-wrap items-center gap-2.5">
                 {subtitle && (
-                  <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium bg-gray-100 dark:bg-gray-800/50 text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-gray-700/50 shadow-sm">
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-normal bg-white dark:bg-gray-800/50 text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-gray-700/50 shadow-sm">
                     <span className="w-1.5 h-1.5 rounded-full bg-[#c8921a] animate-pulse"></span>
                     {subtitle}
                   </span>
                 )}
                 {count !== undefined && (
-                  <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-semibold bg-gradient-to-r from-[#c8921a]/10 to-[#c8921a]/5 dark:from-[#c8921a]/20 dark:to-[#c8921a]/10 text-[#c8921a] border border-[#c8921a]/20 dark:border-[#c8921a]/30 shadow-sm">
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-normal bg-gradient-to-r from-[#c8921a]/10 to-[#c8921a]/5 dark:from-[#c8921a]/20 dark:to-[#c8921a]/10 text-[#c8921a] border border-[#c8921a]/20 dark:border-[#c8921a]/30 shadow-sm">
                     <i className="bx bx-stats text-xs"></i>
                     {count} {countLabel}{count !== 1 ? (countLabel.endsWith('s') ? '' : 's') : ''}
                   </span>

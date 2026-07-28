@@ -235,7 +235,7 @@ export default function ReceitaIngredientesPage() {
               </Button>
             </Link>
             <div>
-              <h1 className="text-3xl font-bold text-gray-900 dark:text-white flex items-center gap-3">
+              <h1 className="text-3xl font-normal text-gray-900 dark:text-white flex items-center gap-3">
                 <Package className="w-8 h-8 text-[#c8921a]" />
                 Ingredientes da Receita
               </h1>
@@ -285,7 +285,7 @@ export default function ReceitaIngredientesPage() {
                             });
                             setSearchIngrediente('');
                           }}
-                          className="w-full text-left px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-800 flex items-center justify-between"
+                          className="w-full text-left px-3 py-2 hover:bg-white dark:hover:bg-gray-800 flex items-center justify-between"
                         >
                           <span>{ing.nome}</span>
                           <span className="text-xs text-gray-500">
@@ -403,28 +403,28 @@ export default function ReceitaIngredientesPage() {
               <div className="grid grid-cols-4 gap-4">
                 <div>
                   <p className="text-sm text-gray-600 dark:text-gray-400">Calorias</p>
-                  <p className="text-2xl font-bold text-[#c8921a]">
+                  <p className="text-2xl font-normal text-[#c8921a]">
                     {macrosTotais.calorias.toFixed(0)}
                   </p>
                   <p className="text-xs text-gray-500">kcal</p>
                 </div>
                 <div>
                   <p className="text-sm text-gray-600 dark:text-gray-400">Proteínas</p>
-                  <p className="text-2xl font-bold text-blue-600 dark:text-blue-400">
+                  <p className="text-2xl font-normal text-blue-600 dark:text-blue-400">
                     {macrosTotais.proteinas.toFixed(1)}
                   </p>
                   <p className="text-xs text-gray-500">g</p>
                 </div>
                 <div>
                   <p className="text-sm text-gray-600 dark:text-gray-400">Carboidratos</p>
-                  <p className="text-2xl font-bold text-green-600 dark:text-green-400">
+                  <p className="text-2xl font-normal text-green-600 dark:text-green-400">
                     {macrosTotais.carboidratos.toFixed(1)}
                   </p>
                   <p className="text-xs text-gray-500">g</p>
                 </div>
                 <div>
                   <p className="text-sm text-gray-600 dark:text-gray-400">Gorduras</p>
-                  <p className="text-2xl font-bold text-orange-600 dark:text-orange-400">
+                  <p className="text-2xl font-normal text-orange-600 dark:text-orange-400">
                     {macrosTotais.gorduras.toFixed(1)}
                   </p>
                   <p className="text-xs text-gray-500">g</p>
@@ -461,7 +461,7 @@ export default function ReceitaIngredientesPage() {
                     <GripVertical className="w-5 h-5 text-gray-400 cursor-move" />
                     <div className="flex-1">
                       <div className="flex items-center gap-2">
-                        <p className="font-medium">
+                        <p className="font-normal">
                           {ri.ingrediente?.nome || ri.ingrediente_texto}
                         </p>
                         {ri.ingrediente && (

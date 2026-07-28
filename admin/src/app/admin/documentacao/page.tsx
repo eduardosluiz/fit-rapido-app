@@ -11,7 +11,7 @@ export default function DocumentacaoPage() {
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
           <div className="w-12 h-12 border-4 border-[#c8921a] border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-gray-600 font-medium">Carregando...</p>
+          <p className="text-gray-600 font-normal">Carregando...</p>
         </div>
       </div>
     );
@@ -31,7 +31,7 @@ export default function DocumentacaoPage() {
               <i className="bx bx-book text-[#c8921a] text-2xl sm:text-3xl"></i>
             </div>
             <div>
-              <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white tracking-tight">
+              <h1 className="text-3xl sm:text-4xl font-normal text-gray-900 dark:text-white tracking-tight">
                 Documentação
               </h1>
               <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400 mt-1.5">
@@ -46,7 +46,7 @@ export default function DocumentacaoPage() {
           <Card>
             <div className="space-y-4">
               <div className="border-b border-gray-200 pb-4">
-                <h2 className="text-xl font-bold text-gray-900 flex items-center gap-2">
+                <h2 className="text-xl font-normal text-gray-900 flex items-center gap-2">
                   <i className="bx bx-info-circle text-[#c8921a]" style={{ fontSize: '24px' }}></i>
                   Sobre o Sistema
                 </h2>
@@ -63,7 +63,7 @@ export default function DocumentacaoPage() {
           <Card>
             <div className="space-y-4">
               <div className="border-b border-gray-200 pb-4">
-                <h2 className="text-xl font-bold text-gray-900 flex items-center gap-2">
+                <h2 className="text-xl font-normal text-gray-900 flex items-center gap-2">
                   <i className="bx bx-list-ul text-[#c8921a]" style={{ fontSize: '24px' }}></i>
                   Funcionalidades do Sistema
                 </h2>
@@ -72,7 +72,7 @@ export default function DocumentacaoPage() {
               <div className="space-y-6">
                 {/* Receitas */}
                 <div>
-                  <h3 className="text-lg font-bold text-gray-900 mb-3 flex items-center gap-2">
+                  <h3 className="text-lg font-normal text-gray-900 mb-3 flex items-center gap-2">
                     <i className="bx bx-food-menu text-[#c8921a]"></i>
                     Gerenciamento de Receitas
                   </h3>
@@ -88,7 +88,7 @@ export default function DocumentacaoPage() {
 
                 {/* Treinos */}
                 <div>
-                  <h3 className="text-lg font-bold text-gray-900 mb-3 flex items-center gap-2">
+                  <h3 className="text-lg font-normal text-gray-900 mb-3 flex items-center gap-2">
                     <i className="bx bx-dumbbell text-[#c8921a]"></i>
                     Gerenciamento de Treinos
                   </h3>
@@ -104,7 +104,7 @@ export default function DocumentacaoPage() {
 
                 {/* Categorias */}
                 <div>
-                  <h3 className="text-lg font-bold text-gray-900 mb-3 flex items-center gap-2">
+                  <h3 className="text-lg font-normal text-gray-900 mb-3 flex items-center gap-2">
                     <i className="bx bx-category text-[#c8921a]"></i>
                     Gerenciamento de Categorias
                   </h3>
@@ -118,7 +118,7 @@ export default function DocumentacaoPage() {
 
                 {/* Usuários */}
                 <div>
-                  <h3 className="text-lg font-bold text-gray-900 mb-3 flex items-center gap-2">
+                  <h3 className="text-lg font-normal text-gray-900 mb-3 flex items-center gap-2">
                     <i className="bx bx-user text-[#c8921a]"></i>
                     Gerenciamento de Usuários
                   </h3>
@@ -137,7 +137,7 @@ export default function DocumentacaoPage() {
           <Card>
             <div className="space-y-4">
               <div className="border-b border-gray-200 pb-4">
-                <h2 className="text-xl font-bold text-gray-900 flex items-center gap-2">
+                <h2 className="text-xl font-normal text-gray-900 flex items-center gap-2">
                   <i className="bx bx-book-open text-[#c8921a]" style={{ fontSize: '24px' }}></i>
                   Guias Rápidos
                 </h2>
@@ -145,7 +145,7 @@ export default function DocumentacaoPage() {
               
               <div className="space-y-4">
                 <div className="bg-blue-50 border-l-4 border-blue-500 p-4 rounded">
-                  <h4 className="font-bold text-blue-900 mb-2">Como criar uma receita:</h4>
+                  <h4 className="font-normal text-blue-900 mb-2">Como criar uma receita:</h4>
                   <ol className="list-decimal list-inside space-y-1 text-blue-800 ml-2">
                     <li>Acesse o menu "Receitas"</li>
                     <li>Clique no botão "+ Nova Receita"</li>
@@ -158,7 +158,7 @@ export default function DocumentacaoPage() {
                 </div>
 
                 <div className="bg-green-50 border-l-4 border-green-500 p-4 rounded">
-                  <h4 className="font-bold text-green-900 mb-2">Como criar um treino:</h4>
+                  <h4 className="font-normal text-green-900 mb-2">Como criar um treino:</h4>
                   <ol className="list-decimal list-inside space-y-1 text-green-800 ml-2">
                     <li>Acesse o menu "Treinos"</li>
                     <li>Clique no botão "+ Novo Treino"</li>
@@ -171,7 +171,7 @@ export default function DocumentacaoPage() {
                 </div>
 
                 <div className="bg-purple-50 border-l-4 border-purple-500 p-4 rounded">
-                  <h4 className="font-bold text-purple-900 mb-2">Como buscar receitas:</h4>
+                  <h4 className="font-normal text-purple-900 mb-2">Como buscar receitas:</h4>
                   <ol className="list-decimal list-inside space-y-1 text-purple-800 ml-2">
                     <li>Na página de Receitas, use o campo "Buscar por palavras-chave"</li>
                     <li>Digite o nome da receita, ingrediente ou palavra relacionada</li>
@@ -187,7 +187,7 @@ export default function DocumentacaoPage() {
           <Card>
             <div className="space-y-4">
               <div className="border-b border-gray-200 pb-4">
-                <h2 className="text-xl font-bold text-gray-900 flex items-center gap-2">
+                <h2 className="text-xl font-normal text-gray-900 flex items-center gap-2">
                   <i className="bx bx-bulb text-[#c8921a]" style={{ fontSize: '24px' }}></i>
                   Dicas e Boas Práticas
                 </h2>
@@ -232,7 +232,7 @@ export default function DocumentacaoPage() {
           <Card>
             <div className="space-y-4">
               <div className="border-b border-gray-200 pb-4">
-                <h2 className="text-xl font-bold text-gray-900 flex items-center gap-2">
+                <h2 className="text-xl font-normal text-gray-900 flex items-center gap-2">
                   <i className="bx bx-support text-[#c8921a]" style={{ fontSize: '24px' }}></i>
                   Suporte e Contato
                 </h2>

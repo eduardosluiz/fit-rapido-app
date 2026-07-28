@@ -125,7 +125,7 @@ export default function Recipes() {
         <section className="hero-gradient py-16">
           <div className="container mx-auto px-4">
             <div className="text-center mb-12">
-              <h1 className="font-heading text-4xl md:text-6xl font-bold text-text mb-4">
+              <h1 className="font-heading text-4xl md:text-6xl font-normal text-text mb-4">
                 Receitas <span className="text-primary">Deliciosas</span>
               </h1>
               <p className="text-xl text-text-light max-w-2xl mx-auto mb-8">
@@ -173,7 +173,7 @@ export default function Recipes() {
         <section className="py-16">
           <div className="container mx-auto px-4">
             <div className="flex items-center justify-between mb-8">
-              <h2 className="font-heading text-3xl font-bold text-text">
+              <h2 className="font-heading text-3xl font-normal text-text">
                 {selectedCategory === 'all' ? 'Todas as Receitas' : categories.find(c => c.id === selectedCategory)?.name}
                 <span className="text-primary ml-2">({filteredRecipes.length})</span>
               </h2>
@@ -212,7 +212,7 @@ export default function Recipes() {
         <section className="py-16 bg-background-alt">
           <div className="container mx-auto px-4">
             <div className="bg-card-bg border border-card-border rounded-2xl p-8 md:p-12 text-center max-w-4xl mx-auto">
-              <h3 className="font-heading text-3xl font-bold text-text mb-4">
+              <h3 className="font-heading text-3xl font-normal text-text mb-4">
                 Quer Acesso a Todas as Receitas?
               </h3>
               <p className="text-text-light mb-8 text-lg">

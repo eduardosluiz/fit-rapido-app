@@ -20,24 +20,36 @@ import fonts from '../../constants/fonts';
 import AppBackground from '../../components/AppBackground';
 import { Video, ResizeMode } from 'expo-av';
 
+const formatDescription = (text: string) => {
+  if (!text) return '';
+  let formatted = text.replace(/<(br|p|div|li)[^>]*>/gi, '\n');
+  formatted = formatted.replace(/<[^>]*>?/gm, '');
+  // Normalize extra spaces and ALL types of line breaks (including PDF/Word \u2028 and \u2029)
+  formatted = formatted.replace(/\\n/g, '\n');
+  formatted = formatted.replace(/[\r\v\f\u2028\u2029]/g, '\n');
+  // Ensure that multiple newlines are preserved properly
+  return formatted.trim();
+};
+
 interface ModalityParams {
   modalityId: string;
   modalityName: string;
   modalityImage?: string;
   hasNivelamento: boolean;
+  descricao?: string;
   descricao_iniciante?: string;
   descricao_intermediario?: string;
   descricao_avancado?: string;
 }
 
 const TreinoListItem = ({ item, index, initiallyExpanded }: { item: Treino, index: number, initiallyExpanded?: boolean }) => {
-  const [expanded, setExpanded] = useState(initiallyExpanded || false);
+  const [expandedVideo, setExpandedVideo] = useState<'execucao' | 'explicativo' | 'substituicao' | null>(initiallyExpanded ? 'execucao' : null);
   const [detail, setDetail] = useState<Treino | null>(null);
   const [loading, setLoading] = useState(false);
+  const [substitutes, setSubstitutes] = useState<any[]>([]);
 
-  // Se inicialmente expandido, carrega os detalhes automaticamente
   useEffect(() => {
-    if (initiallyExpanded && !detail && !item.video_url) {
+    if (initiallyExpanded && !detail && !item.video_url && !item.video_explicativo_url) {
       const fetchDetail = async () => {
         setLoading(true);
         try {
@@ -50,16 +62,43 @@ const TreinoListItem = ({ item, index, initiallyExpanded }: { item: Treino, inde
     }
   }, [initiallyExpanded]);
 
-  const handleExpand = async () => {
-    if (!expanded && !detail && !item.video_url) {
-      setLoading(true);
-      try {
-        const fullTreino = await api.getTreino(item.id);
-        setDetail(fullTreino);
-      } catch(e) {}
-      setLoading(false);
+  const handleExpand = async (type: 'execucao' | 'explicativo' | 'substituicao') => {
+    if (expandedVideo === type) {
+      setExpandedVideo(null);
+      return;
     }
-    setExpanded(!expanded);
+    
+    if (type === 'substituicao') {
+      if (substitutes.length === 0) {
+        setLoading(true);
+        try {
+          const subs = [];
+          const data = detail || item;
+          if (data.substituto_id_1) {
+            const sub1 = await api.getExercicioBiblioteca(data.substituto_id_1);
+            if (sub1) subs.push({ ...sub1, info: data.substituto_1_info || {} });
+          }
+          if (data.substituto_id_2) {
+            const sub2 = await api.getExercicioBiblioteca(data.substituto_id_2);
+            if (sub2) subs.push({ ...sub2, info: data.substituto_2_info || {} });
+          }
+          setSubstitutes(subs);
+        } catch(e) {
+          console.error('Erro ao buscar substitutos:', e);
+        }
+        setLoading(false);
+      }
+    } else {
+      if (!detail && !item.video_url && !item.video_explicativo_url) {
+        setLoading(true);
+        try {
+          const fullTreino = await api.getTreino(item.id);
+          setDetail(fullTreino);
+        } catch(e) {}
+        setLoading(false);
+      }
+    }
+    setExpandedVideo(type);
   };
 
   const displayData = detail || item;
@@ -68,7 +107,12 @@ const TreinoListItem = ({ item, index, initiallyExpanded }: { item: Treino, inde
   const repeticoes = tecnico.repeticoes || displayData.repeticoes || '';
   const descanso = tecnico.intervalo || displayData.descanso || '';
   const descricao = displayData.descricao_tecnica || displayData.descricao || '';
-  const videoUrl = displayData.video_url;
+  const videoExecucaoUrl = displayData.video_url;
+  const videoExplicativoUrl = displayData.video_explicativo_url;
+
+  const showVideoContainer = expandedVideo === 'execucao' || expandedVideo === 'explicativo';
+  const currentVideoUrl = expandedVideo === 'execucao' ? videoExecucaoUrl : videoExplicativoUrl;
+  const hasSubstituicao = !!(displayData.substituto_id_1 || displayData.substituto_id_2);
 
   return (
     <View style={styles.accordionCard}>
@@ -79,34 +123,52 @@ const TreinoListItem = ({ item, index, initiallyExpanded }: { item: Treino, inde
       ) : null}
       
       {descricao ? (
-         <Text style={styles.accordionDesc}>Instruções: {descricao.replace(/<[^>]*>?/gm, '')}</Text>
+         <Text style={styles.accordionDesc}>Instruções: {formatDescription(descricao)}</Text>
       ) : null}
       
       {descanso ? (
          <Text style={styles.accordionInfo}>Descanso: {descanso}</Text>
       ) : null}
 
-      <TouchableOpacity onPress={handleExpand} style={styles.expandButton}>
-        <Ionicons name={expanded ? "chevron-up-circle" : "chevron-down-circle"} size={16} color="#FFF" />
-        <Text style={styles.expandText}>{expanded ? "Ocultar vídeo" : "Ver vídeo"}</Text>
-      </TouchableOpacity>
+      <View style={{ flexDirection: 'row', gap: 6, marginTop: 12, flexWrap: 'nowrap', alignItems: 'center' }}>
+        {(videoExecucaoUrl || loading || !detail) && (
+          <TouchableOpacity onPress={() => handleExpand('execucao')} style={[styles.expandButton, { marginTop: 0 }]}>
+            <Ionicons name={expandedVideo === 'execucao' ? "chevron-up-circle" : "chevron-down-circle"} size={14} color="#FFF" />
+            <Text style={[styles.expandText, { fontSize: 11 }]} numberOfLines={1}>{expandedVideo === 'execucao' ? "Ocultar" : "Exercício"}</Text>
+          </TouchableOpacity>
+        )}
+        
+        {(videoExplicativoUrl || (loading && !videoExecucaoUrl) || (!detail && item.video_explicativo_url)) && (
+          <TouchableOpacity onPress={() => handleExpand('explicativo')} style={[styles.expandButton, { marginTop: 0 }]}>
+            <Ionicons name={expandedVideo === 'explicativo' ? "chevron-up-circle" : "information-circle"} size={14} color="#E7C48A" />
+            <Text style={[styles.expandText, { color: '#E7C48A', fontSize: 11 }]} numberOfLines={1}>{expandedVideo === 'explicativo' ? "Ocultar" : "Vídeo Explicativo"}</Text>
+          </TouchableOpacity>
+        )}
 
-      {expanded && (
+        {hasSubstituicao && (
+          <TouchableOpacity onPress={() => handleExpand('substituicao')} style={[styles.expandButton, { marginTop: 0, paddingHorizontal: 6, paddingVertical: 4, borderRadius: 12, backgroundColor: expandedVideo === 'substituicao' ? 'rgba(255,255,255,0.2)' : 'rgba(255,255,255,0.1)' }]}>
+            <Ionicons name={expandedVideo === 'substituicao' ? "chevron-up-circle" : "swap-horizontal"} size={14} color="#FFF" />
+            <Text style={[styles.expandText, { color: '#FFF', fontSize: 11 }]} numberOfLines={1}>{expandedVideo === 'substituicao' ? "Ocultar" : "Substituição"}</Text>
+          </TouchableOpacity>
+        )}
+      </View>
+
+      {showVideoContainer && (
         <View style={styles.videoContainer}>
           {loading ? <ActivityIndicator color={colors.primary} /> : 
-             videoUrl ? (
+             currentVideoUrl ? (
                Platform.OS === 'web' ? (
                  React.createElement('video', {
-                   key: `video-${item.id}`,
-                   src: getImageUrl(videoUrl),
+                   key: `video-${item.id}-${expandedVideo}`,
+                   src: getImageUrl(currentVideoUrl),
                    controls: true,
                    poster: getImageUrl(displayData.imagem_url),
                    style: { width: '100%', height: '100%', backgroundColor: '#000', objectFit: 'cover' }
                  })
                ) : (
                  <Video
-                   key={`video-${item.id}`}
-                   source={{ uri: getImageUrl(videoUrl) }}
+                   key={`video-${item.id}-${expandedVideo}`}
+                   source={{ uri: getImageUrl(currentVideoUrl) }}
                    posterSource={displayData.imagem_url ? { uri: getImageUrl(displayData.imagem_url) } : undefined}
                    usePoster={!!displayData.imagem_url}
                    style={{ width: '100%', height: '100%', backgroundColor: '#000' }}
@@ -116,6 +178,78 @@ const TreinoListItem = ({ item, index, initiallyExpanded }: { item: Treino, inde
                  />
                )
              ) : <Text style={{color: '#888', textAlign: 'center'}}>Vídeo não disponível</Text>
+          }
+        </View>
+      )}
+
+      {expandedVideo === 'substituicao' && (
+        <View style={{ marginTop: 15, borderTopWidth: 1, borderTopColor: 'rgba(255,255,255,0.1)', paddingTop: 15 }}>
+          <Text style={{ fontFamily: fonts.bold, color: '#E7C48A', fontSize: 12, marginBottom: 10, textTransform: 'uppercase', letterSpacing: 1 }}>Opções de Substituição</Text>
+          {loading ? <ActivityIndicator color={colors.primary} /> : 
+             substitutes.length > 0 ? (
+               substitutes.map((sub, i) => (
+                 <View key={sub.id} style={{ marginBottom: i < substitutes.length - 1 ? 20 : 5, backgroundColor: 'rgba(0,0,0,0.2)', padding: 12, borderRadius: 8 }}>
+                   <Text style={[styles.accordionTitle, { fontSize: 13, color: '#FFF', marginBottom: 4 }]}>{i + 1}. {sub.nome}</Text>
+                   
+                   {(sub.info?.series || sub.info?.repeticoes) ? (
+                     <Text style={styles.accordionInfo}>{sub.info?.series} Séries | {sub.info?.repeticoes} repetições</Text>
+                   ) : null}
+                   
+                   {sub.descricao_tecnica ? (
+                     <Text style={[styles.accordionDesc, { marginTop: 4 }]}>Instruções: {formatDescription(sub.descricao_tecnica)}</Text>
+                   ) : null}
+                   
+                   {sub.info?.descanso ? (
+                     <Text style={styles.accordionInfo}>Descanso: {sub.info?.descanso}</Text>
+                   ) : null}
+
+                   {/* Vídeo de Execução do substituto */}
+                   {sub.video_url && (
+                     <View style={[styles.videoContainer, { marginTop: 10, backgroundColor: 'rgba(0,0,0,0.5)' }]}>
+                        {Platform.OS === 'web' ? (
+                          React.createElement('video', {
+                            src: getImageUrl(sub.video_url),
+                            controls: true,
+                            style: { width: '100%', height: '100%', objectFit: 'cover' }
+                          })
+                        ) : (
+                          <Video
+                            source={{ uri: getImageUrl(sub.video_url) }}
+                            style={{ width: '100%', height: '100%' }}
+                            useNativeControls
+                            resizeMode={ResizeMode.COVER}
+                            shouldPlay={false}
+                          />
+                        )}
+                     </View>
+                   )}
+
+                   {/* Vídeo Explicativo do substituto */}
+                   {sub.info?.video_explicativo_url && (
+                     <View style={[styles.videoContainer, { marginTop: 15, backgroundColor: 'rgba(0,0,0,0.5)' }]}>
+                        <View style={{ position: 'absolute', top: 15, left: 15, zIndex: 10, backgroundColor: 'rgba(0,0,0,0.7)', paddingHorizontal: 10, paddingVertical: 6, borderRadius: 6, borderWidth: 1, borderColor: '#E7C48A' }}>
+                          <Text style={{ color: '#E7C48A', fontSize: 11, fontFamily: fonts.bold, textTransform: 'uppercase' }}>Vídeo Explicativo</Text>
+                        </View>
+                        {Platform.OS === 'web' ? (
+                          React.createElement('video', {
+                            src: getImageUrl(sub.info.video_explicativo_url),
+                            controls: true,
+                            style: { width: '100%', height: '100%', objectFit: 'cover' }
+                          })
+                        ) : (
+                          <Video
+                            source={{ uri: getImageUrl(sub.info.video_explicativo_url) }}
+                            style={{ width: '100%', height: '100%' }}
+                            useNativeControls
+                            resizeMode={ResizeMode.COVER}
+                            shouldPlay={false}
+                          />
+                        )}
+                     </View>
+                   )}
+                 </View>
+               ))
+             ) : <Text style={{color: '#888', textAlign: 'center'}}>Nenhuma substituição carregada</Text>
           }
         </View>
       )}
@@ -132,6 +266,7 @@ export default function ModalityWorkoutsScreen() {
     modalityName, 
     modalityImage, 
     hasNivelamento,
+    descricao,
     descricao_iniciante,
     descricao_intermediario,
     descricao_avancado,
@@ -233,10 +368,19 @@ export default function ModalityWorkoutsScreen() {
             </View>
           </View>
           <View style={styles.headerDivider} />
+          
+          {/* Descrição Global da Modalidade */}
+          {descricao ? (
+            <View style={{ marginTop: 10, marginBottom: hasNivelamento ? 0 : 0 }}>
+              <Text style={{ fontSize: 11, color: 'rgba(255,255,255,0.7)', lineHeight: 16, fontFamily: fonts.body }}>
+                {formatDescription(descricao)}
+              </Text>
+            </View>
+          ) : null}
         </View>
 
         {hasNivelamento && (
-          <View style={styles.nivelTabsContainer}>
+          <View style={[styles.nivelTabsContainer, { marginTop: 0 }]}>
             {(['iniciante', 'intermediario', 'avancado'] as const).map((nivel) => (
               <TouchableOpacity
                 key={nivel}
@@ -260,7 +404,7 @@ export default function ModalityWorkoutsScreen() {
               <Text style={styles.nivelDescTitle}>ORIENTAÇÕES DA TRILHA</Text>
             </View>
             <Text style={styles.nivelDescText}>
-              {currentDescricao.replace(/\s*(\d+\))/g, '\n$1').trim()}
+              {formatDescription(currentDescricao).replace(/\s*(\d+\))/g, '\n$1').trim()}
             </Text>
           </View>
         ) : null}
@@ -369,7 +513,7 @@ const styles = StyleSheet.create({
   headerContainer: {
     paddingHorizontal: 20,
     marginTop: 30,
-    marginBottom: 20,
+    marginBottom: 0,
   },
   headerRow: {
     flexDirection: 'row',

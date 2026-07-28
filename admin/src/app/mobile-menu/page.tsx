@@ -41,7 +41,7 @@ export default function MobileMenu() {
         <div className="p-6 h-full flex flex-col">
           {/* Header */}
           <div className="flex items-center justify-between mb-8">
-            <span className="text-xl font-heading font-bold text-primary">Menu</span>
+            <span className="text-xl font-heading font-normal text-primary">Menu</span>
             <Link href="/" className="text-text-light hover:text-primary transition-colors">
               <i className="bx bx-x text-2xl"></i>
             </Link>
@@ -56,11 +56,11 @@ export default function MobileMenu() {
                 className="w-12 h-12 rounded-full object-cover"
               />
               <div className="flex-1">
-                <h3 className="font-semibold text-text">{user.name}</h3>
+                <h3 className="font-normal text-text">{user.name}</h3>
                 <p className="text-text-light text-sm">{user.email}</p>
                 <div className="flex items-center gap-1 mt-1">
                   <i className="bx bx-crown text-primary text-sm"></i>
-                  <span className="text-primary text-xs font-semibold">Premium</span>
+                  <span className="text-primary text-xs font-normal">Premium</span>
                 </div>
               </div>
             </div>
@@ -80,7 +80,7 @@ export default function MobileMenu() {
                   }`}
                 >
                   <i className={`bx ${item.icon} text-xl`}></i>
-                  <span className="font-medium">{item.label}</span>
+                  <span className="font-normal">{item.label}</span>
                   {item.active && (
                     <i className="bx bx-chevron-right ml-auto"></i>
                   )}
@@ -90,7 +90,7 @@ export default function MobileMenu() {
 
             {/* Quick Actions */}
             <div className="mt-8">
-              <h4 className="text-text-light text-sm font-semibold mb-4 px-4">
+              <h4 className="text-text-light text-sm font-normal mb-4 px-4">
                 Ações Rápidas
               </h4>
               <div className="grid grid-cols-2 gap-3">
@@ -100,7 +100,7 @@ export default function MobileMenu() {
                     className="bg-card-bg border border-card-border rounded-xl p-4 text-center hover:bg-primary/20 hover:border-primary/30 transition-all duration-300 group"
                   >
                     <i className={`bx ${action.icon} text-2xl text-primary mb-2 group-hover:scale-110 transition-transform`}></i>
-                    <p className="text-text-light text-sm font-medium">{action.label}</p>
+                    <p className="text-text-light text-sm font-normal">{action.label}</p>
                   </button>
                 ))}
               </div>
@@ -110,17 +110,17 @@ export default function MobileMenu() {
           {/* Footer */}
           <div className="pt-6 border-t border-card-border">
             <div className="space-y-3">
-              <button className="w-full bg-primary text-background py-3 rounded-xl font-semibold hover:bg-yellow-600 transition-colors">
+              <button className="w-full bg-primary text-background py-3 rounded-xl font-normal hover:bg-yellow-600 transition-colors">
                 <i className="bx bx-crown mr-2"></i>
                 Gerenciar Assinatura
               </button>
               
               <div className="flex gap-3">
-                <button className="flex-1 bg-card-bg border border-card-border text-text-light py-3 rounded-xl font-semibold hover:bg-primary/20 hover:text-primary transition-colors">
+                <button className="flex-1 bg-card-bg border border-card-border text-text-light py-3 rounded-xl font-normal hover:bg-primary/20 hover:text-primary transition-colors">
                   <i className="bx bx-cog mr-2"></i>
                   Configurações
                 </button>
-                <button className="flex-1 bg-card-bg border border-card-border text-text-light py-3 rounded-xl font-semibold hover:bg-red-500/20 hover:text-red-400 transition-colors">
+                <button className="flex-1 bg-card-bg border border-card-border text-text-light py-3 rounded-xl font-normal hover:bg-red-500/20 hover:text-red-400 transition-colors">
                   <i className="bx bx-log-out mr-2"></i>
                   Sair
                 </button>
@@ -143,7 +143,7 @@ export default function MobileMenu() {
       {/* Demo Info */}
       <div className="fixed bottom-4 left-4 right-4 z-30">
         <div className="bg-card-bg border border-card-border rounded-2xl p-4 text-center">
-          <h3 className="font-heading text-lg font-bold text-text mb-2">
+          <h3 className="font-heading text-lg font-normal text-text mb-2">
             Menu Mobile Demo
           </h3>
           <p className="text-text-light text-sm mb-4">

@@ -129,7 +129,7 @@ export function MultipleImageUpload({
         />
       )}
       {label && (
-        <Label className="text-sm font-semibold text-foreground">
+        <Label className="text-sm font-normal text-foreground">
           {label}
         </Label>
       )}
@@ -139,7 +139,7 @@ export function MultipleImageUpload({
         <div className="flex items-start gap-2">
           <i className="bx bx-info-circle text-base mt-0.5"></i>
           <div>
-            <p className="font-semibold mb-1">Dica:</p>
+            <p className="font-normal mb-1">Dica:</p>
             <p>Você pode adicionar múltiplas imagens para criar um carrossel na página da receita. A primeira imagem será usada como imagem principal.</p>
           </div>
         </div>
@@ -150,7 +150,7 @@ export function MultipleImageUpload({
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
           {displayImages.map((image, index) => (
             <div key={index} className="relative group">
-              <div className="relative aspect-square rounded-lg border-2 border-border overflow-hidden bg-gray-100 dark:bg-gray-800">
+              <div className="relative aspect-square rounded-lg border-2 border-border overflow-hidden bg-white dark:bg-gray-800">
                 <img
                   src={getMediaUrl(image)}
                   alt={`Imagem ${index + 1}`}
@@ -169,7 +169,7 @@ export function MultipleImageUpload({
                   </Button>
                 </div>
                 {index === 0 && (
-                  <div className="absolute top-2 left-2 bg-[#c8921a] text-white text-xs px-2 py-1 rounded font-semibold">
+                  <div className="absolute top-2 left-2 bg-[#c8921a] text-white text-xs px-2 py-1 rounded font-normal">
                     Principal
                   </div>
                 )}
@@ -223,7 +223,7 @@ export function MultipleImageUpload({
               className={cn(
                 "inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-dashed transition-all duration-200",
                 uploading
-                  ? 'bg-gray-100 dark:bg-gray-800 border-gray-300 dark:border-gray-600 opacity-50 cursor-not-allowed'
+                  ? 'bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 opacity-50 cursor-not-allowed'
                   : 'bg-transparent border-gray-300 dark:border-gray-600 hover:border-[#c8921a] dark:hover:border-[#d4a020] hover:bg-gray-50 dark:hover:bg-gray-800/50'
               )}
             >
@@ -235,7 +235,7 @@ export function MultipleImageUpload({
               ) : (
                 <>
                   <i className="bx bx-cloud-upload text-[#c8921a] dark:text-[#d4a020] text-lg"></i>
-                  <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                  <span className="text-sm font-normal text-gray-700 dark:text-gray-300">
                     {displayImages.length === 0 ? 'Adicionar Imagens' : `Adicionar Mais (${displayImages.length}/${maxImages})`}
                   </span>
                 </>

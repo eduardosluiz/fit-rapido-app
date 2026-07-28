@@ -192,7 +192,7 @@ export function ModalidadesModal({
       headerAction={
         <button
           onClick={() => { setShowForm(true); setEditingId(null); setFormData({ nome: '', slug: '', descricao: '', imagem_url: '', tem_nivelamento: false, ativo: true }); }}
-          className="px-4 py-2 rounded-md border border-[#c8921a] text-[#c8921a] text-[10px] font-semibold uppercase tracking-widest hover:bg-[#c8921a] hover:text-white transition-all duration-300 flex items-center gap-2"
+          className="px-4 py-2 rounded-md border border-[#c8921a] text-[#c8921a] text-[10px] font-normal uppercase tracking-widest hover:bg-[#c8921a] hover:text-white transition-all duration-300 flex items-center gap-2"
         >
           <Plus size={14} /> Novo Registro
         </button>
@@ -202,11 +202,11 @@ export function ModalidadesModal({
         {showForm && (
           <div className="p-10 rounded-xl border border-gray-300 dark:border-[#333] bg-white dark:bg-[#0a0a0a] shadow-sm animate-in fade-in slide-in-from-top-2 duration-300 mb-10">
             <div className="flex items-center justify-between mb-10 pb-6 border-b border-gray-100 dark:border-[#1a1a1a]">
-              <h3 className="text-[11px] font-bold uppercase tracking-[0.2em] text-gray-800 dark:text-gray-200">
+              <h3 className="text-[11px] font-normal uppercase tracking-[0.2em] text-gray-800 dark:text-gray-200">
                 {editingId ? 'Editar Modalidade' : 'Ficha de Registro Corporativo'}
               </h3>
               <div className="flex items-center gap-6">
-                <span className="text-[9px] font-bold uppercase tracking-widest text-gray-700 dark:text-gray-300">Ativar</span>
+                <span className="text-[9px] font-normal uppercase tracking-widest text-gray-700 dark:text-gray-300">Ativar</span>
                 <Switch
                   checked={formData.ativo}
                   onCheckedChange={(v) => setFormData({...formData, ativo: v})}
@@ -220,40 +220,40 @@ export function ModalidadesModal({
                   <div className="grid grid-cols-1 gap-8">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div className="space-y-2">
-                        <label className="text-[9px] font-bold uppercase tracking-[0.15em] text-gray-800 dark:text-gray-200 ml-0.5">Nome Oficial</label>
+                        <label className="text-[9px] font-normal uppercase tracking-[0.15em] text-gray-800 dark:text-gray-200 ml-0.5">Nome Oficial</label>
                         <input 
                           value={formData.nome} 
                           onChange={(e) => handleNomeChange(e.target.value)} 
                           placeholder="Ex: MUSCULAÇÃO"
-                          className="w-full bg-gray-50/80 dark:bg-[#111] border border-gray-300 dark:border-[#444] rounded-md px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#c8921a]/20 focus:border-[#c8921a] text-gray-900 dark:text-white font-medium transition-all placeholder:text-gray-500"
+                          className="w-full bg-gray-50/80 dark:bg-[#111] border border-gray-300 dark:border-[#444] rounded-md px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#c8921a]/20 focus:border-[#c8921a] text-gray-900 dark:text-white font-normal transition-all placeholder:text-gray-500"
                           required
                         />
                       </div>
                       <div className="space-y-2">
-                        <label className="text-[9px] font-bold uppercase tracking-[0.15em] text-gray-800 dark:text-gray-200 ml-0.5">Ordem de Exibição (Numérico)</label>
+                        <label className="text-[9px] font-normal uppercase tracking-[0.15em] text-gray-800 dark:text-gray-200 ml-0.5">Ordem de Exibição (Numérico)</label>
                         <input 
                           type="number"
                           value={formData.ordem_modalidade} 
                           onChange={(e) => setFormData({...formData, ordem_modalidade: parseInt(e.target.value) || 0})} 
                           placeholder="Ex: 1"
-                          className="w-full bg-gray-50/80 dark:bg-[#111] border border-gray-300 dark:border-[#444] rounded-md px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#c8921a]/20 focus:border-[#c8921a] text-gray-900 dark:text-white font-medium transition-all placeholder:text-gray-500"
+                          className="w-full bg-gray-50/80 dark:bg-[#111] border border-gray-300 dark:border-[#444] rounded-md px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#c8921a]/20 focus:border-[#c8921a] text-gray-900 dark:text-white font-normal transition-all placeholder:text-gray-500"
                         />
                       </div>
                     </div>
                     
                     <div className="space-y-2">
-                      <label className="text-[9px] font-bold uppercase tracking-[0.15em] text-gray-800 dark:text-gray-200 ml-0.5">Subtítulo do Card (Exibido no App)</label>
+                      <label className="text-[9px] font-normal uppercase tracking-[0.15em] text-gray-800 dark:text-gray-200 ml-0.5">Subtítulo do Card (Exibido no App)</label>
                       <input 
                         value={formData.subtitulo} 
                         onChange={(e) => setFormData({...formData, subtitulo: e.target.value})} 
                         placeholder="Ex: Ajuste seu nível de treinamento"
-                        className="w-full bg-gray-50/80 dark:bg-[#111] border border-gray-300 dark:border-[#444] rounded-md px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#c8921a]/20 focus:border-[#c8921a] text-gray-900 dark:text-white font-medium transition-all placeholder:text-gray-500"
+                        className="w-full bg-gray-50/80 dark:bg-[#111] border border-gray-300 dark:border-[#444] rounded-md px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#c8921a]/20 focus:border-[#c8921a] text-gray-900 dark:text-white font-normal transition-all placeholder:text-gray-500"
                       />
                     </div>
                   </div>
 
                   <div className="space-y-2">
-                    <label className="text-[9px] font-bold uppercase tracking-[0.15em] text-gray-800 dark:text-gray-200 ml-0.5">Descrição Técnica</label>
+                    <label className="text-[9px] font-normal uppercase tracking-[0.15em] text-gray-800 dark:text-gray-200 ml-0.5">Descrição Técnica</label>
                     <textarea 
                       value={formData.descricao} 
                       onChange={(e) => setFormData({...formData, descricao: e.target.value})} 
@@ -264,8 +264,8 @@ export function ModalidadesModal({
 
                   <div className="flex items-center justify-between p-6 rounded-xl border border-gray-300 dark:border-[#333] bg-gray-50 dark:bg-[#0f0f0f] shadow-sm">
                     <div className="space-y-1">
-                      <p className="text-[10px] font-bold uppercase tracking-widest text-gray-800 dark:text-gray-200">Trilha de Nivelamento</p>
-                      <p className="text-[9px] text-gray-600 dark:text-gray-400 font-medium">Segmentação por Iniciante, Médio e Avançado</p>
+                      <p className="text-[10px] font-normal uppercase tracking-widest text-gray-800 dark:text-gray-200">Trilha de Nivelamento</p>
+                      <p className="text-[9px] text-gray-600 dark:text-gray-400 font-normal">Segmentação por Iniciante, Médio e Avançado</p>
                     </div>
                     <Switch 
                       checked={formData.tem_nivelamento} 
@@ -276,7 +276,7 @@ export function ModalidadesModal({
                 </div>
 
                 <div className="lg:col-span-5 flex flex-col border-l border-gray-200 dark:border-[#333] pl-12">
-                  <label className="text-[9px] font-bold uppercase tracking-[0.15em] text-gray-800 dark:text-gray-200 block mb-6 text-center w-full">Capa Corporativa (Branding)</label>
+                  <label className="text-[9px] font-normal uppercase tracking-[0.15em] text-gray-800 dark:text-gray-200 block mb-6 text-center w-full">Capa Corporativa (Branding)</label>
                   <div className="p-6 rounded-xl border border-gray-300 dark:border-[#444] bg-gray-50/50 dark:bg-[#111] w-full flex flex-col items-center justify-center min-h-[220px] shadow-inner">
                     <FileUpload 
                       type="imagem" 
@@ -285,7 +285,7 @@ export function ModalidadesModal({
                       hideUrlInput
                     />
                     {!formData.imagem_url && (
-                      <p className="mt-4 text-[10px] text-gray-500 dark:text-gray-400 text-center px-4 font-medium italic">Selecione uma imagem de alta resolução para representar a modalidade</p>
+                      <p className="mt-4 text-[10px] text-gray-500 dark:text-gray-400 text-center px-4 font-normal italic">Selecione uma imagem de alta resolução para representar a modalidade</p>
                     )}
                   </div>
                 </div>
@@ -295,14 +295,14 @@ export function ModalidadesModal({
                 <button 
                   type="button" 
                   onClick={() => setShowForm(false)} 
-                  className="text-[10px] font-bold uppercase tracking-widest text-gray-500 hover:text-red-600 transition-colors px-6 py-2 border border-transparent hover:border-red-200 rounded-md"
+                  className="text-[10px] font-normal uppercase tracking-widest text-gray-500 hover:text-red-600 transition-colors px-6 py-2 border border-transparent hover:border-red-200 rounded-md"
                 >
                   Descartar Alterações
                 </button>
                 <button 
                   type="submit" 
                   disabled={saving} 
-                  className="px-12 py-3 rounded-md bg-[#c8921a] text-[#2d2106] text-[10px] font-bold uppercase tracking-widest shadow-md hover:shadow-lg hover:bg-[#b88217] transition-all disabled:opacity-50 active:scale-95"
+                  className="px-12 py-3 rounded-md bg-[#c8921a] text-[#2d2106] text-[10px] font-normal uppercase tracking-widest shadow-md hover:shadow-sm hover:bg-[#b88217] transition-all disabled:opacity-50 active:scale-95"
                 >
                   {saving ? 'PROCESSANDO...' : 'Confirmar Registro'}
                 </button>

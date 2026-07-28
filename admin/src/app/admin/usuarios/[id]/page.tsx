@@ -72,7 +72,7 @@ export default function EditarUsuario() {
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
           <div className="w-12 h-12 border-4 border-[#c8921a] border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-gray-600 font-medium">
+          <p className="text-gray-600 font-normal">
             {isAuthenticated === null ? 'Carregando...' : 'Carregando usuário...'}
           </p>
         </div>
@@ -142,12 +142,12 @@ export default function EditarUsuario() {
           subtitle="Atualize as informações do usuário"
         />
 
-        <Card className="mt-6 shadow-lg">
+        <Card className="mt-6 shadow-sm">
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* Seção: Informações Básicas */}
             <div className="space-y-6">
               <div className="border-b border-gray-200 pb-4">
-                <h3 className="text-lg font-bold text-gray-900 flex items-center gap-2.5">
+                <h3 className="text-lg font-normal text-gray-900 flex items-center gap-2.5">
                   <i className="bx bx-info-circle text-[#c8921a]" style={{ fontSize: '20px' }}></i>
                   Informações Básicas
                 </h3>
@@ -193,7 +193,7 @@ export default function EditarUsuario() {
             {/* Seção: Permissões e Assinatura */}
             <div className="space-y-6 pt-6 border-t border-gray-200">
               <div className="border-b border-gray-200 pb-4">
-                <h3 className="text-lg font-bold text-gray-900 flex items-center gap-2.5">
+                <h3 className="text-lg font-normal text-gray-900 flex items-center gap-2.5">
                   <i className="bx bx-cog text-[#c8921a]" style={{ fontSize: '20px' }}></i>
                   Permissões e Assinatura
                 </h3>

@@ -149,9 +149,9 @@ export default function BannersPage() {
         <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-gray-200 dark:border-[#222] pb-6 gap-4">
           <div>
             <h1 className="text-xl sm:text-2xl font-light text-gray-400 dark:text-gray-500 tracking-tight uppercase">
-              Banners do <span className="text-gray-900 dark:text-white font-bold">App Mobile</span>
+              Banners do <span className="text-gray-900 dark:text-white font-normal">App Mobile</span>
             </h1>
-            <p className="text-[10px] sm:text-xs text-gray-500 dark:text-gray-400 font-medium uppercase tracking-[0.2em] mt-1">
+            <p className="text-[10px] sm:text-xs text-gray-500 dark:text-gray-400 font-normal uppercase tracking-[0.2em] mt-1">
               Personalize o carrossel da página inicial
             </p>
           </div>
@@ -159,7 +159,7 @@ export default function BannersPage() {
           <button
             onClick={handleSave}
             disabled={saving}
-            className="w-full sm:w-auto bg-[#c8921a] hover:bg-[#b07f15] text-white px-6 py-2.5 rounded-[6px] text-xs font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-2 shadow-md disabled:opacity-50"
+            className="w-full sm:w-auto bg-[#c8921a] hover:bg-[#b07f15] text-white px-6 py-2.5 rounded-[6px] text-xs font-normal uppercase tracking-wider transition-all flex items-center justify-center gap-2 shadow-md disabled:opacity-50"
           >
             {saving ? <Loader2 size={16} className="animate-spin" /> : <Save size={16} />}
             {saving ? 'Salvando...' : 'Salvar Banners'}
@@ -190,13 +190,13 @@ export default function BannersPage() {
             <div key={index} className="bg-white dark:bg-[#111] rounded-xl border border-gray-200 dark:border-[#222] overflow-hidden flex flex-col shadow-sm">
               
               {/* Preview da Imagem */}
-              <div className="relative h-48 bg-gray-100 dark:bg-[#1a1a1a] flex items-center justify-center border-b border-gray-200 dark:border-[#222]">
+              <div className="relative h-48 bg-white dark:bg-[#1a1a1a] flex items-center justify-center border-b border-gray-200 dark:border-[#222]">
                 {banner.imagem_url ? (
                   <img src={banner.imagem_url} alt={banner.titulo} className="w-full h-full object-cover" />
                 ) : (
                   <div className="flex flex-col items-center opacity-40">
                     <ImageIcon size={32} />
-                    <span className="text-xs mt-2 uppercase tracking-widest font-bold">Sem Imagem</span>
+                    <span className="text-xs mt-2 uppercase tracking-widest font-normal">Sem Imagem</span>
                   </div>
                 )}
                 
@@ -204,7 +204,7 @@ export default function BannersPage() {
                 <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
                   <label className="cursor-pointer bg-white/20 hover:bg-white/30 backdrop-blur-sm px-4 py-2 rounded-lg border border-white/50 flex items-center gap-2 text-white transition-colors">
                     {uploading === index ? <Loader2 size={16} className="animate-spin" /> : <Upload size={16} />}
-                    <span className="text-[10px] font-bold uppercase tracking-wider">Trocar Imagem</span>
+                    <span className="text-[10px] font-normal uppercase tracking-wider">Trocar Imagem</span>
                     <input type="file" className="hidden" accept="image/*" onChange={(e) => handleImageUpload(index, e)} disabled={uploading === index} />
                   </label>
                 </div>
@@ -213,14 +213,14 @@ export default function BannersPage() {
               {/* Formulário */}
               <div className="p-5 flex-1 flex flex-col gap-4">
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-[10px] font-bold text-[#c8921a] uppercase tracking-widest">Card {index + 1}</span>
-                  <div className="bg-gray-100 dark:bg-[#222] px-2 py-1 rounded text-[9px] text-gray-500 uppercase tracking-widest font-bold border border-gray-200 dark:border-gray-800">
+                  <span className="text-[10px] font-normal text-[#c8921a] uppercase tracking-widest">Card {index + 1}</span>
+                  <div className="bg-white dark:bg-[#222] px-2 py-1 rounded text-[9px] text-gray-500 uppercase tracking-widest font-normal border border-gray-200 dark:border-gray-800">
                     Botão ➜ {getAcaoNome(banner.acao)}
                   </div>
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-[9px] font-bold text-gray-500 uppercase tracking-widest">Título do Banner</label>
+                  <label className="text-[9px] font-normal text-gray-500 uppercase tracking-widest">Título do Banner</label>
                   <input
                     type="text"
                     value={banner.titulo}
@@ -231,7 +231,7 @@ export default function BannersPage() {
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-[9px] font-bold text-gray-500 uppercase tracking-widest">Subtítulo (Opcional)</label>
+                  <label className="text-[9px] font-normal text-gray-500 uppercase tracking-widest">Subtítulo (Opcional)</label>
                   <textarea
                     value={banner.subtitulo}
                     onChange={(e) => handleChange(index, 'subtitulo', e.target.value)}
@@ -249,7 +249,7 @@ export default function BannersPage() {
                       onChange={(e) => handleChange(index, 'ativo', e.target.checked)}
                       className="w-4 h-4 rounded border-gray-300 text-[#c8921a] focus:ring-[#c8921a]"
                     />
-                    <span className="text-[10px] font-bold uppercase tracking-widest text-gray-600 dark:text-gray-400">Ativo no App</span>
+                    <span className="text-[10px] font-normal uppercase tracking-widest text-gray-600 dark:text-gray-400">Ativo no App</span>
                   </label>
                 </div>
               </div>

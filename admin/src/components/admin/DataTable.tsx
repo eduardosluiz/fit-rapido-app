@@ -46,7 +46,7 @@ export function DataTable<T extends Record<string, any>>({
       <Card>
         <div className="flex flex-col items-center justify-center py-12">
           <i className={`bx ${emptyIcon} text-6xl text-gray-300 mb-4`}></i>
-          <p className="text-gray-600 font-medium">{emptyMessage}</p>
+          <p className="text-gray-600 font-normal">{emptyMessage}</p>
         </div>
       </Card>
     );

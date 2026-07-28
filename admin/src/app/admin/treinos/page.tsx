@@ -162,7 +162,7 @@ export default function TreinosPage() {
       case 'iniciante': return 'bg-green-100 text-green-700';
       case 'intermediario': return 'bg-yellow-100 text-yellow-700';
       case 'avancado': return 'bg-red-100 text-red-700';
-      default: return 'bg-gray-100 text-gray-700';
+      default: return 'bg-white text-gray-700';
     }
   };
 
@@ -185,8 +185,8 @@ export default function TreinosPage() {
             <div key={nivel.id} className="flex flex-col space-y-6">
               <div className={`p-4 bg-white dark:bg-[#111] border-l-4 ${nivel.color} shadow-sm rounded-r-xl flex items-center justify-between`}>
                 <div>
-                  <h3 className="text-[11px] font-bold uppercase tracking-widest text-gray-800 dark:text-white">{nivel.label}</h3>
-                  <p className="text-[9px] text-gray-400 font-medium uppercase mt-1">{treinosNivel.length} Treinos Registrados</p>
+                  <h3 className="text-[11px] font-normal uppercase tracking-widest text-gray-800 dark:text-white">{nivel.label}</h3>
+                  <p className="text-[9px] text-gray-400 font-normal uppercase mt-1">{treinosNivel.length} Treinos Registrados</p>
                 </div>
                 <Link 
                   href={`/admin/treinos/novo?modalidade=${selectedModalidade}&nivel=${nivel.id}`}
@@ -200,7 +200,7 @@ export default function TreinosPage() {
                 {treinosNivel.length === 0 ? (
                   <div className="p-10 border-2 border-dashed border-gray-100 dark:border-[#1a1a1a] rounded-2xl flex flex-col items-center justify-center text-center">
                     <Dumbbell size={24} className="text-gray-200 dark:text-gray-800 mb-3" />
-                    <p className="text-[10px] text-gray-400 uppercase font-bold tracking-tighter">Nenhum treino</p>
+                    <p className="text-[10px] text-gray-400 uppercase font-normal tracking-tighter">Nenhum treino</p>
                   </div>
                 ) : (
                   treinosNivel.map(treino => (
@@ -238,27 +238,27 @@ export default function TreinosPage() {
         <div className="flex flex-col md:flex-row md:items-center justify-between border-b border-gray-100 dark:border-[#222] pb-8 gap-6">
           <div>
             <h1 className="text-xl font-light text-gray-400 dark:text-gray-500 tracking-tight uppercase">
-              Gerenciar <span className="text-gray-800 dark:text-white font-semibold">Treinos</span>
+              Gerenciar <span className="text-gray-800 dark:text-white font-normal">Treinos</span>
             </h1>
-            <p className="text-[10px] text-gray-400 font-medium uppercase tracking-[0.2em] mt-1">Sessões de Treinamento Personalizadas</p>
+            <p className="text-[10px] text-gray-400 font-normal uppercase tracking-[0.2em] mt-1">Sessões de Treinamento Personalizadas</p>
           </div>
           
           <div className="flex flex-wrap items-center gap-3 w-full md:w-auto mt-4 md:mt-0">
             <button 
               onClick={() => setExerciciosModalOpen(true)}
-              className="flex-1 sm:flex-none justify-center px-4 py-2 rounded-md border border-[#c8921a]/60 text-[#c8921a] text-[10px] font-bold uppercase tracking-widest hover:bg-[#c8921a]/10 hover:border-[#c8921a] transition-all duration-300 flex items-center gap-2 whitespace-nowrap"
+              className="flex-1 sm:flex-none justify-center px-4 py-2 rounded-md border border-[#c8921a]/60 text-[#c8921a] text-[10px] font-normal uppercase tracking-widest hover:bg-[#c8921a]/10 hover:border-[#c8921a] transition-all duration-300 flex items-center gap-2 whitespace-nowrap"
             >
               <Dumbbell size={14} /> Exercícios
             </button>
             <button 
               onClick={() => setCategoriasModalOpen(true)}
-              className="flex-1 sm:flex-none justify-center px-4 py-2 rounded-md border border-[#c8921a]/60 text-[#c8921a] text-[10px] font-bold uppercase tracking-widest hover:bg-[#c8921a]/10 hover:border-[#c8921a] transition-all duration-300 flex items-center gap-2 whitespace-nowrap"
+              className="flex-1 sm:flex-none justify-center px-4 py-2 rounded-md border border-[#c8921a]/60 text-[#c8921a] text-[10px] font-normal uppercase tracking-widest hover:bg-[#c8921a]/10 hover:border-[#c8921a] transition-all duration-300 flex items-center gap-2 whitespace-nowrap"
             >
               <FolderPlus size={14} /> Categoria
             </button>
             <Link 
               href="/admin/treinos/novo"
-              className="flex-1 sm:flex-none justify-center px-4 py-2 rounded-md border border-[#c8921a] bg-[#c8921a] text-white text-[10px] font-bold uppercase tracking-widest hover:bg-[#b88217] hover:border-[#b88217] transition-all duration-300 flex items-center gap-2 whitespace-nowrap shadow-sm"
+              className="flex-1 sm:flex-none justify-center px-4 py-2 rounded-md border border-[#c8921a] bg-[#c8921a] text-white text-[10px] font-normal uppercase tracking-widest hover:bg-[#b88217] hover:border-[#b88217] transition-all duration-300 flex items-center gap-2 whitespace-nowrap shadow-sm"
             >
               <Plus size={14} /> Novo Treino
             </Link>

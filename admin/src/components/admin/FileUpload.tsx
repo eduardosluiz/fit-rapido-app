@@ -117,7 +117,7 @@ export function FileUpload({ type, value, onChange, label, accept, error, hideUr
                 className="w-12 h-12 rounded border-2 border-border object-cover"
               />
             ) : (
-              <div className="w-12 h-12 rounded border-2 border-border bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
+              <div className="w-12 h-12 rounded border-2 border-border bg-white dark:bg-gray-800 flex items-center justify-center">
                 <i className="bx bx-play text-[#c8921a] text-xl"></i>
               </div>
             )}
@@ -167,7 +167,7 @@ export function FileUpload({ type, value, onChange, label, accept, error, hideUr
         />
       )}
       {label && (
-        <Label className="text-sm font-semibold text-foreground">
+        <Label className="text-sm font-normal text-foreground">
           {label}
         </Label>
       )}
@@ -188,7 +188,7 @@ export function FileUpload({ type, value, onChange, label, accept, error, hideUr
               <button
                 type="button"
                 onClick={handleRemove}
-                className="absolute top-2 right-2 h-7 w-7 rounded-full bg-red-500 hover:bg-red-600 text-white flex items-center justify-center shadow-lg z-10 transition-all"
+                className="absolute top-2 right-2 h-7 w-7 rounded-full bg-red-500 hover:bg-red-600 text-white flex items-center justify-center shadow-sm z-10 transition-all"
                 title="Remover imagem"
               >
                 <i className="bx bx-x text-base"></i>
@@ -207,7 +207,7 @@ export function FileUpload({ type, value, onChange, label, accept, error, hideUr
               <button
                 type="button"
                 onClick={handleRemove}
-                className="absolute top-2 right-2 h-7 w-7 rounded-full bg-red-500 hover:bg-red-600 text-white flex items-center justify-center shadow-lg z-10 transition-all"
+                className="absolute top-2 right-2 h-7 w-7 rounded-full bg-red-500 hover:bg-red-600 text-white flex items-center justify-center shadow-sm z-10 transition-all"
                 title="Remover vídeo"
               >
                 <i className="bx bx-x text-base"></i>
@@ -247,7 +247,7 @@ export function FileUpload({ type, value, onChange, label, accept, error, hideUr
             ) : (
               <>
                 <i className="bx bx-cloud-upload text-[#c8921a] text-lg"></i>
-                <span className="text-sm font-medium text-foreground">
+                <span className="text-sm font-normal text-foreground">
                   {type === 'imagem' ? 'Enviar Imagem' : 'Enviar Vídeo'}
                 </span>
               </>

@@ -71,6 +71,7 @@ export default function TreinosScreen() {
       modalityName: modalidade.nome,
       modalityImage: modalidade.imagem_url,
       hasNivelamento: modalidade.tem_nivelamento,
+      descricao: modalidade.descricao,
       descricao_iniciante: modalidade.descricao_iniciante,
       descricao_intermediario: modalidade.descricao_intermediario,
       descricao_avancado: modalidade.descricao_avancado

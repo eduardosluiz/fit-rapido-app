@@ -143,16 +143,16 @@ function NovoTreinoForm() {
             </div>
             <div>
               <h1 className="text-lg sm:text-xl font-light text-gray-600 dark:text-gray-400 tracking-tight uppercase">
-                Novo <span className="text-gray-800 dark:text-white font-semibold">Treino</span>
+                Novo <span className="text-gray-800 dark:text-white font-normal">Treino</span>
               </h1>
-              <p className="text-[9px] sm:text-[10px] text-gray-500 dark:text-gray-400 font-medium uppercase tracking-[0.2em] mt-1">Ficha de Planejamento</p>
+              <p className="text-[9px] sm:text-[10px] text-gray-500 dark:text-gray-400 font-normal uppercase tracking-[0.2em] mt-1">Ficha de Planejamento</p>
             </div>
           </div>
           <div className="flex items-center justify-end">
             <Link href="/admin/treinos">
               <button 
                 type="button"
-                className="px-3 sm:px-4 py-2 rounded-md border border-gray-300 dark:border-[#333] text-gray-600 dark:text-gray-400 text-[10px] font-bold uppercase tracking-widest hover:bg-gray-50 dark:hover:bg-[#1a1a1a] transition-all flex items-center gap-1 sm:gap-2"
+                className="px-3 sm:px-4 py-2 rounded-md border border-gray-300 dark:border-[#333] text-gray-600 dark:text-gray-400 text-[10px] font-normal uppercase tracking-widest hover:bg-gray-50 dark:hover:bg-[#1a1a1a] transition-all flex items-center gap-1 sm:gap-2"
               >
                 <i className="bx bx-arrow-back mr-2"></i> <span className="hidden sm:inline">Voltar</span>
               </button>
@@ -165,7 +165,7 @@ function NovoTreinoForm() {
             {/* Seção: Dados Técnicos */}
             <div className="space-y-8">
               <div className="border-b border-gray-100 dark:border-[#1a1a1a] pb-4">
-                <h3 className="text-[11px] font-bold uppercase tracking-[0.3em] text-gray-400 flex items-center gap-3">
+                <h3 className="text-[11px] font-normal uppercase tracking-[0.3em] text-gray-400 flex items-center gap-3">
                   <div className="w-1.5 h-1.5 rounded-full bg-[#c8921a]"></div>
                   Configuração de Trilha
                 </h3>
@@ -175,45 +175,45 @@ function NovoTreinoForm() {
                 {/* Coluna da Esquerda: Textos */}
                 <div className="lg:col-span-7 space-y-8">
                   <div className="space-y-2">
-                    <label className="text-[9px] font-bold uppercase tracking-[0.15em] text-gray-800 dark:text-gray-200 ml-0.5">Nome do Treino</label>
+                    <label className="text-[9px] font-normal uppercase tracking-[0.15em] text-gray-800 dark:text-gray-200 ml-0.5">Nome do Treino</label>
                     <input
                       value={formData.titulo}
                       onChange={(e) => setFormData({ ...formData, titulo: e.target.value })}
                       placeholder="Ex: FULL BODY INTENSIVO"
-                      className="w-full bg-gray-100 dark:bg-[#111] border border-gray-400 dark:border-[#555] rounded-md px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#c8921a]/20 focus:border-[#c8921a] text-gray-900 dark:text-white font-medium transition-all placeholder:text-gray-500"
+                      className="w-full bg-white dark:bg-[#111] border border-gray-400 dark:border-[#555] rounded-md px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#c8921a]/20 focus:border-[#c8921a] text-gray-900 dark:text-white font-normal transition-all placeholder:text-gray-500"
                       required
                     />
-                    {errors.titulo && <p className="text-[10px] text-red-500 font-bold mt-1 uppercase tracking-tighter">{errors.titulo}</p>}
+                    {errors.titulo && <p className="text-[10px] text-red-500 font-normal mt-1 uppercase tracking-tighter">{errors.titulo}</p>}
                   </div>
 
                   <div className="space-y-2">
-                    <label className="text-[9px] font-bold uppercase tracking-[0.15em] text-gray-800 dark:text-gray-200 ml-0.5">Visão Geral (Objetivo)</label>
+                    <label className="text-[9px] font-normal uppercase tracking-[0.15em] text-gray-800 dark:text-gray-200 ml-0.5">Visão Geral (Objetivo)</label>
                     <textarea
                       value={formData.descricao}
                       onChange={(e) => setFormData({ ...formData, descricao: e.target.value })}
                       placeholder="Descreva o propósito técnico e os objetivos deste planejamento..."
-                      className="w-full min-h-[120px] bg-gray-100 dark:bg-[#111] border border-gray-400 dark:border-[#555] rounded-md px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#c8921a]/20 focus:border-[#c8921a] text-gray-800 dark:text-gray-200 resize-none font-normal leading-relaxed transition-all placeholder:text-gray-500"
+                      className="w-full min-h-[120px] bg-white dark:bg-[#111] border border-gray-400 dark:border-[#555] rounded-md px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#c8921a]/20 focus:border-[#c8921a] text-gray-800 dark:text-gray-200 resize-none font-normal leading-relaxed transition-all placeholder:text-gray-500"
                     />
                   </div>
 
                   <div className="grid grid-cols-2 gap-6">
                     <div className="space-y-2">
-                      <label className="text-[9px] font-bold uppercase tracking-[0.15em] text-gray-800 dark:text-gray-200 ml-0.5">Duração (min)</label>
+                      <label className="text-[9px] font-normal uppercase tracking-[0.15em] text-gray-800 dark:text-gray-200 ml-0.5">Duração (min)</label>
                       <input
                         type="number"
                         min="0"
                         value={formData.duracao_minutos}
                         onChange={(e) => setFormData({ ...formData, duracao_minutos: e.target.value })}
                         placeholder="45"
-                        className="w-full bg-gray-100 dark:bg-[#111] border border-gray-400 dark:border-[#555] rounded-md px-4 py-3 text-sm focus:outline-none focus:border-[#c8921a] text-gray-900 dark:text-white font-medium placeholder:text-gray-500"
+                        className="w-full bg-white dark:bg-[#111] border border-gray-400 dark:border-[#555] rounded-md px-4 py-3 text-sm focus:outline-none focus:border-[#c8921a] text-gray-900 dark:text-white font-normal placeholder:text-gray-500"
                       />
                     </div>
                     <div className="space-y-2">
-                      <label className="text-[9px] font-bold uppercase tracking-[0.15em] text-gray-800 dark:text-gray-200 ml-0.5">Intensidade</label>
+                      <label className="text-[9px] font-normal uppercase tracking-[0.15em] text-gray-800 dark:text-gray-200 ml-0.5">Intensidade</label>
                       <select
                         value={formData.nivel}
                         onChange={(e) => setFormData({ ...formData, nivel: e.target.value })}
-                        className="w-full h-[46px] bg-gray-100 dark:bg-[#111] border border-gray-400 dark:border-[#555] rounded-md px-4 text-sm focus:outline-none focus:border-[#c8921a] text-gray-900 dark:text-white font-medium appearance-none"
+                        className="w-full h-[46px] bg-white dark:bg-[#111] border border-gray-400 dark:border-[#555] rounded-md px-4 text-sm focus:outline-none focus:border-[#c8921a] text-gray-900 dark:text-white font-normal appearance-none"
                       >
                         <option value="iniciante">Iniciante</option>
                         <option value="intermediario">Médio</option>
@@ -227,8 +227,8 @@ function NovoTreinoForm() {
                 <div className="lg:col-span-5 flex flex-col">
                   <div className="grid grid-cols-2 gap-4 flex-1">
                     <div className="space-y-2">
-                      <label className="text-[9px] font-bold uppercase tracking-[0.15em] text-gray-800 dark:text-gray-200 ml-0.5">Identidade (Capa)</label>
-                      <div className="p-4 rounded-xl border border-gray-400 dark:border-[#444] bg-gray-100/30 dark:bg-[#0a0a0a] shadow-inner h-[218px] flex items-center justify-center">
+                      <label className="text-[9px] font-normal uppercase tracking-[0.15em] text-gray-800 dark:text-gray-200 ml-0.5">Identidade (Capa)</label>
+                      <div className="p-4 rounded-xl border border-gray-400 dark:border-[#444] bg-white/30 dark:bg-[#0a0a0a] shadow-inner h-[218px] flex items-center justify-center">
                         <FileUpload
                           type="imagem"
                           value={formData.imagem_url}
@@ -238,8 +238,8 @@ function NovoTreinoForm() {
                       </div>
                     </div>
                     <div className="space-y-2">
-                      <label className="text-[9px] font-bold uppercase tracking-[0.15em] text-gray-800 dark:text-gray-200 ml-0.5">Vídeo Principal (Aula)</label>
-                      <div className="p-4 rounded-xl border border-gray-400 dark:border-[#444] bg-gray-100/30 dark:bg-[#0a0a0a] shadow-inner h-[218px] flex items-center justify-center">
+                      <label className="text-[9px] font-normal uppercase tracking-[0.15em] text-gray-800 dark:text-gray-200 ml-0.5">Vídeo Principal (Aula)</label>
+                      <div className="p-4 rounded-xl border border-gray-400 dark:border-[#444] bg-white/30 dark:bg-[#0a0a0a] shadow-inner h-[218px] flex items-center justify-center">
                         <FileUpload
                           type="video"
                           value={formData.video_url}
@@ -252,24 +252,24 @@ function NovoTreinoForm() {
 
                   {/* Alinhado com a linha de Duração/Intensidade */}
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 mt-8">
-                    <div className="flex items-center justify-between p-3 rounded-xl border border-gray-400 dark:border-[#444] bg-gray-100/50 dark:bg-[#0f0f0f] shadow-sm">
-                      <p className="text-[9px] font-bold uppercase tracking-widest text-gray-800 dark:text-gray-200">Premium</p>
+                    <div className="flex items-center justify-between p-3 rounded-xl border border-gray-400 dark:border-[#444] bg-white/50 dark:bg-[#0f0f0f] shadow-sm">
+                      <p className="text-[9px] font-normal uppercase tracking-widest text-gray-800 dark:text-gray-200">Premium</p>
                       <Switch
                         checked={formData.is_premium}
                         onCheckedChange={(checked) => setFormData({ ...formData, is_premium: checked })}
                         className="scale-75 data-[state=unchecked]:bg-gray-400"
                       />
                     </div>
-                    <div className="flex items-center justify-between p-3 rounded-xl border border-gray-400 dark:border-[#444] bg-gray-100/50 dark:bg-[#0f0f0f] shadow-sm">
-                      <p className="text-[9px] font-bold uppercase tracking-widest text-[#c8921a]">Inédito</p>
+                    <div className="flex items-center justify-between p-3 rounded-xl border border-gray-400 dark:border-[#444] bg-white/50 dark:bg-[#0f0f0f] shadow-sm">
+                      <p className="text-[9px] font-normal uppercase tracking-widest text-[#c8921a]">Inédito</p>
                       <Switch
                         checked={formData.is_inedito}
                         onCheckedChange={(checked) => setFormData({ ...formData, is_inedito: checked })}
                         className="scale-75 data-[state=unchecked]:bg-gray-400"
                       />
                     </div>
-                    <div className="flex items-center justify-between p-3 rounded-xl border border-gray-400 dark:border-[#444] bg-gray-100/50 dark:bg-[#0f0f0f] shadow-sm">
-                      <p className="text-[9px] font-bold uppercase tracking-widest text-gray-800 dark:text-gray-200">Ativo</p>
+                    <div className="flex items-center justify-between p-3 rounded-xl border border-gray-400 dark:border-[#444] bg-white/50 dark:bg-[#0f0f0f] shadow-sm">
+                      <p className="text-[9px] font-normal uppercase tracking-widest text-gray-800 dark:text-gray-200">Ativo</p>
                       <Switch
                         checked={formData.ativa}
                         onCheckedChange={(checked) => setFormData({ ...formData, ativa: checked })}
@@ -283,10 +283,10 @@ function NovoTreinoForm() {
               {/* Linha Inferior: Categorias */}
               <div className="grid grid-cols-1 md:grid-cols-1 gap-8 pt-4">
                 <div className="space-y-2">
-                  <label className="text-[9px] font-bold uppercase tracking-[0.15em] text-gray-800 dark:text-gray-200 ml-0.5">Categorias</label>
+                  <label className="text-[9px] font-normal uppercase tracking-[0.15em] text-gray-800 dark:text-gray-200 ml-0.5">Categorias</label>
                   <Popover>
                     <PopoverTrigger asChild>
-                      <button type="button" className="w-full h-[46px] bg-gray-100 dark:bg-[#111] border border-gray-400 dark:border-[#555] rounded-md px-4 text-sm focus:outline-none focus:border-[#c8921a] text-gray-700 dark:text-gray-300 font-medium flex items-center justify-between">
+                      <button type="button" className="w-full h-[46px] bg-white dark:bg-[#111] border border-gray-400 dark:border-[#555] rounded-md px-4 text-sm focus:outline-none focus:border-[#c8921a] text-gray-700 dark:text-gray-300 font-normal flex items-center justify-between">
                         {formData.categoria_ids.length > 0
                           ? `${formData.categoria_ids.length} selecionada(s)`
                           : 'Vincular...'}
@@ -311,7 +311,7 @@ function NovoTreinoForm() {
                               checked={formData.categoria_ids.includes(cat.id)}
                               className="border-gray-400"
                             />
-                            <span className="text-[12px] font-bold uppercase tracking-tighter text-gray-700 dark:text-gray-300">{cat.nome}</span>
+                            <span className="text-[12px] font-normal uppercase tracking-tighter text-gray-700 dark:text-gray-300">{cat.nome}</span>
                           </div>
                         ))}
                       </div>
@@ -324,7 +324,7 @@ function NovoTreinoForm() {
             {/* Seção: Exercícios */}
             <div className="space-y-8 pt-10 border-t border-gray-100 dark:border-[#1a1a1a]">
               <div className="pb-2">
-                <h3 className="text-[11px] font-bold uppercase tracking-[0.3em] text-gray-400 flex items-center gap-3">
+                <h3 className="text-[11px] font-normal uppercase tracking-[0.3em] text-gray-400 flex items-center gap-3">
                   <div className="w-1.5 h-1.5 rounded-full bg-[#c8921a]"></div>
                   Estrutura da Sessão (Grade de Exercícios)
                 </h3>
@@ -332,7 +332,7 @@ function NovoTreinoForm() {
 
               <div className="space-y-4">
                 {formData.exercicios_detalhados.map((ex, index) => (
-                  <div key={index} className="group relative p-5 rounded-xl border border-gray-400 dark:border-[#444] bg-gray-100 dark:bg-[#0a0a0a] hover:border-[#c8921a]/50 transition-all shadow-md">
+                  <div key={index} className="group relative p-5 rounded-xl border border-gray-400 dark:border-[#444] bg-white dark:bg-[#0a0a0a] hover:border-[#c8921a]/50 transition-all shadow-md">
                     <div className="absolute top-3 right-3 flex items-center gap-3 opacity-0 group-hover:opacity-100 transition-all">
                       <button type="button" onClick={() => {
                         const novos = formData.exercicios_detalhados.filter((_, i) => i !== index);
@@ -349,7 +349,7 @@ function NovoTreinoForm() {
 
                       <div className="lg:col-span-5 space-y-4">
                         <div className="space-y-1">
-                          <label className="text-[8px] font-bold uppercase tracking-widest text-gray-600 dark:text-gray-400">Nome do Exercício</label>
+                          <label className="text-[8px] font-normal uppercase tracking-widest text-gray-600 dark:text-gray-400">Nome do Exercício</label>
                           <input
                             placeholder="Ex: Supino Reto"
                             value={ex.nome}
@@ -358,11 +358,11 @@ function NovoTreinoForm() {
                               novos[index].nome = e.target.value;
                               setFormData({ ...formData, exercicios_detalhados: novos });
                             }}
-                            className="w-full h-[38px] bg-white dark:bg-[#111] border border-gray-400 dark:border-[#555] rounded-md px-4 text-sm focus:outline-none focus:border-[#c8921a] text-gray-900 dark:text-white font-medium"
+                            className="w-full h-[38px] bg-white dark:bg-[#111] border border-gray-400 dark:border-[#555] rounded-md px-4 text-sm focus:outline-none focus:border-[#c8921a] text-gray-900 dark:text-white font-normal"
                           />
                         </div>
                         <div className="space-y-1">
-                          <label className="text-[8px] font-bold uppercase tracking-widest text-gray-600 dark:text-gray-400">Repetições / Metas</label>
+                          <label className="text-[8px] font-normal uppercase tracking-widest text-gray-600 dark:text-gray-400">Repetições / Metas</label>
                           <input
                             placeholder="Ex: 12 reps ou 30s"
                             value={ex.repeticoes}
@@ -371,7 +371,7 @@ function NovoTreinoForm() {
                               novos[index].repeticoes = e.target.value;
                               setFormData({ ...formData, exercicios_detalhados: novos });
                             }}
-                            className="w-full h-[38px] bg-white dark:bg-[#111] border border-gray-400 dark:border-[#555] rounded-md px-4 text-sm focus:outline-none focus:border-[#c8921a] text-gray-900 dark:text-white font-medium"
+                            className="w-full h-[38px] bg-white dark:bg-[#111] border border-gray-400 dark:border-[#555] rounded-md px-4 text-sm focus:outline-none focus:border-[#c8921a] text-gray-900 dark:text-white font-normal"
                           />
                         </div>
                       </div>
@@ -406,7 +406,7 @@ function NovoTreinoForm() {
                                         setFormData({ ...formData, exercicios_detalhados: novos });
                                       }}
                                     >
-                                      <button type="button" className="w-8 h-8 rounded bg-[#c8921a] flex items-center justify-center text-white transition-all shadow-lg">
+                                      <button type="button" className="w-8 h-8 rounded bg-[#c8921a] flex items-center justify-center text-white transition-all shadow-sm">
                                         <i className="bx bx-library text-lg"></i>
                                       </button>
                                     </MediaSelectorPopover>
@@ -440,7 +440,7 @@ function NovoTreinoForm() {
                                       <div className="w-7 h-7 rounded-full bg-[#c8921a]/10 group-hover/btn:bg-[#c8921a]/20 flex items-center justify-center transition-all">
                                         <i className="bx bx-library text-[#c8921a] text-base"></i>
                                       </div>
-                                      <p className="text-[6px] font-bold uppercase text-gray-500 group-hover/btn:text-[#c8921a]">Escolher</p>
+                                      <p className="text-[6px] font-normal uppercase text-gray-500 group-hover/btn:text-[#c8921a]">Escolher</p>
                                     </button>
                                   </MediaSelectorPopover>
                                 </div>
@@ -477,7 +477,7 @@ function NovoTreinoForm() {
                                         setFormData({ ...formData, exercicios_detalhados: novos });
                                       }}
                                     >
-                                      <button type="button" className="w-8 h-8 rounded bg-[#c8921a] flex items-center justify-center text-white transition-all shadow-lg">
+                                      <button type="button" className="w-8 h-8 rounded bg-[#c8921a] flex items-center justify-center text-white transition-all shadow-sm">
                                         <i className="bx bx-library text-lg"></i>
                                       </button>
                                     </MediaSelectorPopover>
@@ -511,7 +511,7 @@ function NovoTreinoForm() {
                                       <div className="w-7 h-7 rounded-full bg-[#c8921a]/10 group-hover/btn:bg-[#c8921a]/20 flex items-center justify-center transition-all">
                                         <i className="bx bx-library text-[#c8921a] text-base"></i>
                                       </div>
-                                      <p className="text-[6px] font-bold uppercase text-gray-500 group-hover/btn:text-[#c8921a]">Escolher</p>
+                                      <p className="text-[6px] font-normal uppercase text-gray-500 group-hover/btn:text-[#c8921a]">Escolher</p>
                                     </button>
                                   </MediaSelectorPopover>
                                 </div>
@@ -531,7 +531,7 @@ function NovoTreinoForm() {
                       ...formData,
                       exercicios_detalhados: [...formData.exercicios_detalhados, { nome: '', repeticoes: '', imagem_url: '', video_url: '' }]
                     })}
-                    className="px-6 py-2 rounded-full border-2 border-dashed border-gray-300 dark:border-[#333] text-gray-400 hover:border-[#c8921a] hover:text-[#c8921a] hover:bg-[#c8921a]/5 transition-all text-[9px] font-bold uppercase tracking-widest flex items-center gap-2"
+                    className="px-6 py-2 rounded-full border-2 border-dashed border-gray-300 dark:border-[#333] text-gray-400 hover:border-[#c8921a] hover:text-[#c8921a] hover:bg-[#c8921a]/5 transition-all text-[9px] font-normal uppercase tracking-widest flex items-center gap-2"
                   >
                     <PlusCircle size={14} /> Adicionar Exercício
                   </button>
@@ -544,14 +544,14 @@ function NovoTreinoForm() {
               <button 
                 type="button" 
                 onClick={() => router.push('/admin/treinos')}
-                className="w-full sm:w-auto px-5 py-3 sm:py-2 rounded-md border border-gray-300 dark:border-[#444] text-[10px] font-bold uppercase tracking-widest text-gray-500 hover:bg-gray-50 transition-all flex items-center justify-center gap-2"
+                className="w-full sm:w-auto px-5 py-3 sm:py-2 rounded-md border border-gray-300 dark:border-[#444] text-[10px] font-normal uppercase tracking-widest text-gray-500 hover:bg-gray-50 transition-all flex items-center justify-center gap-2"
               >
                 <i className="bx bx-x text-lg"></i> Cancelar
               </button>
               <button 
                 type="submit" 
                 disabled={loading}
-                className="w-full sm:w-auto px-8 py-3 sm:py-2.5 rounded-md bg-[#c8921a] text-[#2d2106] text-[10px] font-bold uppercase tracking-widest shadow-md hover:shadow-xl transition-all disabled:opacity-50 flex items-center justify-center gap-2"
+                className="w-full sm:w-auto px-8 py-3 sm:py-2.5 rounded-md bg-[#c8921a] text-[#2d2106] text-[10px] font-normal uppercase tracking-widest shadow-md hover:shadow-xl transition-all disabled:opacity-50 flex items-center justify-center gap-2"
               >
                 {loading ? (
                   <>
@@ -577,7 +577,7 @@ export default function NovoTreino() {
       <div className="min-h-screen bg-gray-50 dark:bg-[#1a1a1a] flex items-center justify-center">
         <div className="text-center">
           <div className="w-12 h-12 border-4 border-[#c8921a] border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-gray-600 dark:text-gray-400 font-medium">Carregando formulário...</p>
+          <p className="text-gray-600 dark:text-gray-400 font-normal">Carregando formulário...</p>
         </div>
       </div>
     }>

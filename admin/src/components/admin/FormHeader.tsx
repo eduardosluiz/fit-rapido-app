@@ -29,7 +29,7 @@ export function FormHeader({ title, subtitle, icon, action, className }: FormHea
             )}
             <div className="flex-1 space-y-2">
               <h1 className={cn(
-                "text-3xl sm:text-4xl font-bold tracking-tight",
+                "text-3xl sm:text-4xl font-normal tracking-tight",
                 "bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 dark:from-white dark:via-gray-100 dark:to-white",
                 "[background-clip:text] [-webkit-background-clip:text] text-transparent"
               )}>

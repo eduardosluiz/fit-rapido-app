@@ -66,7 +66,7 @@ export function BaseModal({
                 </div>
               )}
               <div className="flex-1 min-w-0">
-                <DialogTitle className="text-lg font-bold text-gray-900 dark:text-white leading-tight truncate">
+                <DialogTitle className="text-lg font-normal text-gray-900 dark:text-white leading-tight truncate">
                   {title}
                 </DialogTitle>
                 {description && (
@@ -85,7 +85,7 @@ export function BaseModal({
               {showCloseButton && (
                 <button
                   onClick={() => onOpenChange(false)}
-                  className="flex items-center justify-center px-2 py-1 text-xs font-semibold transition-all shadow-sm hover:shadow-md rounded-lg bg-white dark:bg-[#252525] text-red-600 dark:text-red-400 border border-red-600 dark:border-red-500 hover:border-red-700 dark:hover:border-red-400 hover:bg-red-50 dark:hover:bg-red-900/20"
+                  className="flex items-center justify-center px-2 py-1 text-xs font-normal transition-all shadow-sm hover:shadow-md rounded-lg bg-white dark:bg-[#252525] text-red-600 dark:text-red-400 border border-red-600 dark:border-red-500 hover:border-red-700 dark:hover:border-red-400 hover:bg-red-50 dark:hover:bg-red-900/20"
                   aria-label="Fechar"
                 >
                   <i className="bx bx-x text-sm text-red-600 dark:text-red-400"></i>

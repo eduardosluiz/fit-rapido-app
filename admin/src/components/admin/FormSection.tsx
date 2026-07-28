@@ -20,7 +20,7 @@ export function FormSection({ title, icon, children, className, isFirst = false 
     )}>
       <div className="border-b-2 border-gray-200 dark:border-[#333] pb-3">
         <h3 className={cn(
-          "text-xl font-bold",
+          "text-xl font-normal",
           "text-gray-900 dark:text-white",
           "flex items-center gap-3"
         )}>

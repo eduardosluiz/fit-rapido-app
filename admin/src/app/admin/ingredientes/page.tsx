@@ -138,13 +138,13 @@ export default function IngredientesPage() {
         <div className="flex items-center justify-between border-b border-gray-200 dark:border-[#222] pb-8">
           <div>
             <h1 className="text-xl font-light text-gray-400 dark:text-gray-500 tracking-tight uppercase">
-              Base de <span className="text-gray-800 dark:text-white font-semibold">Ingredientes</span>
+              Base de <span className="text-gray-800 dark:text-white font-normal">Ingredientes</span>
             </h1>
-            <p className="text-[10px] text-gray-400 font-medium uppercase tracking-[0.2em] mt-1">Valores Nutricionais Base</p>
+            <p className="text-[10px] text-gray-400 font-normal uppercase tracking-[0.2em] mt-1">Valores Nutricionais Base</p>
           </div>
           <button 
             onClick={() => handleOpenDialog()}
-            className="px-4 py-1.5 rounded-md border border-[#c8921a]/30 text-[#c8921a] text-[9px] font-bold uppercase tracking-widest hover:bg-[#c8921a] hover:text-white transition-all"
+            className="px-4 py-1.5 rounded-md border border-[#c8921a]/30 text-[#c8921a] text-[9px] font-normal uppercase tracking-widest hover:bg-[#c8921a] hover:text-white transition-all"
           >
             <Plus size={12} className="mr-1 inline" /> Novo Item
           </button>
@@ -172,7 +172,7 @@ export default function IngredientesPage() {
           <form onSubmit={handleSubmit} className="p-8 space-y-6">
             <input 
               type="text" value={formData.nome} onChange={(e) => setFormData({...formData, nome: e.target.value})}
-              className="w-full bg-transparent border-t-0 border-l-0 border-r-0 border-b border-gray-100 px-0 py-2 text-sm focus:outline-none focus:border-[#c8921a] text-gray-700 font-medium"
+              className="w-full bg-transparent border-t-0 border-l-0 border-r-0 border-b border-gray-100 px-0 py-2 text-sm focus:outline-none focus:border-[#c8921a] text-gray-700 font-normal"
               placeholder="Nome do ingrediente..." required
             />
             <div className="grid grid-cols-2 gap-x-8 gap-y-6">
@@ -190,7 +190,7 @@ export default function IngredientesPage() {
             </div>
             <div className="flex justify-end gap-4 pt-6">
               <button type="button" onClick={() => setDialogOpen(false)} className="text-[9px] font-black uppercase text-gray-400">Cancelar</button>
-              <button type="submit" disabled={isSaving} className="px-8 py-2 rounded-lg bg-[#c8921a] text-white text-[9px] font-black uppercase tracking-widest shadow-lg shadow-[#c8921a]/20">
+              <button type="submit" disabled={isSaving} className="px-8 py-2 rounded-lg bg-[#c8921a] text-white text-[9px] font-black uppercase tracking-widest shadow-sm shadow-[#c8921a]/20">
                 {isSaving ? 'Salvando...' : 'Confirmar'}
               </button>
             </div>

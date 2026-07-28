@@ -79,7 +79,7 @@ export default function UsuariosPage() {
     { header: 'Nome', accessor: 'nome', render: (u: Usuario) => <div className="font-elegant">{u.nome}</div> },
     { header: 'E-mail de Acesso', accessor: 'email', render: (u: Usuario) => <div className="text-gray-400 text-xs font-light">{u.email}</div> },
     { header: 'Perfil', accessor: 'role', render: (u: Usuario) => <span className={`badge-slim ${u.role === 'admin' ? 'text-purple-500' : 'text-blue-500'}`}>{u.role}</span> },
-    { header: 'Assinatura', accessor: 'subscription_tier', render: (u: Usuario) => <span className="text-[10px] font-medium text-[#c8921a] tracking-tight uppercase">{u.subscription_tier || 'FREE'}</span> },
+    { header: 'Assinatura', accessor: 'subscription_tier', render: (u: Usuario) => <span className="text-[10px] font-normal text-[#c8921a] tracking-tight uppercase">{u.subscription_tier || 'FREE'}</span> },
     { header: 'Status', accessor: 'ativo', render: (u: Usuario) => <span className={`text-[9px] font-normal uppercase tracking-widest ${u.ativo !== false ? 'text-emerald-600' : 'text-red-400'}`}>{u.ativo !== false ? 'Ativo' : 'Bloq.'}</span> },
     { header: 'Ações', accessor: 'actions', className: 'text-center w-[120px]', render: (u: Usuario) => (
       <div className="flex items-center justify-center gap-2">
@@ -101,12 +101,12 @@ export default function UsuariosPage() {
         <div className="flex items-center justify-between border-b border-gray-100 dark:border-[#222] pb-8">
           <div>
             <h1 className="text-xl font-light text-gray-400 dark:text-gray-500 tracking-tight uppercase">
-              Base de <span className="text-gray-800 dark:text-white font-semibold">Usuários</span>
+              Base de <span className="text-gray-800 dark:text-white font-normal">Usuários</span>
             </h1>
-            <p className="text-[10px] text-gray-400 font-medium uppercase tracking-[0.2em] mt-1">Gestão de Acessos e Permissões</p>
+            <p className="text-[10px] text-gray-400 font-normal uppercase tracking-[0.2em] mt-1">Gestão de Acessos e Permissões</p>
           </div>
           <div className="bg-white dark:bg-[#111] px-4 py-1.5 rounded-lg border border-[#c8921a]/20 shadow-sm">
-            <span className="text-xs font-medium text-[#c8921a] tracking-tight">{usuariosFiltrados.length}</span>
+            <span className="text-xs font-normal text-[#c8921a] tracking-tight">{usuariosFiltrados.length}</span>
             <span className="text-[9px] text-gray-500 dark:text-gray-400 uppercase font-black ml-2 tracking-widest">Contas</span>
           </div>
         </div>

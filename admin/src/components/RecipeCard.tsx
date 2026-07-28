@@ -55,7 +55,7 @@ export default function RecipeCard({ recipe }: RecipeCardProps) {
       </div>
 
       <div className="p-4">
-        <h3 className="font-heading text-lg font-semibold text-text mb-2 line-clamp-2">
+        <h3 className="font-heading text-lg font-normal text-text mb-2 line-clamp-2">
           {recipe.title}
         </h3>
         

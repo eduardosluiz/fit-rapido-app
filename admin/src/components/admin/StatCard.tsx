@@ -22,10 +22,10 @@ export function StatCard({
   const content = (
     <div className="flex items-start justify-between">
       <div className="flex-1">
-        <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">
+        <p className="text-xs font-normal text-gray-500 uppercase tracking-wide mb-1">
           {title}
         </p>
-        <p className="text-2xl font-bold text-gray-900 mb-1">{value}</p>
+        <p className="text-2xl font-normal text-gray-900 mb-1">{value}</p>
         {subtitle && (
           <p className="text-xs text-gray-400">{subtitle}</p>
         )}

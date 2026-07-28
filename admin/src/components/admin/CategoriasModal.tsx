@@ -167,7 +167,7 @@ export function CategoriasModal({
       accessor: 'slug', 
       className: 'hidden md:table-cell',
       render: (cat: Categoria) => (
-        <span className="text-[11px] font-medium text-gray-500 uppercase tracking-tighter">{cat.slug}</span>
+        <span className="text-[11px] font-normal text-gray-500 uppercase tracking-tighter">{cat.slug}</span>
       )
     },
     { 
@@ -204,7 +204,7 @@ export function CategoriasModal({
       headerAction={
         <button
           onClick={() => { setShowForm(true); setEditingId(null); setFormData({ nome: '', slug: '', descricao: '', imagem_url: '', ativa: true, aparece_favoritos: false, icone_emoji: '' }); }}
-          className="px-4 py-2 rounded-md border border-[#c8921a] text-[#c8921a] text-[10px] font-semibold uppercase tracking-widest hover:bg-[#c8921a] hover:text-white transition-all duration-300 flex items-center gap-2"
+          className="px-4 py-2 rounded-md border border-[#c8921a] text-[#c8921a] text-[10px] font-normal uppercase tracking-widest hover:bg-[#c8921a] hover:text-white transition-all duration-300 flex items-center gap-2"
         >
           <Plus size={14} /> Nova Categoria
         </button>
@@ -227,7 +227,7 @@ export function CategoriasModal({
           <div className="p-6">
             <div className="flex items-center justify-end mb-8 pb-4 border-b border-gray-100 dark:border-[#1a1a1a]">
               <div className="flex items-center gap-4">
-                <span className="text-[9px] font-bold uppercase tracking-widest text-gray-700 dark:text-gray-300">Status Ativo</span>
+                <span className="text-[9px] font-normal uppercase tracking-widest text-gray-700 dark:text-gray-300">Status Ativo</span>
                 <Switch 
                   checked={formData.ativa} 
                   onCheckedChange={(v) => setFormData({...formData, ativa: v})} 
@@ -241,17 +241,17 @@ export function CategoriasModal({
                 <div className="lg:col-span-7 space-y-6">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-2">
-                      <label className="text-[9px] font-bold uppercase tracking-[0.15em] text-gray-800 dark:text-gray-200 ml-0.5">Nome Oficial</label>
+                      <label className="text-[9px] font-normal uppercase tracking-[0.15em] text-gray-800 dark:text-gray-200 ml-0.5">Nome Oficial</label>
                       <input 
                         value={formData.nome} 
                         onChange={(e) => handleNomeChange(e.target.value)} 
                         placeholder="Ex: CAFÉ DA MANHÃ"
-                        className="w-full h-[42px] bg-gray-50/80 dark:bg-[#111] border border-gray-300 dark:border-[#444] rounded-md px-4 text-sm focus:outline-none focus:ring-2 focus:ring-[#c8921a]/20 focus:border-[#c8921a] text-gray-900 dark:text-white font-medium transition-all placeholder:text-gray-500"
+                        className="w-full h-[42px] bg-gray-50/80 dark:bg-[#111] border border-gray-300 dark:border-[#444] rounded-md px-4 text-sm focus:outline-none focus:ring-2 focus:ring-[#c8921a]/20 focus:border-[#c8921a] text-gray-900 dark:text-white font-normal transition-all placeholder:text-gray-500"
                         required
                       />
                     </div>
                     <div className="space-y-2">
-                      <label className="text-[9px] font-bold uppercase tracking-[0.15em] text-gray-800 dark:text-gray-200 ml-0.5">Slug Identificador</label>
+                      <label className="text-[9px] font-normal uppercase tracking-[0.15em] text-gray-800 dark:text-gray-200 ml-0.5">Slug Identificador</label>
                       <input 
                         value={formData.slug} 
                         onChange={(e) => setFormData({...formData, slug: e.target.value})} 
@@ -262,7 +262,7 @@ export function CategoriasModal({
                   </div>
 
                   <div className="space-y-2">
-                    <label className="text-[9px] font-bold uppercase tracking-[0.15em] text-gray-800 dark:text-gray-200 ml-0.5">Descrição Editorial</label>
+                    <label className="text-[9px] font-normal uppercase tracking-[0.15em] text-gray-800 dark:text-gray-200 ml-0.5">Descrição Editorial</label>
                     <textarea 
                       value={formData.descricao} 
                       onChange={(e) => setFormData({...formData, descricao: e.target.value})} 
@@ -274,7 +274,7 @@ export function CategoriasModal({
 
                 <div className="lg:col-span-5 flex flex-col border-l border-gray-200 dark:border-[#333] pl-8">
                   <div className="flex items-center justify-between mb-4 border-b border-gray-100 dark:border-[#222] pb-4">
-                    <label className="text-[9px] font-bold uppercase tracking-[0.15em] text-gray-800 dark:text-gray-200">Exibir em Favoritos (Mobile)</label>
+                    <label className="text-[9px] font-normal uppercase tracking-[0.15em] text-gray-800 dark:text-gray-200">Exibir em Favoritos (Mobile)</label>
                     <Switch 
                       checked={formData.aparece_favoritos} 
                       onCheckedChange={(v) => setFormData({...formData, aparece_favoritos: v})} 
@@ -284,7 +284,7 @@ export function CategoriasModal({
 
                   {formData.aparece_favoritos ? (
                     <>
-                      <label className="text-[9px] font-bold uppercase tracking-[0.15em] text-gray-800 dark:text-gray-200 block mb-4 text-center w-full">Ícone (Emoji)</label>
+                      <label className="text-[9px] font-normal uppercase tracking-[0.15em] text-gray-800 dark:text-gray-200 block mb-4 text-center w-full">Ícone (Emoji)</label>
                       <div className="p-4 rounded-xl border border-gray-300 dark:border-[#444] bg-gray-50/50 dark:bg-[#111] w-full flex flex-col items-center justify-center min-h-[180px] shadow-inner">
                         <div className="flex flex-wrap gap-2 justify-center max-h-[180px] overflow-y-auto custom-scrollbar pr-1">
                           {['🌟', '🥗', '💪', '🔥', '🥩', '🥑', '🍳', '🥦', '🌶️', '🏃‍♂️', '🏋️‍♀️', '🧘‍♀️', '🍎', '🍓', '🍌', '🍗', '🐟', '🥤', '🧊', '🍯', '🍚', '🍫', '🍵', '☕', '🥜', '🍞', '🥞'].map(emoji => (
@@ -302,7 +302,7 @@ export function CategoriasModal({
                     </>
                   ) : (
                     <>
-                      <label className="text-[9px] font-bold uppercase tracking-[0.15em] text-gray-800 dark:text-gray-200 block mb-4 text-center w-full">Ícone de Representação</label>
+                      <label className="text-[9px] font-normal uppercase tracking-[0.15em] text-gray-800 dark:text-gray-200 block mb-4 text-center w-full">Ícone de Representação</label>
                       <div className="p-4 rounded-xl border border-gray-300 dark:border-[#444] bg-gray-50/50 dark:bg-[#111] w-full flex flex-col items-center justify-center min-h-[180px] shadow-inner">
                         <FileUpload 
                           type="imagem" 
@@ -311,7 +311,7 @@ export function CategoriasModal({
                           hideUrlInput
                         />
                         {!formData.imagem_url && (
-                          <p className="mt-4 text-[10px] text-gray-500 dark:text-gray-400 text-center px-2 font-medium italic">Selecione uma imagem quadrada (1:1)</p>
+                          <p className="mt-4 text-[10px] text-gray-500 dark:text-gray-400 text-center px-2 font-normal italic">Selecione uma imagem quadrada (1:1)</p>
                         )}
                       </div>
                     </>
@@ -323,14 +323,14 @@ export function CategoriasModal({
                 <button 
                   type="button" 
                   onClick={() => setShowForm(false)} 
-                  className="text-[10px] font-bold uppercase tracking-widest text-gray-500 hover:text-red-600 transition-colors px-6 py-2 border border-transparent hover:border-red-200 rounded-md"
+                  className="text-[10px] font-normal uppercase tracking-widest text-gray-500 hover:text-red-600 transition-colors px-6 py-2 border border-transparent hover:border-red-200 rounded-md"
                 >
                   Cancelar
                 </button>
                 <button 
                   type="submit" 
                   disabled={saving} 
-                  className="px-10 py-2.5 rounded-md bg-[#c8921a] text-[#2d2106] text-[10px] font-bold uppercase tracking-widest shadow-md hover:shadow-lg hover:bg-[#b88217] transition-all disabled:opacity-50 active:scale-95"
+                  className="px-10 py-2.5 rounded-md bg-[#c8921a] text-[#2d2106] text-[10px] font-normal uppercase tracking-widest shadow-md hover:shadow-sm hover:bg-[#b88217] transition-all disabled:opacity-50 active:scale-95"
                 >
                   {saving ? 'Salvando...' : 'Confirmar Categoria'}
                 </button>

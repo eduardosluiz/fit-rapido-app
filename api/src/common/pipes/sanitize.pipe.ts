@@ -37,11 +37,10 @@ export class SanitizePipe implements PipeTransform {
   }
 
   private sanitizeString(str: string): string {
-    // Remove caracteres de controle e normaliza espaços
+    // Remove caracteres de controle EXCETO quebras de linha (\n), carriage return (\r) e tabulações (\t)
     return str
-      .replace(/[\x00-\x1F\x7F]/g, '') // Remove caracteres de controle
-      .replace(/\s+/g, ' ') // Normaliza espaços múltiplos
-      .trim(); // Remove espaços no início e fim
+      .replace(/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/g, '') // Remove controle, preserva \x09(\t), \x0A(\n), \x0D(\r)
+      .trim();
   }
 }
 
