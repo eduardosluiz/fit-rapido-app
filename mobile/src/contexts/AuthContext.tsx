@@ -120,6 +120,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const register = async (email: string, nome: string, senha: string) => {
     const data = await api.register(email, nome, senha);
+    if (data && data.access_token) {
+      await AsyncStorage.setItem('auth_token', data.access_token);
+    }
     setUser(data.user);
     if (data.user?.id) {
       await configureRevenueCatUser(data.user.id.toString());

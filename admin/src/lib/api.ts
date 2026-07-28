@@ -563,6 +563,13 @@ class ApiService {
     });
   }
 
+  async updateExercicioBiblioteca(id: string, data: any) {
+    return this.request<any>(`/exercicios-biblioteca/${id}`, {
+      method: 'PATCH',
+      body: JSON.stringify(data),
+    });
+  }
+
   async deleteExercicioBiblioteca(id: string) {
     return this.request<void>(`/exercicios-biblioteca/${id}`, {
       method: 'DELETE',

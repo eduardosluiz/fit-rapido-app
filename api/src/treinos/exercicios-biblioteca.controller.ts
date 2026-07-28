@@ -2,6 +2,7 @@ import {
   Controller,
   Get,
   Post,
+  Patch,
   Body,
   Param,
   Delete,
@@ -25,6 +26,12 @@ export class ExerciciosBibliotecaController {
   async create(@Body() data: Partial<ExercicioBiblioteca>) {
     const exercicio = this.repository.create(data);
     return this.repository.save(exercicio);
+  }
+
+  @Patch(':id')
+  async update(@Param('id') id: string, @Body() data: Partial<ExercicioBiblioteca>) {
+    await this.repository.update(id, data);
+    return this.repository.findOne({ where: { id } });
   }
 
   @Get()

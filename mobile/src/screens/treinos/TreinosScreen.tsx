@@ -82,7 +82,7 @@ export default function TreinosScreen() {
       if (pageNum === 1) setLoading(true);
       else setLoadingMore(true);
 
-      const params: any = { page: pageNum, limit: 15, apenasAvulsos: true };
+      const params: any = { page: pageNum, limit: 15 };
       if (currentSearch.trim()) params.search = currentSearch.trim();
 
       // Aplicar filtros da busca avançada

@@ -99,12 +99,11 @@ export function ExerciciosModal({
 
     setSaving(true);
     try {
-      const payload = {
-        ...formData,
-        id: editingId || undefined,
-      };
-
-      await api.createExercicioBiblioteca(payload);
+      if (editingId) {
+        await api.updateExercicioBiblioteca(editingId, formData);
+      } else {
+        await api.createExercicioBiblioteca(formData);
+      }
       toast.success(editingId ? 'Exercício atualizado' : 'Exercício criado');
       
       setShowForm(false);
