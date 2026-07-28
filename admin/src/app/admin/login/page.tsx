@@ -17,10 +17,16 @@ export default function Login() {
   useEffect(() => {
     const fetchCover = async () => {
       try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/configuracoes/public/login_cover_url`);
-        const data = await response.json();
+        let response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/configuracoes/public/login_cover_admin_url`);
+        let data = await response.json();
         if (data && data.valor) {
           setCoverUrl(data.valor);
+        } else {
+          response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/configuracoes/public/login_cover_url`);
+          data = await response.json();
+          if (data && data.valor) {
+            setCoverUrl(data.valor);
+          }
         }
       } catch (e) {
         console.error('Error fetching login cover', e);

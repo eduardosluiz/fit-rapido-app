@@ -226,7 +226,7 @@ export default function ModalityWorkoutsScreen() {
                     color="#E7C48A" 
                   />
                   <Text style={styles.headerSubtitle}>
-                    {treinos.length} {(modalityName || '').toLowerCase().includes('jornada') || (modalityName || '').toLowerCase().includes('começa') ? (treinos.length === 1 ? 'Aula' : 'Aulas') : (treinos.length === 1 ? 'Treino' : 'Treinos')}
+                    {treinos.length} {(modalityName || '').toLowerCase().includes('jornada') || (modalityName || '').toLowerCase().includes('começa') ? (treinos.length === 1 ? 'Aula' : 'Aulas') : (treinos.length === 1 ? 'Exercício' : 'Exercícios')}
                   </Text>
                 </View>
               )}
@@ -296,7 +296,7 @@ export default function ModalityWorkoutsScreen() {
                 </Text>
                 <Text style={[styles.glassStatusText, { color: temTreino ? '#fff' : 'rgba(255,255,255,0.3)' }]}>
                   {temTreino 
-                    ? (treinosDoDia.length === 1 ? treinosDoDia[0].titulo.toUpperCase() : `${treinosDoDia.length} TREINOS DISPONÍVEIS`)
+                    ? (treinosDoDia.length === 1 ? treinosDoDia[0].titulo.toUpperCase() : `${treinosDoDia.length} EXERCÍCIOS DISPONÍVEIS`)
                     : 'DESCANSO'}
                 </Text>
               </View>

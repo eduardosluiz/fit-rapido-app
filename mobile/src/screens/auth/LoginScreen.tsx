@@ -29,10 +29,16 @@ export default function LoginScreen() {
     const fetchCover = async () => {
       try {
         const { API_URL } = require('../../services/api');
-        const response = await fetch(`${API_URL}/configuracoes/public/login_cover_url`);
-        const data = await response.json();
+        let response = await fetch(`${API_URL}/configuracoes/public/login_cover_mobile_url`);
+        let data = await response.json();
         if (data && data.valor) {
           setCoverUrl(data.valor);
+        } else {
+          response = await fetch(`${API_URL}/configuracoes/public/login_cover_url`);
+          data = await response.json();
+          if (data && data.valor) {
+            setCoverUrl(data.valor);
+          }
         }
       } catch (e) {
         console.error('Error fetching login cover:', e);
