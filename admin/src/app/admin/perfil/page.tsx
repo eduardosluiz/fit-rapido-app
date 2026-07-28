@@ -74,7 +74,7 @@ export default function PerfilPage() {
 
         {/* Form Mudar Senha */}
         <div className="bg-white dark:bg-[#111] p-6 rounded-2xl border border-gray-200 dark:border-[#222] shadow-sm">
-          <h3 className="text-sm font-normal text-gray-900 dark:text-white uppercase tracking-wider mb-6 flex items-center gap-2">
+          <h3 className="text-xs font-normal text-gray-700 dark:text-gray-300 uppercase tracking-wider mb-6 flex items-center gap-2">
             <KeyRound size={16} className="text-[#c8921a]" />
             Alterar Senha
           </h3>
@@ -89,7 +89,7 @@ export default function PerfilPage() {
                 required
                 value={senhaAtual}
                 onChange={(e) => setSenhaAtual(e.target.value)}
-                className="w-full bg-[#f8fafc] dark:bg-[#0a0a0a] border border-gray-300 dark:border-[#333] rounded-lg px-4 py-3 text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-[#c8921a] focus:border-transparent transition-all"
+                className="w-full bg-[#f8fafc] dark:bg-[#0a0a0a] border border-gray-300 dark:border-[#333] rounded-lg px-4 py-3 text-xs text-gray-700 dark:text-gray-300 focus:ring-2 focus:ring-[#c8921a] focus:border-transparent transition-all"
                 placeholder="Sua senha atual"
               />
             </div>
@@ -104,7 +104,7 @@ export default function PerfilPage() {
                   required
                   value={novaSenha}
                   onChange={(e) => setNovaSenha(e.target.value)}
-                  className="w-full bg-[#f8fafc] dark:bg-[#0a0a0a] border border-gray-300 dark:border-[#333] rounded-lg px-4 py-3 text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-[#c8921a] focus:border-transparent transition-all"
+                  className="w-full bg-[#f8fafc] dark:bg-[#0a0a0a] border border-gray-300 dark:border-[#333] rounded-lg px-4 py-3 text-xs text-gray-700 dark:text-gray-300 focus:ring-2 focus:ring-[#c8921a] focus:border-transparent transition-all"
                   placeholder="Mínimo 6 caracteres"
                 />
               </div>
@@ -118,7 +118,7 @@ export default function PerfilPage() {
                   required
                   value={confirmarSenha}
                   onChange={(e) => setConfirmarSenha(e.target.value)}
-                  className="w-full bg-[#f8fafc] dark:bg-[#0a0a0a] border border-gray-300 dark:border-[#333] rounded-lg px-4 py-3 text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-[#c8921a] focus:border-transparent transition-all"
+                  className="w-full bg-[#f8fafc] dark:bg-[#0a0a0a] border border-gray-300 dark:border-[#333] rounded-lg px-4 py-3 text-xs text-gray-700 dark:text-gray-300 focus:ring-2 focus:ring-[#c8921a] focus:border-transparent transition-all"
                   placeholder="Repita a nova senha"
                 />
               </div>

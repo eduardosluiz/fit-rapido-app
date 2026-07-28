@@ -52,7 +52,7 @@ export function TrocarSenhaModal({ open, onOpenChange, usuarioId, usuarioNome }:
                 <Lock size={18} />
               </div>
               <div>
-                <Dialog.Title className="text-sm font-normal uppercase tracking-widest text-gray-800 dark:text-white">
+                <Dialog.Title className="text-xs font-normal uppercase tracking-widest text-gray-700 dark:text-gray-300">
                   Trocar Senha
                 </Dialog.Title>
                 <p className="text-[10px] text-gray-500 uppercase tracking-widest mt-0.5">
@@ -75,7 +75,7 @@ export function TrocarSenhaModal({ open, onOpenChange, usuarioId, usuarioNome }:
                 value={novaSenha}
                 onChange={(e) => setNovaSenha(e.target.value)}
                 placeholder="Digite a nova senha..."
-                className="w-full bg-gray-50 dark:bg-[#111] border border-gray-400 dark:border-[#444] rounded-md px-4 py-3 text-sm focus:outline-none focus:border-[#c8921a] text-gray-900 dark:text-white transition-all"
+                className="w-full bg-gray-50 dark:bg-[#111] border border-gray-400 dark:border-[#444] rounded-md px-4 py-3 text-xs focus:outline-none focus:border-[#c8921a] text-gray-700 dark:text-gray-300 transition-all"
                 required
                 minLength={6}
               />

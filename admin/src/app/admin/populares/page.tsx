@@ -94,7 +94,7 @@ export default function PopularesPage() {
             <input 
               type="text" value={searchTerm} onChange={(e) => handleSearchChange(e.target.value)} 
               placeholder="Buscar receita..." 
-              className="w-full pl-8 pr-4 py-2 bg-transparent border-t-0 border-l-0 border-r-0 border-b border-gray-300 dark:border-[#333] focus:border-[#c8921a] focus:ring-0 outline-none text-sm text-gray-800 dark:text-white font-normal placeholder-gray-400" 
+              className="w-full pl-8 pr-4 py-2 bg-transparent border-t-0 border-l-0 border-r-0 border-b border-gray-300 dark:border-[#333] focus:border-[#c8921a] focus:ring-0 outline-none text-xs text-gray-700 dark:text-gray-300 font-normal placeholder-gray-400" 
             />
           </div>
         </div>

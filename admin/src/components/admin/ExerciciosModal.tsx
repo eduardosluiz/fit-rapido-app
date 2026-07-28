@@ -224,7 +224,7 @@ export function ExerciciosModal({
                       value={formData.nome} 
                       onChange={(e) => setFormData({...formData, nome: e.target.value})} 
                       placeholder="Ex: SUPINO RETO COM BARRA"
-                      className="w-full bg-gray-50/80 dark:bg-[#111] border border-gray-400 dark:border-[#444] rounded-md px-4 py-2 text-sm focus:outline-none focus:border-[#c8921a] text-gray-900 dark:text-white font-normal transition-all"
+                      className="w-full bg-gray-50/80 dark:bg-[#111] border border-gray-400 dark:border-[#444] rounded-md px-4 py-2 text-xs focus:outline-none focus:border-[#c8921a] text-gray-700 dark:text-gray-300 font-normal transition-all"
                       required
                     />
                   </div>
@@ -235,7 +235,7 @@ export function ExerciciosModal({
                       <select 
                         value={formData.categoria} 
                         onChange={(e) => setFormData({...formData, categoria: e.target.value})}
-                        className="w-full bg-gray-50/80 dark:bg-[#111] border border-gray-400 dark:border-[#444] rounded-md px-4 py-2 text-sm focus:outline-none focus:border-[#c8921a] text-gray-900 dark:text-white font-normal transition-all"
+                        className="w-full bg-gray-50/80 dark:bg-[#111] border border-gray-400 dark:border-[#444] rounded-md px-4 py-2 text-xs focus:outline-none focus:border-[#c8921a] text-gray-700 dark:text-gray-300 font-normal transition-all"
                       >
                         <option value="">Selecione...</option>
                         {categorias.map(cat => (
@@ -249,7 +249,7 @@ export function ExerciciosModal({
                         value={formData.equipamento} 
                         onChange={(e) => setFormData({...formData, equipamento: e.target.value})} 
                         placeholder="Ex: BARRA, HALTERES"
-                        className="w-full bg-gray-50/80 dark:bg-[#111] border border-gray-400 dark:border-[#444] rounded-md px-4 py-2 text-sm focus:outline-none focus:border-[#c8921a] text-gray-900 dark:text-white font-normal transition-all"
+                        className="w-full bg-gray-50/80 dark:bg-[#111] border border-gray-400 dark:border-[#444] rounded-md px-4 py-2 text-xs focus:outline-none focus:border-[#c8921a] text-gray-700 dark:text-gray-300 font-normal transition-all"
                       />
                     </div>
                   </div>

@@ -179,7 +179,7 @@ export default function NovaReceita() {
                       value={formData.titulo}
                       onChange={(e) => setFormData({ ...formData, titulo: e.target.value })}
                       placeholder="Ex: BOLO DE CHOCOLATE FIT"
-                      className="w-full bg-white dark:bg-[#111] border border-gray-400 dark:border-[#555] rounded-md px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#c8921a]/20 focus:border-[#c8921a] text-gray-900 dark:text-white font-normal transition-all"
+                      className="w-full bg-white dark:bg-[#111] border border-gray-400 dark:border-[#555] rounded-md px-4 py-3 text-xs focus:outline-none focus:ring-2 focus:ring-[#c8921a]/20 focus:border-[#c8921a] text-gray-700 dark:text-gray-300 font-normal transition-all"
                       required
                     />
                   </div>
@@ -284,7 +284,7 @@ export default function NovaReceita() {
                         type="number"
                         value={formData.tempo_preparo}
                         onChange={(e) => setFormData({ ...formData, tempo_preparo: e.target.value })}
-                        className="w-full bg-white dark:bg-[#111] border border-gray-400 dark:border-[#555] rounded-md px-4 py-3 text-sm focus:outline-none focus:border-[#c8921a] text-gray-900 dark:text-white"
+                        className="w-full bg-white dark:bg-[#111] border border-gray-400 dark:border-[#555] rounded-md px-4 py-3 text-xs focus:outline-none focus:border-[#c8921a] text-gray-700 dark:text-gray-300"
                       />
                     </div>
                     <div className="space-y-2">
@@ -292,7 +292,7 @@ export default function NovaReceita() {
                       <select
                         value={formData.dificuldade}
                         onChange={(e) => setFormData({ ...formData, dificuldade: e.target.value })}
-                        className="w-full h-[46px] bg-white dark:bg-[#111] border border-gray-400 dark:border-[#555] rounded-md px-4 text-sm focus:outline-none focus:border-[#c8921a] text-gray-900 dark:text-white font-normal appearance-none"
+                        className="w-full h-[46px] bg-white dark:bg-[#111] border border-gray-400 dark:border-[#555] rounded-md px-4 text-xs focus:outline-none focus:border-[#c8921a] text-gray-700 dark:text-gray-300 font-normal appearance-none"
                       >
                         <option value="facil">Fácil</option>
                         <option value="medio">Médio</option>
@@ -332,7 +332,7 @@ export default function NovaReceita() {
                         type="number"
                         value={formData.porcoes}
                         onChange={(e) => setFormData({ ...formData, porcoes: e.target.value })}
-                        className="w-full bg-white dark:bg-[#111] border border-gray-400 dark:border-[#555] rounded-md px-4 py-3 text-sm focus:outline-none focus:border-[#c8921a] text-gray-900 dark:text-white"
+                        className="w-full bg-white dark:bg-[#111] border border-gray-400 dark:border-[#555] rounded-md px-4 py-3 text-xs focus:outline-none focus:border-[#c8921a] text-gray-700 dark:text-gray-300"
                       />
                     </div>
                   </div>
@@ -473,7 +473,7 @@ export default function NovaReceita() {
                         value={formData.calorias} 
                         onChange={(e) => setFormData({...formData, calorias: e.target.value})}
                         placeholder="Ex: 90" 
-                        className="w-full h-[42px] bg-white dark:bg-[#111] border border-gray-400 dark:border-[#555] rounded-md px-4 text-sm focus:outline-none focus:border-[#c8921a] text-gray-900 dark:text-white font-normal"
+                        className="w-full h-[42px] bg-white dark:bg-[#111] border border-gray-400 dark:border-[#555] rounded-md px-4 text-xs focus:outline-none focus:border-[#c8921a] text-gray-700 dark:text-gray-300 font-normal"
                       />
                     </div>
                     <div className="space-y-1.5">
@@ -483,7 +483,7 @@ export default function NovaReceita() {
                         value={formData.proteinas} 
                         onChange={(e) => setFormData({...formData, proteinas: e.target.value})}
                         placeholder="Ex: 5.5" 
-                        className="w-full h-[42px] bg-white dark:bg-[#111] border border-gray-400 dark:border-[#555] rounded-md px-4 text-sm focus:outline-none focus:border-[#c8921a] text-gray-900 dark:text-white font-normal"
+                        className="w-full h-[42px] bg-white dark:bg-[#111] border border-gray-400 dark:border-[#555] rounded-md px-4 text-xs focus:outline-none focus:border-[#c8921a] text-gray-700 dark:text-gray-300 font-normal"
                       />
                     </div>
                     <div className="space-y-1.5">
@@ -493,7 +493,7 @@ export default function NovaReceita() {
                         value={formData.carboidratos} 
                         onChange={(e) => setFormData({...formData, carboidratos: e.target.value})}
                         placeholder="Ex: 2.5" 
-                        className="w-full h-[42px] bg-white dark:bg-[#111] border border-gray-400 dark:border-[#555] rounded-md px-4 text-sm focus:outline-none focus:border-[#c8921a] text-gray-900 dark:text-white font-normal"
+                        className="w-full h-[42px] bg-white dark:bg-[#111] border border-gray-400 dark:border-[#555] rounded-md px-4 text-xs focus:outline-none focus:border-[#c8921a] text-gray-700 dark:text-gray-300 font-normal"
                       />
                     </div>
                     <div className="space-y-1.5">
@@ -503,7 +503,7 @@ export default function NovaReceita() {
                         value={formData.gorduras} 
                         onChange={(e) => setFormData({...formData, gorduras: e.target.value})}
                         placeholder="Ex: 6.0" 
-                        className="w-full h-[42px] bg-white dark:bg-[#111] border border-gray-400 dark:border-[#555] rounded-md px-4 text-sm focus:outline-none focus:border-[#c8921a] text-gray-900 dark:text-white font-normal"
+                        className="w-full h-[42px] bg-white dark:bg-[#111] border border-gray-400 dark:border-[#555] rounded-md px-4 text-xs focus:outline-none focus:border-[#c8921a] text-gray-700 dark:text-gray-300 font-normal"
                       />
                     </div>
                     <div className="space-y-1.5">
@@ -513,7 +513,7 @@ export default function NovaReceita() {
                         value={formData.fibras} 
                         onChange={(e) => setFormData({...formData, fibras: e.target.value})}
                         placeholder="Ex: 2.0" 
-                        className="w-full h-[42px] bg-white dark:bg-[#111] border border-gray-400 dark:border-[#555] rounded-md px-4 text-sm focus:outline-none focus:border-[#c8921a] text-gray-900 dark:text-white font-normal"
+                        className="w-full h-[42px] bg-white dark:bg-[#111] border border-gray-400 dark:border-[#555] rounded-md px-4 text-xs focus:outline-none focus:border-[#c8921a] text-gray-700 dark:text-gray-300 font-normal"
                       />
                     </div>
                     <div className="space-y-1.5">
@@ -523,7 +523,7 @@ export default function NovaReceita() {
                         value={formData.sodio} 
                         onChange={(e) => setFormData({...formData, sodio: e.target.value})}
                         placeholder="Ex: 150" 
-                        className="w-full h-[42px] bg-white dark:bg-[#111] border border-gray-400 dark:border-[#555] rounded-md px-4 text-sm focus:outline-none focus:border-[#c8921a] text-gray-900 dark:text-white font-normal"
+                        className="w-full h-[42px] bg-white dark:bg-[#111] border border-gray-400 dark:border-[#555] rounded-md px-4 text-xs focus:outline-none focus:border-[#c8921a] text-gray-700 dark:text-gray-300 font-normal"
                       />
                     </div>
                   </div>

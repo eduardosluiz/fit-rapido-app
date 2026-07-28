@@ -205,7 +205,7 @@ function EditarTreinoForm() {
                       value={formData.titulo}
                       onChange={(e) => setFormData({ ...formData, titulo: e.target.value })}
                       placeholder="Ex: FULL BODY INTENSIVO"
-                      className="w-full bg-white dark:bg-[#111] border border-gray-400 dark:border-[#555] rounded-md px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#c8921a]/20 focus:border-[#c8921a] text-gray-900 dark:text-white font-normal transition-all placeholder:text-gray-500"
+                      className="w-full bg-white dark:bg-[#111] border border-gray-400 dark:border-[#555] rounded-md px-4 py-3 text-xs focus:outline-none focus:ring-2 focus:ring-[#c8921a]/20 focus:border-[#c8921a] text-gray-700 dark:text-gray-300 font-normal transition-all placeholder:text-gray-500"
                       required
                     />
                     {errors.titulo && <p className="text-[10px] text-red-500 font-normal mt-1 uppercase tracking-tighter">{errors.titulo}</p>}
@@ -230,7 +230,7 @@ function EditarTreinoForm() {
                         value={formData.duracao_minutos}
                         onChange={(e) => setFormData({ ...formData, duracao_minutos: e.target.value })}
                         placeholder="45"
-                        className="w-full bg-white dark:bg-[#111] border border-gray-400 dark:border-[#555] rounded-md px-4 py-3 text-sm focus:outline-none focus:border-[#c8921a] text-gray-900 dark:text-white font-normal placeholder:text-gray-500"
+                        className="w-full bg-white dark:bg-[#111] border border-gray-400 dark:border-[#555] rounded-md px-4 py-3 text-xs focus:outline-none focus:border-[#c8921a] text-gray-700 dark:text-gray-300 font-normal placeholder:text-gray-500"
                       />
                     </div>
                     <div className="space-y-2">
@@ -238,7 +238,7 @@ function EditarTreinoForm() {
                       <select
                         value={formData.nivel}
                         onChange={(e) => setFormData({ ...formData, nivel: e.target.value })}
-                        className="w-full h-[46px] bg-white dark:bg-[#111] border border-gray-400 dark:border-[#555] rounded-md px-4 text-sm focus:outline-none focus:border-[#c8921a] text-gray-900 dark:text-white font-normal appearance-none"
+                        className="w-full h-[46px] bg-white dark:bg-[#111] border border-gray-400 dark:border-[#555] rounded-md px-4 text-xs focus:outline-none focus:border-[#c8921a] text-gray-700 dark:text-gray-300 font-normal appearance-none"
                       >
                         <option value="iniciante">Iniciante</option>
                         <option value="intermediario">Médio</option>
@@ -381,7 +381,7 @@ function EditarTreinoForm() {
                               novos[index].nome = e.target.value;
                               setFormData({ ...formData, exercicios_detalhados: novos });
                             }}
-                            className="w-full h-[38px] bg-white dark:bg-[#111] border border-gray-400 dark:border-[#555] rounded-md px-4 text-sm focus:outline-none focus:border-[#c8921a] text-gray-900 dark:text-white font-normal"
+                            className="w-full h-[38px] bg-white dark:bg-[#111] border border-gray-400 dark:border-[#555] rounded-md px-4 text-xs focus:outline-none focus:border-[#c8921a] text-gray-700 dark:text-gray-300 font-normal"
                           />
                         </div>
                         <div className="space-y-1">
@@ -394,7 +394,7 @@ function EditarTreinoForm() {
                               novos[index].repeticoes = e.target.value;
                               setFormData({ ...formData, exercicios_detalhados: novos });
                             }}
-                            className="w-full h-[38px] bg-white dark:bg-[#111] border border-gray-400 dark:border-[#555] rounded-md px-4 text-sm focus:outline-none focus:border-[#c8921a] text-gray-900 dark:text-white font-normal"
+                            className="w-full h-[38px] bg-white dark:bg-[#111] border border-gray-400 dark:border-[#555] rounded-md px-4 text-xs focus:outline-none focus:border-[#c8921a] text-gray-700 dark:text-gray-300 font-normal"
                           />
                         </div>
                       </div>

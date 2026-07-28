@@ -200,7 +200,8 @@ export default function ModalidadesPage() {
         substituto_id_2: '',
         descricao_tecnica: '',
         showSub1: false,
-        showSub2: false
+        showSub2: false,
+        _isDirty: true
       }]
     }));
     setExpandedSections(prev => ({ ...prev, [nivel]: true }));
@@ -280,7 +281,7 @@ export default function ModalidadesPage() {
 
   const handleVideoChange = (index: number, field: keyof VideoTreino, value: string) => {
     const newVideos = [...formData.videos];
-    newVideos[index] = { ...newVideos[index], [field]: value } as VideoTreino;
+    newVideos[index] = { ...newVideos[index], [field]: value, _isDirty: true } as VideoTreino;
     setFormData(prev => ({ ...prev, videos: newVideos }));
   };
 
@@ -386,7 +387,9 @@ export default function ModalidadesPage() {
             };
 
             if (video.id) {
-              savePromises.push(api.updateTreino(video.id, treinoData));
+              if (video._isDirty) {
+                savePromises.push(api.updateTreino(video.id, treinoData));
+              }
             } else {
               savePromises.push(api.createTreino(treinoData));
             }
@@ -442,7 +445,8 @@ export default function ModalidadesPage() {
         substituto_2_info: t.substituto_2_info || null,
         descricao_tecnica: t.descricao_tecnica || '',
         showSub1: !!t.substituto_id_1,
-        showSub2: !!t.substituto_id_2
+        showSub2: !!t.substituto_id_2,
+        _isDirty: false
       })) || []
     });
     
@@ -479,7 +483,8 @@ export default function ModalidadesPage() {
       [infoField]: {
         ...(newVideos[index][infoField] || {}),
         [field]: value
-      }
+      },
+      _isDirty: true
     };
     setFormData(prev => ({ ...prev, videos: newVideos }));
   };
@@ -672,14 +677,14 @@ export default function ModalidadesPage() {
                                       value={video.titulo}
                                       onChange={(e) => handleVideoChange(video.originalIndex, 'titulo', e.target.value)}
                                       placeholder="Ex: Aula 01"
-                                      className="w-full bg-white dark:bg-[#111] border border-gray-400 dark:border-[#333] rounded-md px-4 py-2.5 text-sm focus:border-[#c8921a] outline-none text-gray-900 dark:text-white font-normal"
+                                      className="w-full bg-white dark:bg-[#111] border border-gray-400 dark:border-[#333] rounded-md px-4 py-2.5 text-xs focus:border-[#c8921a] outline-none text-gray-700 dark:text-gray-300 font-normal"
                                     />
                                   </div>
 
                                   <div className={`grid grid-cols-1 ${formData.tem_nivelamento ? 'sm:grid-cols-2' : ''} gap-4`}>
                                     <div className="space-y-2">
                                       <label className="text-[10px] font-normal uppercase tracking-wide text-gray-500">Treino</label>
-                                      <select value={video.dia_semana} onChange={(e) => handleVideoChange(video.originalIndex, 'dia_semana', e.target.value)} className="w-full bg-white dark:bg-[#111] border border-gray-400 dark:border-[#333] rounded-md px-4 py-2.5 text-sm focus:border-[#c8921a] outline-none text-gray-900 dark:text-white font-normal appearance-none">
+                                      <select value={video.dia_semana} onChange={(e) => handleVideoChange(video.originalIndex, 'dia_semana', e.target.value)} className="w-full bg-white dark:bg-[#111] border border-gray-400 dark:border-[#333] rounded-md px-4 py-2.5 text-xs focus:border-[#c8921a] outline-none text-gray-700 dark:text-gray-300 font-normal appearance-none">
                                         <option value="">Geral</option><option value="0">TREINO 1 (Segunda)</option><option value="1">TREINO 2 (Terça)</option><option value="2">TREINO 3 (Quarta)</option><option value="3">TREINO 4 (Quinta)</option><option value="4">TREINO 5 (Sexta)</option><option value="5">TREINO 6 (Sábado)</option><option value="6">TREINO 7 (Domingo)</option>
                                       </select>
                                     </div>
@@ -687,7 +692,7 @@ export default function ModalidadesPage() {
                                     {formData.tem_nivelamento && (
                                       <div className="space-y-2">
                                         <label className="text-[10px] font-normal uppercase tracking-wide text-gray-500">Nível</label>
-                                        <select value={video.nivel} onChange={(e) => handleVideoChange(video.originalIndex, 'nivel', e.target.value)} className="w-full bg-white dark:bg-[#111] border border-gray-400 dark:border-[#333] rounded-md px-4 py-2.5 text-sm focus:border-[#c8921a] outline-none text-gray-900 dark:text-white font-normal appearance-none">
+                                        <select value={video.nivel} onChange={(e) => handleVideoChange(video.originalIndex, 'nivel', e.target.value)} className="w-full bg-white dark:bg-[#111] border border-gray-400 dark:border-[#333] rounded-md px-4 py-2.5 text-xs focus:border-[#c8921a] outline-none text-gray-700 dark:text-gray-300 font-normal appearance-none">
                                           <option value="iniciante">Iniciante</option><option value="intermediario">Intermediário</option><option value="avancado">Avançado</option>
                                         </select>
                                       </div>
@@ -756,16 +761,16 @@ export default function ModalidadesPage() {
                                   value={video.descricao_tecnica || ''}
                                   onChange={(e) => handleVideoChange(video.originalIndex, 'descricao_tecnica', e.target.value)}
                                   placeholder="Ex: Manter as costas retas durante todo o movimento..."
-                                  className="w-full min-h-[160px] bg-white dark:bg-[#111] border border-gray-400 dark:border-[#333] rounded-md px-4 py-2 text-sm focus:border-[#c8921a] outline-none text-gray-900 dark:text-white resize-none"
+                                  className="w-full min-h-[160px] bg-white dark:bg-[#111] border border-gray-400 dark:border-[#333] rounded-md px-4 py-2 text-xs focus:border-[#c8921a] outline-none text-gray-700 dark:text-gray-300 resize-none"
                                 />
                               </div>
 
                               {/* Informações Técnicas do Exercício Principal */}
                               <div className="w-full grid grid-cols-2 md:grid-cols-4 gap-6 p-6 rounded-xl bg-white/50 dark:bg-[#111]/50 border border-gray-200 dark:border-[#222]">
-                                <div className="space-y-2"><label className="text-[10px] font-normal uppercase tracking-wide text-gray-500 ml-0.5 truncate block">Séries</label><input value={video.series || ''} onChange={(e) => handleVideoChange(video.originalIndex, 'series', e.target.value)} placeholder="3" className="w-full bg-white dark:bg-[#0a0a0a] border border-gray-400 dark:border-[#444] rounded-md px-3 sm:px-4 py-2.5 text-sm focus:border-[#c8921a] outline-none text-gray-900 dark:text-white font-normal" /></div>
-                                <div className="space-y-2"><label className="text-[10px] font-normal uppercase tracking-wide text-gray-500 ml-0.5 truncate block">Repetições</label><input value={video.repeticoes || ''} onChange={(e) => handleVideoChange(video.originalIndex, 'repeticoes', e.target.value)} placeholder="12-15" className="w-full bg-white dark:bg-[#0a0a0a] border border-gray-400 dark:border-[#444] rounded-md px-3 sm:px-4 py-2.5 text-sm focus:border-[#c8921a] outline-none text-gray-900 dark:text-white font-normal" /></div>
-                                <div className="space-y-2"><label className="text-[10px] font-normal uppercase tracking-wide text-gray-500 ml-0.5 truncate block" title="Tempo Descanso">Descanso</label><input value={video.descanso || ''} onChange={(e) => handleVideoChange(video.originalIndex, 'descanso', e.target.value)} placeholder="45s" className="w-full bg-white dark:bg-[#0a0a0a] border border-gray-400 dark:border-[#444] rounded-md px-3 sm:px-4 py-2.5 text-sm focus:border-[#c8921a] outline-none text-gray-900 dark:text-white font-normal" /></div>
-                                <div className="space-y-2"><label className="text-[10px] font-normal uppercase tracking-wide text-gray-500 ml-0.5 truncate block">Peso (Kg)</label><input value={video.peso || ''} onChange={(e) => handleVideoChange(video.originalIndex, 'peso', e.target.value)} placeholder="Livre" className="w-full bg-white dark:bg-[#0a0a0a] border border-gray-400 dark:border-[#444] rounded-md px-3 sm:px-4 py-2.5 text-sm focus:border-[#c8921a] outline-none text-gray-900 dark:text-white font-normal" /></div>
+                                <div className="space-y-2"><label className="text-[10px] font-normal uppercase tracking-wide text-gray-500 ml-0.5 truncate block">Séries</label><input value={video.series || ''} onChange={(e) => handleVideoChange(video.originalIndex, 'series', e.target.value)} placeholder="3" className="w-full bg-white dark:bg-[#0a0a0a] border border-gray-400 dark:border-[#444] rounded-md px-3 sm:px-4 py-2.5 text-xs focus:border-[#c8921a] outline-none text-gray-700 dark:text-gray-300 font-normal" /></div>
+                                <div className="space-y-2"><label className="text-[10px] font-normal uppercase tracking-wide text-gray-500 ml-0.5 truncate block">Repetições</label><input value={video.repeticoes || ''} onChange={(e) => handleVideoChange(video.originalIndex, 'repeticoes', e.target.value)} placeholder="12-15" className="w-full bg-white dark:bg-[#0a0a0a] border border-gray-400 dark:border-[#444] rounded-md px-3 sm:px-4 py-2.5 text-xs focus:border-[#c8921a] outline-none text-gray-700 dark:text-gray-300 font-normal" /></div>
+                                <div className="space-y-2"><label className="text-[10px] font-normal uppercase tracking-wide text-gray-500 ml-0.5 truncate block" title="Tempo Descanso">Descanso</label><input value={video.descanso || ''} onChange={(e) => handleVideoChange(video.originalIndex, 'descanso', e.target.value)} placeholder="45s" className="w-full bg-white dark:bg-[#0a0a0a] border border-gray-400 dark:border-[#444] rounded-md px-3 sm:px-4 py-2.5 text-xs focus:border-[#c8921a] outline-none text-gray-700 dark:text-gray-300 font-normal" /></div>
+                                <div className="space-y-2"><label className="text-[10px] font-normal uppercase tracking-wide text-gray-500 ml-0.5 truncate block">Peso (Kg)</label><input value={video.peso || ''} onChange={(e) => handleVideoChange(video.originalIndex, 'peso', e.target.value)} placeholder="Livre" className="w-full bg-white dark:bg-[#0a0a0a] border border-gray-400 dark:border-[#444] rounded-md px-3 sm:px-4 py-2.5 text-xs focus:border-[#c8921a] outline-none text-gray-700 dark:text-gray-300 font-normal" /></div>
                               </div>
 
                               <div className="flex flex-col gap-6">
@@ -811,7 +816,8 @@ export default function ModalidadesPage() {
                                               ...newVideos[video.originalIndex],
                                               [showField]: false,
                                               [substitutoIdField]: '',
-                                              [infoField]: null
+                                              [infoField]: null,
+                                              _isDirty: true
                                             };
                                             setFormData(prev => ({ ...prev, videos: newVideos }));
                                           }}
@@ -897,7 +903,7 @@ export default function ModalidadesPage() {
                                               value={info.series || ''} 
                                               onChange={(e) => handleSubstitutoInfoChange(video.originalIndex, num as 1 | 2, 'series', e.target.value)} 
                                               placeholder="3" 
-                                              className="w-full bg-white dark:bg-[#0a0a0a] border border-gray-400 dark:border-[#444] rounded-md px-3 sm:px-4 py-2.5 text-sm focus:border-[#c8921a] outline-none text-gray-900 dark:text-white font-normal" 
+                                              className="w-full bg-white dark:bg-[#0a0a0a] border border-gray-400 dark:border-[#444] rounded-md px-3 sm:px-4 py-2.5 text-xs focus:border-[#c8921a] outline-none text-gray-700 dark:text-gray-300 font-normal" 
                                             />
                                           </div>
                                           <div className="space-y-2">
@@ -906,7 +912,7 @@ export default function ModalidadesPage() {
                                               value={info.repeticoes || ''} 
                                               onChange={(e) => handleSubstitutoInfoChange(video.originalIndex, num as 1 | 2, 'repeticoes', e.target.value)} 
                                               placeholder="12-15" 
-                                              className="w-full bg-white dark:bg-[#0a0a0a] border border-gray-400 dark:border-[#444] rounded-md px-3 sm:px-4 py-2.5 text-sm focus:border-[#c8921a] outline-none text-gray-900 dark:text-white font-normal" 
+                                              className="w-full bg-white dark:bg-[#0a0a0a] border border-gray-400 dark:border-[#444] rounded-md px-3 sm:px-4 py-2.5 text-xs focus:border-[#c8921a] outline-none text-gray-700 dark:text-gray-300 font-normal" 
                                             />
                                           </div>
                                           <div className="space-y-2">
@@ -915,7 +921,7 @@ export default function ModalidadesPage() {
                                               value={info.descanso || ''} 
                                               onChange={(e) => handleSubstitutoInfoChange(video.originalIndex, num as 1 | 2, 'descanso', e.target.value)} 
                                               placeholder="45s" 
-                                              className="w-full bg-white dark:bg-[#0a0a0a] border border-gray-400 dark:border-[#444] rounded-md px-3 sm:px-4 py-2.5 text-sm focus:border-[#c8921a] outline-none text-gray-900 dark:text-white font-normal" 
+                                              className="w-full bg-white dark:bg-[#0a0a0a] border border-gray-400 dark:border-[#444] rounded-md px-3 sm:px-4 py-2.5 text-xs focus:border-[#c8921a] outline-none text-gray-700 dark:text-gray-300 font-normal" 
                                             />
                                           </div>
                                           <div className="space-y-2">
@@ -924,7 +930,7 @@ export default function ModalidadesPage() {
                                               value={info.peso || ''} 
                                               onChange={(e) => handleSubstitutoInfoChange(video.originalIndex, num as 1 | 2, 'peso', e.target.value)} 
                                               placeholder="Livre" 
-                                              className="w-full bg-white dark:bg-[#0a0a0a] border border-gray-400 dark:border-[#444] rounded-md px-3 sm:px-4 py-2.5 text-sm focus:border-[#c8921a] outline-none text-gray-900 dark:text-white font-normal" 
+                                              className="w-full bg-white dark:bg-[#0a0a0a] border border-gray-400 dark:border-[#444] rounded-md px-3 sm:px-4 py-2.5 text-xs focus:border-[#c8921a] outline-none text-gray-700 dark:text-gray-300 font-normal" 
                                             />
                                           </div>
                                         </div>
@@ -1029,7 +1035,7 @@ export default function ModalidadesPage() {
                 <ChevronDown size={20} className="rotate-90" />
               </button>
               <div>
-                <h2 className="text-sm font-normal uppercase tracking-wide text-gray-800 dark:text-white">
+                <h2 className="text-xs font-normal uppercase tracking-wide text-gray-700 dark:text-gray-300">
                   {editingId ? 'Editando Modalidade' : 'Novo Registro de Modalidade'}
                 </h2>
                 <p className="text-[10px] text-gray-400 uppercase font-normal tracking-wide mt-0.5">Preencha os dados técnicos da trilha abaixo</p>
@@ -1071,7 +1077,7 @@ export default function ModalidadesPage() {
                             value={formData.nome}
                             onChange={(e) => setFormData({ ...formData, nome: e.target.value })}
                             placeholder="Ex: MUSCULAÇÃO FEMININA"
-                            className="w-full bg-white dark:bg-[#111] border border-gray-400 dark:border-[#444] rounded-md px-4 py-3 text-sm focus:outline-none focus:border-[#c8921a] text-gray-900 dark:text-white font-normal transition-all"
+                            className="w-full bg-white dark:bg-[#111] border border-gray-400 dark:border-[#444] rounded-md px-4 py-3 text-xs focus:outline-none focus:border-[#c8921a] text-gray-700 dark:text-gray-300 font-normal transition-all"
                             required
                           />
                         </div>
@@ -1082,7 +1088,7 @@ export default function ModalidadesPage() {
                             value={formData.ordem_modalidade}
                             onChange={(e) => setFormData({ ...formData, ordem_modalidade: parseInt(e.target.value) || 0 })}
                             placeholder="Ex: 1"
-                            className="w-full bg-white dark:bg-[#111] border border-gray-400 dark:border-[#444] rounded-md px-4 py-3 text-sm focus:outline-none focus:border-[#c8921a] text-gray-900 dark:text-white font-normal transition-all"
+                            className="w-full bg-white dark:bg-[#111] border border-gray-400 dark:border-[#444] rounded-md px-4 py-3 text-xs focus:outline-none focus:border-[#c8921a] text-gray-700 dark:text-gray-300 font-normal transition-all"
                           />
                         </div>
                       </div>

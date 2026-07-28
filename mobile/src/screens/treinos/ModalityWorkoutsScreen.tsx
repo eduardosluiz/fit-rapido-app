@@ -24,10 +24,12 @@ const formatDescription = (text: string) => {
   if (!text) return '';
   let formatted = text.replace(/<(br|p|div|li)[^>]*>/gi, '\n');
   formatted = formatted.replace(/<[^>]*>?/gm, '');
-  // Normalize extra spaces and ALL types of line breaks (including PDF/Word \u2028 and \u2029)
+  // Normalize literal string \n
   formatted = formatted.replace(/\\n/g, '\n');
+  // Normalize Windows \r\n to \n
+  formatted = formatted.replace(/\r\n/g, '\n');
+  // Normalize remaining carriage returns and unicode line breaks
   formatted = formatted.replace(/[\r\v\f\u2028\u2029]/g, '\n');
-  // Ensure that multiple newlines are preserved properly
   return formatted.trim();
 };
 
@@ -404,7 +406,7 @@ export default function ModalityWorkoutsScreen() {
               <Text style={styles.nivelDescTitle}>ORIENTAÇÕES DA TRILHA</Text>
             </View>
             <Text style={styles.nivelDescText}>
-              {formatDescription(currentDescricao).replace(/\s*(\d+\))/g, '\n$1').trim()}
+              {formatDescription(currentDescricao)}
             </Text>
           </View>
         ) : null}

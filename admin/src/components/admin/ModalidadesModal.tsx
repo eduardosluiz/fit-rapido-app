@@ -225,7 +225,7 @@ export function ModalidadesModal({
                           value={formData.nome} 
                           onChange={(e) => handleNomeChange(e.target.value)} 
                           placeholder="Ex: MUSCULAÇÃO"
-                          className="w-full bg-gray-50/80 dark:bg-[#111] border border-gray-300 dark:border-[#444] rounded-md px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#c8921a]/20 focus:border-[#c8921a] text-gray-900 dark:text-white font-normal transition-all placeholder:text-gray-500"
+                          className="w-full bg-gray-50/80 dark:bg-[#111] border border-gray-300 dark:border-[#444] rounded-md px-4 py-2.5 text-xs focus:outline-none focus:ring-2 focus:ring-[#c8921a]/20 focus:border-[#c8921a] text-gray-700 dark:text-gray-300 font-normal transition-all placeholder:text-gray-500"
                           required
                         />
                       </div>
@@ -236,7 +236,7 @@ export function ModalidadesModal({
                           value={formData.ordem_modalidade} 
                           onChange={(e) => setFormData({...formData, ordem_modalidade: parseInt(e.target.value) || 0})} 
                           placeholder="Ex: 1"
-                          className="w-full bg-gray-50/80 dark:bg-[#111] border border-gray-300 dark:border-[#444] rounded-md px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#c8921a]/20 focus:border-[#c8921a] text-gray-900 dark:text-white font-normal transition-all placeholder:text-gray-500"
+                          className="w-full bg-gray-50/80 dark:bg-[#111] border border-gray-300 dark:border-[#444] rounded-md px-4 py-2.5 text-xs focus:outline-none focus:ring-2 focus:ring-[#c8921a]/20 focus:border-[#c8921a] text-gray-700 dark:text-gray-300 font-normal transition-all placeholder:text-gray-500"
                         />
                       </div>
                     </div>
@@ -247,7 +247,7 @@ export function ModalidadesModal({
                         value={formData.subtitulo} 
                         onChange={(e) => setFormData({...formData, subtitulo: e.target.value})} 
                         placeholder="Ex: Ajuste seu nível de treinamento"
-                        className="w-full bg-gray-50/80 dark:bg-[#111] border border-gray-300 dark:border-[#444] rounded-md px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#c8921a]/20 focus:border-[#c8921a] text-gray-900 dark:text-white font-normal transition-all placeholder:text-gray-500"
+                        className="w-full bg-gray-50/80 dark:bg-[#111] border border-gray-300 dark:border-[#444] rounded-md px-4 py-2.5 text-xs focus:outline-none focus:ring-2 focus:ring-[#c8921a]/20 focus:border-[#c8921a] text-gray-700 dark:text-gray-300 font-normal transition-all placeholder:text-gray-500"
                       />
                     </div>
                   </div>

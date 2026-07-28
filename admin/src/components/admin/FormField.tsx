@@ -30,7 +30,7 @@ export function FormField({
       className
     )} style={className?.includes('flex-1') ? { display: 'flex', flexDirection: 'column', flex: 1 } : undefined}>
       {label && (
-        <Label className="text-sm font-normal text-gray-900 dark:text-white flex items-center gap-1.5 mb-2 block flex-shrink-0">
+        <Label className="text-xs font-normal text-gray-700 dark:text-gray-300 flex items-center gap-1.5 mb-2 block flex-shrink-0">
           {label}
           {required && <span className="text-red-500 text-base font-normal ml-1">*</span>}
         </Label>

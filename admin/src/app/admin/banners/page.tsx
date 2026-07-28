@@ -225,7 +225,7 @@ export default function BannersPage() {
                     type="text"
                     value={banner.titulo}
                     onChange={(e) => handleChange(index, 'titulo', e.target.value)}
-                    className="w-full bg-[#f3f4f6] dark:bg-[#1a1a1a] border border-gray-400 dark:border-[#333] rounded-[6px] px-3 py-2 text-sm text-gray-900 dark:text-white outline-none focus:border-[#c8921a] transition-colors"
+                    className="w-full bg-[#f3f4f6] dark:bg-[#1a1a1a] border border-gray-400 dark:border-[#333] rounded-[6px] px-3 py-2 text-xs text-gray-700 dark:text-gray-300 outline-none focus:border-[#c8921a] transition-colors"
                     placeholder="Ex: Fit & Rápido"
                   />
                 </div>
@@ -236,7 +236,7 @@ export default function BannersPage() {
                     value={banner.subtitulo}
                     onChange={(e) => handleChange(index, 'subtitulo', e.target.value)}
                     rows={2}
-                    className="w-full bg-[#f3f4f6] dark:bg-[#1a1a1a] border border-gray-400 dark:border-[#333] rounded-[6px] px-3 py-2 text-sm text-gray-900 dark:text-white outline-none focus:border-[#c8921a] transition-colors resize-none"
+                    className="w-full bg-[#f3f4f6] dark:bg-[#1a1a1a] border border-gray-400 dark:border-[#333] rounded-[6px] px-3 py-2 text-xs text-gray-700 dark:text-gray-300 outline-none focus:border-[#c8921a] transition-colors resize-none"
                     placeholder="Ex: Receitas saudáveis e treinos rápidos para sua rotina."
                   />
                 </div>
