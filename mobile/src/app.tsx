@@ -26,23 +26,50 @@ LogBox.ignoreLogs([
   'props.pointerEvents is deprecated',
   'style.resizeMode is deprecated',
   'Video component from `expo-av` is deprecated',
+  'NotFoundError',
+  'removeChild',
 ]);
 
-// Oculta os avisos diretamente no Console (F12) do navegador para manter limpo
-const originalWarn = console.warn;
-console.warn = (...args) => {
-  if (typeof args[0] === 'string') {
+// Oculta os avisos diretamente no Console (F12) do navegador web para manter o ambiente de testes limpo
+if (Platform.OS === 'web' && typeof window !== 'undefined') {
+  const originalWarn = console.warn;
+  console.warn = (...args) => {
+    const msg = typeof args[0] === 'string' ? args[0] : '';
     if (
-      args[0].includes('useNativeDriver') ||
-      args[0].includes('pointerEvents') ||
-      args[0].includes('resizeMode') ||
-      args[0].includes('expo-av')
+      msg.includes('useNativeDriver') ||
+      msg.includes('pointerEvents') ||
+      msg.includes('resizeMode') ||
+      msg.includes('expo-av') ||
+      msg.includes('error occurred in the') ||
+      msg.includes('error boundary') ||
+      msg.includes('NativeSafeAreaProvider') ||
+      msg.includes('Notificações') ||
+      msg.includes('notificação')
     ) {
-      return; // Ignora e não imprime
+      return;
     }
-  }
-  originalWarn(...args);
-};
+    originalWarn(...args);
+  };
+
+  const originalError = console.error;
+  console.error = (...args) => {
+    const msg = typeof args[0] === 'string' ? args[0] : '';
+    if (
+      msg.includes('removeChild') ||
+      msg.includes('NotFoundError') ||
+      msg.includes('notificação')
+    ) {
+      return;
+    }
+    originalError(...args);
+  };
+
+  window.addEventListener('unhandledrejection', (event) => {
+    if (event.reason?.message?.includes('removeChild') || event.reason?.message?.includes('NotFoundError')) {
+      event.preventDefault();
+    }
+  });
+}
 
 export default function App() {
   const [fontsLoaded] = useFonts({
