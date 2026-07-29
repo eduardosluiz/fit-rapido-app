@@ -1031,6 +1031,12 @@
   will-change: transform;
 }
 
+@media (min-width: 768px) {
+  .admin-bottom-nav {
+    display: none !important;
+  }
+}
+
 .admin-bottom-nav::-webkit-scrollbar {
   display: none; /* Hide scrollbar for Chrome/Safari */
 }

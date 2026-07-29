@@ -161,8 +161,8 @@ export default function GlossarioPage() {
   }
 
   return (
-    <div className="p-6 sm:p-10 bg-[#f4f7f9] min-h-screen font-inter">
-      <div className="w-full max-w-[1400px] mx-auto space-y-8">
+    <div className="p-6 sm:p-10 pb-32 sm:pb-40 bg-[#f4f7f9] min-h-screen font-inter">
+      <div className="w-full max-w-[1400px] mx-auto space-y-8 mb-12">
         
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-gray-200 pb-8">
