@@ -101,7 +101,6 @@ class ApiService {
 
   // Auth
   async login(email: string, senha: string) {
-    console.log('📡 Fazendo requisição de login para:', `${API_URL}/auth/login`);
     const data = await this.request<{ user: any; access_token: string }>(
       '/auth/login',
       {
@@ -109,14 +108,8 @@ class ApiService {
         body: JSON.stringify({ email, senha }),
       },
     );
-    console.log('📥 Resposta do login:', data);
-    if (typeof window !== 'undefined') {
-      if (data?.access_token) {
-        localStorage.setItem('auth_token', data.access_token);
-        console.log('💾 Token salvo no localStorage');
-      } else {
-        console.error('⚠️ Token não encontrado na resposta:', data);
-      }
+    if (typeof window !== 'undefined' && data?.access_token) {
+      localStorage.setItem('auth_token', data.access_token);
     }
     return data;
   }
