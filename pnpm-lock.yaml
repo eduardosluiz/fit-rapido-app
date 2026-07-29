@@ -183,9 +183,6 @@ importers:
       dotenv:
         specifier: ^17.2.3
         version: 17.4.2
-      express:
-        specifier: ^5.2.1
-        version: 5.2.1(supports-color@8.1.1)
       helmet:
         specifier: ^8.1.0
         version: 8.2.0
