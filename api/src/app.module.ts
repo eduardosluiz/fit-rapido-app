@@ -22,13 +22,13 @@ import { GlossarioModule } from './glossario/glossario.module';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: ['.env', '../.env'],
+      envFilePath: '.env',
     }),
     TypeOrmModule.forRoot({
       type: 'postgres',
       url: process.env.DATABASE_URL,
       autoLoadEntities: true,
-      synchronize: true,
+      synchronize: false,
       ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
     }),
     AuthModule,
