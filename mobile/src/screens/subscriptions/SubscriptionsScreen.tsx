@@ -233,14 +233,60 @@ export default function SubscriptionsScreen() {
 
                 {/* Benefícios */}
                 <View style={styles.beneficiosContainer}>
-                  {plan.beneficios.map((beneficio, index) => (
-                    <View key={index} style={styles.beneficioItem}>
-                      <View style={styles.checkIconContainer}>
-                        <Text style={styles.checkIcon}>✓</Text>
+                  {plan.tier === 'premium' ? (
+                    <View style={styles.daiReceitasContainer}>
+                      <Text style={styles.daiReceitasTitle}>O que você encontra no Dai+ Receitas:</Text>
+                      
+                      <View style={styles.daiItem}>
+                        <Text style={styles.daiItemHeader}>🍴 +200 receitas</Text>
+                        <Text style={styles.daiItemSub}>Receitas práticas e saudáveis para todos os momentos.</Text>
                       </View>
-                      <Text style={styles.beneficioText}>{beneficio}</Text>
+
+                      <View style={styles.daiItem}>
+                        <Text style={styles.daiItemHeader}>✨ Conteúdo sempre atualizado</Text>
+                        <Text style={styles.daiItemSub}>🆕 Receitas inéditas todos os meses</Text>
+                      </View>
+
+                      <View style={styles.daiItem}>
+                        <Text style={styles.daiItemHeader}>🔄 Substituições de ingredientes</Text>
+                        <Text style={styles.daiItemSub}>Opções para adaptar as receitas de acordo com o que você tem em casa ou prefere consumir.</Text>
+                      </View>
+
+                      <View style={styles.daiItem}>
+                        <Text style={styles.daiItemHeader}>📊 Macros estimados</Text>
+                        <Text style={styles.daiItemSub}>Informações nutricionais estimadas para facilitar suas escolhas.</Text>
+                      </View>
+
+                      <View style={styles.daiItem}>
+                        <Text style={styles.daiItemHeader}>👩🏻‍🍳 Dicas de preparo</Text>
+                        <Text style={styles.daiItemSub}>Truques e orientações para deixar suas receitas ainda mais fáceis.</Text>
+                      </View>
+
+                      <View style={styles.daiItem}>
+                        <Text style={styles.daiItemHeader}>⏱️ Tempo médio de preparo</Text>
+                        <Text style={styles.daiItemSub}>Saiba quanto tempo você vai precisar para preparar cada receita.</Text>
+                      </View>
+
+                      <View style={styles.daiItem}>
+                        <Text style={styles.daiItemHeader}>🎥 Vídeos explicativos</Text>
+                        <Text style={styles.daiItemSub}>Veja o passo a passo de algumas receitas.</Text>
+                      </View>
+
+                      <View style={styles.daiItem}>
+                        <Text style={styles.daiItemHeader}>🔎 Encontre sua receita com facilidade</Text>
+                        <Text style={styles.daiItemSub}>Busque por categorias como pré-treino, pós-treino e lanche ou pesquise diretamente por palavras-chave, como frango, morango e chocolate.</Text>
+                      </View>
                     </View>
-                  ))}
+                  ) : (
+                    plan.beneficios.map((beneficio, index) => (
+                      <View key={index} style={styles.beneficioItem}>
+                        <View style={styles.checkIconContainer}>
+                          <Text style={styles.checkIcon}>✓</Text>
+                        </View>
+                        <Text style={styles.beneficioText}>{beneficio}</Text>
+                      </View>
+                    ))
+                  )}
                 </View>
 
                 {/* Períodos */}
@@ -746,5 +792,30 @@ const styles = StyleSheet.create({
     color: 'rgba(255,255,255,0.4)',
     lineHeight: 18,
     fontWeight: '400',
+  },
+  daiReceitasContainer: {
+    gap: 12,
+    paddingVertical: 4,
+  },
+  daiReceitasTitle: {
+    fontSize: 13,
+    fontWeight: '700',
+    color: '#e5a93d',
+    marginBottom: 4,
+    letterSpacing: 0.3,
+  },
+  daiItem: {
+    gap: 2,
+  },
+  daiItemHeader: {
+    fontSize: 12,
+    fontWeight: '600',
+    color: '#ffffff',
+  },
+  daiItemSub: {
+    fontSize: 11,
+    color: 'rgba(255,255,255,0.6)',
+    lineHeight: 16,
+    paddingLeft: 4,
   },
 });
