@@ -704,7 +704,7 @@ export default function ReceitaDetailScreen() {
   }
 
   // Verificar se o conteúdo é premium e o usuário não é
-  const isPremiumLocked = receita.is_premium && !receita.is_free && user?.subscription_tier !== 'premium_fit';
+  const isPremiumLocked = receita.is_premium && !receita.is_free && user?.subscription_tier !== 'premium_fit' && user?.subscription_tier !== 'premium';
 
   if (isPremiumLocked) {
     return (

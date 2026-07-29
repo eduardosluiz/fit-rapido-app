@@ -251,6 +251,35 @@ class ApiService {
     return this.request<any[]>('/categorias-receitas');
   }
 
+  // Glossario
+  async getGlossario() {
+    return this.request<any>('/glossario');
+  }
+  
+  async getGlossarioItem(id: string) {
+    return this.request<any>(`/glossario/${id}`);
+  }
+
+  async createGlossario(data: any) {
+    return this.request<any>('/glossario', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
+  }
+
+  async updateGlossario(id: string, data: any) {
+    return this.request<any>(`/glossario/${id}`, {
+      method: 'PATCH',
+      body: JSON.stringify(data),
+    });
+  }
+
+  async deleteGlossario(id: string) {
+    return this.request<void>(`/glossario/${id}`, {
+      method: 'DELETE',
+    });
+  }
+
   async getCategoria(id: string) {
     return this.request<any>(`/categorias-receitas/${id}`);
   }

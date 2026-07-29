@@ -139,6 +139,8 @@ export class ReceitasService {
     user?: User, // Usuário atual para filtrar por plano
     page?: number,
     limit?: number,
+    onlyFree?: boolean,
+    summary?: boolean,
   ): Promise<any> {
     // Verificar se é admin ANTES de aplicar filtros
     const isAdmin = user && (user.role === UserRole.ADMIN || String(user.role) === 'admin' || String(user.role) === 'personal_trainer' || user.email === 'dai@gmail.com');
@@ -149,27 +151,38 @@ export class ReceitasService {
     }
     // Usar find() ao invés de queryBuilder para garantir que todas as receitas sejam retornadas
     // O queryBuilder com leftJoin pode estar causando problemas
-    const queryBuilder = this.receitaRepository
-      .createQueryBuilder('receita')
-      .select([
+    const queryBuilder = this.receitaRepository.createQueryBuilder('receita');
+    
+    if (summary) {
+      queryBuilder.select([
         'receita.id',
         'receita.titulo',
-        'receita.imagem_url',
-        'receita.imagens_url',
-        'receita.video_url',
-        'receita.video_thumbnail_url',
-        'receita.is_inedito',
-        'receita.avaliacao',
-        'receita.destaque_popular',
-        'receita.dificuldade',
-        'receita.tempo_preparo',
-        'receita.calorias',
         'receita.is_premium',
         'receita.is_free',
         'receita.ativa',
-        'receita.created_at',
-      ])
-      .leftJoinAndSelect('receita.categorias', 'categorias');
+      ]);
+    } else {
+      queryBuilder
+        .select([
+          'receita.id',
+          'receita.titulo',
+          'receita.imagem_url',
+          'receita.imagens_url',
+          'receita.video_url',
+          'receita.video_thumbnail_url',
+          'receita.is_inedito',
+          'receita.avaliacao',
+          'receita.destaque_popular',
+          'receita.dificuldade',
+          'receita.tempo_preparo',
+          'receita.calorias',
+          'receita.is_premium',
+          'receita.is_free',
+          'receita.ativa',
+          'receita.created_at',
+        ])
+        .leftJoinAndSelect('receita.categorias', 'categorias');
+    }
 
     // Filtrar por ativa apenas se não for para incluir inativas
     if (!incluirInativas) {
@@ -186,13 +199,13 @@ export class ReceitasService {
 
     if (search) {
       queryBuilder.andWhere(
-        '(receita.titulo ILIKE :search OR CAST(receita.ingredientes AS text) ILIKE :search OR CAST(receita.tags AS text) ILIKE :search)',
-        { search: `%${search}%` },
+        '(receita.titulo ~* :searchRegex OR CAST(receita.ingredientes AS text) ~* :searchRegex OR CAST(receita.tags AS text) ~* :searchRegex)',
+        { searchRegex: `\\y${search}\\y` },
       );
     }
 
     if (nome) {
-      queryBuilder.andWhere('receita.titulo ILIKE :nome', { nome: `%${nome}%` });
+      queryBuilder.andWhere('receita.titulo ~* :nomeRegex', { nomeRegex: `\\y${nome}\\y` });
     }
 
     if (ingrediente) {
@@ -204,6 +217,12 @@ export class ReceitasService {
     if (isPremium !== undefined) {
       queryBuilder.andWhere('receita.is_premium = :isPremium', {
         isPremium,
+      });
+    }
+
+    if (onlyFree && !isAdmin) {
+      queryBuilder.andWhere('receita.is_free = :onlyFreeVal', {
+        onlyFreeVal: true,
       });
     }
 

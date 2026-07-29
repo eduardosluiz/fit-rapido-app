@@ -193,6 +193,14 @@ class ApiService {
       return [];
     }
   }
+
+  async getGlossario() {
+    try {
+      return await this.request<any[]>('/glossario');
+    } catch (e) {
+      return [];
+    }
+  }
   
   async getTreinos(params?: any) {
     try {

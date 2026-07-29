@@ -38,6 +38,17 @@ export function FileUpload({ type, value, onChange, label, accept, error, hideUr
     const file = e.target.files?.[0];
     if (!file) return;
 
+    if (type === 'video') {
+      const maxSize = 250 * 1024 * 1024; // 250MB
+      if (file.size > maxSize) {
+        const msg = `O vídeo selecionado (${(file.size / (1024 * 1024)).toFixed(1)}MB) excede o limite de 250MB. Comprima o vídeo antes de enviar.`;
+        setUploadError(msg);
+        alert(msg);
+        if (fileInputRef.current) fileInputRef.current.value = '';
+        return;
+      }
+    }
+
     if (type === 'imagem') {
       setOriginalFile(file);
       const reader = new FileReader();
@@ -53,9 +64,14 @@ export function FileUpload({ type, value, onChange, label, accept, error, hideUr
         setPreview(uploadResponse.url);
         onChange(uploadResponse.url);
       } catch (err: any) {
-        setUploadError(err.message || 'Erro ao fazer upload');
+        const msg = err.message || 'Erro ao fazer upload';
+        setUploadError(msg);
+        if (compact) {
+          alert(`Falha no upload: ${msg}`);
+        }
       } finally {
         setUploading(false);
+        if (fileInputRef.current) fileInputRef.current.value = '';
       }
     }
   };

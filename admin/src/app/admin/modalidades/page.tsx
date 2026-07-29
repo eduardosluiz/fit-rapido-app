@@ -238,7 +238,9 @@ export default function ModalidadesPage() {
         return matchDia;
       })
       .sort((a, b) => {
-        if (a.ordem !== b.ordem) return a.ordem - b.ordem;
+        const ordemA = a.ordem !== undefined && a.ordem !== null ? a.ordem : 0;
+        const ordemB = b.ordem !== undefined && b.ordem !== null ? b.ordem : 0;
+        if (ordemA !== ordemB) return ordemA - ordemB;
         return a.originalIndex - b.originalIndex;
       });
 
@@ -248,8 +250,8 @@ export default function ModalidadesPage() {
       const otherVideo = currentGroupVideos[fIndex - 1];
       const newVideos = [...formData.videos];
       
-      const tempOrdem = newVideos[originalIndex].ordem;
-      const targetOrdem = newVideos[otherVideo.originalIndex].ordem;
+      const tempOrdem = newVideos[originalIndex].ordem || 0;
+      const targetOrdem = newVideos[otherVideo.originalIndex].ordem || 0;
       
       newVideos[originalIndex] = { ...newVideos[originalIndex], ordem: targetOrdem };
       newVideos[otherVideo.originalIndex] = { ...newVideos[otherVideo.originalIndex], ordem: tempOrdem };
@@ -259,13 +261,13 @@ export default function ModalidadesPage() {
         newVideos[otherVideo.originalIndex] = { ...newVideos[otherVideo.originalIndex], ordem: fIndex };
       }
       
-      setFormData(prev => ({ ...prev, videos: newVideos }));
+      setFormData(prev => ({ ...prev, videos: newVideos, _isDirty: true }));
     } else if (direction === 'down' && fIndex < currentGroupVideos.length - 1) {
       const otherVideo = currentGroupVideos[fIndex + 1];
       const newVideos = [...formData.videos];
       
-      const tempOrdem = newVideos[originalIndex].ordem;
-      const targetOrdem = newVideos[otherVideo.originalIndex].ordem;
+      const tempOrdem = newVideos[originalIndex].ordem || 0;
+      const targetOrdem = newVideos[otherVideo.originalIndex].ordem || 0;
       
       newVideos[originalIndex] = { ...newVideos[originalIndex], ordem: targetOrdem };
       newVideos[otherVideo.originalIndex] = { ...newVideos[otherVideo.originalIndex], ordem: tempOrdem };
@@ -275,7 +277,7 @@ export default function ModalidadesPage() {
         newVideos[otherVideo.originalIndex] = { ...newVideos[otherVideo.originalIndex], ordem: fIndex };
       }
       
-      setFormData(prev => ({ ...prev, videos: newVideos }));
+      setFormData(prev => ({ ...prev, videos: newVideos, _isDirty: true }));
     }
   };
 
@@ -983,7 +985,7 @@ export default function ModalidadesPage() {
   }
 
   return (
-    <div className="p-6 sm:p-10 bg-[#fafafa] dark:bg-[#0a0a0a] min-h-screen">
+    <div className="p-6 pb-28 sm:p-10 sm:pb-10 bg-[#fafafa] dark:bg-[#0a0a0a] min-h-screen">
       <div className="w-full max-w-[1400px] mx-auto space-y-12">
         
         <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-gray-100 dark:border-[#222] pb-8 gap-6">
@@ -1017,9 +1019,9 @@ export default function ModalidadesPage() {
                 });
                 setExpandedSections({ iniciante: true, intermediario: false, avancado: false });
               }}
-              className="w-full sm:w-auto px-6 py-2.5 rounded-md bg-[#c8921a] text-[#2d2106] text-[10px] font-normal uppercase tracking-wide shadow-sm shadow-[#c8921a]/20 hover:scale-105 transition-all flex items-center justify-center gap-2"
+              className="w-fit sm:w-auto px-6 py-2.5 rounded-md bg-[#c8921a] text-[#2d2106] text-[10px] font-normal uppercase tracking-wide shadow-sm shadow-[#c8921a]/20 hover:scale-105 transition-all flex items-center justify-center gap-2"
             >
-              <Plus size={14} /> Novo Registro
+              <Plus size={14} /> Nova Modalidade
             </button>
           )}
         </div>
@@ -1226,7 +1228,7 @@ export default function ModalidadesPage() {
                     <p className="text-xs text-gray-500 line-clamp-2 mt-2 leading-relaxed">{mod.descricao || 'Sem descrição técnica disponível para esta modalidade.'}</p>
                   </div>
                   <div className="flex gap-2 pt-2 border-t border-gray-50 dark:border-[#1a1a1a]">
-                    <button onClick={() => handleEdit(mod)} className="flex-1 py-2 rounded-md bg-white dark:bg-[#111] text-gray-700 dark:text-gray-300 text-[9px] font-normal uppercase tracking-wide hover:bg-[#c8921a] hover:text-white transition-all flex items-center justify-center gap-2"><Edit3 size={12} /> Editar</button>
+                    <button onClick={() => handleEdit(mod)} className="flex-1 py-2 rounded-md bg-[#c8921a] text-white text-[9px] font-normal uppercase tracking-wide shadow-sm hover:opacity-90 transition-all flex items-center justify-center gap-2"><Edit3 size={12} /> Editar</button>
                     <button onClick={() => handleDelete(mod)} className="p-2 w-10 flex items-center justify-center rounded-md bg-red-50 dark:bg-red-950/20 text-red-500 hover:bg-red-500 hover:text-white transition-all"><Trash2 size={14} /></button>
                   </div>
                 </div>

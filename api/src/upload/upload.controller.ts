@@ -96,11 +96,11 @@ export class UploadController {
         }
       }),
       fileFilter: (req, file, cb) => {
-        const allowedMimes = ['video/mp4', 'video/webm', 'video/quicktime', 'video/x-matroska'];
+        const allowedMimes = ['video/mp4', 'video/webm', 'video/quicktime', 'video/mov', 'video/x-matroska'];
         if (allowedMimes.includes(file.mimetype)) {
           cb(null, true);
         } else {
-          cb(new BadRequestException('Formato de vídeo não suportado pela API.'), false);
+          cb(new BadRequestException(`Formato de vídeo não suportado pela API: ${file.mimetype}`), false);
         }
       },
       limits: {

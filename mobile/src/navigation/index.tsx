@@ -14,6 +14,7 @@ import RegisterScreen from '../screens/auth/RegisterScreen';
 // Main Screens
 import ReceitasScreen from '../screens/receitas/ReceitasScreen';
 import ReceitaDetailScreen from '../screens/receitas/ReceitaDetailScreen';
+import GlossarioScreen from '../screens/receitas/GlossarioScreen';
 import TreinosScreen from '../screens/treinos/TreinosScreen';
 import TreinoDetailScreen from '../screens/treinos/TreinoDetailScreen';
 import ExerciseDetailScreen from '../screens/treinos/ExerciseDetailScreen';
@@ -27,6 +28,7 @@ import TermsOfServiceScreen from '../screens/legal/TermsOfServiceScreen';
 import NotificationSettingsScreen from '../screens/settings/NotificationSettingsScreen';
 import MacrosCalculatorScreen from '../screens/macros/MacrosCalculatorScreen';
 import FeedScreen from '../screens/feed/FeedScreen';
+import SumarioReceitasScreen from '../screens/receitas/SumarioReceitasScreen';
 
 export type RootStackParamList = {
   Auth: undefined;
@@ -59,6 +61,7 @@ export type MainStackParamList = {
   TermsOfService: undefined;
   NotificationSettings: undefined;
   MacrosCalculator: undefined;
+  SumarioReceitas: undefined;
 };
 
 const AuthStack = createNativeStackNavigator<AuthStackParamList>();
@@ -116,6 +119,11 @@ function ReceitasStack() {
           headerBackTitleVisible: false,
         }}
       />
+      <ReceitasStackNav.Screen
+        name="Glossario"
+        component={GlossarioScreen}
+        options={{ headerShown: false }}
+      />
     </ReceitasStackNav.Navigator>
   );
 }
@@ -166,6 +174,16 @@ function TreinosStack() {
   );
 }
 
+const FeedStackNav = createNativeStackNavigator();
+function FeedStack() {
+  return (
+    <FeedStackNav.Navigator initialRouteName="FeedMain">
+      <FeedStackNav.Screen name="FeedMain" component={FeedScreen} options={{ headerShown: false }} />
+      <FeedStackNav.Screen name="SumarioReceitas" component={SumarioReceitasScreen} options={{ headerShown: false }} />
+    </FeedStackNav.Navigator>
+  );
+}
+
 function TabsNavigator() {
   return (
     <MainTabs.Navigator
@@ -182,7 +200,7 @@ function TabsNavigator() {
     >
       <MainTabs.Screen
         name="Feed"
-        component={FeedScreen}
+        component={FeedStack}
         options={{
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="home" size={size} color={color} />

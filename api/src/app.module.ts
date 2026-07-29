@@ -16,18 +16,19 @@ import { IAModule } from './ia/ia.module';
 import { StatsModule } from './stats/stats.module';
 import { BannersModule } from './banners/banners.module';
 import { ConfiguracoesModule } from './configuracoes/configuracoes.module';
+import { GlossarioModule } from './glossario/glossario.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: '.env',
+      envFilePath: ['.env', '../.env'],
     }),
     TypeOrmModule.forRoot({
       type: 'postgres',
       url: process.env.DATABASE_URL,
       autoLoadEntities: true,
-      synchronize: false,
+      synchronize: true,
       ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
     }),
     AuthModule,
@@ -45,6 +46,7 @@ import { ConfiguracoesModule } from './configuracoes/configuracoes.module';
     StatsModule,
     BannersModule,
     ConfiguracoesModule,
+    GlossarioModule,
   ],
 })
 export class AppModule {}

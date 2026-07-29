@@ -53,6 +53,8 @@ export class ReceitasController {
     @Query('lowCarb') lowCarb?: string,
     @Query('page') page?: string,
     @Query('limit') limit?: string,
+    @Query('onlyFree') onlyFree?: string,
+    @Query('summary') summary?: string,
   ) {
     // Buscar usuário se autenticado
     let user = null;
@@ -82,6 +84,8 @@ export class ReceitasController {
       user || undefined,
       page ? parseInt(page, 10) : undefined,
       limit ? parseInt(limit, 10) : undefined,
+      onlyFree === 'true',
+      summary === 'true',
     );
     
     const receitasToLog = result.data ? result.data : result;

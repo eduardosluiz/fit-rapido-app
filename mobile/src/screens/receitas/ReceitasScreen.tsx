@@ -101,6 +101,10 @@ export default function ReceitasScreen() {
       if (filtrosBusca.semLactose) params.semLactose = true;
       if (filtrosBusca.lowCarb) params.lowCarb = true;
 
+      if (user?.subscription_tier !== 'premium_fit' && user?.subscription_tier !== 'premium' && user?.email !== 'dai@gmail.com') {
+        params.onlyFree = true;
+      }
+
       const response = await api.getReceitas(params);
       
       const isPaginated = !Array.isArray(response) && response && response.data;
@@ -108,10 +112,6 @@ export default function ReceitasScreen() {
       const totalPages = isPaginated ? response.totalPages : 1;
       
       let receitasAtivas = todasReceitasRaw.filter((r: any) => r && r.ativa);
-      
-      if (user?.subscription_tier !== 'premium_fit') {
-        receitasAtivas = receitasAtivas.filter((r: any) => r.is_free === true);
-      }
       
       if (pageNum === 1) {
         setReceitas(receitasAtivas);
@@ -158,6 +158,9 @@ export default function ReceitasScreen() {
 
   const handleSearchTextChange = (text: string) => {
     setSearchText(text);
+    if (text.trim() && Object.values(filtrosBusca).some(v => v !== '' && v !== false && v !== undefined)) {
+      setFiltrosBusca({ nome: '', ingrediente: '', proteinasMin: '', tempoMaximo: '', semLactose: false, lowCarb: false });
+    }
     if (searchTimeoutRef.current) clearTimeout(searchTimeoutRef.current);
     searchTimeoutRef.current = setTimeout(() => {
       loadReceitas(text, 1);
@@ -210,6 +213,9 @@ export default function ReceitasScreen() {
             onChangeText={handleSearchTextChange}
           />
         </View>
+        <TouchableOpacity style={styles.filterButton} onPress={() => (navigation as any).navigate('Glossario')} activeOpacity={0.7}>
+          <Ionicons name="book-outline" size={24} color="#ffffff" />
+        </TouchableOpacity>
         <TouchableOpacity style={styles.filterButton} onPress={() => setBuscaAvancadaVisible(true)} activeOpacity={0.7}>
           <Ionicons name="options-outline" size={24} color="#ffffff" />
         </TouchableOpacity>
@@ -218,7 +224,12 @@ export default function ReceitasScreen() {
       <BuscaAvancada 
         visible={buscaAvancadaVisible}
         onClose={() => setBuscaAvancadaVisible(false)}
-        onSearch={(filters) => setFiltrosBusca(filters)}
+        onSearch={(filters) => {
+          setFiltrosBusca(filters);
+          if (searchText.trim() && Object.values(filters).some(v => v !== '' && v !== false && v !== undefined)) {
+            setSearchText('');
+          }
+        }}
         initialFilters={filtrosBusca}
         availableCategories={categorias}
       />
@@ -518,7 +529,7 @@ const styles = StyleSheet.create({
   horizontalScroll: { paddingLeft: 20 },
   list: { paddingBottom: 40 },
   gridItem: {
-    flex: 1,
+    width: '50%',
   },
   emptyContainer: { padding: 40, alignItems: 'center' },
   emptyText: { color: '#666', fontSize: 14 },

@@ -279,13 +279,22 @@ export default function FeedScreen() {
                 }}
               />
             </View>
-            <TouchableOpacity
-              style={styles.filterButton}
-              onPress={() => setBuscaAvancadaVisible(true)}
-              activeOpacity={0.7}
-            >
-              <Ionicons name="options-outline" size={24} color="#ffffff" />
-            </TouchableOpacity>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <TouchableOpacity
+                style={[styles.filterButton, { marginRight: 8 }]}
+                onPress={() => (navigation as any).navigate('SumarioReceitas')}
+                activeOpacity={0.7}
+              >
+                <Ionicons name="list" size={24} color="#ffffff" />
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.filterButton}
+                onPress={() => setBuscaAvancadaVisible(true)}
+                activeOpacity={0.7}
+              >
+                <Ionicons name="search-outline" size={24} color="#ffffff" />
+              </TouchableOpacity>
+            </View>
           </View>
 
           {/* Novas Receitas */}

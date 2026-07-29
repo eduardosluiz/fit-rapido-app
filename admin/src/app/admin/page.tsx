@@ -84,6 +84,8 @@ export default function AdminDashboard() {
           </div>
         </div>
 
+        {/* Removed Ferramentas do Sistema */}
+
         {/* Grid de Stats - CORES INTENSAS E SEM NEGRITO */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {statCards.map((card) => (
@@ -130,6 +132,12 @@ export default function AdminDashboard() {
               </Link>
             ))}
             <CapaLoginButton />
+            <Link href="/admin/glossario" className="flex items-center justify-between p-4 bg-white dark:bg-[#111] rounded-xl border border-[#c8921a]/5 hover:border-[#c8921a]/30 hover:shadow-sm transition-all group">
+              <span className="text-[10px] font-normal text-gray-600 dark:text-gray-400 group-hover:text-black dark:group-hover:text-white uppercase tracking-wider">INGREDIENTES DAI</span>
+              <div className="text-gray-200 group-hover:text-[#c8921a] transition-all transform group-hover:translate-x-1">
+                <Plus size={12} />
+              </div>
+            </Link>
           </div>
         </div>
       </div>
