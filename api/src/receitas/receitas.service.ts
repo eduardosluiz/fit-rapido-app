@@ -199,13 +199,13 @@ export class ReceitasService {
 
     if (search) {
       queryBuilder.andWhere(
-        '(receita.titulo ~* :searchRegex OR CAST(receita.ingredientes AS text) ~* :searchRegex OR CAST(receita.tags AS text) ~* :searchRegex)',
-        { searchRegex: `\\y${search}\\y` },
+        '(receita.titulo ILIKE :search OR CAST(receita.ingredientes AS text) ILIKE :search OR CAST(receita.tags AS text) ILIKE :search)',
+        { search: `%${search}%` },
       );
     }
 
     if (nome) {
-      queryBuilder.andWhere('receita.titulo ~* :nomeRegex', { nomeRegex: `\\y${nome}\\y` });
+      queryBuilder.andWhere('receita.titulo ILIKE :nome', { nome: `%${nome}%` });
     }
 
     if (ingrediente) {

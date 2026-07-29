@@ -5,7 +5,7 @@ export class GlossarioIngrediente {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ unique: true })
+  @Column()
   nome: string;
 
   @Column('text')
