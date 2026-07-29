@@ -1,4 +1,4 @@
-import { Injectable, Inject, forwardRef, ForbiddenException, BadRequestException } from '@nestjs/common';
+import { Injectable, Inject, forwardRef, ForbiddenException, BadRequestException, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, In } from 'typeorm';
 import { Treino } from './entities/treino.entity';
@@ -230,7 +230,7 @@ export class TreinosService {
     });
 
     if (!treino) {
-      throw new Error('Treino não encontrado');
+      throw new NotFoundException('Treino não encontrado');
     }
 
     return treino;
