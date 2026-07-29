@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 
-@Entity('glossario_ingredientes')
+@Entity('glossario_ingrediente')
 export class GlossarioIngrediente {
   @PrimaryGeneratedColumn('uuid')
   id: string;
