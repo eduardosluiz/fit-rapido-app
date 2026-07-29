@@ -14,7 +14,7 @@ interface DataTableColumn<T> {
 interface DataTableProps<T> {
   columns: DataTableColumn<T>[];
   data: T[];
-  keyExtractor: (row: T) => string;
+  keyExtractor?: (row: T) => string;
   emptyMessage?: string;
   emptyIcon?: string;
   loading?: boolean;
@@ -23,7 +23,7 @@ interface DataTableProps<T> {
 export function DataTable<T extends Record<string, any>>({
   columns,
   data,
-  keyExtractor,
+  keyExtractor = (row: T) => row.id || row._id || String(Math.random()),
   emptyMessage = 'Nenhum item encontrado',
   emptyIcon = 'bx-inbox',
   loading = false,

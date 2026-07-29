@@ -203,6 +203,7 @@ export default function GlossarioPage() {
           <DataTable 
             columns={columns} 
             data={itemsFiltrados} 
+            keyExtractor={(item) => item.id}
             emptyMessage={
               searchText 
                 ? "Nenhum ingrediente encontrado para sua busca."
