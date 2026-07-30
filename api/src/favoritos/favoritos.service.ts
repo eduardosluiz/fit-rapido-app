@@ -65,11 +65,9 @@ export class FavoritosService {
       },
     });
 
-    if (!favorito) {
-      throw new NotFoundException('Favorito não encontrado');
+    if (favorito) {
+      await this.favoritoRepository.remove(favorito);
     }
-
-    await this.favoritoRepository.remove(favorito);
   }
 
   async checkIsFavorito(usuarioId: string, itemId: string, tipo: TipoFavorito): Promise<boolean> {
@@ -81,6 +79,10 @@ export class FavoritosService {
       },
     });
     return !!favorito;
+  }
+
+  async removeAllByItemId(itemId: string): Promise<void> {
+    await this.favoritoRepository.delete({ item_id: itemId });
   }
 }
 

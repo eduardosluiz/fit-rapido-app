@@ -67,13 +67,25 @@ export default function FavoritosScreen() {
         .map(f => f.item_id);
 
       const receitasPromises = receitaIds.map(async (id) => {
-        try { return await api.getReceita(id); } catch { return null; }
+        try {
+          return await api.getReceita(id);
+        } catch {
+          // Auto-limpeza do favorito órfão no banco
+          api.removeFavorito('receita', id).catch(() => {});
+          return null;
+        }
       });
 
       const canAccessWorkouts = user?.subscription_tier === 'premium_fit';
       const treinosPromises = canAccessWorkouts 
         ? treinoIds.map(async (id) => {
-            try { return await api.getTreino(id); } catch { return null; }
+            try {
+              return await api.getTreino(id);
+            } catch {
+              // Auto-limpeza do favorito órfão no banco
+              api.removeFavorito('treino', id).catch(() => {});
+              return null;
+            }
           })
         : [];
 
