@@ -39,9 +39,9 @@ export function FileUpload({ type, value, onChange, label, accept, error, hideUr
     if (!file) return;
 
     if (type === 'video') {
-      const maxSize = 250 * 1024 * 1024; // 250MB
+      const maxSize = 2 * 1024 * 1024 * 1024; // 2GB
       if (file.size > maxSize) {
-        const msg = `O vídeo selecionado (${(file.size / (1024 * 1024)).toFixed(1)}MB) excede o limite de 250MB. Comprima o vídeo antes de enviar.`;
+        const msg = `O vídeo selecionado (${(file.size / (1024 * 1024)).toFixed(1)}MB) excede o limite de 2GB (2000MB). Comprima o vídeo antes de enviar.`;
         setUploadError(msg);
         alert(msg);
         if (fileInputRef.current) fileInputRef.current.value = '';
