@@ -254,7 +254,9 @@ export class TreinosService {
 
     // Separar categoria_ids do DTO antes de atualizar
     const { categoria_ids, ...updateData } = updateTreinoDto;
-    await this.treinoRepository.update(id, updateData);
+    
+    // Mesclar os dados novos com o objeto existente para garantir o correto funcionamento do TypeORM com colunas JSON e arrays
+    Object.assign(treino, updateData);
 
     // Atualizar categorias se fornecidas (sempre atualizar, mesmo se array vazio para remover todas)
     if (categoria_ids !== undefined) {
@@ -268,8 +270,10 @@ export class TreinosService {
       } else {
         treino.categorias = [];
       }
-      await this.treinoRepository.save(treino);
     }
+
+    // Usar .save para atualizar, disparando corretamente os listeners e serializando JSON/Arrays no PostgreSQL
+    await this.treinoRepository.save(treino);
 
     return this.findOne(id);
   }

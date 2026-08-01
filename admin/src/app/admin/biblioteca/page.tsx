@@ -55,6 +55,8 @@ export default function BibliotecaVideosPage() {
   // Estados de Manipulação
   const [uploadItems, setUploadItems] = useState<UploadItem[]>([]);
   const [isUploading, setIsUploading] = useState(false);
+  const [currentUploadIndex, setCurrentUploadIndex] = useState<number>(0);
+  const [uploadProgress, setUploadProgress] = useState<number>(0);
   const [itemToDelete, setItemToDelete] = useState<Exercicio | null>(null);
   const [newCategoryName, setNewCategoryName] = useState('');
   const [isSaving, setIsSaving] = useState(false);
@@ -169,10 +171,17 @@ export default function BibliotecaVideosPage() {
   const handleUpload = async () => {
     if (uploadItems.length === 0) return;
     setIsUploading(true);
+    setUploadProgress(0);
     const toastId = toast.loading(`Sincronizando mídias...`);
     try {
-      for (const item of uploadItems) {
-        const uploadResponse = await uploadVideo(item.file);
+      for (let i = 0; i < uploadItems.length; i++) {
+        setCurrentUploadIndex(i);
+        setUploadProgress(0);
+        const item = uploadItems[i];
+        
+        const uploadResponse = await uploadVideo(item.file, (percent) => {
+          setUploadProgress(percent);
+        });
         
         await api.createExercicioBiblioteca({
           nome: item.file.name.split('.')[0],
@@ -191,6 +200,7 @@ export default function BibliotecaVideosPage() {
       toast.error(error.message || 'Falha no upload', { id: toastId });
     } finally {
       setIsUploading(false);
+      setUploadProgress(0);
     }
   };
 
@@ -535,64 +545,100 @@ export default function BibliotecaVideosPage() {
             </div>
             
             <div className="p-10 space-y-8">
-              {uploadItems.length === 0 && (
-                <label htmlFor="file-up" className="border-2 border-dashed rounded-xl p-12 flex flex-col items-center justify-center cursor-pointer hover:border-[#c8921a] hover:bg-[#c8921a]/5 transition-all border-[#c8921a]/40 dark:border-[#c8921a]/30 group bg-gray-50/50 dark:bg-[#1a1a1a]/50">
-                  <Upload className="text-[#c8921a] mb-3 group-hover:scale-110 transition-transform" size={24} />
-                  <h3 className="text-[10px] font-black uppercase tracking-widest text-gray-800 dark:text-white">Selecionar Vídeos</h3>
-                  <input type="file" multiple accept="video/*" id="file-up" className="hidden" onChange={handleFileChange} disabled={isUploading} />
-                </label>
-              )}
-              
-              {uploadItems.length > 0 && (
-                <div className="bg-gray-50 dark:bg-[#1a1a1a] rounded-lg p-6 max-h-80 overflow-y-auto custom-scrollbar border border-gray-200 dark:border-[#333]">
-                  <div className="text-[10px] font-black text-gray-800 dark:text-white uppercase tracking-widest mb-4 border-b border-gray-200 dark:border-[#333] pb-2">Fila de Processamento ({uploadItems.length})</div>
-                  <div className="space-y-4">
-                    {uploadItems.map((item, i) => (
-                      <div key={i} className="flex flex-col gap-3 py-4 border-b border-gray-200 dark:border-[#333] last:border-0 relative">
-                        <button onClick={() => removeUploadItem(i)} className="absolute top-4 right-0 text-gray-400 hover:text-red-500 transition-colors"><X size={16} /></button>
-                        
-                        <div className="pr-6">
-                          <p className="truncate text-[11px] font-black text-gray-900 dark:text-white">{item.file.name}</p>
-                          <p className="text-[9px] font-normal text-gray-500">{(item.file.size / (1024 * 1024)).toFixed(1)}MB</p>
-                        </div>
-                        
-                        <div>
-                          <p className="text-[9px] font-black text-[#c8921a] uppercase tracking-widest mb-2">Categorias</p>
-                          <div className="flex flex-col gap-1 max-h-32 overflow-y-auto custom-scrollbar bg-white dark:bg-[#222] border border-gray-200 dark:border-[#444] rounded-md p-2">
-                            {categorias.map((cat) => (
-                              <label key={cat.id} className="flex items-center gap-2 cursor-pointer p-1.5 hover:bg-gray-50 dark:hover:bg-[#333] rounded transition-colors">
-                                <input
-                                  type="checkbox"
-                                  checked={item.categorias.includes(cat.nome)}
-                                  onChange={() => toggleItemCategory(i, cat.nome)}
-                                  className="w-3.5 h-3.5 text-[#c8921a] rounded border-gray-300 focus:ring-[#c8921a]"
-                                />
-                                <span className="text-[10px] font-normal text-gray-700 dark:text-gray-300 uppercase tracking-tighter">{cat.nome}</span>
-                              </label>
-                            ))}
-                          </div>
-                        </div>
-
-                        <label className="flex items-center gap-2 cursor-pointer mt-1 bg-white dark:bg-[#222] p-2.5 rounded-md border border-gray-200 dark:border-[#444] w-fit hover:border-[#c8921a] transition-colors">
-                          <input 
-                            type="checkbox" 
-                            checked={item.exibir_mobile}
-                            onChange={(e) => toggleExibirMobile(i, e.target.checked)}
-                            className="w-4 h-4 text-[#c8921a] rounded border-gray-400 focus:ring-[#c8921a]"
-                          />
-                          <span className="text-[10px] font-black text-gray-900 dark:text-gray-100 uppercase tracking-wide">Exibir na Biblioteca do Mobile</span>
-                        </label>
-                      </div>
-                    ))}
+              {isUploading ? (
+                <div className="flex flex-col items-center justify-center p-8 bg-gray-50/50 dark:bg-[#1a1a1a]/50 rounded-xl border border-gray-200 dark:border-[#333] space-y-6">
+                  <div className="relative w-24 h-24 flex items-center justify-center">
+                    {/* Ring background */}
+                    <svg className="w-full h-full transform -rotate-90">
+                      <circle cx="48" cy="48" r="40" className="stroke-gray-100 dark:stroke-[#222]" strokeWidth="6" fill="transparent" />
+                      <circle cx="48" cy="48" r="40" className="stroke-[#c8921a]" strokeWidth="6" fill="transparent"
+                        strokeDasharray={2 * Math.PI * 40}
+                        strokeDashoffset={2 * Math.PI * 40 * (1 - uploadProgress / 100)}
+                        strokeLinecap="round" />
+                    </svg>
+                    <span className="absolute text-xs font-black text-gray-900 dark:text-white">{uploadProgress}%</span>
                   </div>
+                  
+                  <div className="text-center space-y-2">
+                    <h4 className="text-[10px] font-black text-gray-900 dark:text-white uppercase tracking-widest">
+                      Enviando vídeo {currentUploadIndex + 1} de {uploadItems.length}
+                    </h4>
+                    <p className="text-[10px] font-normal text-gray-500 truncate max-w-xs mx-auto">
+                      {uploadItems[currentUploadIndex]?.file.name}
+                    </p>
+                  </div>
+
+                  {/* Horizontal progress bar */}
+                  <div className="w-full bg-gray-200 dark:bg-[#333] h-1.5 rounded-full overflow-hidden">
+                    <div className="bg-[#c8921a] h-full transition-all duration-300 rounded-full" style={{ width: `${uploadProgress}%` }} />
+                  </div>
+                  
+                  <p className="text-[9px] font-black text-[#c8921a] uppercase tracking-widest animate-pulse">
+                    Por favor, não feche esta janela ou recarregue a página
+                  </p>
                 </div>
+              ) : (
+                <>
+                  {uploadItems.length === 0 && (
+                    <label htmlFor="file-up" className="border-2 border-dashed rounded-xl p-12 flex flex-col items-center justify-center cursor-pointer hover:border-[#c8921a] hover:bg-[#c8921a]/5 transition-all border-[#c8921a]/40 dark:border-[#c8921a]/30 group bg-gray-50/50 dark:bg-[#1a1a1a]/50">
+                      <Upload className="text-[#c8921a] mb-3 group-hover:scale-110 transition-transform" size={24} />
+                      <h3 className="text-[10px] font-black uppercase tracking-widest text-gray-800 dark:text-white">Selecionar Vídeos</h3>
+                      <input type="file" multiple accept="video/*" id="file-up" className="hidden" onChange={handleFileChange} disabled={isUploading} />
+                    </label>
+                  )}
+                  
+                  {uploadItems.length > 0 && (
+                    <div className="bg-gray-50 dark:bg-[#1a1a1a] rounded-lg p-6 max-h-80 overflow-y-auto custom-scrollbar border border-gray-200 dark:border-[#333]">
+                      <div className="text-[10px] font-black text-gray-800 dark:text-white uppercase tracking-widest mb-4 border-b border-gray-200 dark:border-[#333] pb-2">Fila de Processamento ({uploadItems.length})</div>
+                      <div className="space-y-4">
+                        {uploadItems.map((item, i) => (
+                          <div key={i} className="flex flex-col gap-3 py-4 border-b border-gray-200 dark:border-[#333] last:border-0 relative">
+                            <button onClick={() => removeUploadItem(i)} className="absolute top-4 right-0 text-gray-400 hover:text-red-500 transition-colors"><X size={16} /></button>
+                            
+                            <div className="pr-6">
+                              <p className="truncate text-[11px] font-black text-gray-900 dark:text-white">{item.file.name}</p>
+                              <p className="text-[9px] font-normal text-gray-500">{(item.file.size / (1024 * 1024)).toFixed(1)}MB</p>
+                            </div>
+                            
+                            <div>
+                              <p className="text-[9px] font-black text-[#c8921a] uppercase tracking-widest mb-2">Categorias</p>
+                              <div className="flex flex-col gap-1 max-h-32 overflow-y-auto custom-scrollbar bg-white dark:bg-[#222] border border-gray-200 dark:border-[#444] rounded-md p-2">
+                                {categorias.map((cat) => (
+                                  <label key={cat.id} className="flex items-center gap-2 cursor-pointer p-1.5 hover:bg-gray-50 dark:hover:bg-[#333] rounded transition-colors">
+                                    <input
+                                      type="checkbox"
+                                      checked={item.categorias.includes(cat.nome)}
+                                      onChange={() => toggleItemCategory(i, cat.nome)}
+                                      className="w-3.5 h-3.5 text-[#c8921a] rounded border-gray-300 focus:ring-[#c8921a]"
+                                    />
+                                    <span className="text-[10px] font-normal text-gray-700 dark:text-gray-300 uppercase tracking-tighter">{cat.nome}</span>
+                                  </label>
+                                ))}
+                              </div>
+                            </div>
+
+                            <label className="flex items-center gap-2 cursor-pointer mt-1 bg-white dark:bg-[#222] p-2.5 rounded-md border border-gray-200 dark:border-[#444] w-fit hover:border-[#c8921a] transition-colors">
+                              <input 
+                                type="checkbox" 
+                                checked={item.exibir_mobile}
+                                onChange={(e) => toggleExibirMobile(i, e.target.checked)}
+                                className="w-4 h-4 text-[#c8921a] rounded border-gray-400 focus:ring-[#c8921a]"
+                              />
+                              <span className="text-[10px] font-black text-gray-900 dark:text-gray-100 uppercase tracking-wide">Exibir na Biblioteca do Mobile</span>
+                            </label>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </>
               )}
             </div>
 
-            {uploadItems.length > 0 && (
+            {uploadItems.length > 0 && !isUploading && (
               <div className="px-10 py-5 bg-gray-50 dark:bg-[#1a1a1a] flex justify-end gap-4 border-t border-gray-200 dark:border-[#333]">
-                <button onClick={() => setIsUploadModalOpen(false)} disabled={isUploading} className="px-6 py-2 rounded-md border border-gray-400 dark:border-[#444] bg-white dark:bg-[#222] text-[10px] font-black uppercase tracking-widest text-gray-800 dark:text-gray-100 hover:bg-white transition-colors">Cancelar</button>
-                <button onClick={handleUpload} disabled={isUploading || uploadItems.length === 0} className="px-8 py-2 rounded-md bg-[#c8921a] text-white text-[10px] font-black uppercase disabled:opacity-50 hover:bg-[#b07d14] transition-colors">{isUploading ? 'Processando...' : 'Iniciar Upload'}</button>
+                <button onClick={() => setIsUploadModalOpen(false)} className="px-6 py-2 rounded-md border border-gray-400 dark:border-[#444] bg-white dark:bg-[#222] text-[10px] font-black uppercase tracking-widest text-gray-800 dark:text-gray-100 hover:bg-white transition-colors">Cancelar</button>
+                <button onClick={handleUpload} className="px-8 py-2 rounded-md bg-[#c8921a] text-white text-[10px] font-black uppercase hover:bg-[#b07d14] transition-colors">Iniciar Upload</button>
               </div>
             )}
           </div>
