@@ -29,6 +29,11 @@ async function bootstrap() {
   });
   
   const port = process.env.PORT || 3001;
-  await app.listen(port);
+  const server = await app.listen(port);
+  
+  // Configurar timeouts do servidor para 30 minutos, permitindo uploads de arquivos grandes (vídeos de 1GB+)
+  server.setTimeout(30 * 60 * 1000);
+  server.keepAliveTimeout = 30 * 60 * 1000;
+  server.headersTimeout = 31 * 60 * 1000;
 }
 bootstrap();
