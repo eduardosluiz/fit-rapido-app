@@ -54,6 +54,7 @@ export default function ReceitasScreen() {
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const translateY = useRef(new Animated.Value(30)).current;
   const searchTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const pendingCategoryNameRef = useRef<string | null>(null);
   
   useEffect(() => {
     Animated.parallel([
@@ -67,14 +68,66 @@ export default function ReceitasScreen() {
   }, []);
   
   useEffect(() => {
-    const params = route.params as { searchQuery?: string } | undefined;
-    if (params?.searchQuery) setSearchText(params.searchQuery);
-  }, [route.params]);
+    const params = route.params as { 
+      searchQuery?: string;
+      categoriaId?: string;
+      categoriaNome?: string;
+      semGluten?: boolean;
+      semLactose?: boolean;
+    } | undefined;
+    
+    if (params) {
+      if (params.searchQuery !== undefined) {
+        setSearchText(params.searchQuery);
+      } else {
+        setSearchText('');
+      }
+      
+      if (params.categoriaId !== undefined) {
+        setSelectedCategoria(params.categoriaId);
+      } else if (params.categoriaNome !== undefined) {
+        if (categorias.length > 0) {
+          const found = categorias.find((c: any) => 
+            c.nome.toLowerCase().includes(params.categoriaNome!.toLowerCase())
+          );
+          if (found) {
+            setSelectedCategoria(found.id);
+          } else {
+            setSelectedCategoria(null);
+          }
+        } else {
+          pendingCategoryNameRef.current = params.categoriaNome;
+        }
+      } else {
+        setSelectedCategoria(null);
+      }
+      
+      if (params.semGluten !== undefined || params.semLactose !== undefined) {
+        setFiltrosBusca({
+          semGluten: params.semGluten || false,
+          semLactose: params.semLactose || false,
+        });
+      } else {
+        setFiltrosBusca({});
+      }
+    }
+  }, [route.params, categorias]);
 
   const loadCategorias = useCallback(async () => {
     try {
       const data = await api.getCategorias();
-      setCategorias(data.filter((cat: any) => cat.ativa !== false));
+      const activeCats = data.filter((cat: any) => cat.ativa !== false);
+      setCategorias(activeCats);
+      
+      if (pendingCategoryNameRef.current) {
+        const found = activeCats.find((c: any) => 
+          c.nome.toLowerCase().includes(pendingCategoryNameRef.current!.toLowerCase())
+        );
+        if (found) {
+          setSelectedCategoria(found.id);
+        }
+        pendingCategoryNameRef.current = null;
+      }
     } catch (error) {
       console.error('Erro ao carregar categorias:', error);
     }
@@ -99,6 +152,7 @@ export default function ReceitasScreen() {
       if (filtrosBusca.proteinasMin) params.proteinasMin = filtrosBusca.proteinasMin;
       if (filtrosBusca.tempoMaximo) params.tempoMaximo = filtrosBusca.tempoMaximo;
       if (filtrosBusca.semLactose) params.semLactose = true;
+      if (filtrosBusca.semGluten) params.semGluten = true;
       if (filtrosBusca.lowCarb) params.lowCarb = true;
 
       if (user?.subscription_tier !== 'premium_fit' && user?.subscription_tier !== 'premium' && user?.email !== 'dai@gmail.com') {

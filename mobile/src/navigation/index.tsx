@@ -6,6 +6,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
 import { useAuth } from '../contexts/AuthContext';
 import { useNotifications } from '../hooks/useNotifications';
+import colors from '../constants/colors';
 
 // Auth Screens
 import LoginScreen from '../screens/auth/LoginScreen';
@@ -190,7 +191,7 @@ function TabsNavigator() {
       initialRouteName="Feed"
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: '#c8921a',
+        tabBarActiveTintColor: colors.primary,
         tabBarInactiveTintColor: '#666',
         tabBarStyle: {
           backgroundColor: '#1a1a1a',

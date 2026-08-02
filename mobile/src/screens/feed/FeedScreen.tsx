@@ -17,7 +17,7 @@ import { api, Receita, Treino, getImageUrl } from '../../services/api';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import ScreenBanner from '../../components/ScreenBanner';
 import BuscaAvancada, { BuscaFilters } from '../../components/BuscaAvancada';
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons, FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons';
 import colors from '../../constants/colors';
 import fonts from '../../constants/fonts';
 import AppBackground from '../../components/AppBackground';
@@ -53,6 +53,78 @@ export default function FeedScreen() {
   
   const scrollViewRef = useRef<ScrollView>(null);
   const [currentBannerIndex, setCurrentBannerIndex] = useState(0);
+
+  const shortcuts = [
+    {
+      id: 'proteicas',
+      label: 'Proteicas',
+      iconType: 'MaterialCommunityIcons',
+      iconName: 'arm-flex',
+      onPress: () => (navigation as any).navigate('Receitas', { categoriaNome: 'proteica' }),
+    },
+    {
+      id: 'doces',
+      label: 'Doces',
+      iconType: 'MaterialCommunityIcons',
+      iconName: 'cookie',
+      onPress: () => (navigation as any).navigate('Receitas', { categoriaNome: 'doce' }),
+    },
+    {
+      id: 'pre-treino',
+      label: 'Pré treino',
+      iconType: 'Ionicons',
+      iconName: 'flash',
+      onPress: () => (navigation as any).navigate('Receitas', { categoriaNome: 'pré treino' }),
+    },
+    {
+      id: 'sem-gluten',
+      label: 'Sem glúten',
+      iconType: 'MaterialCommunityIcons',
+      iconName: 'corn',
+      onPress: () => (navigation as any).navigate('Receitas', { semGluten: true }),
+    },
+    {
+      id: 'sem-lactose',
+      label: 'Sem lactose',
+      iconType: 'MaterialCommunityIcons',
+      iconName: 'water-off',
+      onPress: () => (navigation as any).navigate('Receitas', { semLactose: true }),
+    },
+    {
+      id: 'sumario',
+      label: 'Sumário',
+      iconType: 'Ionicons',
+      iconName: 'list',
+      onPress: () => (navigation as any).navigate('SumarioReceitas'),
+    },
+    {
+      id: 'filtros',
+      label: 'Filtros',
+      iconType: 'Ionicons',
+      iconName: 'search-outline',
+      onPress: () => setBuscaAvancadaVisible(true),
+    },
+  ];
+
+  const renderShortcut = (item: typeof shortcuts[0]) => {
+    const IconComponent = 
+      item.iconType === 'MaterialCommunityIcons' ? MaterialCommunityIcons :
+      item.iconType === 'FontAwesome5' ? FontAwesome5 : Ionicons;
+      
+    return (
+      <TouchableOpacity 
+        key={item.id} 
+        style={styles.shortcutItem} 
+        onPress={item.onPress}
+        activeOpacity={0.7}
+      >
+        <View style={styles.filterButton}>
+          <IconComponent name={item.iconName as any} size={24} color={colors.primary} />
+        </View>
+        <Text style={styles.shortcutLabel} numberOfLines={2}>{item.label}</Text>
+      </TouchableOpacity>
+    );
+  };
 
   const loadFeed = useCallback(async () => {
     try {
@@ -259,42 +331,21 @@ export default function FeedScreen() {
             )}
           </View>
 
-          {/* Barra de Busca Rápida - Estilizada como na página de Receitas */}
-          <View style={styles.searchRow}>
-            <View style={styles.searchContainer}>
-              <Ionicons name="search" size={18} color={colors.textMuted} />
-              <TextInput
-                style={styles.searchInput}
-                placeholder="Buscar receitas..."
-                placeholderTextColor={colors.textMuted}
-                value={buscaRapida}
-                onChangeText={setBuscaRapida}
-                returnKeyType="search"
-                onSubmitEditing={() => {
-                  if (buscaRapida.trim()) {
-                    (navigation as any).navigate('Receitas', { 
-                      searchQuery: buscaRapida.trim() 
-                    });
-                  }
-                }}
-              />
+          {/* Seção de Acesso Rápido */}
+          <View style={[styles.section, { marginBottom: 16 }]}>
+            <View style={[styles.sectionHeader, { marginBottom: 4, marginTop: 6 }]}>
+              <View style={styles.sectionTitleContainer}>
+                <Text style={styles.acessoRapidoTitle}>Acesso rápido</Text>
+              </View>
             </View>
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <TouchableOpacity
-                style={[styles.filterButton, { marginRight: 8 }]}
-                onPress={() => (navigation as any).navigate('SumarioReceitas')}
-                activeOpacity={0.7}
-              >
-                <Ionicons name="list" size={24} color="#ffffff" />
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.filterButton}
-                onPress={() => setBuscaAvancadaVisible(true)}
-                activeOpacity={0.7}
-              >
-                <Ionicons name="search-outline" size={24} color="#ffffff" />
-              </TouchableOpacity>
-            </View>
+            <ScrollView 
+              horizontal 
+              showsHorizontalScrollIndicator={false}
+              style={styles.horizontalScroll}
+              contentContainerStyle={styles.acessoRapidoScroll}
+            >
+              {shortcuts.map(renderShortcut)}
+            </ScrollView>
           </View>
 
           {/* Novas Receitas */}
@@ -349,12 +400,13 @@ export default function FeedScreen() {
           onClose={() => setBuscaAvancadaVisible(false)}
           onSearch={(filters) => {
             setFiltrosBusca(filters);
+            setBuscaAvancadaVisible(false);
             (navigation as any).navigate('Receitas', {
-              searchQuery: buscaRapida.trim() || undefined,
+              searchQuery: filters.nome || undefined,
+              categoriaId: filters.categoria || undefined,
+              semLactose: filters.semLactose || false,
+              semGluten: filters.semGluten || false,
             });
-            // We can't easily pass the entire object via navigation params without stringifying, 
-            // but ReceitasScreen now has its own advanced filter logic.
-            // Ideally they should use advanced filters within the respective screens.
           }}
           initialFilters={filtrosBusca}
         />
@@ -465,24 +517,20 @@ const styles = StyleSheet.create({
   scrollContent: {
     paddingBottom: 100,
   },
-  searchRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 20,
-    marginTop: 20,
-    marginBottom: 30,
-    gap: 10,
+  acessoRapidoTitle: {
+    fontSize: 15,
+    fontFamily: fonts.title,
+    color: '#ffffff',
+    marginBottom: 0,
   },
-  searchContainer: { 
-    flex: 1,
-    flexDirection: 'row', 
-    alignItems: 'center', 
-    backgroundColor: 'rgba(15,15,15,0.75)',
-    paddingHorizontal: 15, 
-    height: 50, 
-    borderRadius: 16, 
-    borderWidth: 1.2,
-    borderColor: 'rgba(231,196,138,0.35)'
+  acessoRapidoScroll: {
+    paddingRight: 20,
+    flexDirection: 'row',
+  },
+  shortcutItem: {
+    alignItems: 'center',
+    width: 52,
+    marginRight: 4,
   },
   filterButton: {
     width: 50,
@@ -494,7 +542,13 @@ const styles = StyleSheet.create({
     borderWidth: 1.2,
     borderColor: 'rgba(231,196,138,0.35)',
   },
-  searchInput: { flex: 1, color: '#fff', marginLeft: 10, fontSize: 14, outlineStyle: 'none' as any },
+  shortcutLabel: {
+    fontSize: 10,
+    fontFamily: fonts.body,
+    color: '#ffffff',
+    textAlign: 'center',
+    marginTop: 4,
+  },
   loadingContainer: {
     flex: 1,
     justifyContent: 'center',
@@ -507,7 +561,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
   section: {
-    marginBottom: 32,
+    marginBottom: 20,
   },
   sectionHeader: {
     flexDirection: 'row',
@@ -520,7 +574,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   sectionTitle: {
-    fontSize: 20,
+    fontSize: 16,
     fontFamily: fonts.title,
     color: '#ffffff',
     marginBottom: 6,
@@ -533,7 +587,7 @@ const styles = StyleSheet.create({
   },
   seeAllText: {
     fontSize: 14,
-    color: '#c8921a',
+    color: colors.primary,
     fontWeight: '600',
   },
   horizontalScroll: {

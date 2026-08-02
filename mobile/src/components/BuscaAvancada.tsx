@@ -33,6 +33,7 @@ export interface BuscaFilters {
   proteinasMin?: number;
   tempoMaximo?: number;
   semLactose?: boolean;
+  semGluten?: boolean;
   lowCarb?: boolean;
 }
 
@@ -210,6 +211,17 @@ export default function BuscaAvancada({
                   onValueChange={(value) => setFilters({ ...filters, semLactose: value })}
                   trackColor={{ false: colors.border, true: colors.primary }}
                   thumbColor={filters.semLactose ? '#fff' : '#f4f3f4'}
+                />
+              </View>
+
+              {/* Sem glúten */}
+              <View style={styles.switchGroup}>
+                <Text style={styles.switchLabel}>Sem glúten</Text>
+                <Switch
+                  value={filters.semGluten || false}
+                  onValueChange={(value) => setFilters({ ...filters, semGluten: value })}
+                  trackColor={{ false: colors.border, true: colors.primary }}
+                  thumbColor={filters.semGluten ? '#fff' : '#f4f3f4'}
                 />
               </View>
 

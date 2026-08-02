@@ -135,6 +135,7 @@ export class ReceitasService {
     tempoMaximo?: number, // Para filtrar receitas rápidas (ex: 10 minutos)
     proteinasMin?: number, // Quantidade mínima de proteína em gramas
     semLactose?: boolean, // Filtrar receitas sem lactose
+    semGluten?: boolean, // Filtrar receitas sem glúten
     lowCarb?: boolean, // Filtrar receitas low carb
     user?: User, // Usuário atual para filtrar por plano
     page?: number,
@@ -260,6 +261,13 @@ export class ReceitasService {
       queryBuilder.andWhere(
         '(CAST(receita.tags AS text) ILIKE :semLactose OR categorias.nome ILIKE :semLactose)',
         { semLactose: '%sem lactose%' },
+      );
+    }
+
+    if (semGluten) {
+      queryBuilder.andWhere(
+        '(CAST(receita.tags AS text) ILIKE :semGluten OR CAST(receita.tags AS text) ILIKE :semGlutenAccent OR categorias.nome ILIKE :semGluten OR categorias.nome ILIKE :semGlutenAccent)',
+        { semGluten: '%sem gluten%', semGlutenAccent: '%sem glúten%' },
       );
     }
 
