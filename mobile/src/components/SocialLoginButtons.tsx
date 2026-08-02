@@ -15,9 +15,10 @@ GoogleSignin.configure({
 
 interface Props {
   onLoading: (isLoading: boolean) => void;
+  isSignUp?: boolean;
 }
 
-export default function SocialLoginButtons({ onLoading }: Props) {
+export default function SocialLoginButtons({ onLoading, isSignUp = false }: Props) {
   const { socialLogin } = useAuth();
 
   const handleAppleLogin = async () => {
@@ -65,19 +66,23 @@ export default function SocialLoginButtons({ onLoading }: Props) {
     <View style={styles.container}>
       <View style={styles.divider}>
         <View style={styles.line} />
-        <Text style={styles.dividerText}>ou entre com</Text>
+        <Text style={styles.dividerText}>{isSignUp ? 'ou cadastre-se com' : 'ou entre com'}</Text>
         <View style={styles.line} />
       </View>
       
       <View style={styles.buttonRow}>
         <TouchableOpacity style={styles.socialButton} onPress={handleAppleLogin} activeOpacity={0.8}>
           <Ionicons name="logo-apple" size={20} color="#ffffff" style={{ marginRight: 10 }} />
-          <Text style={styles.socialButtonText}>Continuar com Apple</Text>
+          <Text style={styles.socialButtonText}>
+            {isSignUp ? 'Cadastrar com Apple' : 'Continuar com Apple'}
+          </Text>
         </TouchableOpacity>
         
         <TouchableOpacity style={styles.socialButton} onPress={handleGoogleLogin} activeOpacity={0.8}>
           <Ionicons name="logo-google" size={18} color="#ffffff" style={{ marginRight: 10 }} />
-          <Text style={styles.socialButtonText}>Continuar com Google</Text>
+          <Text style={styles.socialButtonText}>
+            {isSignUp ? 'Cadastrar com Google' : 'Continuar com Google'}
+          </Text>
         </TouchableOpacity>
       </View>
     </View>

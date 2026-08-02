@@ -1,7 +1,10 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Platform } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { Ionicons } from '@expo/vector-icons';
+import colors from '../../constants/colors';
+import fonts from '../../constants/fonts';
 import { api } from '../../services/api';
 
 export default function TermsOfServiceScreen() {
@@ -14,7 +17,7 @@ export default function TermsOfServiceScreen() {
 APLICATIVO FIT & RÁPIDO — RECEITAS E TREINOS
 Última atualização: 27 de Julho de 2026. Versão 1.0.
 
-Estes Termos de Uso ("Termos") regulam a relação entre FIT E RAPIDO, titular e responsável ("Responsável") pela operação do aplicativo Fit & Rápido ("Aplicativo", "Plataforma"), e o usuário que realizar cadastro e assinatura do serviço ("Usuário", "Assinante"). Ao criar uma conta, contratar a assinatura ou utilizar qualquer funcionalidade do Aplicativo, o Usuário declara ter lido, compreendido e aceitado integralmente estes Termos. Caso não concorde com qualquer disposição aqui prevista, o Usuário não deverá utilizar o Aplicativo.
+Estes Termos de Uso regulam a relação entre Daiane Pohlmann, titular e responsável pela operação do aplicativo Fit & Rápido, e o usuário que realizar cadastro e assinatura do serviço. Ao criar uma conta, contratar a assinatura ou utilizar qualquer funcionalidade do Aplicativo, o Usuário declara ter lido, compreendido e aceitado integralmente estes Termos. Caso não concorde com qualquer disposição aqui prevista, o Usuário não deverá utilizar o Aplicativo.
 
 1. Objetivo do Aplicativo
 O Aplicativo disponibiliza, mediante assinatura, conteúdos de:
@@ -96,26 +99,102 @@ Ao clicar em "Li e Aceito" ou equivalente, o Usuário declara que leu integralme
     setLoading(false);
   }, []);
 
+  const renderParagraphBody = (text: string) => {
+    if (text.startsWith('-')) {
+      const listItems = text.split('\n').map((item, itemIdx) => {
+        const itemText = item.replace(/^-\s*/, '').trim();
+        return (
+          <View key={itemIdx} style={styles.listItemRow}>
+            <Text style={styles.listBullet}>•</Text>
+            <Text style={styles.listItemText}>{itemText}</Text>
+          </View>
+        );
+      });
+      return <View style={styles.listContainer}>{listItems}</View>;
+    }
+
+    return (
+      <Text style={styles.paragraph}>
+        {text}
+      </Text>
+    );
+  };
+
+  const renderContent = () => {
+    if (!content) return null;
+
+    return content.split('\n\n').map((p, index) => {
+      const trimmed = p.trim();
+      if (!trimmed) return null;
+
+      const lines = trimmed.split('\n');
+      const firstLine = lines[0].trim();
+
+      const isMainTitle = firstLine.startsWith('TERMOS DE USO') || firstLine.startsWith('APLICATIVO FIT');
+      const isVersionInfo = firstLine.startsWith('Última atualização');
+      const isSectionHeader = firstLine.match(/^\d+\.\s/) || firstLine.match(/^\d+\.\d+\.\s/);
+
+      if (isMainTitle) {
+        return (
+          <Text key={index} style={styles.mainTitle}>
+            {trimmed}
+          </Text>
+        );
+      }
+
+      if (isVersionInfo) {
+        return (
+          <Text key={index} style={styles.versionInfo}>
+            {trimmed}
+          </Text>
+        );
+      }
+
+      if (isSectionHeader) {
+        const remainingText = lines.slice(1).join('\n').trim();
+        return (
+          <View key={index} style={{ marginBottom: 16 }}>
+            <Text style={styles.sectionHeader}>{firstLine}</Text>
+            {remainingText ? renderParagraphBody(remainingText) : null}
+          </View>
+        );
+      }
+
+      return (
+        <View key={index}>
+          {renderParagraphBody(trimmed)}
+        </View>
+      );
+    });
+  };
+
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.container} edges={['top', 'bottom']}>
+      {/* Header Premium */}
       <View style={styles.header}>
         <TouchableOpacity
           onPress={() => navigation.goBack()}
           style={styles.backButton}
+          activeOpacity={0.7}
         >
-          <Text style={styles.backIcon}>←</Text>
+          <Ionicons name="chevron-back" size={24} color={colors.primary} />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Termos de Uso</Text>
-        <View style={styles.backButton} />
+        <View style={{ width: 40 }} />
       </View>
 
-      <ScrollView contentContainerStyle={styles.content}>
+      <ScrollView 
+        contentContainerStyle={styles.scrollContent} 
+        showsVerticalScrollIndicator={false}
+      >
         {loading ? (
           <View style={styles.loadingContainer}>
             <Text style={styles.loadingText}>Carregando...</Text>
           </View>
         ) : (
-          <Text style={styles.text}>{content}</Text>
+          <View style={styles.contentContainer}>
+            {renderContent()}
+          </View>
         )}
       </ScrollView>
     </SafeAreaView>
@@ -125,35 +204,43 @@ Ao clicar em "Li e Aceito" ou equivalente, o Usuário declara que leu integralme
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#0f0f0f',
+    backgroundColor: colors.background,
   },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    padding: 16,
-    backgroundColor: '#1a1a1a',
+    paddingHorizontal: 16,
+    paddingVertical: 14,
+    backgroundColor: 'rgba(28, 27, 30, 0.95)',
     borderBottomWidth: 1,
-    borderBottomColor: '#333',
+    borderBottomColor: 'rgba(231, 196, 138, 0.1)',
   },
   backButton: {
     width: 40,
     height: 40,
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  backIcon: {
-    fontSize: 24,
-    color: '#c8921a',
-    fontWeight: 'bold',
+    borderRadius: 20,
+    backgroundColor: 'rgba(255, 210, 111, 0.05)',
   },
   headerTitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: '#fff',
+    fontSize: 18,
+    fontFamily: fonts.title,
+    color: '#ffffff',
+    textAlign: 'center',
   },
-  content: {
-    padding: 16,
+  scrollContent: {
+    flexGrow: 1,
+    paddingBottom: 40,
+  },
+  contentContainer: {
+    padding: 20,
+    backgroundColor: 'rgba(35, 33, 41, 0.3)',
+    borderRadius: 16,
+    margin: 16,
+    borderWidth: 1,
+    borderColor: 'rgba(231, 196, 138, 0.08)',
   },
   loadingContainer: {
     flex: 1,
@@ -162,13 +249,62 @@ const styles = StyleSheet.create({
     padding: 32,
   },
   loadingText: {
-    color: '#999',
+    color: '#8A8892',
+    fontFamily: fonts.body,
     fontSize: 16,
   },
-  text: {
-    fontSize: 15,
-    color: '#fff',
+  mainTitle: {
+    fontSize: 18,
+    fontFamily: fonts.title,
+    color: colors.primary,
+    textAlign: 'center',
+    marginBottom: 8,
     lineHeight: 24,
+  },
+  versionInfo: {
+    fontSize: 12,
+    fontFamily: fonts.body,
+    color: '#8A8892',
+    textAlign: 'center',
+    marginBottom: 24,
+  },
+  sectionHeader: {
+    fontSize: 15,
+    fontFamily: fonts.bodySemiBold,
+    color: '#ffffff',
+    marginTop: 20,
+    marginBottom: 10,
+    lineHeight: 20,
+  },
+  paragraph: {
+    fontSize: 13.5,
+    fontFamily: fonts.body,
+    color: '#ffffff',
+    lineHeight: 21,
+    marginBottom: 14,
+    textAlign: 'justify',
+  },
+  listContainer: {
+    marginBottom: 14,
+    paddingLeft: 8,
+  },
+  listItemRow: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    marginBottom: 6,
+  },
+  listBullet: {
+    fontSize: 14,
+    color: colors.primary,
+    marginRight: 8,
+    lineHeight: 18,
+  },
+  listItemText: {
+    flex: 1,
+    fontSize: 13.5,
+    fontFamily: fonts.body,
+    color: '#ffffff',
+    lineHeight: 19,
   },
 });
 

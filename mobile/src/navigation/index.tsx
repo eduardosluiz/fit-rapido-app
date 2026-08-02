@@ -77,22 +77,12 @@ function AuthNavigator() {
       <AuthStack.Screen
         name="PrivacyPolicy"
         component={PrivacyPolicyScreen}
-        options={{
-          title: 'Política de Privacidade',
-          headerShown: true,
-          headerStyle: { backgroundColor: '#1a1a1a' },
-          headerTintColor: '#c8921a',
-        }}
+        options={{ headerShown: false }}
       />
       <AuthStack.Screen
         name="TermsOfService"
         component={TermsOfServiceScreen}
-        options={{
-          title: 'Termos de Uso',
-          headerShown: true,
-          headerStyle: { backgroundColor: '#1a1a1a' },
-          headerTintColor: '#c8921a',
-        }}
+        options={{ headerShown: false }}
       />
     </AuthStack.Navigator>
   );
@@ -299,20 +289,12 @@ function MainNavigator() {
       <MainStack.Screen
         name="PrivacyPolicy"
         component={PrivacyPolicyScreen}
-        options={{
-          title: 'Política de Privacidade',
-          headerStyle: { backgroundColor: '#1a1a1a' },
-          headerTintColor: '#c8921a',
-        }}
+        options={{ headerShown: false }}
       />
       <MainStack.Screen
         name="TermsOfService"
         component={TermsOfServiceScreen}
-        options={{
-          title: 'Termos de Uso',
-          headerStyle: { backgroundColor: '#1a1a1a' },
-          headerTintColor: '#c8921a',
-        }}
+        options={{ headerShown: false }}
       />
       <MainStack.Screen
         name="NotificationSettings"

@@ -1,7 +1,10 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Platform } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { Ionicons } from '@expo/vector-icons';
+import colors from '../../constants/colors';
+import fonts from '../../constants/fonts';
 import { api } from '../../services/api';
 
 export default function PrivacyPolicyScreen() {
@@ -10,112 +13,277 @@ export default function PrivacyPolicyScreen() {
   const [loading, setLoading] = React.useState(true);
 
   React.useEffect(() => {
-    setContent(`TERMOS DE USO, ISENÇÃO DE RESPONSABILIDADE E CONDIÇÕES GERAIS
-APLICATIVO FIT & RÁPIDO — RECEITAS E TREINOS
+    setContent(`POLÍTICA DE PRIVACIDADE — APLICATIVO FIT & RÁPIDO
 Última atualização: 27 de Julho de 2026. Versão 1.0.
 
-Estes Termos de Uso ("Termos") regulam a relação entre FIT E RAPIDO, titular e responsável ("Responsável") pela operação do aplicativo Fit & Rápido ("Aplicativo", "Plataforma"), e o usuário que realizar cadastro e assinatura do serviço ("Usuário", "Assinante"). Ao criar uma conta, contratar a assinatura ou utilizar qualquer funcionalidade do Aplicativo, o Usuário declara ter lido, compreendido e aceitado integralmente estes Termos. Caso não concorde com qualquer disposição aqui prevista, o Usuário não deverá utilizar o Aplicativo.
+1. INTRODUÇÃO
+A Fit & Rápido respeita sua privacidade e está comprometida em proteger seus dados pessoais. Esta Política de Privacidade explica como coletamos, usamos, compartilhamos e protegemos suas informações quando você utiliza nosso aplicativo móvel e serviços relacionados.
 
-1. Objetivo do Aplicativo
-O Aplicativo disponibiliza, mediante assinatura, conteúdos de:
-- receitas culinárias e organização alimentar;
-- vídeos de treinos físicos e conteúdos motivacionais;
-- materiais educacionais sobre hábitos saudáveis e qualidade de vida.
-Todo o conteúdo tem caráter exclusivamente informativo e educativo. O Aplicativo não presta serviços médicos, nutricionais, fisioterapêuticos ou de educação física, tampouco realiza consultas, avaliações, diagnósticos ou prescrições individualizadas.
+Ao usar o Fit & Rápido, você concorda com as práticas descritas nesta política. Se não concordar, por favor, não utilize nossos serviços.
 
-2. Ausência de Atendimento Profissional
-O Usuário declara estar ciente de que a Responsável:
-- não é médica;
-- não é nutricionista, nem possui registro em Conselho Regional de Nutricionistas (CRN);
-- não é profissional de Educação Física, nem possui registro no CREF, atuando no conteúdo audiovisual apenas como executora/demonstradora dos treinos;
-- não realiza consultas individuais, diagnósticos ou prescrições de tratamento.
-Os treinos disponibilizados são elaborados por profissional de Educação Física terceirizado e devidamente habilitado, com caráter genérico, sem considerar histórico de saúde, lesões ou objetivos individuais de cada Usuário. As informações do Aplicativo não substituem, em nenhuma hipótese, acompanhamento presencial ou remoto por profissionais habilitados. Em caso de dúvida sobre saúde, alimentação, doenças, restrições alimentares, gestação, amamentação, lesões, uso de medicamentos ou qualquer condição clínica, o Usuário deverá procurar acompanhamento profissional individual antes de utilizar o conteúdo.
+2. INFORMAÇÕES QUE COLETAMOS
 
-3. Receitas e Informações Nutricionais
-As receitas têm finalidade culinária. As informações nutricionais apresentadas são estimativas calculadas automaticamente com auxílio de ferramenta de Inteligência Artificial a partir dos ingredientes e quantidades informados, podendo variar conforme marca, procedência, modo de preparo e porção efetivamente utilizada. O Aplicativo não garante precisão absoluta desses valores. Usuários com restrições alimentares, alergias, intolerâncias, diabetes ou qualquer outra condição clínica devem validar as receitas com nutricionista ou médico antes do consumo, sendo o Usuário integralmente responsável por essa verificação.
+2.1. Informações Fornecidas por Você
+- Dados de Cadastro: Nome completo, endereço de e-mail, senha (armazenada de forma criptografada)
+- Dados de Perfil: Foto de perfil (opcional), preferências alimentares, objetivos de treino
+- Dados de Assinatura: Informações sobre planos contratados, histórico de pagamentos (processados pelas lojas Apple App Store e Google Play Store)
+- Dados de Consentimento: Registro de aceitação de termos e políticas
 
-4. Treinos e Assunção de Risco
-O Usuário declara compreender que não há garantia de resultados, que os exercícios podem não ser adequados ao seu caso específico, e que é recomendável realizar avaliação médica antes de iniciar qualquer atividade física. O Usuário deve interromper imediatamente qualquer exercício caso sinta dor, tontura, mal-estar ou qualquer sintoma incomum. A utilização dos treinos e das receitas ocorre por conta e risco exclusivo do Usuário, que assume de forma livre e esclarecida os riscos inerentes à prática de exercícios físicos e a qualquer alteração alimentar.
+2.2. Informações Coletadas Automaticamente
+- Dados de Uso: Receitas e treinos visualizados, favoritos marcados, histórico de atividades, tempo de uso
+- Dados de Dispositivo: Tipo de dispositivo, sistema operacional, identificador único do dispositivo
+- Dados de Notificações: Token para notificações push, preferências de notificação
+- Dados de Localização: Apenas se você permitir (para funcionalidades futuras de localização)
 
-5. Ausência de Garantia de Resultados
-O Aplicativo não promete emagrecimento, ganho de massa muscular, melhora estética, clínica ou de desempenho, nem qualquer resultado específico. Resultados dependem de fatores individuais como alimentação, genética, rotina, frequência, descanso, condições de saúde, disciplina e acompanhamento profissional próprio de cada Usuário.
+2.3. Informações de Terceiros
+- Dados de Pagamento: Processados exclusivamente pelas lojas Apple e Google, não armazenamos informações de cartão de crédito
+- Dados de Analytics: Informações agregadas e anonimizadas sobre uso do aplicativo
 
-6. Idade Mínima e Capacidade Civil
-O uso do Aplicativo é destinado exclusivamente a maiores de 18 (dezoito) anos e civilmente capazes. Menores de idade somente poderão utilizá-lo mediante expressa autorização e sob supervisão de seus pais ou responsáveis legais, os quais assumem integral responsabilidade pelo uso do conteúdo pelo menor, inclusive quanto aos riscos descritos nas cláusulas 4 e 5. A Responsável poderá solicitar comprovação de idade e suspender contas em caso de suspeita de uso por menor não autorizado.
+3. COMO USAMOS SUAS INFORMAÇÕES
+Utilizamos suas informações pessoais para as seguintes finalidades:
 
-7. Cadastro, Conta e Segurança
-O Usuário compromete-se a fornecer informações verdadeiras, completas e atualizadas no cadastro, sendo responsável por mantê-las corretas. O login e a senha são pessoais e intransferíveis, cabendo ao Usuário zelar por sua confidencialidade e por toda atividade realizada em sua conta. A Responsável não se responsabiliza por acessos não autorizados decorrentes de guarda inadequada das credenciais pelo Usuário, devendo eventual uso indevido ser comunicado imediatamente aos canais de atendimento.
+3.1. Prestação de Serviços
+- Criar e gerenciar sua conta
+- Fornecer acesso a receitas e treinos
+- Personalizar sua experiência no aplicativo
+- Processar assinaturas e pagamentos
+- Enviar notificações sobre novos conteúdos
 
-8. Condutas Proibidas
-É vedado ao Usuário, sem prejuízo de outras condutas incompatíveis com estes Termos:
-- compartilhar login, senha ou acesso da assinatura com terceiros não autorizados;
-- copiar, reproduzir, distribuir, revender ou disponibilizar o conteúdo do Aplicativo a terceiros;
-- realizar engenharia reversa, extração de dados em massa (scraping) ou qualquer tentativa de burlar mecanismos técnicos ou de cobrança da Plataforma;
-- utilizar o conteúdo para fins comerciais, incluindo revenda como se fosse acompanhamento profissional próprio;
-- praticar qualquer ato ilícito, fraudulento ou que viole direitos de terceiros por meio do Aplicativo.
-A violação desta cláusula autoriza a suspensão ou cancelamento imediato da conta, sem prejuízo das medidas cíveis e criminais cabíveis.
+3.2. Melhoria dos Serviços
+- Analisar padrões de uso para melhorar funcionalidades
+- Desenvolver novos recursos e conteúdos
+- Corrigir bugs e problemas técnicos
+- Realizar pesquisas e análises
 
-9. Responsabilidade do Usuário
-Ao utilizar o Aplicativo, o Usuário declara possuir condições físicas compatíveis com o conteúdo, que buscará orientação profissional quando necessário, e que assume integral responsabilidade pelas decisões tomadas com base nas informações disponibilizadas.
+3.3. Comunicação
+- Enviar notificações push sobre novos conteúdos
+- Responder a suas solicitações e dúvidas
+- Enviar informações importantes sobre o serviço
+- Comunicar mudanças em termos e políticas
 
-10. Limitação de Responsabilidade
-Na máxima extensão permitida pela legislação brasileira, a Responsável não responderá por lesões, acidentes, alergias, reações alimentares, danos físicos, morais ou materiais, tampouco por prejuízos decorrentes de uso inadequado ou fora de contexto do conteúdo, ou de indisponibilidade temporária da Plataforma por motivos técnicos, de terceiros ou de caso fortuito/força maior. Esta limitação não se aplica a casos de dolo, culpa grave, ou nas hipóteses em que a legislação consumerista vede expressamente a exclusão de responsabilidade.
+3.4. Conformidade Legal
+- Cumprir obrigações legais e regulatórias
+- Responder a solicitações de autoridades competentes
+- Proteger nossos direitos e propriedade
+- Prevenir fraudes e atividades ilegais
 
-11. Suspensão e Encerramento pela Responsável
-A Responsável poderá suspender ou encerrar, a qualquer tempo, o acesso de Usuários que violem estes Termos, pratiquem fraude, condutas proibidas (cláusula 8) ou coloquem em risco a segurança da Plataforma ou de terceiros, mediante comunicação ao Usuário sempre que possível, ressalvadas as hipóteses de urgência que justifiquem ação imediata.
+4. BASE LEGAL PARA PROCESSAMENTO (LGPD)
+Processamos seus dados pessoais com base nas seguintes bases legais:
+- Consentimento: Quando você nos dá permissão explícita (ex: notificações push, marketing)
+- Execução de Contrato: Para fornecer os serviços solicitados
+- Obrigação Legal: Para cumprir requisitos legais e regulatórios
+- Legítimo Interesse: Para melhorar nossos serviços e segurança
 
-12. Propriedade Intelectual
-Todo o conteúdo do Aplicativo — vídeos, fotografias, textos, receitas, identidade visual, logotipos, marca e demais materiais digitais — é protegido por lei e de propriedade exclusiva da Responsável e/ou de seus licenciadores. É proibido copiar, reproduzir, distribuir, revender, compartilhar login ou disponibilizar o conteúdo a terceiros sem autorização prévia e expressa, sob pena das sanções cíveis e criminais cabíveis.
+5. COMPARTILHAMENTO DE DADOS
 
-13. Assinatura, Pagamento, Cancelamento e Arrependimento
-A assinatura concede licença pessoal, individual, limitada e intransferível de uso do conteúdo, nos valores e periodicidade informados no ato da contratação;
-O cancelamento pode ser feito a qualquer momento pelo Usuário, pelas configurações da conta ou da plataforma de pagamento utilizada, com efeitos ao fim do ciclo já pago;
-Nos termos do art. 49 do Código de Defesa do Consumidor, o Usuário que contratar a assinatura fora do estabelecimento comercial (via internet) poderá exercer direito de arrependimento em até 7 (sete) dias corridos da contratação, com reembolso integral dos valores pagos, mediante solicitação pelos canais de atendimento do Aplicativo;
-Fora do prazo de arrependimento, não há reembolso proporcional por período parcialmente utilizado, salvo outras hipóteses legais aplicáveis.
+5.1. Não Vendemos Seus Dados
+Não vendemos, alugamos ou comercializamos seus dados pessoais para terceiros.
 
-14. Proteção de Dados Pessoais (LGPD)
-O tratamento de dados pessoais do Usuário observará a Lei Geral de Proteção de Dados (Lei nº 13.709/2018) e será realizado com finalidade específica de viabilizar a prestação do serviço, comunicação, processamento de pagamento e melhoria da experiência, pelo tempo necessário ao cumprimento dessas finalidades e das obrigações legais/regulatórias, findo o qual os dados serão eliminados ou anonimizados. O Usuário poderá exercer seus direitos de titular (acesso, correção, exclusão, portabilidade e revogação de consentimento) pelo canal de contato da plataforma, nos termos da Política de Privacidade do Aplicativo, parte integrante destes Termos.
+5.2. Compartilhamento com Prestadores de Serviços
+Podemos compartilhar dados com:
+- Provedores de Hospedagem: Para armazenar e processar dados
+- Provedores de Analytics: Para análise de uso (dados anonimizados)
+- Provedores de Notificações: Para enviar notificações push (Firebase/Expo)
+- Processadores de Pagamento: Apple e Google (para assinaturas)
 
-15. Atualizações do Conteúdo e dos Termos
-O conteúdo do Aplicativo poderá ser alterado, atualizado, removido ou ampliado a qualquer momento, sem necessidade de aviso prévio. Estes Termos poderão ser modificados periodicamente, sendo o Usuário comunicado pelo próprio Aplicativo ou por e-mail cadastrado; a continuidade do uso após a comunicação representa concordância com a versão mais recente.
+Todos os prestadores de serviço são obrigados a manter a confidencialidade e segurança dos dados.
 
-16. Independência das Cláusulas
-Caso qualquer disposição destes Termos seja considerada nula, inválida ou inexequível por autoridade competente, tal declaração não afetará a validade das demais cláusulas, que permanecerão em pleno vigor, devendo a disposição afetada ser reinterpretada de modo a preservar, na maior medida possível, a intenção original das partes.
+5.3. Compartilhamento por Obrigação Legal
+Podemos divulgar informações se exigido por lei, ordem judicial ou autoridade competente.
 
-17. Não Renúncia de Direitos
-A tolerância da Responsável quanto ao eventual descumprimento de qualquer obrigação prevista nestes Termos não constituirá novação ou renúncia ao direito de exigir o cumprimento integral das obrigações em qualquer momento posterior.
+5.4. Transferências Internacionais
+Seus dados podem ser processados em servidores localizados fora do Brasil. Garantimos que tais transferências seguem padrões adequados de proteção de dados.
 
-18. Cessão do Contrato
-A Responsável poderá ceder ou transferir, total ou parcialmente, os direitos e obrigações decorrentes destes Termos a terceiros, inclusive em razão de reorganização societária, venda do negócio ou do Aplicativo, mediante comunicação ao Usuário. É vedado ao Usuário ceder ou transferir sua condição de Assinante a terceiros sem autorização prévia da Responsável.
+6. SEUS DIREITOS (LGPD)
+Conforme a Lei Geral de Proteção de Dados (LGPD - Lei 13.709/2018), você tem os seguintes direitos:
 
-19. Lei Aplicável e Foro
-Este contrato é regido pelas leis da República Federativa do Brasil. Fica eleito o foro para dirimir controvérsias, com renúncia a qualquer outro, por mais privilegiado que seja, ressalvado o foro de domicílio do consumidor quando de aplicação obrigatória.
+6.1. Direito de Acesso
+Você pode solicitar uma cópia dos dados pessoais que mantemos sobre você.
 
-20. Declaração Final e Aceite Eletrônico
-Ao clicar em "Li e Aceito" ou equivalente, o Usuário declara que leu integralmente estes Termos, compreendeu todas as disposições, reconhece que o conteúdo tem finalidade exclusivamente educativa e informativa, compreende que o Aplicativo não substitui acompanhamento médico, nutricional ou de educação física, assume a responsabilidade pelo uso das informações disponibilizadas e concorda integralmente com todas as condições aqui previstas. Esta manifestação eletrônica, registrada com data, hora e demais dados técnicos de identificação do aceite, produz os mesmos efeitos jurídicos de uma assinatura física, nos termos do art. 107 do Código Civil e da legislação consumerista aplicável.`);
+6.2. Direito de Correção
+Você pode solicitar a correção de dados incompletos, inexatos ou desatualizados.
+
+6.3. Direito de Exclusão
+Você pode solicitar a exclusão de dados pessoais desnecessários, excessivos ou tratados em desconformidade com a LGPD.
+
+6.4. Direito de Portabilidade
+Você pode solicitar a portabilidade de seus dados para outro prestador de serviço.
+
+6.5. Direito de Revogação de Consentimento
+Você pode revogar consentimentos anteriormente dados a qualquer momento.
+
+6.6. Direito de Oposição
+Você pode se opor ao tratamento de dados pessoais em certas circunstâncias.
+
+6.7. Direito de Informação
+Você tem direito a informações claras sobre o tratamento de seus dados.
+
+Como Exercer Seus Direitos
+Para exercer qualquer um desses direitos, entre em contato conosco através de:
+- E-mail: privacidade@fitrapido.com.br
+- Formulário no aplicativo: Configurações > Privacidade
+
+Responderemos sua solicitação em até 15 (quinze) dias úteis.
+
+7. RETENÇÃO DE DADOS
+Mantemos seus dados pessoais apenas pelo tempo necessário para:
+- Fornecer os serviços solicitados
+- Cumprir obrigações legais
+- Resolver disputas
+- Aplicar nossos acordos
+
+Após o período de retenção, excluímos ou anonimizamos seus dados de forma segura.
+
+8. SEGURANÇA DOS DADOS
+Implementamos medidas técnicas e organizacionais para proteger seus dados:
+
+8.1. Medidas Técnicas
+- Criptografia: Senhas são armazenadas usando hash seguro (bcrypt)
+- HTTPS: Todas as comunicações são criptografadas
+- Autenticação: Sistema de autenticação JWT seguro
+- Rate Limiting: Proteção contra ataques e abuso
+- Validação de Inputs: Sanitização de dados de entrada
+
+8.2. Medidas Organizacionais
+- Acesso restrito a dados pessoais apenas para funcionários autorizados
+- Treinamento regular sobre proteção de dados
+- Políticas internas de segurança
+- Auditorias periódicas de segurança
+
+9. COOKIES E TECNOLOGIAS SIMILARES
+Utilizamos tecnologias para melhorar sua experiência:
+- Tokens de Autenticação: Para manter sua sessão ativa
+- Local Storage: Para preferências do aplicativo
+- Analytics: Para entender como você usa o aplicativo (dados anonimizados)
+
+Você pode gerenciar essas preferências nas configurações do aplicativo.
+
+10. DADOS DE MENORES DE IDADE
+Nossos serviços são destinados a usuários com 18 anos ou mais. Não coletamos intencionalmente dados de menores de 18 anos. Se descobrirmos que coletamos dados de um menor, excluiremos essas informações imediatamente.
+
+11. ALTERAÇÕES NESTA POLÍTICA
+Podemos atualizar esta Política de Privacidade periodicamente. Notificaremos sobre mudanças significativas através de:
+- Notificação no aplicativo
+- E-mail (se você tiver cadastrado)
+- Atualização da data de "Última atualização" no topo desta política
+
+A continuação do uso do aplicativo após mudanças significa que você aceita a política atualizada.
+
+12. CONTATO E ENCARREGADO DE DADOS (DPO)
+Para questões relacionadas a privacidade e proteção de dados:
+Encarregado de Proteção de Dados (DPO)
+E-mail: privacidade@fitrapido.com.br
+Horário de Atendimento: Segunda a Sexta, 9h às 18h
+
+13. AUTORIDADE DE FISCALIZAÇÃO
+Se você acredita que seus dados pessoais foram tratados de forma inadequada, você pode apresentar uma reclamação à Autoridade Nacional de Proteção de Dados (ANPD):
+ANPD
+Site: www.gov.br/anpd
+E-mail: ouvidoria@anpd.gov.br
+
+14. DISPOSIÇÕES FINAIS
+Esta Política de Privacidade é regida pela legislação brasileira, especialmente pela Lei Geral de Proteção de Dados (Lei 13.709/2018).
+
+Ao usar o Fit & Rápido, você declara ter lido, compreendido e concordado com esta Política de Privacidade.`);
     setLoading(false);
   }, []);
 
+  const renderParagraphBody = (text: string) => {
+    if (text.startsWith('-')) {
+      const listItems = text.split('\n').map((item, itemIdx) => {
+        const itemText = item.replace(/^-\s*/, '').trim();
+        return (
+          <View key={itemIdx} style={styles.listItemRow}>
+            <Text style={styles.listBullet}>•</Text>
+            <Text style={styles.listItemText}>{itemText}</Text>
+          </View>
+        );
+      });
+      return <View style={styles.listContainer}>{listItems}</View>;
+    }
+
+    return (
+      <Text style={styles.paragraph}>
+        {text}
+      </Text>
+    );
+  };
+
+  const renderContent = () => {
+    if (!content) return null;
+
+    return content.split('\n\n').map((p, index) => {
+      const trimmed = p.trim();
+      if (!trimmed) return null;
+
+      const lines = trimmed.split('\n');
+      const firstLine = lines[0].trim();
+
+      const isMainTitle = firstLine.startsWith('POLÍTICA DE PRIVACIDADE') || firstLine.startsWith('FIT & RÁPIDO');
+      const isVersionInfo = firstLine.startsWith('Última atualização');
+      const isSectionHeader = firstLine.match(/^\d+\.\s/) || firstLine.match(/^\d+\.\d+\.\s/);
+
+      if (isMainTitle) {
+        return (
+          <Text key={index} style={styles.mainTitle}>
+            {trimmed}
+          </Text>
+        );
+      }
+
+      if (isVersionInfo) {
+        return (
+          <Text key={index} style={styles.versionInfo}>
+            {trimmed}
+          </Text>
+        );
+      }
+
+      if (isSectionHeader) {
+        const remainingText = lines.slice(1).join('\n').trim();
+        return (
+          <View key={index} style={{ marginBottom: 16 }}>
+            <Text style={styles.sectionHeader}>{firstLine}</Text>
+            {remainingText ? renderParagraphBody(remainingText) : null}
+          </View>
+        );
+      }
+
+      return (
+        <View key={index}>
+          {renderParagraphBody(trimmed)}
+        </View>
+      );
+    });
+  };
+
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.container} edges={['top', 'bottom']}>
+      {/* Header Premium */}
       <View style={styles.header}>
         <TouchableOpacity
           onPress={() => navigation.goBack()}
           style={styles.backButton}
+          activeOpacity={0.7}
         >
-          <Text style={styles.backIcon}>←</Text>
+          <Ionicons name="chevron-back" size={24} color={colors.primary} />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Política de Privacidade</Text>
-        <View style={styles.backButton} />
+        <View style={{ width: 40 }} />
       </View>
 
-      <ScrollView contentContainerStyle={styles.content}>
+      <ScrollView 
+        contentContainerStyle={styles.scrollContent} 
+        showsVerticalScrollIndicator={false}
+      >
         {loading ? (
           <View style={styles.loadingContainer}>
             <Text style={styles.loadingText}>Carregando...</Text>
           </View>
         ) : (
-          <Text style={styles.text}>{content}</Text>
+          <View style={styles.contentContainer}>
+            {renderContent()}
+          </View>
         )}
       </ScrollView>
     </SafeAreaView>
@@ -125,35 +293,43 @@ Ao clicar em "Li e Aceito" ou equivalente, o Usuário declara que leu integralme
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#0f0f0f',
+    backgroundColor: colors.background,
   },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    padding: 16,
-    backgroundColor: '#1a1a1a',
+    paddingHorizontal: 16,
+    paddingVertical: 14,
+    backgroundColor: 'rgba(28, 27, 30, 0.95)',
     borderBottomWidth: 1,
-    borderBottomColor: '#333',
+    borderBottomColor: 'rgba(231, 196, 138, 0.1)',
   },
   backButton: {
     width: 40,
     height: 40,
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  backIcon: {
-    fontSize: 24,
-    color: '#c8921a',
-    fontWeight: 'bold',
+    borderRadius: 20,
+    backgroundColor: 'rgba(255, 210, 111, 0.05)',
   },
   headerTitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: '#fff',
+    fontSize: 18,
+    fontFamily: fonts.title,
+    color: '#ffffff',
+    textAlign: 'center',
   },
-  content: {
-    padding: 16,
+  scrollContent: {
+    flexGrow: 1,
+    paddingBottom: 40,
+  },
+  contentContainer: {
+    padding: 20,
+    backgroundColor: 'rgba(35, 33, 41, 0.3)',
+    borderRadius: 16,
+    margin: 16,
+    borderWidth: 1,
+    borderColor: 'rgba(231, 196, 138, 0.08)',
   },
   loadingContainer: {
     flex: 1,
@@ -162,13 +338,70 @@ const styles = StyleSheet.create({
     padding: 32,
   },
   loadingText: {
-    color: '#999',
+    color: '#8A8892',
+    fontFamily: fonts.body,
     fontSize: 16,
   },
-  text: {
-    fontSize: 15,
-    color: '#fff',
+  mainTitle: {
+    fontSize: 18,
+    fontFamily: fonts.title,
+    color: colors.primary,
+    textAlign: 'center',
+    marginBottom: 8,
     lineHeight: 24,
+  },
+  versionInfo: {
+    fontSize: 12,
+    fontFamily: fonts.body,
+    color: '#8A8892',
+    textAlign: 'center',
+    marginBottom: 24,
+  },
+  sectionHeader: {
+    fontSize: 15,
+    fontFamily: fonts.bodySemiBold,
+    color: '#ffffff',
+    marginTop: 20,
+    marginBottom: 10,
+    lineHeight: 20,
+  },
+  subsectionHeader: {
+    fontSize: 14,
+    fontFamily: fonts.bodySemiBold,
+    color: colors.primary,
+    marginTop: 14,
+    marginBottom: 6,
+    lineHeight: 18,
+  },
+  paragraph: {
+    fontSize: 13.5,
+    fontFamily: fonts.body,
+    color: '#ffffff',
+    lineHeight: 21,
+    marginBottom: 14,
+    textAlign: 'justify',
+  },
+  listContainer: {
+    marginBottom: 14,
+    paddingLeft: 8,
+  },
+  listItemRow: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    marginBottom: 6,
+  },
+  listBullet: {
+    fontSize: 14,
+    color: colors.primary,
+    marginRight: 8,
+    lineHeight: 18,
+  },
+  listItemText: {
+    flex: 1,
+    fontSize: 13.5,
+    fontFamily: fonts.body,
+    color: '#ffffff',
+    lineHeight: 19,
   },
 });
 
