@@ -4,6 +4,8 @@ import * as AppleAuthentication from 'expo-apple-authentication';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { useAuth } from '../contexts/AuthContext';
 import { Ionicons } from '@expo/vector-icons';
+import colors from '../constants/colors';
+import fonts from '../constants/fonts';
 
 // Configuração do Google Sign In (TODO: Substituir webClientId real do Google Cloud)
 GoogleSignin.configure({
@@ -68,19 +70,14 @@ export default function SocialLoginButtons({ onLoading }: Props) {
       </View>
       
       <View style={styles.buttonRow}>
-        {Platform.OS === 'ios' && (
-          <AppleAuthentication.AppleAuthenticationButton
-            buttonType={AppleAuthentication.AppleAuthenticationButtonType.SIGN_IN}
-            buttonStyle={AppleAuthentication.AppleAuthenticationButtonStyle.WHITE}
-            cornerRadius={8}
-            style={styles.appleButton}
-            onPress={handleAppleLogin}
-          />
-        )}
+        <TouchableOpacity style={styles.socialButton} onPress={handleAppleLogin} activeOpacity={0.8}>
+          <Ionicons name="logo-apple" size={20} color="#ffffff" style={{ marginRight: 10 }} />
+          <Text style={styles.socialButtonText}>Continuar com Apple</Text>
+        </TouchableOpacity>
         
-        <TouchableOpacity style={styles.googleButton} onPress={handleGoogleLogin}>
-          <Ionicons name="logo-google" size={24} color="#000" style={{ marginRight: 8 }} />
-          <Text style={styles.googleButtonText}>Sign in with Google</Text>
+        <TouchableOpacity style={styles.socialButton} onPress={handleGoogleLogin} activeOpacity={0.8}>
+          <Ionicons name="logo-google" size={18} color="#ffffff" style={{ marginRight: 10 }} />
+          <Text style={styles.socialButtonText}>Continuar com Google</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -97,37 +94,37 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 20,
+    marginTop: 10,
   },
   line: {
     flex: 1,
     height: 1,
-    backgroundColor: '#333',
+    backgroundColor: 'rgba(255, 210, 111, 0.15)',
   },
   dividerText: {
-    color: '#999',
-    marginHorizontal: 10,
-    fontSize: 14,
+    color: '#8A8892',
+    marginHorizontal: 12,
+    fontSize: 13,
+    fontFamily: fonts.body,
   },
   buttonRow: {
     flexDirection: 'column',
     gap: 12,
   },
-  appleButton: {
+  socialButton: {
     width: '100%',
-    height: 48,
-  },
-  googleButton: {
-    width: '100%',
-    height: 48,
-    backgroundColor: '#fff',
-    borderRadius: 8,
+    height: 52,
+    backgroundColor: 'rgba(35, 33, 41, 0.6)',
+    borderWidth: 1.2,
+    borderColor: 'rgba(231, 196, 138, 0.2)',
+    borderRadius: 12,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
   },
-  googleButtonText: {
-    color: '#000',
-    fontSize: 16,
-    fontWeight: '600',
+  socialButtonText: {
+    color: '#ffffff',
+    fontSize: 15,
+    fontFamily: fonts.bodySemiBold,
   }
 });
