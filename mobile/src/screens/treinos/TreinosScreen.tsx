@@ -151,7 +151,7 @@ export default function TreinosScreen() {
   };
 
   const featuredWorkout = treinos.length > 0 ? treinos[0] : null;
-  const listWorkouts = treinos.length > 1 ? treinos.slice(1) : treinos;
+  const listWorkouts = treinos;
 
   const renderFeaturedWorkout = () => {
     if (!featuredWorkout) return null;

@@ -99,7 +99,7 @@ export function ItemCard({
           {badges.map((badge, index) => (
             <span
               key={index}
-              className={`px-1.5 py-0.5 rounded-full text-xs font-normal ${badge.color} item-card-badge`}
+              className={`px-1.5 py-0.5 rounded-full text-xs font-normal ${badge.color}`}
               style={{ fontSize: '10px', padding: '4px 6px' }}
             >
               {badge.label}
