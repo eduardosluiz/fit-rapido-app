@@ -33,7 +33,7 @@ export class SupabaseService implements OnModuleInit {
     this.logger.log('Conectado ao cliente de armazenamento do Supabase');
   }
 
-  async uploadFile(bucket: string, path: string, fileBuffer: Buffer, contentType: string): Promise<string> {
+  async uploadFile(bucket: string, path: string, fileData: any, contentType: string): Promise<string> {
     if (!this.supabase) {
       this.logger.error('Cliente Supabase não inicializado. Verifique as credenciais no .env');
       throw new Error('Supabase client not initialized');
@@ -45,15 +45,20 @@ export class SupabaseService implements OnModuleInit {
     // Forçar o bucket para minúsculo
     const targetBucket = bucket.toLowerCase(); 
 
-    // IMPORTANTE: Node.js usa "Buffer Pool" (8KB) para arquivos pequenos via Multer.
-    // O Supabase SDK (que usa node-fetch) quebra com "Invalid Content-Type" se o Buffer for agrupado no pool.
-    // Para resolver isso definitivamente, alocamos um novo Buffer isolado (não-pool).
-    const cleanBuffer = Buffer.alloc(fileBuffer.length);
-    fileBuffer.copy(cleanBuffer);
+    let uploadBody: any = fileData;
+
+    if (Buffer.isBuffer(fileData)) {
+      // IMPORTANTE: Node.js usa "Buffer Pool" (8KB) para arquivos pequenos via Multer.
+      // O Supabase SDK (que usa node-fetch) quebra com "Invalid Content-Type" se o Buffer for agrupado no pool.
+      // Para resolver isso definitivamente, alocamos um novo Buffer isolado (não-pool).
+      const cleanBuffer = Buffer.alloc(fileData.length);
+      fileData.copy(cleanBuffer);
+      uploadBody = cleanBuffer;
+    }
 
     const { data, error } = await this.supabase.storage
       .from(targetBucket)
-      .upload(path, cleanBuffer, {
+      .upload(path, uploadBody, {
         contentType: validContentType,
         cacheControl: '3600',
         upsert: true,

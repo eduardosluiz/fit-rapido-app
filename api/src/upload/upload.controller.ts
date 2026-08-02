@@ -123,13 +123,13 @@ export class UploadController {
         contentType = 'video/mp4';
       }
 
-      // Ler do disco para Buffer (minimiza retenção na memória e evita crash do parser)
-      const fileBuffer = fs.readFileSync(file.path);
+      // Usar ReadStream para transmitir o vídeo diretamente do disco para o Supabase, evitando uso excessivo de RAM e crashes
+      const fileStream = fs.createReadStream(file.path);
 
       const publicUrl = await this.supabaseService.uploadFile(
         'treinos',
         s3Path,
-        fileBuffer,
+        fileStream,
         contentType,
       );
 
