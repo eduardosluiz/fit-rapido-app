@@ -190,6 +190,27 @@ export class ReceitasService {
       queryBuilder.where('receita.ativa = :ativa', { ativa: true });
     }
 
+    // Filtrar por plano do usuário (FREE, BASIC, PREMIUM) diretamente na query para não quebrar a paginação
+    if (user) {
+      const isAdmin = user.role === UserRole.ADMIN || String(user.role) === 'admin' || String(user.role) === 'personal_trainer' || user.email === 'dai@gmail.com';
+      const isDaiAdmin = user.email === 'dai@gmail.com';
+      
+      if (!isAdmin && !isDaiAdmin) {
+        const tier = user.subscription_tier || SubscriptionTier.NONE;
+        const isInTrial = hasActiveTrial(user);
+
+        if (!isInTrial) {
+          if (tier === SubscriptionTier.FREE || tier === SubscriptionTier.NONE) {
+            queryBuilder.andWhere('receita.is_free = :isFreeUser', { isFreeUser: true });
+          } else if (tier === SubscriptionTier.BASIC) {
+            queryBuilder.andWhere('receita.is_premium = :isPremiumUser', { isPremiumUser: false });
+          }
+        }
+      }
+    } else {
+      queryBuilder.andWhere('receita.is_free = :isFreeUser', { isFreeUser: true });
+    }
+
     if (categoriaId) {
       queryBuilder
         .innerJoin('receita.categorias', 'categoria')
@@ -259,14 +280,14 @@ export class ReceitasService {
 
     if (semLactose) {
       queryBuilder.andWhere(
-        '(CAST(receita.tags AS text) ILIKE :semLactose OR categorias.nome ILIKE :semLactose)',
+        '(receita.titulo ILIKE :semLactose OR CAST(receita.tags AS text) ILIKE :semLactose OR categorias.nome ILIKE :semLactose)',
         { semLactose: '%sem lactose%' },
       );
     }
 
     if (semGluten) {
       queryBuilder.andWhere(
-        '(CAST(receita.tags AS text) ILIKE :semGluten OR CAST(receita.tags AS text) ILIKE :semGlutenAccent OR categorias.nome ILIKE :semGluten OR categorias.nome ILIKE :semGlutenAccent)',
+        '(receita.titulo ILIKE :semGluten OR receita.titulo ILIKE :semGlutenAccent OR CAST(receita.tags AS text) ILIKE :semGluten OR CAST(receita.tags AS text) ILIKE :semGlutenAccent OR categorias.nome ILIKE :semGluten OR categorias.nome ILIKE :semGlutenAccent)',
         { semGluten: '%sem gluten%', semGlutenAccent: '%sem glúten%' },
       );
     }
@@ -288,30 +309,8 @@ export class ReceitasService {
       const [receitasList, total] = await queryBuilder.getManyAndCount();
       receitas = receitasList;
       
-      let resultReceitas = receitas;
-
-      if (user) {
-        const isAdmin = user.role === UserRole.ADMIN || String(user.role) === 'admin' || String(user.role) === 'personal_trainer';
-        const isDaiAdmin = user.email === 'dai@gmail.com';
-        
-        if (!isAdmin && !isDaiAdmin) {
-          const tier = user.subscription_tier || SubscriptionTier.NONE;
-          const isInTrial = hasActiveTrial(user);
-
-          if (!isInTrial) {
-            if (tier === SubscriptionTier.FREE || tier === SubscriptionTier.NONE) {
-              resultReceitas = receitas.filter((r) => r.is_free === true);
-            } else if (tier === SubscriptionTier.BASIC) {
-              resultReceitas = receitas.filter((r) => r.is_premium === false);
-            }
-          }
-        }
-      } else {
-        resultReceitas = receitas.filter((r) => r.is_free === true);
-      }
-
       return {
-        data: resultReceitas,
+        data: receitas,
         total,
         page,
         limit,
@@ -321,30 +320,7 @@ export class ReceitasService {
       receitas = await queryBuilder.getMany();
     }
 
-    let resultReceitas = receitas;
-
-    // Logica fallback (sem paginação requisitada)
-    if (user) {
-      const isAdmin = user.role === UserRole.ADMIN || String(user.role) === 'admin' || String(user.role) === 'personal_trainer';
-      const isDaiAdmin = user.email === 'dai@gmail.com';
-      
-      if (!isAdmin && !isDaiAdmin) {
-        const tier = user.subscription_tier || SubscriptionTier.NONE;
-        const isInTrial = hasActiveTrial(user);
-
-        if (!isInTrial) {
-          if (tier === SubscriptionTier.FREE || tier === SubscriptionTier.NONE) {
-            resultReceitas = receitas.filter((r) => r.is_free === true);
-          } else if (tier === SubscriptionTier.BASIC) {
-            resultReceitas = receitas.filter((r) => r.is_premium === false);
-          }
-        }
-      }
-    } else {
-      resultReceitas = receitas.filter((r) => r.is_free === true);
-    }
-
-    return resultReceitas;
+    return receitas;
   }
 
   async getFreeRecipesCount(): Promise<number> {

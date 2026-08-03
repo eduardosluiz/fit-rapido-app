@@ -60,35 +60,50 @@ export default function FeedScreen() {
       label: 'Proteicas',
       iconType: 'MaterialCommunityIcons',
       iconName: 'arm-flex',
-      onPress: () => (navigation as any).navigate('Receitas', { categoriaNome: 'proteica' }),
+      onPress: () => (navigation as any).navigate('Receitas', { 
+        screen: 'ReceitasList', 
+        params: { categoriaNome: 'proteica' } 
+      }),
     },
     {
       id: 'doces',
       label: 'Doces',
       iconType: 'MaterialCommunityIcons',
       iconName: 'cookie',
-      onPress: () => (navigation as any).navigate('Receitas', { categoriaNome: 'doce' }),
+      onPress: () => (navigation as any).navigate('Receitas', { 
+        screen: 'ReceitasList', 
+        params: { categoriaNome: 'doce' } 
+      }),
     },
     {
       id: 'pre-treino',
       label: 'Pré treino',
       iconType: 'Ionicons',
       iconName: 'flash',
-      onPress: () => (navigation as any).navigate('Receitas', { categoriaNome: 'pré treino' }),
+      onPress: () => (navigation as any).navigate('Receitas', { 
+        screen: 'ReceitasList', 
+        params: { categoriaNome: 'pré treino' } 
+      }),
     },
     {
       id: 'sem-gluten',
       label: 'Sem glúten',
       iconType: 'MaterialCommunityIcons',
       iconName: 'corn',
-      onPress: () => (navigation as any).navigate('Receitas', { semGluten: true }),
+      onPress: () => (navigation as any).navigate('Receitas', { 
+        screen: 'ReceitasList', 
+        params: { semGluten: true } 
+      }),
     },
     {
       id: 'sem-lactose',
       label: 'Sem lactose',
       iconType: 'MaterialCommunityIcons',
       iconName: 'water-off',
-      onPress: () => (navigation as any).navigate('Receitas', { semLactose: true }),
+      onPress: () => (navigation as any).navigate('Receitas', { 
+        screen: 'ReceitasList', 
+        params: { semLactose: true } 
+      }),
     },
     {
       id: 'sumario',
@@ -402,10 +417,13 @@ export default function FeedScreen() {
             setFiltrosBusca(filters);
             setBuscaAvancadaVisible(false);
             (navigation as any).navigate('Receitas', {
-              searchQuery: filters.nome || undefined,
-              categoriaId: filters.categoria || undefined,
-              semLactose: filters.semLactose || false,
-              semGluten: filters.semGluten || false,
+              screen: 'ReceitasList',
+              params: {
+                searchQuery: filters.nome || undefined,
+                categoriaId: filters.categoria || undefined,
+                semLactose: filters.semLactose || false,
+                semGluten: filters.semGluten || false,
+              }
             });
           }}
           initialFilters={filtrosBusca}
