@@ -24,12 +24,18 @@ export class ExerciciosBibliotecaController {
 
   @Post()
   async create(@Body() data: Partial<ExercicioBiblioteca>) {
+    if (data.nome) {
+      data.nome = data.nome.normalize('NFC');
+    }
     const exercicio = this.repository.create(data);
     return this.repository.save(exercicio);
   }
 
   @Patch(':id')
   async update(@Param('id') id: string, @Body() data: Partial<ExercicioBiblioteca>) {
+    if (data.nome) {
+      data.nome = data.nome.normalize('NFC');
+    }
     await this.repository.update(id, data);
     return this.repository.findOne({ where: { id } });
   }
@@ -49,9 +55,10 @@ export class ExerciciosBibliotecaController {
       where.categoria = ILike(grupo);
     }
 
-    // Busca por nome do exercício
+    // Busca por nome do exercício (normalizado para NFC)
     if (search && search.trim() !== '') {
-      where.nome = ILike(`%${search.trim()}%`);
+      const normalizedSearch = search.trim().normalize('NFC');
+      where.nome = ILike(`%${normalizedSearch}%`);
     }
 
     if (exibir_mobile === 'true') {

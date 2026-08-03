@@ -36,6 +36,7 @@ export default function BibliotecaVideosPage() {
   const [exercicios, setExercicios] = useState<Exercicio[]>([]);
   const [categorias, setCategorias] = useState<Categoria[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isFirstLoad, setIsFirstLoad] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
   const [searchText, setSearchText] = useState('');
   const [selectedCategoria, setSelectedCategoria] = useState<string>('');
@@ -113,6 +114,7 @@ export default function BibliotecaVideosPage() {
     } finally {
       setLoading(false);
       setLoadingMore(false);
+      setIsFirstLoad(false);
     }
   }, [selectedCategoria, searchText]);
 
@@ -184,7 +186,7 @@ export default function BibliotecaVideosPage() {
         });
         
         await api.createExercicioBiblioteca({
-          nome: item.file.name.split('.')[0],
+          nome: item.file.name.normalize('NFC').split('.')[0],
           video_url: uploadResponse.url,
           categoria: item.categorias.join(', '),
           exibir_mobile: item.exibir_mobile
@@ -280,7 +282,7 @@ export default function BibliotecaVideosPage() {
     }
   };
 
-  if (loading && page === 1) {
+  if (loading && isFirstLoad) {
     return (
       <div className="min-h-screen bg-white dark:bg-[#0a0a0a] flex items-center justify-center">
         <div className="w-6 h-6 border-2 border-[#c8921a]/20 border-t-[#c8921a] rounded-full animate-spin"></div>
@@ -346,7 +348,7 @@ export default function BibliotecaVideosPage() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 transition-opacity duration-300 ${loading ? 'opacity-50 pointer-events-none' : 'opacity-100'}`}>
           {exercicios.length > 0 ? (
             exercicios.map((ex) => (
               <div key={ex.id} className="group bg-white dark:bg-[#111] border border-[#c8921a]/30 dark:border-[#c8921a]/20 rounded-xl overflow-hidden hover:border-[#c8921a]/60 hover:shadow-sm transition-all duration-300 flex flex-col">
