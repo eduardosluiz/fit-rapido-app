@@ -229,9 +229,9 @@ export default function RegisterScreen() {
               <View style={styles.form}>
                 {/* Input Nome */}
                 <View style={styles.inputContainer}>
-                  <Ionicons name="person-outline" size={20} color="#8A8892" style={styles.inputIcon} />
+                  <Ionicons name="person-outline" size={20} color="#8A8892" style={styles.absoluteInputIconLeft as any} />
                   <TextInput
-                    style={styles.input}
+                    style={styles.inputFull}
                     placeholder="Nome"
                     placeholderTextColor="#8A8892"
                     value={nome}
@@ -242,9 +242,9 @@ export default function RegisterScreen() {
 
                 {/* Input Email */}
                 <View style={styles.inputContainer}>
-                  <Ionicons name="mail-outline" size={20} color="#8A8892" style={styles.inputIcon} />
+                  <Ionicons name="mail-outline" size={20} color="#8A8892" style={styles.absoluteInputIconLeft as any} />
                   <TextInput
-                    style={styles.input}
+                    style={styles.inputFull}
                     placeholder="Email"
                     placeholderTextColor="#8A8892"
                     value={email}
@@ -257,9 +257,9 @@ export default function RegisterScreen() {
 
                 {/* Input Senha */}
                 <View style={styles.inputContainer}>
-                  <Ionicons name="lock-closed-outline" size={20} color="#8A8892" style={styles.inputIcon} />
+                  <Ionicons name="lock-closed-outline" size={20} color="#8A8892" style={styles.absoluteInputIconLeft as any} />
                   <TextInput
-                    style={styles.input}
+                    style={styles.inputFullPassword}
                     placeholder="Senha"
                     placeholderTextColor="#8A8892"
                     value={senha}
@@ -267,7 +267,7 @@ export default function RegisterScreen() {
                     secureTextEntry={!showPassword}
                     autoCapitalize="none"
                   />
-                  <TouchableOpacity onPress={() => setShowPassword(!showPassword)} style={styles.eyeIcon}>
+                  <TouchableOpacity onPress={() => setShowPassword(!showPassword)} style={styles.absoluteInputIconRight}>
                     <Ionicons 
                       name={showPassword ? "eye-off-outline" : "eye-outline"} 
                       size={20} 
@@ -480,21 +480,46 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(231, 196, 138, 0.2)',
     borderRadius: 12,
     marginBottom: 16,
-    paddingHorizontal: 16,
     height: 54,
+    position: 'relative',
   },
-  inputIcon: {
-    marginRight: 10,
-  },
-  input: {
-    flex: 1,
+  inputFull: {
+    position: 'absolute',
+    left: 0,
+    top: 0,
+    right: 0,
+    bottom: 0,
     color: '#ffffff',
     fontSize: 15,
     fontFamily: fonts.body,
-    height: '100%',
+    paddingLeft: 48,
+    paddingRight: 16,
+    borderRadius: 12,
     borderWidth: 0,
   },
-  eyeIcon: {
+  inputFullPassword: {
+    position: 'absolute',
+    left: 0,
+    top: 0,
+    right: 0,
+    bottom: 0,
+    color: '#ffffff',
+    fontSize: 15,
+    fontFamily: fonts.body,
+    paddingLeft: 48,
+    paddingRight: 48,
+    borderRadius: 12,
+    borderWidth: 0,
+  },
+  absoluteInputIconLeft: {
+    position: 'absolute',
+    left: 16,
+    zIndex: 10,
+  },
+  absoluteInputIconRight: {
+    position: 'absolute',
+    right: 16,
+    zIndex: 10,
     padding: 4,
   },
   linkButton: {
