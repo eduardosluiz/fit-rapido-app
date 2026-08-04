@@ -41,6 +41,7 @@ const { width: SCREEN_WIDTH } = Dimensions.get('window');
 export default function FeedScreen() {
   const navigation = useNavigation();
   const { user } = useAuth();
+  const canAccessWorkouts = user?.subscription_tier === 'premium_fit';
   const [banners, setBanners] = useState<Banner[]>([]);
   const [receitas, setReceitas] = useState<Receita[]>([]);
   const [treinos, setTreinos] = useState<Treino[]>([]);
@@ -144,14 +145,11 @@ export default function FeedScreen() {
   const loadFeed = useCallback(async () => {
     try {
       setLoading(true);
-      const canAccessWorkouts = user?.subscription_tier === 'premium_fit';
       
       const [bannersData, receitasResp, treinosResp] = await Promise.all([
         api.getBanners(),
         api.getReceitas({ page: 1, limit: 6 }),
-        canAccessWorkouts 
-          ? api.getTreinos({ page: 1, limit: 6 })
-          : Promise.resolve([]),
+        api.getTreinos({ page: 1, limit: 6 }).catch(() => ({ data: [], totalPages: 0 })),
       ]);
 
       let notificacoesData: any[] = [];
@@ -201,6 +199,14 @@ export default function FeedScreen() {
     loadFeed();
   }, [loadFeed]);
 
+  // Resetar os filtros da busca avançada ao retornar para o Feed
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      setFiltrosBusca({});
+    });
+    return unsubscribe;
+  }, [navigation]);
+
   // Autoplay Banners
   useEffect(() => {
     if (banners.length <= 1) return;
@@ -237,6 +243,7 @@ export default function FeedScreen() {
   );
 
   const renderTreino = (treino: Treino) => {
+    const canAccessWorkouts = user?.subscription_tier === 'premium_fit';
     const displayData: any = {
       ...treino,
       tempo_preparo: treino.duracao_minutos,
@@ -248,7 +255,12 @@ export default function FeedScreen() {
         key={treino.id}
         item={displayData}
         isHorizontal={true}
+        isLocked={!canAccessWorkouts}
         onPress={() => {
+          if (!canAccessWorkouts) {
+            (navigation as any).navigate('Subscriptions');
+            return;
+          }
           if (treino.modalidade_id) {
             (navigation as any).navigate('Treinos', { 
               screen: 'ModalityWorkouts', 
@@ -389,8 +401,20 @@ export default function FeedScreen() {
                   <Text style={styles.sectionTitle}>💪 Novos Treinos</Text>
                   <View style={styles.sectionTitleUnderline} />
                 </View>
-                <TouchableOpacity onPress={() => (navigation as any).navigate('Tabs', { screen: 'Treinos' })}>
+                <TouchableOpacity 
+                  style={{ flexDirection: 'row', alignItems: 'center' }}
+                  onPress={() => {
+                    if (!canAccessWorkouts) {
+                      (navigation as any).navigate('Subscriptions');
+                    } else {
+                      (navigation as any).navigate('Tabs', { screen: 'Treinos' });
+                    }
+                  }}
+                >
                   <Text style={styles.seeAllText}>Ver todos</Text>
+                  {!canAccessWorkouts && (
+                    <Ionicons name="lock-closed" size={12} color="#E7C48A" style={{ marginLeft: 4 }} />
+                  )}
                 </TouchableOpacity>
               </View>
               <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.horizontalScroll}>
@@ -533,7 +557,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   scrollContent: {
-    paddingBottom: 100,
+    paddingBottom: 24,
   },
   acessoRapidoTitle: {
     fontSize: 15,

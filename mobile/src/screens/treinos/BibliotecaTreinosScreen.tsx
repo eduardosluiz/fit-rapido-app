@@ -17,8 +17,18 @@ import colors from '../../constants/colors';
 import fonts from '../../constants/fonts';
 import VideoPlayer from '../../components/VideoPlayer';
 import AppBackground from '../../components/AppBackground';
+import { useAuth } from '../../contexts/AuthContext';
 
 export default function BibliotecaTreinosScreen({ navigation }: any) {
+  const { user } = useAuth();
+  const canAccessWorkouts = user?.subscription_tier === 'premium_fit';
+
+  useEffect(() => {
+    if (!canAccessWorkouts) {
+      navigation.navigate('Subscriptions');
+    }
+  }, [canAccessWorkouts, navigation]);
+
   const [exercicios, setExercicios] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchText, setSearchText] = useState('');
@@ -77,6 +87,16 @@ export default function BibliotecaTreinosScreen({ navigation }: any) {
       </TouchableOpacity>
     );
   };
+
+  if (!canAccessWorkouts) {
+    return (
+      <AppBackground>
+        <SafeAreaView style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+          <ActivityIndicator size="large" color={colors.primary} />
+        </SafeAreaView>
+      </AppBackground>
+    );
+  }
 
   return (
     <AppBackground>

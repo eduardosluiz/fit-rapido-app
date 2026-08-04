@@ -127,7 +127,7 @@ export default function TreinoDetailScreen() {
     );
   }
 
-  const isPremiumLocked = treino.is_premium && user?.subscription_tier !== 'premium_fit';
+  const isPremiumLocked = user?.subscription_tier !== 'premium_fit';
 
   if (isPremiumLocked) {
     return (
@@ -136,11 +136,11 @@ export default function TreinoDetailScreen() {
           <View style={styles.premiumLockIconContainer}>
             <Ionicons name="lock-closed" size={80} color={colors.primary} />
           </View>
-          <Text style={styles.premiumLockTitle}>Treino Premium</Text>
+          <Text style={styles.premiumLockTitle}>Conteúdo Exclusivo</Text>
           <Text style={styles.premiumLockDescription}>
-            Este treino é exclusivo para assinantes Premium Fit. Assine agora para ter acesso a todos os treinos, programas personalizados e suporte da nossa IA.
+            Este treino é exclusivo para assinantes do plano DAI + FIT. Assine agora para ter acesso completo a todos os treinos, exercícios e rotinas personalizadas.
           </Text>
-          <TouchableOpacity style={styles.premiumLockButton} onPress={() => navigation.navigate('Subscription' as any)}>
+          <TouchableOpacity style={styles.premiumLockButton} onPress={() => navigation.navigate('Subscriptions' as any)}>
             <Text style={styles.premiumLockButtonText}>CONHECER PLANOS</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.premiumLockBackButton} onPress={() => navigation.goBack()}>

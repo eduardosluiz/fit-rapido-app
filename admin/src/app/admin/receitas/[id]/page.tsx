@@ -335,16 +335,7 @@ export default function EditarReceita() {
                         className="data-[state=unchecked]:bg-gray-400 border border-gray-500 shadow-sm"
                       />
                     </div>
-                    <div className="flex items-center justify-between p-5 rounded-xl border border-gray-400 dark:border-[#444] bg-white/50 dark:bg-[#0f0f0f] shadow-sm">
-                      <div className="space-y-1">
-                        <p className="text-[10px] font-normal uppercase tracking-widest text-gray-800 dark:text-gray-200 flex items-center gap-2">Conteúdo Premium</p>
-                      </div>
-                      <Switch
-                        checked={formData.is_premium}
-                        onCheckedChange={(checked) => setFormData({ ...formData, is_premium: checked })}
-                        className="data-[state=unchecked]:bg-gray-400 border border-gray-500 shadow-sm"
-                      />
-                    </div>
+
                     <div className="flex items-center justify-between p-5 rounded-xl border border-gray-400 dark:border-[#444] bg-white/50 dark:bg-[#0f0f0f] shadow-sm">
                       <div className="space-y-1">
                         <p className="text-[10px] font-normal uppercase tracking-widest text-gray-800 dark:text-gray-200 flex items-center gap-2 text-[#c8921a]">Selo Inédito</p>

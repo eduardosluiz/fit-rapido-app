@@ -202,8 +202,6 @@ export class ReceitasService {
         if (!isInTrial) {
           if (tier === SubscriptionTier.FREE || tier === SubscriptionTier.NONE) {
             queryBuilder.andWhere('receita.is_free = :isFreeUser', { isFreeUser: true });
-          } else if (tier === SubscriptionTier.BASIC) {
-            queryBuilder.andWhere('receita.is_premium = :isPremiumUser', { isPremiumUser: false });
           }
         }
       }
@@ -221,7 +219,7 @@ export class ReceitasService {
 
     if (search) {
       queryBuilder.andWhere(
-        '(receita.titulo ILIKE :search OR CAST(receita.ingredientes AS text) ILIKE :search OR CAST(receita.tags AS text) ILIKE :search)',
+        '(receita.titulo ILIKE :search OR CAST(receita.ingredientes AS text) ILIKE :search)',
         { search: `%${search}%` },
       );
     }
@@ -280,21 +278,24 @@ export class ReceitasService {
 
     if (semLactose) {
       queryBuilder.andWhere(
-        '(receita.titulo ILIKE :semLactose OR CAST(receita.tags AS text) ILIKE :semLactose OR categorias.nome ILIKE :semLactose)',
+        '(receita.titulo ILIKE :semLactose OR categorias.nome ILIKE :semLactose)',
         { semLactose: '%sem lactose%' },
       );
     }
 
     if (semGluten) {
       queryBuilder.andWhere(
-        '(receita.titulo ILIKE :semGluten OR receita.titulo ILIKE :semGlutenAccent OR CAST(receita.tags AS text) ILIKE :semGluten OR CAST(receita.tags AS text) ILIKE :semGlutenAccent OR categorias.nome ILIKE :semGluten OR categorias.nome ILIKE :semGlutenAccent)',
-        { semGluten: '%sem gluten%', semGlutenAccent: '%sem glúten%' },
+        '(receita.titulo ILIKE :semGluten OR receita.titulo ILIKE :semGlutenAccent OR categorias.nome ILIKE :semGluten OR categorias.nome ILIKE :semGlutenAccent)',
+        { 
+          semGluten: '%sem gluten%', 
+          semGlutenAccent: '%sem glúten%'
+        },
       );
     }
 
     if (lowCarb) {
       queryBuilder.andWhere(
-        '(receita.carboidratos <= :lowCarbMax OR CAST(receita.tags AS text) ILIKE :lowCarbText OR categorias.nome ILIKE :lowCarbText)',
+        '(receita.carboidratos <= :lowCarbMax OR categorias.nome ILIKE :lowCarbText)',
         { lowCarbMax: 30, lowCarbText: '%low carb%' },
       );
     }

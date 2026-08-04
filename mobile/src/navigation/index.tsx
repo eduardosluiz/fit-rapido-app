@@ -176,6 +176,9 @@ function FeedStack() {
 }
 
 function TabsNavigator() {
+  const { user } = useAuth();
+  const canAccessWorkouts = user?.subscription_tier === 'premium_fit';
+
   return (
     <MainTabs.Navigator
       initialRouteName="Feed"
@@ -232,11 +235,26 @@ function TabsNavigator() {
         component={TreinosStack}
         options={{
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="fitness" size={size} color={color} />
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <Ionicons name="fitness" size={size} color={color} />
+              {!canAccessWorkouts && (
+                <Ionicons 
+                  name="lock-closed" 
+                  size={10} 
+                  color={color} 
+                  style={{ position: 'absolute', top: -4, right: -6 }} 
+                />
+              )}
+            </View>
           ),
         }}
         listeners={({ navigation }) => ({
           tabPress: (e) => {
+            if (!canAccessWorkouts) {
+              e.preventDefault();
+              navigation.navigate('Subscriptions');
+              return;
+            }
             navigation.dispatch(
               CommonActions.reset({
                 index: 0,

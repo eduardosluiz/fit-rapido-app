@@ -263,6 +263,14 @@ export default function ModalityWorkoutsScreen() {
   const navigation = useNavigation();
   const route = useRoute();
   const { user } = useAuth();
+  
+  const canAccessWorkouts = user?.subscription_tier === 'premium_fit';
+
+  useEffect(() => {
+    if (!canAccessWorkouts) {
+      navigation.navigate('Subscriptions' as never);
+    }
+  }, [canAccessWorkouts, navigation]);
   const { 
     modalityId, 
     modalityName, 
@@ -472,6 +480,15 @@ export default function ModalityWorkoutsScreen() {
       </View>
     );
   };
+  if (!canAccessWorkouts) {
+    return (
+      <AppBackground>
+        <SafeAreaView style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+          <ActivityIndicator size="large" color={colors.primary} />
+        </SafeAreaView>
+      </AppBackground>
+    );
+  }
 
   return (
     <AppBackground>

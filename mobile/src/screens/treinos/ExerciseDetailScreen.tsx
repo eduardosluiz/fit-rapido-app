@@ -40,6 +40,15 @@ export default function ExerciseDetailScreen() {
   const route = useRoute();
   const navigation = useNavigation();
   const { user } = useAuth();
+  
+  const canAccessWorkouts = user?.subscription_tier === 'premium_fit';
+
+  useEffect(() => {
+    if (!canAccessWorkouts) {
+      navigation.navigate('Subscriptions' as never);
+    }
+  }, [canAccessWorkouts, navigation]);
+
   const { treinoId } = route.params as { treinoId: string };
   
   const [treino, setTreino] = useState<Treino | null>(null);
@@ -154,6 +163,14 @@ export default function ExerciseDetailScreen() {
     }
     return null;
   };
+
+  if (!canAccessWorkouts) {
+    return (
+      <SafeAreaView style={{ flex: 1, backgroundColor: '#0f0f0f', justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator size="large" color={colors.primary} />
+      </SafeAreaView>
+    );
+  }
 
   const display = getDisplayData();
 

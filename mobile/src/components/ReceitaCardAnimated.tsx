@@ -12,9 +12,10 @@ interface ReceitaCardProps {
   isHorizontal?: boolean;
   onPress: () => void;
   orderNumber?: number;
+  isLocked?: boolean;
 }
 
-export default function ReceitaCardAnimated({ item, isHorizontal, onPress, orderNumber }: ReceitaCardProps) {
+export default function ReceitaCardAnimated({ item, isHorizontal, onPress, orderNumber, isLocked }: ReceitaCardProps) {
   const scale = useRef(new Animated.Value(1)).current;
 
   const onPressIn = () => {
@@ -83,6 +84,12 @@ export default function ReceitaCardAnimated({ item, isHorizontal, onPress, order
         <View style={styles.imageContainer}>
           {renderMedia()}
           
+          {isLocked && (
+            <View style={styles.lockBadge}>
+              <Ionicons name="lock-closed" size={11} color="#000" />
+            </View>
+          )}
+
           {!!orderNumber && (
             <View style={styles.orderBadge}>
               <Text style={styles.orderText}>{orderNumber}</Text>
@@ -219,10 +226,24 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 10,
     left: 10,
-    backgroundColor: 'rgba(231,196,138, 0.9)',
+    backgroundColor: 'rgba(231,196,138, 0.95)',
     width: 24,
     height: 24,
     borderRadius: 12,
+    justifyContent: "center",
+    alignItems: "center",
+    zIndex: 10,
+    borderWidth: 1,
+    borderColor: '#000',
+  },
+  lockBadge: {
+    position: "absolute",
+    top: 10,
+    left: 10,
+    backgroundColor: 'rgba(231,196,138, 0.95)',
+    width: 22,
+    height: 22,
+    borderRadius: 11,
     justifyContent: "center",
     alignItems: "center",
     zIndex: 10,

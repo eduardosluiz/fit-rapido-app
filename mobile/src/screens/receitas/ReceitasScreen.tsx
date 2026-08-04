@@ -33,15 +33,35 @@ export default function ReceitasScreen() {
   const navigation = useNavigation();
   const route = useRoute();
   const { user } = useAuth();
+  
+  const params = route.params as { 
+    searchQuery?: string;
+    categoriaId?: string;
+    categoriaNome?: string;
+    semGluten?: boolean;
+    semLactose?: boolean;
+  } | undefined;
+
   const [receitas, setReceitas] = useState<Receita[]>([]);
   const [receitasPopulares, setReceitasPopulares] = useState<Receita[]>([]);
   const [receitasRapidas, setReceitasRapidas] = useState<Receita[]>([]);
   const [categorias, setCategorias] = useState<Categoria[]>([]);
   const [loading, setLoading] = useState(true);
-  const [searchText, setSearchText] = useState('');
-  const [selectedCategoria, setSelectedCategoria] = useState<string | null>(null);
+  const [searchText, setSearchText] = useState(params?.searchQuery || '');
+  const [selectedCategoria, setSelectedCategoria] = useState<string | null>(params?.categoriaId || null);
   const [buscaAvancadaVisible, setBuscaAvancadaVisible] = useState(false);
-  const [filtrosBusca, setFiltrosBusca] = useState<BuscaFilters>({});
+  const [filtrosBusca, setFiltrosBusca] = useState<BuscaFilters>(() => {
+    if (params?.semGluten !== undefined || params?.semLactose !== undefined) {
+      return {
+        semGluten: params.semGluten || false,
+        semLactose: params.semLactose || false,
+      };
+    }
+    return {};
+  });
+  
+  const lastRequestTimeRef = useRef<number>(0);
+  const lastProcessedParamsRef = useRef<string>('');
   
   // Novos estados para funcionalidades solicitadas
   const [filterMode, setFilterMode] = useState<'todos' | 'populares' | 'rapidas'>('todos');
@@ -75,6 +95,12 @@ export default function ReceitasScreen() {
       semGluten?: boolean;
       semLactose?: boolean;
     } | undefined;
+    
+    const paramsStr = JSON.stringify(params || {});
+    if (paramsStr === lastProcessedParamsRef.current) {
+      return;
+    }
+    lastProcessedParamsRef.current = paramsStr;
     
     if (params) {
       if (params.searchQuery !== undefined) {
@@ -134,6 +160,8 @@ export default function ReceitasScreen() {
   }, []);
 
   const loadReceitas = useCallback(async (currentSearch = searchText, pageNum = 1) => {
+    const requestTime = Date.now();
+    lastRequestTimeRef.current = requestTime;
     try {
       if (pageNum === 1) setLoading(true);
       else setLoadingMore(true);
@@ -160,6 +188,10 @@ export default function ReceitasScreen() {
       }
 
       const response = await api.getReceitas(params);
+      
+      if (requestTime !== lastRequestTimeRef.current) {
+        return;
+      }
       
       const isPaginated = !Array.isArray(response) && response && response.data;
       const todasReceitasRaw = isPaginated ? response.data : (Array.isArray(response) ? response : []);
