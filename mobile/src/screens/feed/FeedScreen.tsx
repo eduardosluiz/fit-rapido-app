@@ -57,53 +57,43 @@ export default function FeedScreen() {
 
   const shortcuts = [
     {
-      id: 'proteicas',
-      label: 'Proteicas',
-      iconType: 'MaterialCommunityIcons',
-      iconName: 'arm-flex',
-      onPress: () => (navigation as any).navigate('Receitas', { 
-        screen: 'ReceitasList', 
-        params: { categoriaNome: 'proteica' } 
-      }),
-    },
-    {
-      id: 'doces',
-      label: 'Doces',
-      iconType: 'MaterialCommunityIcons',
-      iconName: 'cookie',
-      onPress: () => (navigation as any).navigate('Receitas', { 
-        screen: 'ReceitasList', 
-        params: { categoriaNome: 'doce' } 
-      }),
-    },
-    {
-      id: 'pre-treino',
-      label: 'Pré treino',
+      id: 'ineditas',
+      label: 'Inéditas',
       iconType: 'Ionicons',
-      iconName: 'flash',
+      iconName: 'sparkles',
       onPress: () => (navigation as any).navigate('Receitas', { 
         screen: 'ReceitasList', 
-        params: { categoriaNome: 'pré treino' } 
+        params: { onlyIneditas: true } 
       }),
     },
     {
-      id: 'sem-gluten',
-      label: 'Sem glúten',
-      iconType: 'MaterialCommunityIcons',
-      iconName: 'corn',
+      id: 'mais-acessadas',
+      label: 'Mais acessadas',
+      iconType: 'Ionicons',
+      iconName: 'flame',
       onPress: () => (navigation as any).navigate('Receitas', { 
         screen: 'ReceitasList', 
-        params: { semGluten: true } 
+        params: { onlyPopulares: true } 
       }),
     },
     {
-      id: 'sem-lactose',
-      label: 'Sem lactose',
-      iconType: 'MaterialCommunityIcons',
-      iconName: 'water-off',
+      id: 'favoritas-geral',
+      label: 'Favoritas de vocês',
+      iconType: 'Ionicons',
+      iconName: 'heart',
       onPress: () => (navigation as any).navigate('Receitas', { 
         screen: 'ReceitasList', 
-        params: { semLactose: true } 
+        params: { onlyMaisFavoritadas: true } 
+      }),
+    },
+    {
+      id: 'ate-10-min',
+      label: 'Até 10 minutos',
+      iconType: 'Ionicons',
+      iconName: 'timer-outline',
+      onPress: () => (navigation as any).navigate('Receitas', { 
+        screen: 'ReceitasList', 
+        params: { tempoMaximo: 10 } 
       }),
     },
     {
@@ -115,7 +105,7 @@ export default function FeedScreen() {
     },
     {
       id: 'filtros',
-      label: 'Filtros',
+      label: 'Filtro',
       iconType: 'Ionicons',
       iconName: 'search-outline',
       onPress: () => setBuscaAvancadaVisible(true),

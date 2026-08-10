@@ -40,6 +40,10 @@ export default function ReceitasScreen() {
     categoriaNome?: string;
     semGluten?: boolean;
     semLactose?: boolean;
+    onlyIneditas?: boolean;
+    onlyPopulares?: boolean;
+    onlyMaisFavoritadas?: boolean;
+    tempoMaximo?: number;
   } | undefined;
 
   const [receitas, setReceitas] = useState<Receita[]>([]);
@@ -50,14 +54,15 @@ export default function ReceitasScreen() {
   const [searchText, setSearchText] = useState(params?.searchQuery || '');
   const [selectedCategoria, setSelectedCategoria] = useState<string | null>(params?.categoriaId || null);
   const [buscaAvancadaVisible, setBuscaAvancadaVisible] = useState(false);
+  const [onlyIneditas, setOnlyIneditas] = useState(params?.onlyIneditas || false);
+  const [onlyPopulares, setOnlyPopulares] = useState(params?.onlyPopulares || false);
+  const [onlyMaisFavoritadas, setOnlyMaisFavoritadas] = useState(params?.onlyMaisFavoritadas || false);
   const [filtrosBusca, setFiltrosBusca] = useState<BuscaFilters>(() => {
-    if (params?.semGluten !== undefined || params?.semLactose !== undefined) {
-      return {
-        semGluten: params.semGluten || false,
-        semLactose: params.semLactose || false,
-      };
-    }
-    return {};
+    const initial: BuscaFilters = {};
+    if (params?.semGluten) initial.semGluten = true;
+    if (params?.semLactose) initial.semLactose = true;
+    if (params?.tempoMaximo) initial.tempoMaximo = params.tempoMaximo;
+    return initial;
   });
   
   const lastRequestTimeRef = useRef<number>(0);
@@ -94,6 +99,10 @@ export default function ReceitasScreen() {
       categoriaNome?: string;
       semGluten?: boolean;
       semLactose?: boolean;
+      onlyIneditas?: boolean;
+      onlyPopulares?: boolean;
+      onlyMaisFavoritadas?: boolean;
+      tempoMaximo?: number;
     } | undefined;
     
     const paramsStr = JSON.stringify(params || {});
@@ -128,14 +137,15 @@ export default function ReceitasScreen() {
         setSelectedCategoria(null);
       }
       
-      if (params.semGluten !== undefined || params.semLactose !== undefined) {
-        setFiltrosBusca({
-          semGluten: params.semGluten || false,
-          semLactose: params.semLactose || false,
-        });
-      } else {
-        setFiltrosBusca({});
-      }
+      setOnlyIneditas(params.onlyIneditas || false);
+      setOnlyPopulares(params.onlyPopulares || false);
+      setOnlyMaisFavoritadas(params.onlyMaisFavoritadas || false);
+
+      const newFilters: BuscaFilters = {};
+      if (params.semGluten) newFilters.semGluten = true;
+      if (params.semLactose) newFilters.semLactose = true;
+      if (params.tempoMaximo) newFilters.tempoMaximo = params.tempoMaximo;
+      setFiltrosBusca(newFilters);
     }
   }, [route.params, categorias]);
 
@@ -169,6 +179,10 @@ export default function ReceitasScreen() {
       const params: any = { page: pageNum, limit: 15 };
       if (currentSearch.trim()) params.search = currentSearch.trim();
       if (selectedCategoria) params.categoria = selectedCategoria;
+      
+      if (onlyIneditas) params.onlyIneditas = true;
+      if (onlyPopulares) params.onlyPopulares = true;
+      if (onlyMaisFavoritadas) params.onlyMaisFavoritadas = true;
       
       // Aplicar filtros da busca avançada
       if (filtrosBusca.nome) {
@@ -227,7 +241,7 @@ export default function ReceitasScreen() {
       setLoading(false);
       setLoadingMore(false);
     }
-  }, [searchText, selectedCategoria, user?.subscription_tier, filtrosBusca]);
+  }, [searchText, selectedCategoria, user?.subscription_tier, filtrosBusca, onlyIneditas, onlyPopulares, onlyMaisFavoritadas]);
 
   const loadMore = () => {
     if (!loadingMore && hasMore && !loading && filterMode === 'todos') {
@@ -237,10 +251,10 @@ export default function ReceitasScreen() {
 
   useEffect(() => { loadCategorias(); }, [loadCategorias]);
   
-  // Use effect apenas para carregar inicialmente ou quando a categoria/filtros mudarem
+  // Use effect apenas para carregar inicialmente ou quando a categoria/filtros/atalhos mudarem
   useEffect(() => { 
     loadReceitas(searchText, 1); 
-  }, [selectedCategoria, filtrosBusca, user?.subscription_tier]);
+  }, [selectedCategoria, filtrosBusca, user?.subscription_tier, onlyIneditas, onlyPopulares, onlyMaisFavoritadas]);
 
   const handleSearchTextChange = (text: string) => {
     setSearchText(text);

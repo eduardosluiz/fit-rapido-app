@@ -56,6 +56,9 @@ export class ReceitasController {
     @Query('limit') limit?: string,
     @Query('onlyFree') onlyFree?: string,
     @Query('summary') summary?: string,
+    @Query('onlyIneditas') onlyIneditas?: string,
+    @Query('onlyPopulares') onlyPopulares?: string,
+    @Query('onlyMaisFavoritadas') onlyMaisFavoritadas?: string,
   ) {
     // Buscar usuário se autenticado
     let user = null;
@@ -88,6 +91,9 @@ export class ReceitasController {
       limit ? parseInt(limit, 10) : undefined,
       onlyFree === 'true',
       summary === 'true',
+      onlyIneditas === 'true',
+      onlyPopulares === 'true',
+      onlyMaisFavoritadas === 'true',
     );
     
     const receitasToLog = result.data ? result.data : result;

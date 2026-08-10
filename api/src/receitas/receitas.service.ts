@@ -142,6 +142,9 @@ export class ReceitasService {
     limit?: number,
     onlyFree?: boolean,
     summary?: boolean,
+    onlyIneditas?: boolean,
+    onlyPopulares?: boolean,
+    onlyMaisFavoritadas?: boolean,
   ): Promise<any> {
     // Verificar se é admin ANTES de aplicar filtros
     const isAdmin = user && (user.role === UserRole.ADMIN || String(user.role) === 'admin' || String(user.role) === 'personal_trainer' || user.email === 'dai@gmail.com');
@@ -300,7 +303,30 @@ export class ReceitasService {
       );
     }
 
-    queryBuilder.orderBy('receita.created_at', 'DESC');
+    if (onlyIneditas) {
+      queryBuilder.andWhere('receita.is_inedito = :onlyIneditasVal', { onlyIneditasVal: true });
+    }
+
+    if (onlyPopulares) {
+      queryBuilder.andWhere('receita.destaque_popular = :onlyPopularesVal', { onlyPopularesVal: true });
+    }
+
+    if (onlyMaisFavoritadas) {
+      page = 1;
+      limit = 20;
+      queryBuilder
+        .leftJoin(qb => {
+          return qb
+            .select('f.item_id', 'item_id')
+            .addSelect('COUNT(f.id)', 'fav_count')
+            .from('favoritos', 'f')
+            .where("f.tipo = 'receita'")
+            .groupBy('f.item_id');
+        }, 'fav_stats', 'fav_stats.item_id = CAST(receita.id AS text)')
+        .orderBy('COALESCE(fav_stats.fav_count, 0)', 'DESC');
+    } else {
+      queryBuilder.orderBy('receita.created_at', 'DESC');
+    }
 
     let receitas;
     if (page !== undefined && limit !== undefined) {
