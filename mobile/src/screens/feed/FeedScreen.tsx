@@ -49,6 +49,7 @@ export default function FeedScreen() {
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [buscaAvancadaVisible, setBuscaAvancadaVisible] = useState(false);
+  const [categorias, setCategorias] = useState<any[]>([]);
   const [filtrosBusca, setFiltrosBusca] = useState<BuscaFilters>({});
   const [buscaRapida, setBuscaRapida] = useState('');
   
@@ -176,6 +177,14 @@ export default function FeedScreen() {
         setUltimaNotificacao(notificacoesOrdenadas[0]);
       } else {
         setUltimaNotificacao(null);
+      }
+
+      // Carregar categorias para a busca avançada
+      try {
+        const cats = await api.getCategorias();
+        setCategorias(cats.filter((cat: any) => cat.ativa !== false));
+      } catch (err) {
+        console.error('Erro ao carregar categorias no Feed:', err);
       }
     } catch (error) {
       console.error('Erro ao carregar feed:', error);
@@ -437,10 +446,15 @@ export default function FeedScreen() {
                 categoriaId: filters.categoria || undefined,
                 semLactose: filters.semLactose || false,
                 semGluten: filters.semGluten || false,
+                ingrediente: filters.ingrediente || undefined,
+                proteinasMin: filters.proteinasMin || undefined,
+                tempoMaximo: filters.tempoMaximo || undefined,
+                lowCarb: filters.lowCarb || false,
               }
             });
           }}
           initialFilters={filtrosBusca}
+          availableCategories={categorias}
         />
       </SafeAreaView>
     </AppBackground>

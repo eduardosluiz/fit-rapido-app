@@ -44,6 +44,9 @@ export default function ReceitasScreen() {
     onlyPopulares?: boolean;
     onlyMaisFavoritadas?: boolean;
     tempoMaximo?: number;
+    ingrediente?: string;
+    proteinasMin?: number;
+    lowCarb?: boolean;
   } | undefined;
 
   const [receitas, setReceitas] = useState<Receita[]>([]);
@@ -62,6 +65,10 @@ export default function ReceitasScreen() {
     if (params?.semGluten) initial.semGluten = true;
     if (params?.semLactose) initial.semLactose = true;
     if (params?.tempoMaximo) initial.tempoMaximo = params.tempoMaximo;
+    if (params?.ingrediente) initial.ingrediente = params.ingrediente;
+    if (params?.proteinasMin) initial.proteinasMin = params.proteinasMin;
+    if (params?.lowCarb) initial.lowCarb = true;
+    if (params?.categoriaId) initial.categoria = params.categoriaId;
     return initial;
   });
   
@@ -103,6 +110,9 @@ export default function ReceitasScreen() {
       onlyPopulares?: boolean;
       onlyMaisFavoritadas?: boolean;
       tempoMaximo?: number;
+      ingrediente?: string;
+      proteinasMin?: number;
+      lowCarb?: boolean;
     } | undefined;
     
     const paramsStr = JSON.stringify(params || {});
@@ -145,6 +155,10 @@ export default function ReceitasScreen() {
       if (params.semGluten) newFilters.semGluten = true;
       if (params.semLactose) newFilters.semLactose = true;
       if (params.tempoMaximo) newFilters.tempoMaximo = params.tempoMaximo;
+      if (params.ingrediente) newFilters.ingrediente = params.ingrediente;
+      if (params.proteinasMin) newFilters.proteinasMin = params.proteinasMin;
+      if (params.lowCarb) newFilters.lowCarb = true;
+      if (params.categoriaId) newFilters.categoria = params.categoriaId;
       setFiltrosBusca(newFilters);
     }
   }, [route.params, categorias]);
@@ -326,6 +340,7 @@ export default function ReceitasScreen() {
         onClose={() => setBuscaAvancadaVisible(false)}
         onSearch={(filters) => {
           setFiltrosBusca(filters);
+          setSelectedCategoria(filters.categoria || null);
           if (searchText.trim() && Object.values(filters).some(v => v !== '' && v !== false && v !== undefined)) {
             setSearchText('');
           }

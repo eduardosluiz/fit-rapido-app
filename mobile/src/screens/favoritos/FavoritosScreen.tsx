@@ -27,6 +27,7 @@ export default function FavoritosScreen() {
   const [receitas, setReceitas] = useState<Receita[]>([]);
   const [treinos, setTreinos] = useState<Treino[]>([]);
   const [categoriasFavoritos, setCategoriasFavoritos] = useState<any[]>([]);
+  const [allCategorias, setAllCategorias] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<string>('all');
   const [searchText, setSearchText] = useState('');
@@ -53,6 +54,7 @@ export default function FavoritosScreen() {
 
       try {
         const categoriasData = await api.getCategorias();
+        setAllCategorias(categoriasData.filter((c: any) => c.ativa !== false));
         setCategoriasFavoritos(categoriasData.filter((c: any) => c.aparece_favoritos === true));
       } catch (err) {
         console.error('Erro ao carregar categorias', err);
@@ -217,6 +219,7 @@ export default function FavoritosScreen() {
         onClose={() => setBuscaAvancadaVisible(false)}
         onSearch={(filters) => setFiltrosBusca(filters)}
         initialFilters={filtrosBusca}
+        availableCategories={allCategorias}
       />
 
       <View style={styles.filtersContainer}>

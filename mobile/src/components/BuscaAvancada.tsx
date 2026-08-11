@@ -111,7 +111,9 @@ export default function BuscaAvancada({
                       onPress={() => setShowCategorySelect(!showCategorySelect)}
                     >
                       <Text style={[styles.selectInputText, !filters.categoria && styles.placeholderText]}>
-                        {filters.categoria || "Selecione uma categoria..."}
+                        {filters.categoria 
+                          ? (availableCategories.find(c => c.id === filters.categoria)?.nome || filters.categoria) 
+                          : "Selecione uma categoria..."}
                       </Text>
                       <Ionicons name={showCategorySelect ? "chevron-up" : "chevron-down"} size={20} color={colors.textMuted} />
                     </TouchableOpacity>
@@ -132,13 +134,13 @@ export default function BuscaAvancada({
                         </TouchableOpacity>
                         
                         {availableCategories.map((cat) => {
-                          const isSelected = filters.categoria === cat.nome;
+                          const isSelected = filters.categoria === cat.id;
                           return (
                             <TouchableOpacity
                               key={cat.id}
                               style={styles.dropdownItem}
                               onPress={() => {
-                                setFilters({ ...filters, categoria: cat.nome });
+                                setFilters({ ...filters, categoria: cat.id });
                                 setShowCategorySelect(false);
                               }}
                             >
