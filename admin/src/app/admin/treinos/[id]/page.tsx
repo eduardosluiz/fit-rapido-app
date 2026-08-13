@@ -51,7 +51,7 @@ function EditarTreinoForm() {
     ativa: true,
     is_premium: false,
     is_inedito: false,
-    exercicios_detalhados: [{ nome: '', repeticoes: '', imagem_url: '', video_url: '' }]
+    exercicios_detalhados: [{ nome: '', repeticoes: '', imagem_url: '', video_url: '', video_explicativo_url: '' }]
   });
 
   const loadData = useCallback(async () => {
@@ -89,8 +89,16 @@ function EditarTreinoForm() {
         is_inedito: treino.is_inedito || false,
         exercicios_detalhados: Array.isArray(treino.exercicios_detalhados) && treino.exercicios_detalhados.length > 0
 
-          ? treino.exercicios_detalhados
-          : [{ nome: '', repeticoes: '', imagem_url: '', video_url: '' }]
+          ? treino.exercicios_detalhados.map((ex: any) => ({
+              ...ex,
+              nome: ex.nome || '',
+              repeticoes: ex.repeticoes || '',
+              imagem_url: ex.imagem_url || '',
+              // Registros antigos usavam imagem_url para execução e video_url para explicação.
+              video_url: ex.video_explicativo_url ? (ex.video_url || '') : (ex.imagem_url || ''),
+              video_explicativo_url: ex.video_explicativo_url || ex.video_url || '',
+            }))
+          : [{ nome: '', repeticoes: '', imagem_url: '', video_url: '', video_explicativo_url: '' }]
       });
     } catch (err: any) {
       toast.error('Erro ao carregar treino');
@@ -207,13 +215,11 @@ function EditarTreinoForm() {
             </div>
           </div>
           <div className="flex items-center justify-end">
-            <Link href="/admin/treinos">
-              <button 
-                type="button"
-                className="px-3 sm:px-4 py-2 rounded-md border border-gray-300 dark:border-[#333] text-gray-600 dark:text-gray-400 text-[10px] font-normal uppercase tracking-widest hover:bg-gray-50 dark:hover:bg-[#1a1a1a] transition-all flex items-center gap-1 sm:gap-2"
-              >
-                <i className="bx bx-arrow-back text-lg"></i> <span className="hidden sm:inline">Voltar</span>
-              </button>
+            <Link
+              href="/admin/treinos"
+              className="px-3 sm:px-4 py-2 rounded-md border border-gray-300 dark:border-[#333] text-gray-600 dark:text-gray-400 text-[10px] font-normal uppercase tracking-widest hover:bg-gray-50 dark:hover:bg-[#1a1a1a] transition-all flex items-center gap-1 sm:gap-2"
+            >
+              <i className="bx bx-arrow-back text-lg"></i> <span className="hidden sm:inline">Voltar</span>
             </Link>
           </div>
         </div>
@@ -378,12 +384,23 @@ function EditarTreinoForm() {
 
             {/* Seção: Exercícios */}
             <div className="space-y-8 pt-10 border-t border-gray-100 dark:border-[#1a1a1a]">
-              <div className="pb-2">
+              <div className="pb-2 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                 <h3 className="text-[11px] font-normal uppercase tracking-[0.3em] text-gray-400 flex items-center gap-3">
                   <div className="w-1.5 h-1.5 rounded-full bg-[#c8921a]"></div>
-                  Estrutura da Sessão (Grade de Exercícios)
+                  Exercícios deste treino
                 </h3>
+                <button
+                  type="button"
+                  onClick={() => setFormData({
+                    ...formData,
+                    exercicios_detalhados: [...formData.exercicios_detalhados, { nome: '', repeticoes: '', imagem_url: '', video_url: '', video_explicativo_url: '' }]
+                  })}
+                  className="w-full sm:w-auto px-4 py-2 rounded-md bg-[#c8921a] text-[#2d2106] text-[10px] font-normal flex items-center justify-center gap-2"
+                >
+                  <PlusCircle size={14} /> Adicionar exercício
+                </button>
               </div>
+              <p className="text-xs text-gray-600 -mt-5">Adicione quantos exercícios precisar e escolha os vídeos de execução e explicação na biblioteca.</p>
 
               <div className="space-y-4">
                 {formData.exercicios_detalhados.map((ex, index) => (
@@ -433,90 +450,19 @@ function EditarTreinoForm() {
 
                       <div className="lg:col-span-6 flex items-center justify-center">
                         <div className="flex flex-col sm:flex-row gap-4 p-3 bg-white dark:bg-[#111] rounded-xl border border-gray-200 dark:border-[#333] w-full max-w-[480px]">
-                          {/* GIF Demo */}
+                          {/* Vídeo de execução */}
                           <div className="flex-1 flex flex-col gap-1.5">
-                            <span className="text-[7px] font-black uppercase text-gray-400 tracking-widest text-center sm:text-left">GIF DEMO</span>
-                            <div className="relative group/media w-full h-20 rounded-lg overflow-hidden bg-gray-50 dark:bg-black border border-gray-200 dark:border-[#333]">
-                              {ex.imagem_url ? (
-                                <>
-                                  <video 
-                                    key={`gif-${ex.imagem_url}`}
-                                    src={`${ex.imagem_url}#t=0.5`} 
-                                    className="w-full h-full object-contain" 
-                                    muted 
-                                    preload="metadata" 
-                                    playsInline
-                                    onMouseOver={(e) => e.currentTarget.play()}
-                                    onMouseOut={(e) => { e.currentTarget.pause(); e.currentTarget.currentTime = 0.5; }}
-                                  />
-                                  <div className="absolute inset-0 bg-black/40 opacity-0 group-hover/media:opacity-100 transition-opacity flex items-center justify-center gap-2">
-                                    <MediaSelectorPopover
-                                      title="Selecionar da Biblioteca"
-                                      bibliotecaExercicios={bibliotecaExercicios}
-                                      selectedValue={ex.imagem_url}
-                                      compareKey="video_url"
-                                      onSelect={(libEx) => {
-                                        const novos = [...formData.exercicios_detalhados];
-                                        novos[index].imagem_url = libEx.video_url || libEx.imagem_url || '';
-                                        setFormData({ ...formData, exercicios_detalhados: novos });
-                                      }}
-                                    >
-                                      <button type="button" className="w-8 h-8 rounded bg-[#c8921a] flex items-center justify-center text-white transition-all shadow-sm">
-                                        <i className="bx bx-library text-lg"></i>
-                                      </button>
-                                    </MediaSelectorPopover>
-                                    <button 
-                                      type="button"
-                                      onClick={() => {
-                                        const novos = [...formData.exercicios_detalhados];
-                                        novos[index].imagem_url = '';
-                                        setFormData({ ...formData, exercicios_detalhados: novos });
-                                      }}
-                                      className="w-8 h-8 rounded bg-red-500/20 text-red-500 flex items-center justify-center transition-all"
-                                    >
-                                      <i className="bx bx-trash text-lg"></i>
-                                    </button>
-                                  </div>
-                                </>
-                              ) : (
-                                <div className="w-full h-full flex items-center justify-center">
-                                  <MediaSelectorPopover
-                                    title="Selecionar da Biblioteca"
-                                    bibliotecaExercicios={bibliotecaExercicios}
-                                    selectedValue={ex.imagem_url}
-                                    compareKey="video_url"
-                                    onSelect={(libEx) => {
-                                      const novos = [...formData.exercicios_detalhados];
-                                      novos[index].imagem_url = libEx.video_url || libEx.imagem_url || '';
-                                      setFormData({ ...formData, exercicios_detalhados: novos });
-                                    }}
-                                  >
-                                    <button type="button" className="flex flex-col items-center justify-center gap-1 group/btn">
-                                      <div className="w-7 h-7 rounded-full bg-[#c8921a]/10 group-hover/btn:bg-[#c8921a]/20 flex items-center justify-center transition-all">
-                                        <i className="bx bx-library text-[#c8921a] text-base"></i>
-                                      </div>
-                                      <p className="text-[6px] font-normal uppercase text-gray-500 group-hover/btn:text-[#c8921a]">Escolher</p>
-                                    </button>
-                                  </MediaSelectorPopover>
-                                </div>
-                              )}
-                            </div>
-                          </div>
-
-                          {/* Vídeo Aula */}
-                          <div className="flex-1 flex flex-col gap-1.5">
-                            <span className="text-[7px] font-black uppercase text-gray-400 tracking-widest text-center sm:text-left">VÍDEO AULA</span>
+                            <span className="text-[9px] font-normal text-gray-600 text-center sm:text-left">Vídeo de execução</span>
                             <div className="relative group/media w-full h-20 rounded-lg overflow-hidden bg-gray-50 dark:bg-black border border-gray-200 dark:border-[#333]">
                               {ex.video_url ? (
                                 <>
                                   <video 
-                                    key={`video-${ex.video_url}`}
-                                    src={`${ex.video_url}#t=0.5`} 
-                                    className="w-full h-full object-cover opacity-90 group-hover/media:opacity-100 transition-opacity" 
+                                    key={`execucao-${ex.video_url}`}
+                                    src={`${ex.video_url}#t=0.5`}
+                                    className="w-full h-full object-contain" 
                                     muted 
-                                    playsInline 
                                     preload="metadata" 
-                                    crossOrigin="anonymous" 
+                                    playsInline
                                     onMouseOver={(e) => e.currentTarget.play()}
                                     onMouseOut={(e) => { e.currentTarget.pause(); e.currentTarget.currentTime = 0.5; }}
                                   />
@@ -573,6 +519,77 @@ function EditarTreinoForm() {
                               )}
                             </div>
                           </div>
+
+                          {/* Vídeo explicativo */}
+                          <div className="flex-1 flex flex-col gap-1.5">
+                            <span className="text-[9px] font-normal text-gray-600 text-center sm:text-left">Vídeo explicativo</span>
+                            <div className="relative group/media w-full h-20 rounded-lg overflow-hidden bg-gray-50 dark:bg-black border border-gray-200 dark:border-[#333]">
+                              {ex.video_explicativo_url ? (
+                                <>
+                                  <video 
+                                    key={`explicativo-${ex.video_explicativo_url}`}
+                                    src={`${ex.video_explicativo_url}#t=0.5`}
+                                    className="w-full h-full object-cover opacity-90 group-hover/media:opacity-100 transition-opacity" 
+                                    muted 
+                                    playsInline 
+                                    preload="metadata" 
+                                    crossOrigin="anonymous" 
+                                    onMouseOver={(e) => e.currentTarget.play()}
+                                    onMouseOut={(e) => { e.currentTarget.pause(); e.currentTarget.currentTime = 0.5; }}
+                                  />
+                                  <div className="absolute inset-0 bg-black/40 opacity-0 group-hover/media:opacity-100 transition-opacity flex items-center justify-center gap-2">
+                                    <MediaSelectorPopover
+                                      title="Selecionar da Biblioteca"
+                                      bibliotecaExercicios={bibliotecaExercicios}
+                                      selectedValue={ex.video_explicativo_url}
+                                      compareKey="video_url"
+                                      onSelect={(libEx) => {
+                                        const novos = [...formData.exercicios_detalhados];
+                                        novos[index].video_explicativo_url = libEx.video_explicativo_url || libEx.video_url || '';
+                                        setFormData({ ...formData, exercicios_detalhados: novos });
+                                      }}
+                                    >
+                                      <button type="button" className="w-8 h-8 rounded bg-[#c8921a] flex items-center justify-center text-white transition-all shadow-sm">
+                                        <i className="bx bx-library text-lg"></i>
+                                      </button>
+                                    </MediaSelectorPopover>
+                                    <button 
+                                      type="button"
+                                      onClick={() => {
+                                        const novos = [...formData.exercicios_detalhados];
+                                        novos[index].video_explicativo_url = '';
+                                        setFormData({ ...formData, exercicios_detalhados: novos });
+                                      }}
+                                      className="w-8 h-8 rounded bg-red-500/20 text-red-500 flex items-center justify-center transition-all"
+                                    >
+                                      <i className="bx bx-trash text-lg"></i>
+                                    </button>
+                                  </div>
+                                </>
+                              ) : (
+                                <div className="w-full h-full flex items-center justify-center">
+                                  <MediaSelectorPopover
+                                    title="Selecionar da Biblioteca"
+                                    bibliotecaExercicios={bibliotecaExercicios}
+                                    selectedValue={ex.video_explicativo_url}
+                                    compareKey="video_url"
+                                    onSelect={(libEx) => {
+                                      const novos = [...formData.exercicios_detalhados];
+                                      novos[index].video_explicativo_url = libEx.video_explicativo_url || libEx.video_url || '';
+                                      setFormData({ ...formData, exercicios_detalhados: novos });
+                                    }}
+                                  >
+                                    <button type="button" className="flex flex-col items-center justify-center gap-1 group/btn">
+                                      <div className="w-7 h-7 rounded-full bg-[#c8921a]/10 group-hover/btn:bg-[#c8921a]/20 flex items-center justify-center transition-all">
+                                        <i className="bx bx-library text-[#c8921a] text-base"></i>
+                                      </div>
+                                      <p className="text-[6px] font-normal uppercase text-gray-500 group-hover/btn:text-[#c8921a]">Escolher</p>
+                                    </button>
+                                  </MediaSelectorPopover>
+                                </div>
+                              )}
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -584,7 +601,7 @@ function EditarTreinoForm() {
                     type="button"
                     onClick={() => setFormData({
                       ...formData,
-                      exercicios_detalhados: [...formData.exercicios_detalhados, { nome: '', repeticoes: '', imagem_url: '', video_url: '' }]
+                      exercicios_detalhados: [...formData.exercicios_detalhados, { nome: '', repeticoes: '', imagem_url: '', video_url: '', video_explicativo_url: '' }]
                     })}
                     className="px-6 py-2 rounded-full border-2 border-dashed border-gray-300 dark:border-[#333] text-gray-400 hover:border-[#c8921a] hover:text-[#c8921a] hover:bg-[#c8921a]/5 transition-all text-[9px] font-normal uppercase tracking-widest flex items-center gap-2"
                   >

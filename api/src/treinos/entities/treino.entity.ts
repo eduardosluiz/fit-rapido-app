@@ -40,6 +40,7 @@ export class Treino {
     nome: string;
     imagem_url?: string;
     video_url?: string;
+    video_explicativo_url?: string;
     video_thumbnail_url?: string;
     series?: number;
     repeticoes?: string;

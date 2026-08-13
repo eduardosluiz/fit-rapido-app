@@ -28,6 +28,7 @@ export class CreateTreinoDto {
     nome: string;
     imagem_url?: string;
     video_url?: string;
+    video_explicativo_url?: string;
     video_thumbnail_url?: string;
     series?: number;
     repeticoes?: string;
@@ -178,6 +179,7 @@ export class UpdateTreinoDto {
     nome: string;
     imagem_url?: string;
     video_url?: string;
+    video_explicativo_url?: string;
     video_thumbnail_url?: string;
     series?: number;
     repeticoes?: string;
@@ -298,4 +300,3 @@ export class UpdateTreinoDto {
   @IsInt()
   ordem?: number;
 }
-

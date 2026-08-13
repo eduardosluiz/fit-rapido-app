@@ -46,7 +46,7 @@ function NovoTreinoForm() {
     ativa: true,
     is_premium: false,
     is_inedito: false,
-    exercicios_detalhados: [{ nome: '', repeticoes: '', imagem_url: '', video_url: '' }]
+    exercicios_detalhados: [{ nome: '', repeticoes: '', imagem_url: '', video_url: '', video_explicativo_url: '' }]
   });
 
   const loadInitialData = useCallback(async () => {
@@ -529,7 +529,7 @@ function NovoTreinoForm() {
                     type="button"
                     onClick={() => setFormData({
                       ...formData,
-                      exercicios_detalhados: [...formData.exercicios_detalhados, { nome: '', repeticoes: '', imagem_url: '', video_url: '' }]
+                      exercicios_detalhados: [...formData.exercicios_detalhados, { nome: '', repeticoes: '', imagem_url: '', video_url: '', video_explicativo_url: '' }]
                     })}
                     className="px-6 py-2 rounded-full border-2 border-dashed border-gray-300 dark:border-[#333] text-gray-400 hover:border-[#c8921a] hover:text-[#c8921a] hover:bg-[#c8921a]/5 transition-all text-[9px] font-normal uppercase tracking-widest flex items-center gap-2"
                   >

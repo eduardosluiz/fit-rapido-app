@@ -30,6 +30,7 @@ export default function TreinoDetailScreen() {
   const [isFavorito, setIsFavorito] = useState(false);
   const [loadingFavorito, setLoadingFavorito] = useState(false);
   const [showVideoPlayer, setShowVideoPlayer] = useState(false);
+  const [exerciseVideo, setExerciseVideo] = useState<{ url: string; title: string } | null>(null);
   const [avaliacaoUsuario, setAvaliacaoUsuario] = useState<number | null>(null);
   const [loadingAvaliacao, setLoadingAvaliacao] = useState(false);
   const [treinoConcluidoHoje, setTreinoConcluidoHoje] = useState(false);
@@ -274,7 +275,33 @@ export default function TreinoDetailScreen() {
             </View>
             <View style={styles.sectionTitleUnderline} />
           </View>
-          {treino.exercicios && Array.isArray(treino.exercicios) && treino.exercicios.length > 0 ? (
+          {treino.exercicios_detalhados && treino.exercicios_detalhados.length > 0 ? (
+            treino.exercicios_detalhados
+              .filter((ex: any) => ex?.nome?.trim())
+              .map((ex: any, index: number) => (
+                <View key={`${ex.nome}-${index}`} style={styles.exerciseCard}>
+                  <View style={styles.exerciseNumber}><Text style={styles.exerciseNumberText}>{index + 1}</Text></View>
+                  <View style={styles.exerciseContent}>
+                    <Text style={styles.exercicioName}>{ex.nome}</Text>
+                    {!!ex.repeticoes && <Text style={styles.serieText}>{ex.repeticoes}</Text>}
+                    <View style={styles.exerciseActions}>
+                      {!!ex.video_url && (
+                        <TouchableOpacity style={styles.exerciseVideoButton} onPress={() => setExerciseVideo({ url: ex.video_url, title: `${ex.nome} — execução` })}>
+                          <Ionicons name="play-circle-outline" size={16} color={colors.primary} />
+                          <Text style={styles.exerciseVideoText}>Execução</Text>
+                        </TouchableOpacity>
+                      )}
+                      {!!ex.video_explicativo_url && (
+                        <TouchableOpacity style={styles.exerciseVideoButton} onPress={() => setExerciseVideo({ url: ex.video_explicativo_url, title: `${ex.nome} — explicação` })}>
+                          <Ionicons name="information-circle-outline" size={16} color={colors.primary} />
+                          <Text style={styles.exerciseVideoText}>Explicação</Text>
+                        </TouchableOpacity>
+                      )}
+                    </View>
+                  </View>
+                </View>
+              ))
+          ) : treino.exercicios && Array.isArray(treino.exercicios) && treino.exercicios.length > 0 ? (
             treino.exercicios
               .filter((ex) => ex && String(ex).trim() !== '')
               .map((ex, index) => (
@@ -361,6 +388,11 @@ export default function TreinoDetailScreen() {
           <VideoPlayer videoUrl={treino.video_url} title={treino.titulo} onClose={() => setShowVideoPlayer(false)} />
         </Modal>
       )}
+      {!!exerciseVideo && (
+        <Modal visible animationType="slide" onRequestClose={() => setExerciseVideo(null)}>
+          <VideoPlayer videoUrl={exerciseVideo.url} title={exerciseVideo.title} onClose={() => setExerciseVideo(null)} />
+        </Modal>
+      )}
     </SafeAreaView>
   );
 }
@@ -397,6 +429,13 @@ const styles = StyleSheet.create({
   listItem: { flexDirection: 'row', marginBottom: 8, alignItems: 'flex-start' },
   bullet: { color: colors.primary, fontSize: 16, marginRight: 8, marginTop: 2 },
   listText: { flex: 1, fontSize: 16, color: '#ffffff' },
+  exerciseCard: { flexDirection: 'row', padding: 12, borderRadius: 10, marginBottom: 10, backgroundColor: colors.backgroundSecondary, borderWidth: 1, borderColor: colors.border },
+  exerciseNumber: { width: 28, height: 28, borderRadius: 8, alignItems: 'center', justifyContent: 'center', backgroundColor: colors.primary, marginRight: 10 },
+  exerciseNumberText: { color: '#111', fontSize: 12, fontFamily: fonts.bodyBold },
+  exerciseContent: { flex: 1 },
+  exerciseActions: { flexDirection: 'row', flexWrap: 'wrap', gap: 8, marginTop: 8 },
+  exerciseVideoButton: { flexDirection: 'row', alignItems: 'center', gap: 5, paddingHorizontal: 10, paddingVertical: 7, borderRadius: 8, borderWidth: 1, borderColor: 'rgba(200, 146, 26, 0.45)' },
+  exerciseVideoText: { color: colors.primary, fontSize: 11, fontFamily: fonts.body },
   serieItem: { backgroundColor: colors.backgroundSecondary, padding: 12, borderRadius: 8, marginBottom: 8, borderWidth: 1, borderColor: colors.border },
   exercicioName: { fontSize: 16, fontFamily: fonts.bodyBold, color: '#ffffff', marginBottom: 4 },
   serieDetails: { marginLeft: 8 },
