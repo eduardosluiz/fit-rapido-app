@@ -33,12 +33,15 @@ export default function ReceitaCardAnimated({ item, isHorizontal, onPress, order
   };
 
   const renderMedia = () => {
-    if (item.imagem_url) {
+    const thumbnailUrl = item.imagem_url || item.video_thumbnail_url;
+    if (thumbnailUrl) {
       return (
         <Image 
-          source={{ uri: getImageUrl(item.imagem_url) || '' }} 
+          source={{ uri: getImageUrl(thumbnailUrl) || '' }}
           style={styles.image} 
-          resizeMode="cover" 
+          contentFit="cover"
+          cachePolicy="memory-disk"
+          transition={0}
         />
       );
     }
@@ -76,12 +79,12 @@ export default function ReceitaCardAnimated({ item, isHorizontal, onPress, order
   };
 
   const windowWidth = Dimensions.get('window').width;
-  const CARD_WIDTH = (windowWidth - 50) / 2;
+  const CARD_WIDTH = (windowWidth - 32) / 2;
 
   return (
-    <Pressable onPress={onPress} onPressIn={onPressIn} onPressOut={onPressOut} style={[isHorizontal && { width: CARD_WIDTH, marginRight: 15 }]}>
-      <Animated.View style={[styles.card, { transform: [{ scale }] }]}>
-        <View style={styles.imageContainer}>
+    <Pressable onPress={onPress} onPressIn={onPressIn} onPressOut={onPressOut} style={[isHorizontal && { width: CARD_WIDTH, marginRight: 10 }]}>
+      <Animated.View style={[styles.card, isHorizontal && styles.horizontalCard, { transform: [{ scale }] }]}>
+        <View style={[styles.imageContainer, isHorizontal && styles.horizontalImageContainer]}>
           {renderMedia()}
           
           {isLocked && (
@@ -103,9 +106,9 @@ export default function ReceitaCardAnimated({ item, isHorizontal, onPress, order
           )}
         </View>
 
-        <View style={styles.content}>
-          <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6, minHeight: 24 }}>
-            <Text style={[styles.title, { flex: 1, marginBottom: 0, marginRight: 8 }]} numberOfLines={1}>
+        <View style={[styles.content, isHorizontal && styles.horizontalContent]}>
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: isHorizontal ? 3 : 6, minHeight: isHorizontal ? 18 : 24 }}>
+            <Text style={[styles.title, isHorizontal && styles.horizontalTitle, { flex: 1, marginBottom: 0, marginRight: 8 }]} numberOfLines={1}>
               {item.titulo}
             </Text>
             {(item.substituto_id_1 || item.substituto_id_2) && (
@@ -162,6 +165,10 @@ const styles = StyleSheet.create({
     shadowRadius: 20,
     elevation: 12,
   },
+  horizontalCard: {
+    borderRadius: 14,
+    marginBottom: 12,
+  },
   imageContainer: {
     width: '100%',
     height: 120, // Altura reduzida para visual mais compacto e elegante
@@ -169,6 +176,9 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1.5,
     borderBottomColor: 'rgba(231,196,138, 0.8)', // Borda dourada mais visível na base da imagem
     overflow: 'hidden',
+  },
+  horizontalImageContainer: {
+    height: 96,
   },
   image: {
     width: "100%",
@@ -183,11 +193,19 @@ const styles = StyleSheet.create({
   content: {
     padding: 10,
   },
+  horizontalContent: {
+    paddingHorizontal: 8,
+    paddingVertical: 7,
+  },
   title: {
     color: "#fff",
     fontSize: 14,
     fontFamily: fonts.title,
     marginBottom: 6,
+  },
+  horizontalTitle: {
+    fontSize: 11,
+    fontFamily: fonts.bodySemiBold,
   },
   metaRow: {
     flexDirection: 'row',

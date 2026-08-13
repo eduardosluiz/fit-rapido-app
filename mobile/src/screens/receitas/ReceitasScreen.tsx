@@ -85,7 +85,7 @@ export default function ReceitasScreen() {
 
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const translateY = useRef(new Animated.Value(30)).current;
-  const searchTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const searchTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const pendingCategoryNameRef = useRef<string | null>(null);
   
   useEffect(() => {
@@ -273,7 +273,7 @@ export default function ReceitasScreen() {
   const handleSearchTextChange = (text: string) => {
     setSearchText(text);
     if (text.trim() && Object.values(filtrosBusca).some(v => v !== '' && v !== false && v !== undefined)) {
-      setFiltrosBusca({ nome: '', ingrediente: '', proteinasMin: '', tempoMaximo: '', semLactose: false, lowCarb: false });
+      setFiltrosBusca({ nome: '', ingrediente: '', proteinasMin: undefined, tempoMaximo: undefined, semLactose: false, lowCarb: false });
     }
     if (searchTimeoutRef.current) clearTimeout(searchTimeoutRef.current);
     searchTimeoutRef.current = setTimeout(() => {
@@ -470,7 +470,7 @@ export default function ReceitasScreen() {
     if (filterMode === 'populares') {
       return receitas
         .filter(r => r.destaque_popular === true)
-        .sort((a,b) => b.avaliacao - a.avaliacao);
+        .sort((a,b) => (b.avaliacao || 0) - (a.avaliacao || 0));
     }
     if (filterMode === 'rapidas') {
       return receitas.filter(r => (r.tempo_preparo || 0) <= 10);

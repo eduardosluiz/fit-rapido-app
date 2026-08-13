@@ -67,11 +67,11 @@ export default function AdminDashboard() {
   ];
 
   return (
-    <div className="p-6 sm:p-10 bg-[#f4f7f9] dark:bg-[#0a0a0a] min-h-screen font-inter">
-      <div className="w-full max-w-[1400px] mx-auto space-y-16">
+    <div className="admin-dashboard-page p-6 sm:p-10 bg-[#f4f7f9] dark:bg-[#0a0a0a] min-h-screen font-inter">
+      <div className="admin-dashboard-content w-full max-w-[1400px] mx-auto space-y-16">
         
         {/* Header - Minimalista */}
-        <div className="flex items-center justify-between border-b border-gray-200 dark:border-[#222] pb-8">
+        <div className="admin-dashboard-header flex items-center justify-between border-b border-gray-200 dark:border-[#222] pb-8">
           <div>
             <h1 className="text-xl font-light text-gray-400 dark:text-gray-500 tracking-tight uppercase">
               Painel de <span className="text-gray-900 dark:text-white font-normal">Controle</span>
@@ -87,19 +87,19 @@ export default function AdminDashboard() {
         {/* Removed Ferramentas do Sistema */}
 
         {/* Grid de Stats - CORES INTENSAS E SEM NEGRITO */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="admin-stats-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {statCards.map((card) => (
-            <Link key={card.href} href={card.href} className="bg-white dark:bg-[#111] p-6 rounded-2xl border border-[#c8921a]/10 hover:border-[#c8921a]/40 hover:shadow-xl hover:shadow-[#c8921a]/5 transition-all duration-500 group flex flex-col">
-              <div className="flex items-center justify-between mb-6">
+            <Link key={card.href} href={card.href} className="admin-stat-card bg-white dark:bg-[#111] p-6 rounded-2xl border border-[#c8921a]/10 hover:border-[#c8921a]/40 hover:shadow-xl hover:shadow-[#c8921a]/5 transition-all duration-500 group flex flex-col">
+              <div className="admin-stat-card-top flex items-center justify-between mb-6">
                 <div className="text-[#c8921a] opacity-60 group-hover:opacity-100 transition-opacity">
                   {card.icon}
                 </div>
                 <ArrowRight size={12} className="text-gray-300 group-hover:text-[#c8921a] transition-colors" />
               </div>
-              <p className="text-3xl font-light text-[#c8921a] tracking-tighter">{card.value}</p>
+              <p className="admin-stat-value text-3xl font-light text-[#c8921a] tracking-tighter">{card.value}</p>
               <h3 className="text-[11px] font-normal uppercase tracking-widest text-gray-900 dark:text-white mt-1.5">{card.label}</h3>
               {/* Texto de apoio em cor intensa e peso normal */}
-              <p className={`text-[10px] ${card.subColor} mt-4 font-normal uppercase tracking-[0.1em] opacity-100`}>
+              <p className={`admin-stat-sub text-[10px] ${card.subColor} mt-4 font-normal uppercase tracking-[0.1em] opacity-100`}>
                 {card.sub}
               </p>
             </Link>

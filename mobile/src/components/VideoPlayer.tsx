@@ -190,7 +190,6 @@ export default function VideoPlayer({ videoUrl, title, onClose }: VideoPlayerPro
             isLooping={false}
             shouldPlay={true}
             useNativeControls={true} // Sempre ativo para permitir controle manual
-            playsInline={Platform.OS !== 'web'} // No web, playsInline pode atrapalhar o fullscreen nativo do browser
             onPlaybackStatusUpdate={handlePlaybackStatusUpdate}
             onFullscreenUpdate={onFullscreenUpdate}
           />
@@ -261,7 +260,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#000000',
     ...Platform.select({
       web: {
-        outlineStyle: 'none',
         objectFit: 'contain',
         // Garante que o elemento de vídeo no DOM tenha as propriedades certas
         flex: 1,
@@ -432,5 +430,15 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: 24,
   },
+  closeButton: {
+    paddingHorizontal: 24,
+    paddingVertical: 12,
+    borderRadius: 8,
+    backgroundColor: '#c8921a',
+  },
+  closeButtonText: {
+    color: '#ffffff',
+    fontSize: 14,
+    fontWeight: '700',
+  },
 });
-

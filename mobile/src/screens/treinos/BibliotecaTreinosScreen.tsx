@@ -210,7 +210,6 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     fontSize: 14,
     // @ts-ignore
-    outlineStyle: 'none',
   },
   list: {
     paddingBottom: 40,

@@ -16,6 +16,7 @@ interface ItemCardProps {
   metadata?: Array<{ icon: string; text: string }>;
   editHref: string;
   onDelete: () => void;
+  compact?: boolean;
 }
 
 export function ItemCard({
@@ -29,18 +30,19 @@ export function ItemCard({
   metadata = [],
   editHref,
   onDelete,
+  compact = false,
 }: ItemCardProps) {
   return (
     <div 
-      className="bg-white border border-gray-200 rounded-lg overflow-hidden item-card"
+      className={`bg-white border border-gray-200 rounded-lg overflow-hidden item-card ${compact ? 'item-card-compact' : ''}`}
     >
       {imageUrl && (
         <div 
           className="w-full overflow-hidden item-card-image-container"
           style={{ 
-            height: '180px',
-            maxHeight: '180px',
-            minHeight: '180px',
+            height: compact ? '120px' : '180px',
+            maxHeight: compact ? '120px' : '180px',
+            minHeight: compact ? '120px' : '180px',
             width: '100%',
             position: 'relative',
             display: 'flex',
@@ -55,9 +57,9 @@ export function ItemCard({
             className="w-full h-full object-cover"
             style={{
               width: '100%',
-              height: '180px',
-              maxHeight: '180px',
-              minHeight: '180px',
+              height: compact ? '120px' : '180px',
+              maxHeight: compact ? '120px' : '180px',
+              minHeight: compact ? '120px' : '180px',
               objectFit: 'cover',
               objectPosition: 'center',
               display: 'block',
@@ -146,4 +148,3 @@ export function ItemCard({
     </div>
   );
 }
-

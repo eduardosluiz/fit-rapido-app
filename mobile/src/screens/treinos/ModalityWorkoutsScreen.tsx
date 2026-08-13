@@ -170,7 +170,7 @@ const TreinoListItem = ({ item, index, initiallyExpanded }: { item: Treino, inde
                ) : (
                  <Video
                    key={`video-${item.id}-${expandedVideo}`}
-                   source={{ uri: getImageUrl(currentVideoUrl) }}
+                   source={{ uri: getImageUrl(currentVideoUrl) || '' }}
                    posterSource={displayData.imagem_url ? { uri: getImageUrl(displayData.imagem_url) } : undefined}
                    usePoster={!!displayData.imagem_url}
                    style={{ width: '100%', height: '100%', backgroundColor: '#000' }}
@@ -216,7 +216,7 @@ const TreinoListItem = ({ item, index, initiallyExpanded }: { item: Treino, inde
                           })
                         ) : (
                           <Video
-                            source={{ uri: getImageUrl(sub.video_url) }}
+                            source={{ uri: getImageUrl(sub.video_url) || '' }}
                             style={{ width: '100%', height: '100%' }}
                             useNativeControls
                             resizeMode={ResizeMode.COVER}
@@ -240,7 +240,7 @@ const TreinoListItem = ({ item, index, initiallyExpanded }: { item: Treino, inde
                           })
                         ) : (
                           <Video
-                            source={{ uri: getImageUrl(sub.info.video_explicativo_url) }}
+                            source={{ uri: getImageUrl(sub.info.video_explicativo_url) || '' }}
                             style={{ width: '100%', height: '100%' }}
                             useNativeControls
                             resizeMode={ResizeMode.COVER}

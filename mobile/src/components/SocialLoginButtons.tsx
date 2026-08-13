@@ -48,7 +48,9 @@ export default function SocialLoginButtons({ onLoading, isSignUp = false }: Prop
     try {
       onLoading(true);
       await GoogleSignin.hasPlayServices();
-      const userInfo = await GoogleSignin.signIn();
+      const response = await GoogleSignin.signIn();
+      if (response.type !== 'success') return;
+      const userInfo = response.data;
       const token = userInfo.idToken;
       if (!token) throw new Error('No token');
       

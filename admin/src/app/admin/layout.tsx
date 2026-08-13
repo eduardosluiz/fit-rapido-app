@@ -71,6 +71,7 @@ export default function AdminLayout({
     if (!user || !user.role) return false;
     return item.roles.includes(user.role);
   });
+  const mobilePrimaryNavItems = visibleNavItems.slice(0, 3);
 
   return (
     <ConfirmProvider>
@@ -80,9 +81,20 @@ export default function AdminLayout({
         type="button"
         className="admin-mobile-menu-btn md:hidden"
         onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+        aria-label={isSidebarOpen ? 'Fechar menu' : 'Abrir menu'}
+        aria-expanded={isSidebarOpen}
       >
         <i className={`bx ${isSidebarOpen ? 'bx-x' : 'bx-menu'}`}></i>
       </button>
+
+      {isSidebarOpen && (
+        <button
+          type="button"
+          className="admin-mobile-overlay md:hidden"
+          onClick={() => setIsSidebarOpen(false)}
+          aria-label="Fechar menu"
+        />
+      )}
 
       {/* Sidebar Oficial */}
       <aside className={`admin-sidebar ${isSidebarOpen ? 'open' : ''}`}>
@@ -99,6 +111,7 @@ export default function AdminLayout({
                 key={item.href} 
                 href={item.href}
                 className={`admin-nav-item ${isActive ? 'active' : ''}`}
+                onClick={() => setIsSidebarOpen(false)}
               >
                 <i className={`bx ${item.icon}`}></i>
                 <span>{item.label}</span>
@@ -192,7 +205,7 @@ export default function AdminLayout({
 
       {/* Bottom Navigation Menu - Mobile Only */}
       <div className="admin-bottom-nav md:hidden">
-        {visibleNavItems.map((item) => {
+        {mobilePrimaryNavItems.map((item) => {
           const isActive = pathname === item.href;
           return (
             <Link 
@@ -205,6 +218,15 @@ export default function AdminLayout({
             </Link>
           );
         })}
+        <button
+          type="button"
+          className={`admin-bottom-nav-item ${isSidebarOpen ? 'active' : ''}`}
+          onClick={() => setIsSidebarOpen(true)}
+          aria-label="Abrir todas as áreas"
+        >
+          <i className="bx bx-grid-alt"></i>
+          <span>Menu</span>
+        </button>
       </div>
     </div>
     </ConfirmProvider>

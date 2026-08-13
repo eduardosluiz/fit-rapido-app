@@ -47,7 +47,7 @@ export default function ReceitaIngredientesPage() {
   const params = useParams();
   const { isAuthenticated } = useAuth();
   const confirm = useConfirm();
-  const receitaId = params.id as string;
+  const receitaId = params?.id as string;
   const [loading, setLoading] = useState(true);
   const [receitaIngredientes, setReceitaIngredientes] = useState<ReceitaIngrediente[]>([]);
   const [ingredientesDisponiveis, setIngredientesDisponiveis] = useState<Ingrediente[]>([]);

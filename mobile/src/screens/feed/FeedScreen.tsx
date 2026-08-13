@@ -13,7 +13,7 @@ import {
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useAuth } from '../../contexts/AuthContext';
-import { api, Receita, Treino, getImageUrl } from '../../services/api';
+import { api, Banner, Receita, Treino, getImageUrl } from '../../services/api';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import ScreenBanner from '../../components/ScreenBanner';
 import BuscaAvancada, { BuscaFilters } from '../../components/BuscaAvancada';
@@ -126,7 +126,7 @@ export default function FeedScreen() {
         activeOpacity={0.7}
       >
         <View style={styles.filterButton}>
-          <IconComponent name={item.iconName as any} size={24} color={colors.primary} />
+          <IconComponent name={item.iconName as any} size={27} color={colors.primary} />
         </View>
         <Text style={styles.shortcutLabel} numberOfLines={2}>{item.label}</Text>
       </TouchableOpacity>
@@ -140,7 +140,7 @@ export default function FeedScreen() {
       const [bannersData, receitasResp, treinosResp] = await Promise.all([
         api.getBanners(),
         api.getReceitas({ page: 1, limit: 6 }),
-        api.getTreinos({ page: 1, limit: 6 }).catch(() => ({ data: [], totalPages: 0 })),
+        api.getTreinos({ apenasAvulsos: true, page: 1, limit: 6 }).catch(() => ({ data: [], totalPages: 0 })),
       ]);
 
       let notificacoesData: any[] = [];
@@ -161,7 +161,7 @@ export default function FeedScreen() {
         .slice(0, 6);
 
       const treinosOrdenados = safeTreinosData
-        .filter((t) => t && t.ativa)
+        .filter((t) => t && t.ativa && !t.modalidade_id && !t.modalidade)
         .slice(0, 6);
 
       setBanners(Array.isArray(bannersData) ? bannersData : []);
@@ -358,16 +358,16 @@ export default function FeedScreen() {
           </View>
 
           {/* Seção de Acesso Rápido */}
-          <View style={[styles.section, { marginBottom: 16 }]}>
-            <View style={[styles.sectionHeader, { marginBottom: 4, marginTop: 6 }]}>
+          <View style={styles.quickAccessSection}>
+            <View style={styles.sectionHeader}>
               <View style={styles.sectionTitleContainer}>
-                <Text style={styles.acessoRapidoTitle}>Acesso rápido</Text>
+                <Text style={styles.acessoRapidoTitle}>⚡ Acesso rápido</Text>
               </View>
             </View>
             <ScrollView 
               horizontal 
               showsHorizontalScrollIndicator={false}
-              style={styles.horizontalScroll}
+              style={[styles.horizontalScroll, styles.acessoRapidoHorizontal]}
               contentContainerStyle={styles.acessoRapidoScroll}
             >
               {shortcuts.map(renderShortcut)}
@@ -379,8 +379,10 @@ export default function FeedScreen() {
             <View style={styles.section}>
               <View style={styles.sectionHeader}>
                 <View style={styles.sectionTitleContainer}>
-                  <Text style={styles.sectionTitle}>🍽️ Novas Receitas</Text>
-                  <View style={styles.sectionTitleUnderline} />
+                  <View style={styles.sectionHeading}>
+                    <Text style={styles.sectionTitle}>🍽️ Novas Receitas</Text>
+                    <View style={styles.sectionTitleUnderline} />
+                  </View>
                 </View>
                 <TouchableOpacity onPress={() => (navigation as any).navigate('Receitas')}>
                   <Text style={styles.seeAllText}>Ver todas</Text>
@@ -394,11 +396,13 @@ export default function FeedScreen() {
 
           {/* Novos Treinos */}
           {treinos.length > 0 && (
-            <View style={styles.section}>
+            <View style={[styles.section, styles.lastFeedSection]}>
               <View style={styles.sectionHeader}>
                 <View style={styles.sectionTitleContainer}>
-                  <Text style={styles.sectionTitle}>💪 Novos Treinos</Text>
-                  <View style={styles.sectionTitleUnderline} />
+                  <View style={styles.sectionHeading}>
+                    <Text style={styles.sectionTitle}>💪 Novos Treinos</Text>
+                    <View style={styles.sectionTitleUnderline} />
+                  </View>
                 </View>
                 <TouchableOpacity 
                   style={{ flexDirection: 'row', alignItems: 'center' }}
@@ -468,7 +472,7 @@ const styles = StyleSheet.create({
   bannerContainer: {
     position: 'relative',
     width: '100%',
-    height: 250,
+    height: 280,
   },
   carouselItem: {
     width: SCREEN_WIDTH,
@@ -561,39 +565,49 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   scrollContent: {
-    paddingBottom: 24,
+    paddingBottom: 4,
   },
   acessoRapidoTitle: {
-    fontSize: 15,
-    fontFamily: fonts.title,
+    fontSize: 11,
+    fontFamily: fonts.body,
     color: '#ffffff',
     marginBottom: 0,
   },
   acessoRapidoScroll: {
-    paddingRight: 20,
+    paddingHorizontal: 6,
     flexDirection: 'row',
+    flexGrow: 1,
+    justifyContent: 'center',
+  },
+  acessoRapidoHorizontal: {
+    paddingLeft: 0,
+  },
+  quickAccessSection: {
+    marginBottom: 12,
+    paddingTop: 3,
+    paddingBottom: 4,
   },
   shortcutItem: {
     alignItems: 'center',
-    width: 52,
+    width: 54,
     marginRight: 4,
   },
   filterButton: {
-    width: 50,
-    height: 50,
+    width: 51,
+    height: 48,
     backgroundColor: 'rgba(15,15,15,0.75)',
-    borderRadius: 16,
+    borderRadius: 12,
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 1.2,
     borderColor: 'rgba(231,196,138,0.35)',
   },
   shortcutLabel: {
-    fontSize: 10,
+    fontSize: 9,
     fontFamily: fonts.body,
     color: '#ffffff',
     textAlign: 'center',
-    marginTop: 4,
+    marginTop: 3,
   },
   loadingContainer: {
     flex: 1,
@@ -607,34 +621,40 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
   section: {
-    marginBottom: 20,
+    marginBottom: 24,
+  },
+  lastFeedSection: {
+    marginBottom: 0,
   },
   sectionHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingHorizontal: 20,
-    marginBottom: 16,
+    paddingHorizontal: 14,
+    marginBottom: 12,
   },
   sectionTitleContainer: {
     flex: 1,
   },
+  sectionHeading: {
+    alignSelf: 'flex-start',
+  },
   sectionTitle: {
-    fontSize: 16,
-    fontFamily: fonts.title,
+    fontSize: 11,
+    fontFamily: fonts.body,
     color: '#ffffff',
-    marginBottom: 6,
+    marginBottom: 4,
   },
   sectionTitleUnderline: {
     height: 2,
     backgroundColor: colors.primary,
-    width: '50%',
+    width: '100%',
     borderRadius: 1,
   },
   seeAllText: {
-    fontSize: 14,
+    fontSize: 12,
     color: colors.primary,
-    fontWeight: '600',
+    fontFamily: fonts.body,
   },
   horizontalScroll: {
     paddingLeft: 20,

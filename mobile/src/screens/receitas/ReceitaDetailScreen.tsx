@@ -719,7 +719,7 @@ export default function ReceitaDetailScreen() {
           </Text>
           <TouchableOpacity 
             style={styles.premiumLockButton}
-            onPress={() => navigation.navigate('Subscription' as any)}
+            onPress={() => (navigation as any).navigate('Subscription')}
           >
             <Text style={styles.premiumLockButtonText}>CONHECER PLANOS</Text>
           </TouchableOpacity>
@@ -1542,58 +1542,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#ffffff',
   },
-  checkboxContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 20,
-    paddingVertical: 8,
-  },
-  checkbox: {
-    width: 24,
-    height: 24,
-    borderRadius: 4,
-    borderWidth: 2,
-    borderColor: colors.border,
-    backgroundColor: colors.cardBackground,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: 12,
-  },
-  checkboxChecked: {
-    backgroundColor: colors.primary,
-    borderColor: colors.primary,
-  },
-  checkboxLabel: {
-    fontSize: 16,
-    fontFamily: fonts.medium,
-    color: colors.text,
-  },
-  avaliacaoContainer: {
-    marginTop: 10,
-  },
-  avaliacaoLabel: {
-    fontSize: 16,
-    fontFamily: fonts.medium,
-    color: colors.text,
-    marginBottom: 12,
-  },
-  estrelasContainer: {
-    flexDirection: 'row',
-    gap: 8,
-    marginBottom: 12,
-  },
-  avaliacaoMediaContainer: {
-    marginTop: 8,
-    paddingTop: 12,
-    borderTopWidth: 1,
-    borderTopColor: colors.border,
-  },
-  avaliacaoMediaText: {
-    fontSize: 14,
-    fontFamily: fonts.medium,
-    color: colors.textSecondary,
-    textAlign: 'center',
-  },
   videoThumbnailContainer: {
     borderRadius: 12,
     overflow: 'hidden',
@@ -2312,4 +2260,3 @@ const styles = StyleSheet.create({
     letterSpacing: 1,
   },
 });
-

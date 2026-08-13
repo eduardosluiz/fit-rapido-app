@@ -14,6 +14,7 @@ interface ButtonProps {
   disabled?: boolean;
   type?: 'button' | 'submit' | 'reset';
   form?: string;
+  loading?: boolean;
 }
 
 export function Button({
@@ -27,6 +28,7 @@ export function Button({
   disabled = false,
   type: typeProp,
   form,
+  loading = false,
 }: ButtonProps) {
   // Se não tem children (texto), ajusta para botão apenas com ícone
   const isIconOnly = !children;
@@ -62,7 +64,7 @@ export function Button({
 
   const buttonContent = (
     <span className={cn("flex items-center", isIconOnly ? "justify-center" : "gap-2")}>
-      {icon && <i className={cn(`bx ${icon} text-base`)}></i>}
+      {loading ? <i className="bx bx-loader-alt bx-spin text-base"></i> : icon && <i className={cn(`bx ${icon} text-base`)}></i>}
       {children && <span>{children}</span>}
     </span>
   );
@@ -81,10 +83,9 @@ export function Button({
       onClick={onClick} 
       form={form}
       className={classes} 
-      disabled={disabled}
+      disabled={disabled || loading}
     >
       {buttonContent}
     </button>
   );
 }
-

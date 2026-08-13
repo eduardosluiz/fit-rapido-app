@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Alert, Image, ActivityIndicator, Platform, Linking } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { useAuth } from '../../contexts/AuthContext';
 import { api, getImageUrl } from '../../services/api';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -15,6 +15,18 @@ export default function ProfileScreen() {
   const navigation = useNavigation();
   const { user, logout, updateUser } = useAuth();
   const [uploading, setUploading] = useState(false);
+  const [atividades, setAtividades] = useState<any[]>([]);
+
+  useFocusEffect(useCallback(() => {
+    let active = true;
+    api.getAtividades()
+      .then((data) => { if (active) setAtividades(Array.isArray(data) ? data : []); })
+      .catch(() => { if (active) setAtividades([]); });
+    return () => { active = false; };
+  }, []));
+
+  const receitasConcluidas = atividades.filter((item) => item.tipo === 'fiz_receita').length;
+  const treinosConcluidos = atividades.filter((item) => item.tipo === 'treinei_hoje').length;
 
   const handleLogout = async () => {
     await logout();
@@ -168,6 +180,30 @@ export default function ProfileScreen() {
                   </View>
                 </View>
               </View>
+            </View>
+
+            <View style={styles.activityCard}>
+              <Text style={styles.activityHeading}>Seu histórico</Text>
+              <View style={styles.activityStats}>
+                <View style={styles.activityStat}>
+                  <Ionicons name="restaurant-outline" size={20} color={colors.primary} />
+                  <Text style={styles.activityValue}>{receitasConcluidas}</Text>
+                  <Text style={styles.activityLabel}>Receitas feitas</Text>
+                </View>
+                <View style={styles.activityStatDivider} />
+                <View style={styles.activityStat}>
+                  <Ionicons name="fitness-outline" size={20} color={colors.primary} />
+                  <Text style={styles.activityValue}>{treinosConcluidos}</Text>
+                  <Text style={styles.activityLabel}>Treinos feitos</Text>
+                </View>
+              </View>
+              {atividades.slice(0, 3).map((item) => (
+                <View key={item.id} style={styles.activityRecentRow}>
+                  <Ionicons name={item.tipo === 'fiz_receita' ? 'restaurant-outline' : 'fitness-outline'} size={16} color={colors.textMuted} />
+                  <Text style={styles.activityRecentText}>{item.tipo === 'fiz_receita' ? 'Receita concluída' : 'Treino concluído'}</Text>
+                  <Text style={styles.activityRecentDate}>{new Date(item.data || item.created_at).toLocaleDateString('pt-BR')}</Text>
+                </View>
+              ))}
             </View>
 
             {/* Action Buttons Modernizados */}
@@ -381,6 +417,16 @@ const styles = StyleSheet.create({
   actionsContainer: {
     marginBottom: 24,
   },
+  activityCard: { backgroundColor: colors.cardBackground, borderRadius: 16, padding: 18, marginBottom: 24, borderWidth: 1, borderColor: colors.border },
+  activityHeading: { color: colors.text, fontSize: 16, fontFamily: fonts.bodySemiBold, marginBottom: 16 },
+  activityStats: { flexDirection: 'row', alignItems: 'stretch', marginBottom: 14 },
+  activityStat: { flex: 1, alignItems: 'center', gap: 4 },
+  activityStatDivider: { width: 1, backgroundColor: colors.border, marginHorizontal: 10 },
+  activityValue: { color: colors.primary, fontSize: 22, fontFamily: fonts.bodySemiBold },
+  activityLabel: { color: colors.textMuted, fontSize: 11, fontFamily: fonts.body, textAlign: 'center' },
+  activityRecentRow: { flexDirection: 'row', alignItems: 'center', gap: 8, paddingTop: 10, marginTop: 4, borderTopWidth: 1, borderTopColor: colors.border },
+  activityRecentText: { flex: 1, color: colors.text, fontSize: 12, fontFamily: fonts.body },
+  activityRecentDate: { color: colors.textMuted, fontSize: 11, fontFamily: fonts.body },
   actionButton: {
     backgroundColor: colors.cardBackground,
     borderRadius: 16,

@@ -135,15 +135,21 @@ export default function TreinosPage() {
 
   const treinosPaginated = treinos;
 
-  const handleDelete = async (id: string) => {
-    if (!(await confirm('Excluir este treino?'))) return;
+  const handleDelete = async (id: string, titulo: string) => {
+    if (!(await confirm({
+      title: 'Excluir treino',
+      message: `Tem certeza que deseja excluir o treino “${titulo}”? Esta ação não pode ser desfeita.`,
+      type: 'danger',
+      confirmText: 'Excluir treino',
+      cancelText: 'Cancelar',
+    }))) return;
     try {
       setLoading(true);
       await api.deleteTreino(id);
       await loadTreinos();
       toast.success('Treino removido');
     } catch (err: any) {
-      toast.error('Erro ao excluir');
+      toast.error(err?.message || 'Não foi possível excluir o treino.');
     } finally {
       setLoading(false);
     }
@@ -179,7 +185,7 @@ export default function TreinosPage() {
     return (
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8 animate-in fade-in duration-500">
         {niveis.map(nivel => {
-          const treinosNivel = treinosFiltrados.filter(t => t.nivel === nivel.id);
+          const treinosNivel = treinosPaginated.filter((t: any) => t.nivel === nivel.id);
           
           return (
             <div key={nivel.id} className="flex flex-col space-y-6">
@@ -218,7 +224,7 @@ export default function TreinosPage() {
                         { icon: 'bx-list-ul', text: `${treino.exercicios?.length || 0}` },
                       ]}
                       editHref={`/admin/treinos/${treino.id}`}
-                      onDelete={() => handleDelete(treino.id)}
+                      onDelete={() => handleDelete(treino.id, treino.titulo)}
                     />
                   ))
                 )}
@@ -336,7 +342,7 @@ export default function TreinosPage() {
                       { icon: 'bx-dumbbell', text: `${treino.exercicios?.length || 0} exerc.` },
                     ]}
                     editHref={`/admin/treinos/${treino.id}`}
-                    onDelete={() => handleDelete(treino.id)}
+                    onDelete={() => handleDelete(treino.id, treino.titulo)}
                   />
                 ))}
               </div>

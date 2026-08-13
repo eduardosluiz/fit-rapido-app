@@ -117,6 +117,10 @@ export class CreateReceitaDto {
   @IsOptional()
   destaque_popular?: boolean;
 
+  @IsBoolean()
+  @IsOptional()
+  destaque_favorito?: boolean;
+
   @IsArray()
   @IsString({ each: true })
   @IsOptional()
@@ -301,6 +305,10 @@ export class UpdateReceitaDto {
   @IsOptional()
   destaque_popular?: boolean;
 
+  @IsBoolean()
+  @IsOptional()
+  destaque_favorito?: boolean;
+
   @IsOptional()
   tags?: any[];
 
@@ -315,4 +323,3 @@ export class UpdateReceitaDto {
   @IsOptional()
   ativa?: boolean;
 }
-

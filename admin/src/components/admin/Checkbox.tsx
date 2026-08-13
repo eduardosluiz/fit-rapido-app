@@ -3,9 +3,10 @@
 interface CheckboxProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label?: string;
   error?: string;
+  helperText?: string;
 }
 
-export function Checkbox({ label, error, className = '', ...props }: CheckboxProps) {
+export function Checkbox({ label, error, helperText, className = '', ...props }: CheckboxProps) {
   return (
     <div>
       <label className="flex items-center gap-2 cursor-pointer">
@@ -30,6 +31,9 @@ export function Checkbox({ label, error, className = '', ...props }: CheckboxPro
           <i className="bx bx-error-circle"></i>
           {error}
         </p>
+      )}
+      {!error && helperText && (
+        <p className="text-xs text-gray-500 mt-1 ml-6">{helperText}</p>
       )}
     </div>
   );

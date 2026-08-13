@@ -1,9 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-// Importar supressão de erros ANTES de qualquer outro código
-import { SuppressExtensionErrorsInit } from "@/components/SuppressExtensionErrorsInit";
-import { SuppressExtensionErrors } from "@/components/SuppressExtensionErrors";
 import { Toaster } from "react-hot-toast";
 
 const inter = Inter({
@@ -30,12 +27,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-BR" className={inter.variable} suppressHydrationWarning>
-      <head suppressHydrationWarning />
       <body className="font-inter antialiased" suppressHydrationWarning>
-        <SuppressExtensionErrorsInit />
         <Toaster position="top-right" reverseOrder={false} />
         {children}
-        <SuppressExtensionErrors />
       </body>
     </html>
   );

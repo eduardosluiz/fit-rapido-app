@@ -32,12 +32,39 @@ export default function TreinoDetailScreen() {
   const [showVideoPlayer, setShowVideoPlayer] = useState(false);
   const [avaliacaoUsuario, setAvaliacaoUsuario] = useState<number | null>(null);
   const [loadingAvaliacao, setLoadingAvaliacao] = useState(false);
+  const [treinoConcluidoHoje, setTreinoConcluidoHoje] = useState(false);
+  const [loadingConclusao, setLoadingConclusao] = useState(false);
 
   useEffect(() => {
     loadTreino();
     checkFavorito();
     carregarAvaliacaoUsuario();
+    carregarConclusaoHoje();
   }, [treinoId]);
+
+  const carregarConclusaoHoje = async () => {
+    if (!treinoId) return;
+    const concluido = await api.verificarFezHoje(treinoId, 'treinei_hoje');
+    setTreinoConcluidoHoje(concluido);
+  };
+
+  const toggleConclusaoTreino = async () => {
+    if (!treinoId || loadingConclusao) return;
+    try {
+      setLoadingConclusao(true);
+      if (treinoConcluidoHoje) {
+        await api.removerAtividade(treinoId, 'treinei_hoje');
+        setTreinoConcluidoHoje(false);
+      } else {
+        await api.criarAtividade(treinoId, 'treinei_hoje');
+        setTreinoConcluidoHoje(true);
+      }
+    } catch (error) {
+      Alert.alert('Erro', 'Não foi possível atualizar a conclusão do treino.');
+    } finally {
+      setLoadingConclusao(false);
+    }
+  };
 
   const loadTreino = async () => {
     try {
@@ -140,7 +167,7 @@ export default function TreinoDetailScreen() {
           <Text style={styles.premiumLockDescription}>
             Este treino é exclusivo para assinantes do plano DAI + FIT. Assine agora para ter acesso completo a todos os treinos, exercícios e rotinas personalizadas.
           </Text>
-          <TouchableOpacity style={styles.premiumLockButton} onPress={() => navigation.navigate('Subscriptions' as any)}>
+          <TouchableOpacity style={styles.premiumLockButton} onPress={() => (navigation as any).navigate('Subscriptions')}>
             <Text style={styles.premiumLockButtonText}>CONHECER PLANOS</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.premiumLockBackButton} onPress={() => navigation.goBack()}>
@@ -217,6 +244,27 @@ export default function TreinoDetailScreen() {
         {!!treino.descricao && treino.descricao !== treino.titulo && treino.descricao.trim() !== '' && (
           <Text style={styles.description}>{treino.descricao}</Text>
         )}
+
+        <TouchableOpacity
+          style={[styles.completionButton, treinoConcluidoHoje && styles.completionButtonDone]}
+          onPress={toggleConclusaoTreino}
+          disabled={loadingConclusao}
+          activeOpacity={0.8}
+        >
+          {loadingConclusao ? (
+            <ActivityIndicator size="small" color={treinoConcluidoHoje ? '#0b3d2e' : '#111'} />
+          ) : (
+            <Ionicons name={treinoConcluidoHoje ? 'checkmark-circle' : 'checkmark-circle-outline'} size={22} color={treinoConcluidoHoje ? '#0b3d2e' : '#111'} />
+          )}
+          <View style={styles.completionCopy}>
+            <Text style={[styles.completionTitle, treinoConcluidoHoje && styles.completionTitleDone]}>
+              {treinoConcluidoHoje ? 'Treino concluído hoje' : 'Concluir treino'}
+            </Text>
+            <Text style={[styles.completionSubtitle, treinoConcluidoHoje && styles.completionTitleDone]}>
+              {treinoConcluidoHoje ? 'Toque para desfazer' : 'Registre este treino no seu histórico'}
+            </Text>
+          </View>
+        </TouchableOpacity>
 
         <View style={styles.section}>
           <View style={styles.sectionTitleContainer}>
@@ -335,6 +383,12 @@ const styles = StyleSheet.create({
   metaItem: { flexDirection: 'row', alignItems: 'center' },
   metaIcon: { fontSize: 22, marginRight: 6 },
   metaValue: { fontSize: 16, fontWeight: '600', color: '#ffffff' },
+  completionButton: { marginHorizontal: 16, marginTop: 20, paddingHorizontal: 16, paddingVertical: 14, borderRadius: 12, backgroundColor: colors.primary, flexDirection: 'row', alignItems: 'center', gap: 12 },
+  completionButtonDone: { backgroundColor: '#a7f3d0', borderWidth: 1, borderColor: '#34d399' },
+  completionCopy: { flex: 1 },
+  completionTitle: { color: '#111', fontSize: 14, fontFamily: fonts.bodySemiBold },
+  completionTitleDone: { color: '#0b3d2e' },
+  completionSubtitle: { color: '#3f2d06', fontSize: 11, fontFamily: fonts.body, marginTop: 2 },
   section: { padding: 16 },
   sectionTitleContainer: { marginBottom: 16 },
   sectionTitleRow: { flexDirection: 'row', alignItems: 'center', marginBottom: 6 },

@@ -177,6 +177,7 @@ export class ReceitasService {
           'receita.is_inedito',
           'receita.avaliacao',
           'receita.destaque_popular',
+          'receita.destaque_favorito',
           'receita.dificuldade',
           'receita.tempo_preparo',
           'receita.calorias',
@@ -323,7 +324,10 @@ export class ReceitasService {
             .where("f.tipo = 'receita'")
             .groupBy('f.item_id');
         }, 'fav_stats', 'fav_stats.item_id = CAST(receita.id AS text)')
-        .orderBy('COALESCE(fav_stats.fav_count, 0)', 'DESC');
+        .andWhere('(receita.destaque_favorito = true OR COALESCE(fav_stats.fav_count, 0) > 0)')
+        .orderBy('receita.destaque_favorito', 'DESC')
+        .addOrderBy('COALESCE(fav_stats.fav_count, 0)', 'DESC')
+        .addOrderBy('receita.created_at', 'DESC');
     } else {
       queryBuilder.orderBy('receita.created_at', 'DESC');
     }
@@ -488,4 +492,3 @@ export class ReceitasService {
     });
   }
 }
-

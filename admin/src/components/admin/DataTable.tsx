@@ -6,7 +6,7 @@ import '@/app/admin/data-table.css';
 
 interface DataTableColumn<T> {
   header: string;
-  accessor: keyof T | ((row: T) => ReactNode);
+  accessor: keyof T | string | ((row: T) => ReactNode);
   render?: (row: T) => ReactNode;
   className?: string;
 }
@@ -79,7 +79,7 @@ export function DataTable<T extends Record<string, any>>({
                   } else if (typeof column.accessor === 'function') {
                     cellContent = column.accessor(row);
                   } else {
-                    cellContent = row[column.accessor];
+                    cellContent = row[column.accessor as keyof T];
                   }
 
                   return (

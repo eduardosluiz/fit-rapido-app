@@ -191,7 +191,7 @@ export function ModalidadesModal({
       maxWidth="4xl"
       headerAction={
         <button
-          onClick={() => { setShowForm(true); setEditingId(null); setFormData({ nome: '', slug: '', descricao: '', imagem_url: '', tem_nivelamento: false, ativo: true }); }}
+          onClick={() => { setShowForm(true); setEditingId(null); setFormData({ nome: '', subtitulo: '', ordem_modalidade: 0, descricao: '', imagem_url: '', tem_nivelamento: false, ativo: true }); }}
           className="px-4 py-2 rounded-md border border-[#c8921a] text-[#c8921a] text-[10px] font-normal uppercase tracking-widest hover:bg-[#c8921a] hover:text-white transition-all duration-300 flex items-center gap-2"
         >
           <Plus size={14} /> Novo Registro

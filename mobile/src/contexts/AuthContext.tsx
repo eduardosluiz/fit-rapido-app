@@ -12,6 +12,7 @@ interface AuthContextType {
   login: (email: string, senha: string) => Promise<void>;
   register: (email: string, nome: string, senha: string) => Promise<void>;
   socialLogin: (provider: string, token: string, email?: string, name?: string) => Promise<void>;
+  updateUser: (updates: Partial<User>) => void;
   logout: () => Promise<void>;
 }
 
@@ -153,6 +154,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         isAuthenticated: !!user,
         login,
         register,
+        socialLogin,
+        updateUser: (updates) => setUser(current => current ? { ...current, ...updates } : current),
         logout,
       }}
     >
@@ -168,4 +171,3 @@ export function useAuth() {
   }
   return context;
 }
-

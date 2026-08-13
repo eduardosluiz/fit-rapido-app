@@ -12,14 +12,17 @@ import { MediaSelectorPopover } from '@/components/admin';
 import { Checkbox } from '@/components/ui/checkbox';
 import { ChevronsUpDown, Trash2, Dumbbell, PlusCircle, Edit3 } from 'lucide-react';
 import { toast } from 'react-hot-toast';
+import { useConfirm } from '@/contexts/ConfirmContext';
 
 function EditarTreinoForm() {
   const router = useRouter();
   const params = useParams();
-  const id = params.id as string;
+  const id = params?.id as string;
   const { isAuthenticated } = useAuth();
+  const confirm = useConfirm();
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [deleting, setDeleting] = useState(false);
   const [categorias, setCategorias] = useState<any[]>([]);
   const [modalidades, setModalidades] = useState<any[]>([]);
   const [bibliotecaExercicios, setBibliotecaExercicios] = useState<any[]>([]);
@@ -103,6 +106,11 @@ function EditarTreinoForm() {
     }
   }, [isAuthenticated, loadData]);
 
+  useEffect(() => {
+    document.body.classList.add('admin-editor-active');
+    return () => document.body.classList.remove('admin-editor-active');
+  }, []);
+
   const validate = (): boolean => {
     const newErrors: Record<string, string> = {};
     if (!formData.titulo.trim()) newErrors.titulo = 'Título é obrigatório';
@@ -147,6 +155,30 @@ function EditarTreinoForm() {
     }
   };
 
+  const handleDelete = async () => {
+    if (saving || deleting) return;
+    const confirmed = await confirm({
+      title: 'Excluir treino',
+      message: `Tem certeza que deseja excluir o treino “${formData.titulo}”? Esta ação não pode ser desfeita.`,
+      type: 'danger',
+      confirmText: 'Excluir treino',
+      cancelText: 'Cancelar',
+    });
+    if (!confirmed) return;
+
+    try {
+      setDeleting(true);
+      await api.deleteTreino(id);
+      toast.success('Treino excluído com sucesso');
+      router.replace('/admin/treinos');
+      router.refresh();
+    } catch (err: any) {
+      toast.error(err?.message || 'Não foi possível excluir o treino.');
+    } finally {
+      setDeleting(false);
+    }
+  };
+
   if (!isAuthenticated || loading) {
     return (
       <div className="min-h-screen bg-gray-50 dark:bg-[#1a1a1a] flex items-center justify-center">
@@ -159,10 +191,10 @@ function EditarTreinoForm() {
   }
 
   return (
-    <div className="relative p-6 sm:p-10 bg-[#f4f7f9] dark:bg-[#0a0a0a] min-h-screen pb-20">
-      <div className="w-full max-w-[1400px] mx-auto space-y-10">
+    <div className="treino-edit-page relative p-6 sm:p-10 bg-[#f4f7f9] dark:bg-[#0a0a0a] min-h-screen pb-20">
+      <div className="treino-edit-content w-full max-w-[1400px] mx-auto space-y-10">
         {/* Header */}
-        <div className="flex flex-row items-center justify-between gap-4 pb-8 border-b border-gray-200 dark:border-[#222]">
+        <div className="treino-edit-header flex flex-row items-center justify-between gap-4 pb-8 border-b border-gray-200 dark:border-[#222]">
           <div className="flex items-center gap-3 sm:gap-5">
             <div className="hidden sm:flex p-4 bg-white dark:bg-[#111] border border-gray-200 dark:border-[#333] rounded-xl shadow-sm">
               <Edit3 size={32} className="text-[#c8921a]" />
@@ -186,8 +218,8 @@ function EditarTreinoForm() {
           </div>
         </div>
 
-        <div className="bg-white dark:bg-[#0f0f0f] border border-gray-200 dark:border-[#222] rounded-xl shadow-sm overflow-hidden p-8 sm:p-12">
-          <form id="treino-form" onSubmit={handleSubmit} className="space-y-12">
+        <div className="treino-edit-card bg-white dark:bg-[#0f0f0f] border border-gray-200 dark:border-[#222] rounded-xl shadow-sm overflow-hidden p-8 sm:p-12">
+          <form id="treino-form" onSubmit={handleSubmit} className="treino-edit-form space-y-12">
             {/* Seção: Dados Técnicos */}
             <div className="space-y-8">
               <div className="border-b border-gray-100 dark:border-[#1a1a1a] pb-4">
@@ -563,7 +595,15 @@ function EditarTreinoForm() {
             </div>
 
             {/* Ações */}
-            <div className="flex flex-col-reverse sm:flex-row gap-4 pt-10 border-t border-gray-200 dark:border-[#222] justify-end">
+            <div className="treino-edit-actions flex flex-col-reverse sm:flex-row gap-4 pt-10 border-t border-gray-200 dark:border-[#222] justify-end">
+              <button
+                type="button"
+                onClick={handleDelete}
+                disabled={saving || deleting}
+                className="w-full sm:w-auto sm:mr-auto px-5 py-3 sm:py-2 rounded-md border border-red-300 bg-red-50 text-[10px] font-normal uppercase tracking-widest text-red-700 hover:bg-red-100 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
+              >
+                {deleting ? <><span className="w-3 h-3 border-2 border-red-300 border-t-red-700 rounded-full animate-spin" /> Excluindo...</> : <><Trash2 size={14} /> Excluir treino</>}
+              </button>
               <button 
                 type="button" 
                 onClick={() => router.push('/admin/treinos')}
@@ -573,7 +613,7 @@ function EditarTreinoForm() {
               </button>
               <button 
                 type="submit" 
-                disabled={saving}
+                disabled={saving || deleting}
                 className="w-full sm:w-auto px-8 py-3 sm:py-2.5 rounded-md bg-[#c8921a] text-[#2d2106] text-[10px] font-normal uppercase tracking-widest shadow-md hover:shadow-xl transition-all disabled:opacity-50 flex items-center justify-center gap-2"
               >
                 {saving ? (

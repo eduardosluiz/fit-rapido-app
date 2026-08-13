@@ -27,6 +27,16 @@ export class ExerciciosBibliotecaController {
     if (data.nome) {
       data.nome = data.nome.normalize('NFC');
     }
+
+    // Retentativas após timeout devem confirmar o registro existente, não
+    // criar outra linha para o mesmo objeto que já chegou ao Storage.
+    if (data.video_url) {
+      const existing = await this.repository.findOne({
+        where: { video_url: data.video_url },
+      });
+      if (existing) return existing;
+    }
+
     const exercicio = this.repository.create(data);
     return this.repository.save(exercicio);
   }
@@ -80,6 +90,18 @@ export class ExerciciosBibliotecaController {
       page: Number(page),
       lastPage: Math.ceil(total / limit)
     };
+  }
+
+  @Get('check-duplicate/name')
+  async checkDuplicateName(@Query('name') name?: string) {
+    const normalizedName = name?.trim().normalize('NFC');
+    if (!normalizedName) return { exists: false, item: null };
+
+    const existing = await this.repository.findOne({
+      where: { nome: ILike(normalizedName) },
+    });
+
+    return { exists: Boolean(existing), item: existing };
   }
 
   @Get(':id')

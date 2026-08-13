@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { api } from '@/lib/api';
 import { useAuth } from '@/lib/useAuth';
 import { getMediaUrl } from '@/lib/media';
@@ -16,6 +16,7 @@ interface Exercicio {
   video_url: string;
   video_explicativo_url?: string;
   categoria: string;
+  exibir_mobile?: boolean;
   createdAt: string;
 }
 
@@ -28,7 +29,11 @@ interface UploadItem {
   file: File;
   categorias: string[];
   exibir_mobile?: boolean;
+  uploadedUrl?: string;
 }
+
+const getFileFingerprint = (file: File) =>
+  `${file.name.normalize('NFC').toLocaleLowerCase()}|${file.size}|${file.lastModified}`;
 
 export default function BibliotecaVideosPage() {
   const { isAuthenticated } = useAuth();
@@ -61,6 +66,7 @@ export default function BibliotecaVideosPage() {
   const [itemToDelete, setItemToDelete] = useState<Exercicio | null>(null);
   const [newCategoryName, setNewCategoryName] = useState('');
   const [isSaving, setIsSaving] = useState(false);
+  const uploadLockRef = useRef(false);
   
   const [previewVideo, setPreviewVideo] = useState<Exercicio | null>(null);
   const [videoError, setVideoError] = useState(false);
@@ -142,11 +148,57 @@ export default function BibliotecaVideosPage() {
     return () => clearTimeout(timer);
   }, [isAuthenticated, selectedCategoria, searchText, fetchExercicios]);
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) return;
     const files = Array.from(e.target.files);
-    setUploadItems(prev => [...prev, ...files.map(f => ({ file: f, categorias: [], exibir_mobile: false }))]);
     e.target.value = '';
+
+    const existingFingerprints = new Set(uploadItems.map(item => getFileFingerprint(item.file)));
+    const uniqueFiles = files.filter(file => {
+      const fingerprint = getFileFingerprint(file);
+      if (existingFingerprints.has(fingerprint)) return false;
+      existingFingerprints.add(fingerprint);
+      return true;
+    });
+
+    const repeatedInQueue = files.length - uniqueFiles.length;
+    if (repeatedInQueue > 0) {
+      toast.error(`${repeatedInQueue} arquivo(s) repetido(s) na fila foram ignorados.`);
+    }
+
+    const checks = await Promise.all(uniqueFiles.map(async file => {
+      const name = file.name.normalize('NFC').replace(/\.[^.]+$/, '').trim();
+      try {
+        const result = await api.checkExercicioBibliotecaDuplicateName(name);
+        return { file, existing: result.exists ? result.item : null };
+      } catch {
+        return { file, existing: null };
+      }
+    }));
+
+    const alreadyRegistered = checks.filter(check => check.existing);
+    if (alreadyRegistered.length > 0) {
+      const names = alreadyRegistered.map(check => check.file.name).join(', ');
+      toast.error(
+        `Já existe vídeo cadastrado com este nome: ${names}. Os arquivos foram ignorados para evitar duplicidade.`,
+        { duration: 7000 },
+      );
+    }
+
+    const acceptedFiles = checks.filter(check => !check.existing).map(check => check.file);
+    setUploadItems(prev => {
+      const fingerprints = new Set(prev.map(item => getFileFingerprint(item.file)));
+      const stillUniqueFiles = acceptedFiles.filter(file => {
+        const fingerprint = getFileFingerprint(file);
+        if (fingerprints.has(fingerprint)) return false;
+        fingerprints.add(fingerprint);
+        return true;
+      });
+      return [
+        ...prev,
+        ...stillUniqueFiles.map(file => ({ file, categorias: [], exibir_mobile: false })),
+      ];
+    });
   };
 
   const toggleItemCategory = (index: number, catName: string) => {
@@ -171,26 +223,42 @@ export default function BibliotecaVideosPage() {
   };
 
   const handleUpload = async () => {
-    if (uploadItems.length === 0) return;
+    if (uploadItems.length === 0 || uploadLockRef.current) return;
+    uploadLockRef.current = true;
     setIsUploading(true);
     setUploadProgress(0);
     const toastId = toast.loading(`Sincronizando mídias...`);
+    const pendingItems = [...uploadItems];
+    let completedCount = 0;
     try {
-      for (let i = 0; i < uploadItems.length; i++) {
+      for (let i = 0; i < pendingItems.length; i++) {
         setCurrentUploadIndex(i);
         setUploadProgress(0);
-        const item = uploadItems[i];
+        const item = pendingItems[i];
         
-        const uploadResponse = await uploadVideo(item.file, (percent) => {
-          setUploadProgress(percent);
-        });
+        let videoUrl = item.uploadedUrl;
+        if (!videoUrl) {
+          const uploadResponse = await uploadVideo(item.file, (percent) => {
+            setUploadProgress(percent);
+          });
+          videoUrl = uploadResponse.url;
+          item.uploadedUrl = videoUrl;
+          setUploadItems(current => current.map(currentItem =>
+            getFileFingerprint(currentItem.file) === getFileFingerprint(item.file)
+              ? { ...currentItem, uploadedUrl: videoUrl }
+              : currentItem
+          ));
+        } else {
+          setUploadProgress(100);
+        }
         
         await api.createExercicioBiblioteca({
           nome: item.file.name.normalize('NFC').split('.')[0],
-          video_url: uploadResponse.url,
+          video_url: videoUrl,
           categoria: item.categorias.join(', '),
           exibir_mobile: item.exibir_mobile
         });
+        completedCount += 1;
       }
       
       toast.success('Mídias adicionadas!', { id: toastId });
@@ -199,8 +267,10 @@ export default function BibliotecaVideosPage() {
       setPage(1);
       fetchExercicios(1, true);
     } catch (error: any) {
+      setUploadItems(pendingItems.slice(completedCount));
       toast.error(error.message || 'Falha no upload', { id: toastId });
     } finally {
+      uploadLockRef.current = false;
       setIsUploading(false);
       setUploadProgress(0);
     }
@@ -239,8 +309,7 @@ export default function BibliotecaVideosPage() {
     if (!itemToEdit || !newTitle.trim()) return;
     setIsSaving(true);
     try {
-      await api.createExercicioBiblioteca({
-        ...itemToEdit,
+      await api.updateExercicioBiblioteca(itemToEdit.id, {
         nome: newTitle,
         exibir_mobile: editExibirMobile,
         categoria: editCategorias.join(', '),
@@ -640,7 +709,7 @@ export default function BibliotecaVideosPage() {
             {uploadItems.length > 0 && !isUploading && (
               <div className="px-10 py-5 bg-gray-50 dark:bg-[#1a1a1a] flex justify-end gap-4 border-t border-gray-200 dark:border-[#333]">
                 <button onClick={() => setIsUploadModalOpen(false)} className="px-6 py-2 rounded-md border border-gray-400 dark:border-[#444] bg-white dark:bg-[#222] text-[10px] font-black uppercase tracking-widest text-gray-800 dark:text-gray-100 hover:bg-white transition-colors">Cancelar</button>
-                <button onClick={handleUpload} className="px-8 py-2 rounded-md bg-[#c8921a] text-white text-[10px] font-black uppercase hover:bg-[#b07d14] transition-colors">Iniciar Upload</button>
+                <button onClick={handleUpload} disabled={isUploading} className="px-8 py-2 rounded-md bg-[#c8921a] text-white text-[10px] font-black uppercase hover:bg-[#b07d14] transition-colors disabled:opacity-50 disabled:cursor-not-allowed">Iniciar Upload</button>
               </div>
             )}
           </div>
@@ -658,7 +727,7 @@ export default function BibliotecaVideosPage() {
         </svg>
       </button>
 
-      <style jsx>{`
+      <style>{`
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         .custom-scrollbar::-webkit-scrollbar { width: 2px; }

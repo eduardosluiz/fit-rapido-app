@@ -3,7 +3,8 @@ import ConfirmDialog from '../components/admin/ConfirmDialog';
 
 interface ConfirmOptions {
   title?: string;
-  message: string;
+  message: ReactNode;
+  type?: 'info' | 'warning' | 'danger';
   confirmText?: string;
   cancelText?: string;
 }

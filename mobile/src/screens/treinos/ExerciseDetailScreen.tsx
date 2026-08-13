@@ -291,7 +291,7 @@ export default function ExerciseDetailScreen() {
         <View style={styles.modalOverlay}>
           <View style={styles.modalContent}>
             <VideoPlayer 
-              videoUrl={display.video_url} 
+              videoUrl={display.video_url || ''}
               title={display.titulo} 
               onClose={() => setShowVideoPlayer(false)} 
             />

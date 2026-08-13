@@ -133,17 +133,21 @@ export function FileUpload({ type, value, onChange, label, accept, error, hideUr
                 className="w-12 h-12 rounded border-2 border-border object-cover"
               />
             ) : (
-              <div className="w-12 h-12 rounded border-2 border-border bg-white dark:bg-gray-800 flex items-center justify-center">
-                <i className="bx bx-play text-[#c8921a] text-xl"></i>
-              </div>
+              <video
+                src={`${getMediaUrl(preview)}#t=0.5`}
+                className="h-10 w-14 rounded-md border border-gray-200 bg-black object-cover"
+                muted
+                playsInline
+                preload="metadata"
+              />
             )}
             <button
               type="button"
               onClick={handleRemove}
-              className="absolute -top-1.5 -right-1.5 w-4 h-4 rounded-full bg-red-500 hover:bg-red-600 text-white flex items-center justify-center shadow-sm z-10 transition-all"
-              title="Remover"
+              className="media-remove-button absolute -right-1.5 -top-1.5 z-10 flex h-5 w-5 items-center justify-center rounded-full border border-red-100 bg-white text-red-500 shadow-sm transition-all hover:bg-red-50"
+              title="Remover mídia"
             >
-              <i className="bx bx-x text-[10px]"></i>
+              <i className="bx bx-trash text-[11px]"></i>
             </button>
           </div>
         ) : (
@@ -204,10 +208,10 @@ export function FileUpload({ type, value, onChange, label, accept, error, hideUr
               <button
                 type="button"
                 onClick={handleRemove}
-                className="absolute top-2 right-2 h-7 w-7 rounded-full bg-red-500 hover:bg-red-600 text-white flex items-center justify-center shadow-sm z-10 transition-all"
+                className="media-remove-button absolute right-2 top-2 z-10 flex h-6 w-6 items-center justify-center rounded-full border border-red-100 bg-white text-red-500 shadow-sm transition-all hover:bg-red-50"
                 title="Remover imagem"
               >
-                <i className="bx bx-x text-base"></i>
+                <i className="bx bx-trash text-xs"></i>
               </button>
             </>
           ) : (
@@ -223,10 +227,10 @@ export function FileUpload({ type, value, onChange, label, accept, error, hideUr
               <button
                 type="button"
                 onClick={handleRemove}
-                className="absolute top-2 right-2 h-7 w-7 rounded-full bg-red-500 hover:bg-red-600 text-white flex items-center justify-center shadow-sm z-10 transition-all"
+                className="media-remove-button absolute right-2 top-2 z-10 flex h-6 w-6 items-center justify-center rounded-full border border-red-100 bg-white text-red-500 shadow-sm transition-all hover:bg-red-50"
                 title="Remover vídeo"
               >
-                <i className="bx bx-x text-base"></i>
+                <i className="bx bx-trash text-xs"></i>
               </button>
             </>
           )}

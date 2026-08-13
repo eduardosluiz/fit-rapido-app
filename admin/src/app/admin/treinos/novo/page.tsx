@@ -73,8 +73,8 @@ function NovoTreinoForm() {
 
   useEffect(() => {
     if (modalidades.length > 0) {
-      const modalidadeUrl = searchParams.get('modalidade');
-      const nivelUrl = searchParams.get('nivel');
+      const modalidadeUrl = searchParams?.get('modalidade');
+      const nivelUrl = searchParams?.get('nivel');
       
       if (modalidadeUrl || nivelUrl) {
         setFormData(prev => ({

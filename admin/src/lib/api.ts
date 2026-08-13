@@ -11,9 +11,9 @@ class ApiService {
     options: RequestInit = {},
   ): Promise<T> {
     const token = this.getAuthToken();
-    const headers: HeadersInit = {
+    const headers: Record<string, string> = {
       'Content-Type': 'application/json',
-      ...options.headers,
+      ...(options.headers as Record<string, string> | undefined),
     };
 
     if (token) {
@@ -161,6 +161,7 @@ class ApiService {
     incluirInativas?: boolean;
     page?: number;
     limit?: number;
+    admin?: boolean;
   }) {
     const queryParams = new URLSearchParams();
     if (params?.categoria) queryParams.append('categoria', params.categoria);
@@ -170,6 +171,7 @@ class ApiService {
     if (params?.incluirInativas) queryParams.append('incluirInativas', 'true');
     if (params?.page) queryParams.append('page', String(params.page));
     if (params?.limit) queryParams.append('limit', String(params.limit));
+    if (params?.admin) queryParams.append('admin', 'true');
 
     const query = queryParams.toString();
     return this.request<any>(`/receitas${query ? `?${query}` : ''}`);
@@ -585,6 +587,12 @@ class ApiService {
     });
   }
 
+  async checkExercicioBibliotecaDuplicateName(name: string) {
+    return this.request<{ exists: boolean; item: any | null }>(
+      `/exercicios-biblioteca/check-duplicate/name?name=${encodeURIComponent(name)}`,
+    );
+  }
+
   async updateExercicioBiblioteca(id: string, data: any) {
     return this.request<any>(`/exercicios-biblioteca/${id}`, {
       method: 'PATCH',
@@ -626,4 +634,3 @@ class ApiService {
 }
 
 export const api = new ApiService();
-

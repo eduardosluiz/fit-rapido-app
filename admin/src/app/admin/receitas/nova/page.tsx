@@ -49,6 +49,7 @@ export default function NovaReceita() {
     fibras: '',
     sodio: '',
     dica: '',
+    finalizacao: '',
   });
 
   useEffect(() => {

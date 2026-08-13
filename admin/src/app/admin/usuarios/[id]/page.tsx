@@ -28,7 +28,7 @@ export default function EditarUsuario() {
   const router = useRouter();
   const params = useParams();
   const { isAuthenticated } = useAuth();
-  const id = params.id as string;
+  const id = params?.id as string;
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -252,4 +252,3 @@ export default function EditarUsuario() {
     </div>
   );
 }
-

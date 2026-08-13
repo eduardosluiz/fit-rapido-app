@@ -55,6 +55,19 @@ export default function PopularesPage() {
     }
   };
 
+  const toggleFavorita = async (receita: any) => {
+    try {
+      const isFavorita = Boolean(receita.destaque_favorito);
+      await api.updateReceita(receita.id, { destaque_favorito: !isFavorita });
+      setReceitas((prev) =>
+        prev.map((r) => r.id === receita.id ? { ...r, destaque_favorito: !isFavorita } : r)
+      );
+      toast.success(isFavorita ? 'Removida de Favoritas de vocês' : 'Adicionada a Favoritas de vocês');
+    } catch (error) {
+      toast.error('Erro ao atualizar Favoritas de vocês.');
+    }
+  };
+
   const handleSearchChange = (val: string) => {
     setSearchTerm(val);
     setCurrentPage(1);
@@ -75,11 +88,11 @@ export default function PopularesPage() {
   }
 
   return (
-    <div className="p-6 sm:p-10 bg-[#f4f7f9] dark:bg-[#0a0a0a] min-h-screen font-inter w-full">
+    <div className="admin-populares-page p-6 sm:p-10 bg-[#f4f7f9] dark:bg-[#0a0a0a] min-h-screen font-inter w-full">
       <div className="w-full max-w-[1400px] mx-auto space-y-6 md:space-y-10">
         
         {/* Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-gray-200 dark:border-[#222] pb-6 gap-4">
+        <div className="admin-populares-header flex flex-col sm:flex-row sm:items-center justify-between border-b border-gray-200 dark:border-[#222] pb-6 gap-4">
           <div>
             <h1 className="text-xl sm:text-2xl font-light text-gray-400 dark:text-gray-500 tracking-tight uppercase">
               Receitas <span className="text-gray-900 dark:text-white font-normal">Populares</span>
@@ -100,9 +113,9 @@ export default function PopularesPage() {
         </div>
 
         {/* Tabela */}
-        <div className="bg-white dark:bg-[#111] border border-gray-200 dark:border-[#222] rounded-xl overflow-hidden shadow-sm">
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-sm text-gray-600 dark:text-gray-400">
+        <div className="admin-populares-list bg-white dark:bg-[#111] border border-gray-200 dark:border-[#222] rounded-xl overflow-hidden shadow-sm">
+          <div className="admin-populares-table-wrap overflow-x-auto">
+            <table className="admin-populares-table w-full text-left text-sm text-gray-600 dark:text-gray-400">
               <thead className="text-[10px] font-normal uppercase tracking-widest bg-gray-50 dark:bg-[#1a1a1a] text-gray-500 dark:text-gray-500 border-b border-gray-200 dark:border-[#222]">
                 <tr>
                   <th className="px-6 py-4">Receita</th>
@@ -113,8 +126,8 @@ export default function PopularesPage() {
               </thead>
               <tbody className="divide-y divide-gray-100 dark:divide-[#222]">
                 {currentReceitas.map((receita) => (
-                  <tr key={receita.id} className="hover:bg-gray-50/50 dark:hover:bg-[#1a1a1a]/50 transition-colors">
-                    <td className="px-6 py-4 flex items-center gap-4">
+                  <tr key={receita.id} className="admin-popular-row hover:bg-gray-50/50 dark:hover:bg-[#1a1a1a]/50 transition-colors">
+                    <td className="admin-popular-recipe px-6 py-4 flex items-center gap-4">
                       {receita.imagem_url ? (
                         <img src={receita.imagem_url} alt={receita.titulo} className="w-12 h-12 rounded object-cover border border-gray-200 dark:border-gray-800" />
                       ) : (
@@ -127,13 +140,13 @@ export default function PopularesPage() {
                         <div className="text-xs mt-0.5">{receita.tempo_preparo} min | {receita.calorias || 0} kcal</div>
                       </div>
                     </td>
-                    <td className="px-6 py-4 text-center">
+                    <td className="admin-popular-rating px-6 py-4 text-center" data-label="Avaliação">
                       <div className="flex items-center justify-center gap-1">
                         <Star size={14} className={receita.avaliacao > 0 ? "text-[#c8921a] fill-[#c8921a]" : "text-gray-300"} />
                         <span className="font-normal text-gray-900 dark:text-white">{Number(receita.avaliacao) > 0 ? Number(receita.avaliacao).toFixed(1) : '-'}</span>
                       </div>
                     </td>
-                    <td className="px-6 py-4 text-center">
+                    <td className="admin-popular-status px-6 py-4 text-center" data-label="Popular no app">
                       {receita.destaque_popular ? (
                         <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-[#047857]/10 text-[#047857] text-[10px] font-normal uppercase tracking-widest border border-[#047857]/20">
                           <CheckCircle size={12} /> Sim
@@ -144,17 +157,31 @@ export default function PopularesPage() {
                         </span>
                       )}
                     </td>
-                    <td className="px-6 py-4 text-right">
-                      <button
-                        onClick={() => toggleDestaque(receita)}
-                        className={`px-3 py-1.5 rounded-md text-[9px] font-normal uppercase tracking-wider transition-all ${
-                          receita.destaque_popular
-                            ? 'bg-white text-gray-600 hover:bg-gray-200 dark:bg-[#222] dark:text-gray-400 dark:hover:bg-[#333]'
-                            : 'bg-[#c8921a]/10 text-[#c8921a] hover:bg-[#c8921a]/20 border border-[#c8921a]/30'
-                        }`}
-                      >
-                        {receita.destaque_popular ? 'Remover' : 'Tornar Popular'}
-                      </button>
+                    <td className="admin-popular-action px-6 py-4 text-right">
+                      <div className="admin-popular-actions">
+                        <button
+                          type="button"
+                          onClick={() => toggleDestaque(receita)}
+                          className={`px-3 py-1.5 rounded-md text-[9px] font-normal uppercase tracking-wider transition-all ${
+                            receita.destaque_popular
+                              ? 'bg-white text-gray-600 hover:bg-gray-200 dark:bg-[#222] dark:text-gray-400 dark:hover:bg-[#333]'
+                              : 'bg-[#c8921a]/10 text-[#c8921a] hover:bg-[#c8921a]/20 border border-[#c8921a]/30'
+                          }`}
+                        >
+                          {receita.destaque_popular ? 'Remover popular' : 'Tornar popular'}
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => toggleFavorita(receita)}
+                          className={`px-3 py-1.5 rounded-md text-[9px] font-normal uppercase tracking-wider transition-all border ${
+                            receita.destaque_favorito
+                              ? 'bg-rose-50 text-rose-700 border-rose-200'
+                              : 'bg-white text-gray-700 border-gray-300 hover:border-rose-300'
+                          }`}
+                        >
+                          {receita.destaque_favorito ? 'Desfavoritar' : 'Favoritar'}
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 ))}

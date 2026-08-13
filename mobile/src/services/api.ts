@@ -56,7 +56,7 @@ export interface Receita {
   video_thumbnail_url?: string;
   ebook_url?: string;
   categorias?: any[];
-  dificuldade: 'facil' | 'medio' | 'dificil';
+  dificuldade: 'facil' | 'medio' | 'dificil' | 'iniciante' | 'intermediario' | 'avancado';
   tempo_preparo: number;
   porcoes: number;
   is_premium: boolean;
@@ -74,6 +74,13 @@ export interface Receita {
   dica?: string;
   avaliacao?: number;
   total_avaliacoes?: number;
+  is_inedito?: boolean;
+  is_free?: boolean;
+  destaque_popular?: boolean;
+  destaque_favorito?: boolean;
+  substituto_id_1?: string;
+  substituto_id_2?: string;
+  tags?: string[];
 }
 
 export interface Treino {
@@ -83,7 +90,7 @@ export interface Treino {
   exercicios: string[];
   imagem_url?: string;
   video_url?: string;
-  nivel: 'iniciante' | 'intermediario' | 'avancado';
+  nivel: 'facil' | 'medio' | 'dificil' | 'iniciante' | 'intermediario' | 'avancado';
   duracao_minutos: number;
   is_premium: boolean;
   ativa: boolean;
@@ -92,19 +99,42 @@ export interface Treino {
   total_avaliacoes?: number;
   substituto_id_1?: string;
   substituto_id_2?: string;
+  imagens_url?: string[];
+  imagem_capa_url?: string;
+  modalidade_id?: string;
+  modalidade?: {
+    id?: string;
+    nome?: string;
+    titulo?: string;
+    descricao?: string;
+    has_nivelamento?: boolean;
+  };
+  substituto_1_info?: any;
+  substituto_2_info?: any;
+  video_explicativo_url?: string;
+  series?: string | number;
+  repeticoes?: string | number;
+  descanso?: string | number;
+  peso?: string | number;
+  descricao_tecnica?: string;
+  dia_semana?: string | number;
+  ordem?: number;
+  dias_por_semana?: number;
+  series_repeticoes?: any[];
+  grupos_musculares?: any[];
+  observacoes?: string;
+  categorias?: any[];
 }
 
 class ApiService {
   private async request<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
     const netInfo = await NetInfo.fetch();
     const token = await AsyncStorage.getItem('auth_token');
-    const headers: HeadersInit = {
-      'Content-Type': 'application/json',
-      ...options.headers,
-    };
+    const headers = new Headers(options.headers);
+    if (!headers.has('Content-Type')) headers.set('Content-Type', 'application/json');
 
     if (token) {
-      headers['Authorization'] = `Bearer ${token}`;
+      headers.set('Authorization', `Bearer ${token}`);
     }
 
     const url = `${API_URL}${endpoint.startsWith('/') ? endpoint : `/${endpoint}`}`;
@@ -128,7 +158,7 @@ class ApiService {
 
       if (response.status === 204) return undefined as T;
       const text = await response.text();
-      return text ? JSON.parse(text) : undefined;
+      return (text ? JSON.parse(text) : undefined) as T;
     } catch (error: any) {
       throw error;
     }
@@ -284,15 +314,15 @@ class ApiService {
 
   async getReceitaIngredientes(receitaId: string) {
     try {
-      return await this.request<any[]>(`/receitas/${receitaId}/ingredientes`);
+      return await this.request<any[]>(`/receita-ingredientes/receita/${receitaId}`);
     } catch (e) {
       return [];
     }
   }
 
-  async getSubstituicoes(ingredienteId: string) {
+  async getSubstituicoes(receitaId: string) {
     try {
-      return await this.request<any[]>(`/ingredientes/${ingredienteId}/substituicoes`);
+      return await this.request<any[]>(`/substituicoes/receita/${receitaId}`);
     } catch (e) {
       return [];
     }
@@ -300,17 +330,31 @@ class ApiService {
 
   async verificarFezHoje(itemId: string, tipo: string) {
     try {
-      return await this.request<{ fezHoje: boolean }>(`/atividades/check/${tipo}/${itemId}`);
+      const result = await this.request<{ fez_hoje: boolean }>(`/atividades/check/${tipo}/${itemId}`);
+      return result.fez_hoje;
     } catch {
-      return { fezHoje: false };
+      return false;
     }
   }
 
   async registrarAtividade(itemId: string, tipo: string) {
     return this.request<any>('/atividades', {
       method: 'POST',
-      body: JSON.stringify({ itemId, tipo }),
+      body: JSON.stringify({ item_id: itemId, tipo }),
     });
+  }
+
+  async criarAtividade(itemId: string, tipo: string) {
+    return this.registrarAtividade(itemId, tipo);
+  }
+
+  async removerAtividade(itemId: string, tipo: string) {
+    return this.request<any>(`/atividades/${tipo}/${itemId}`, { method: 'DELETE' });
+  }
+
+  async getAtividades(tipo?: 'fiz_receita' | 'treinei_hoje') {
+    const query = tipo ? `?tipo=${tipo}` : '';
+    return this.request<any[]>(`/atividades${query}`);
   }
 
   async obterAvaliacao(itemId: string, tipo: string) {
@@ -326,6 +370,10 @@ class ApiService {
       method: 'POST',
       body: JSON.stringify({ item_id: itemId, tipo, nota, comentario }),
     });
+  }
+
+  async criarAvaliacao(itemId: string, tipo: string, nota: number, comentario?: string) {
+    return this.avaliar(itemId, tipo, nota, comentario);
   }
 
   async removerAvaliacao(itemId: string, tipo: string) {
@@ -360,6 +408,52 @@ class ApiService {
     } catch {
       return null;
     }
+  }
+
+  async searchIngredientesAdvanced(query: string, limit = 20) {
+    return this.request<any[]>(`/ingredientes/search/advanced?q=${encodeURIComponent(query)}&limit=${limit}`);
+  }
+
+  async sugerirSubstitutos(ingredienteId: string, limit = 10) {
+    return this.request<any[]>(`/ingredientes/sugerir-substitutos/${ingredienteId}?limit=${limit}`);
+  }
+
+  async validarCompatibilidade(originalId: string, substitutoId: string) {
+    return this.request<any>(`/ingredientes/validar-compatibilidade/${originalId}/${substitutoId}`);
+  }
+
+  async getHistoricoSubstituicoes(limit = 20) {
+    return this.request<any[]>(`/substituicoes/historico?limit=${limit}`);
+  }
+
+  async getSubstituicoesFrequentes(limit = 5) {
+    return this.request<any[]>(`/substituicoes/frequentes?limit=${limit}`);
+  }
+
+  async createSubstituicao(data: any) {
+    return this.request<any>('/substituicoes', { method: 'POST', body: JSON.stringify(data) });
+  }
+
+  async removeSubstituicao(id: string) {
+    return this.request<void>(`/substituicoes/${id}`, { method: 'DELETE' });
+  }
+
+  async consultarIA(receitaId: string, pergunta: string) {
+    return this.request<any>('/ingredientes/ia/consulta', {
+      method: 'POST',
+      body: JSON.stringify({ receita_id: receitaId, pergunta }),
+    });
+  }
+
+  async calcularMacrosDiarios(data: any) {
+    return this.request<any>('/receitas/macros/calcular-diarios', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
+  }
+
+  async deleteAccount() {
+    return this.request<void>('/auth/profile', { method: 'DELETE' });
   }
 
   async calcularMacrosComSubstituicao(receitaId: string) {

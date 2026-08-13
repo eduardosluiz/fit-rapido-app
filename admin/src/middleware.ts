@@ -2,11 +2,14 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
 export function middleware(request: NextRequest) {
+  const requestIp = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim()
+    || request.headers.get('x-real-ip')
+    || 'unknown';
   // 1. Bloquear tentativas de exploit de Server Actions (Botnets Kinsing/Mirai)
   // O botnet envia requisições com o header Next-Action falso (ex: "x")
   // Como este projeto não utiliza Server Actions, podemos bloquear qualquer requisição com este header
   if (request.headers.has('Next-Action') || request.nextUrl.searchParams.has('_next_action')) {
-    console.warn(`[Botnet Blocked] Malicious Server Action request from IP: ${request.ip}`);
+    console.warn(`[Botnet Blocked] Malicious Server Action request from IP: ${requestIp}`);
     return new NextResponse('Forbidden', { status: 403 });
   }
 
@@ -18,7 +21,7 @@ export function middleware(request: NextRequest) {
     urlLower.includes('wget') ||
     urlLower.includes('pkill')
   ) {
-    console.warn(`[Botnet Blocked] Malicious URL request from IP: ${request.ip}`);
+    console.warn(`[Botnet Blocked] Malicious URL request from IP: ${requestIp}`);
     return new NextResponse('Forbidden', { status: 403 });
   }
 

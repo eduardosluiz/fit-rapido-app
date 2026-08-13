@@ -8,7 +8,7 @@ import { ListHeader } from '@/components/admin/ListHeader';
 import { FormSection } from '@/components/admin/FormSection';
 import { FormField } from '@/components/admin/FormField';
 import { EmptyState } from '@/components/admin/EmptyState';
-import { Button as AdminButton } from '@/components/admin/Button';
+import { Button } from '@/components/admin/Button';
 import { useConfirm } from '@/contexts/ConfirmContext';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -118,7 +118,7 @@ export default function ModalidadesTreinosPage() {
   const handleCancel = () => {
     setShowForm(false);
     setEditingId(null);
-    setFormData({ nome: '', descricao: '', imagem_url: '', ativo: true });
+    setFormData({ nome: '', subtitulo: '', ordem_modalidade: 0, descricao: '', imagem_url: '', ativo: true });
   };
 
   return (
@@ -237,7 +237,7 @@ export default function ModalidadesTreinosPage() {
                       <img src={mod.imagem_url} alt={mod.nome} className="w-full h-full object-cover" />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center">
-                        <Ionicons name="fitness" size={32} color="#ccc" />
+                        <i className="bx bx-dumbbell text-3xl text-gray-300" aria-hidden="true"></i>
                       </div>
                     )}
                     <div className="absolute top-2 right-2">

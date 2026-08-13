@@ -190,7 +190,7 @@ export default function GlossarioPage() {
             <AdminButton 
               onClick={() => handleOpenDialog()}
               variant="primary" 
-              icon={<Plus size={16} />}
+              icon="bx-plus"
               className="bg-[#111] hover:bg-black text-white px-5 shadow-lg shadow-black/10 h-[38px]"
             >
               Novo

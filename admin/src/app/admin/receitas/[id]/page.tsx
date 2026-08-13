@@ -17,7 +17,7 @@ import { useConfirm } from '@/contexts/ConfirmContext';
 export default function EditarReceita() {
   const router = useRouter();
   const params = useParams();
-  const id = params.id as string;
+  const id = params?.id as string;
   const { isAuthenticated } = useAuth();
   const confirm = useConfirm();
   const [loading, setLoading] = useState(true);
@@ -53,6 +53,7 @@ export default function EditarReceita() {
     fibras: '',
     sodio: '',
     dica: '',
+    finalizacao: '',
   });
 
   useEffect(() => {

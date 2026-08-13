@@ -48,7 +48,7 @@ export default function TreinosScreen() {
   const [page, setPage] = useState(1);
   const [loadingMore, setLoadingMore] = useState(false);
   const [hasMore, setHasMore] = useState(true);
-  const searchTimeoutRef = React.useRef<NodeJS.Timeout | null>(null);
+  const searchTimeoutRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
 
   React.useEffect(() => {
     return () => {
@@ -254,7 +254,7 @@ export default function TreinosScreen() {
       ]}>
         <TreinoCardAnimated
           item={item}
-          onPress={() => navigation.navigate('TreinoDetail' as never, { treinoId: item.id } as never)}
+          onPress={() => (navigation as any).navigate('TreinoDetail', { treinoId: item.id })}
         />
       </View>
     );

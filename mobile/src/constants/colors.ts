@@ -8,6 +8,8 @@ export const colors = {
   background: "#1C1B1E",        // base principal
   backgroundSoft: "#232129",    // variação para cards / inputs
   backgroundElevated: "#2A2830",
+  backgroundSecondary: "#232129",
+  backgroundTertiary: "#2A2830",
 
   primary: "#FFD26F",           // dourado principal
   primarySoft: "#C9A24A",
@@ -52,4 +54,3 @@ export const shadows = {
 };
 
 export default colors;
-

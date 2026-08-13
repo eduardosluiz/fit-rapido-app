@@ -2,7 +2,7 @@ import { useState } from 'react';
 import * as Dialog from '@radix-ui/react-dialog';
 import { api } from '@/lib/api';
 import { toast } from 'react-hot-toast';
-import { X, Lock, Check } from 'lucide-react';
+import { X, Lock, Check, Loader2 } from 'lucide-react';
 
 interface TrocarSenhaModalProps {
   open: boolean;

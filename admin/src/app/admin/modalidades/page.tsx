@@ -21,7 +21,8 @@ import {
   X,
   PlusCircle,
   LayoutGrid,
-  Play
+  Play,
+  AlertTriangle
 } from 'lucide-react';
 import { useConfirm } from '@/contexts/ConfirmContext';
 import '@/app/admin/admin.css';
@@ -47,6 +48,7 @@ interface VideoTreino {
     descanso?: string;
     peso?: string;
     imagem_capa_url?: string;
+    video_explicativo_url?: string;
   };
   substituto_id_2?: string;
   substituto_2_info?: {
@@ -55,15 +57,65 @@ interface VideoTreino {
     descanso?: string;
     peso?: string;
     imagem_capa_url?: string;
+    video_explicativo_url?: string;
   };
   descricao_tecnica?: string;
   showSub1?: boolean;
   showSub2?: boolean;
+  _isDirty?: boolean;
 }
+
+const getVideoDuplicateKey = (video: VideoTreino) => [
+  video.nivel || '',
+  String(video.dia_semana ?? ''),
+  video.titulo.trim().normalize('NFC').toLocaleLowerCase(),
+  video.video_url.trim().toLocaleLowerCase(),
+].join('|');
+
+const getDuplicateVideoIndexes = (videos: VideoTreino[]) => {
+  const firstIndexByKey = new Map<string, number>();
+  const duplicateIndexes = new Set<number>();
+
+  videos.forEach((video, index) => {
+    if (!video.titulo.trim() || !video.video_url.trim()) return;
+    const key = getVideoDuplicateKey(video);
+    const firstIndex = firstIndexByKey.get(key);
+    if (firstIndex === undefined) {
+      firstIndexByKey.set(key, index);
+      return;
+    }
+    duplicateIndexes.add(firstIndex);
+    duplicateIndexes.add(index);
+  });
+
+  return duplicateIndexes;
+};
+
+const getPotentialDuplicateVideoIndexes = (videos: VideoTreino[]) => {
+  const firstIndexByKey = new Map<string, number>();
+  const duplicateIndexes = new Set<number>();
+
+  videos.forEach((video, index) => {
+    const normalizedTitle = video.titulo.trim().normalize('NFC').toLocaleLowerCase();
+    if (!normalizedTitle) return;
+    const key = [video.nivel || '', String(video.dia_semana ?? ''), normalizedTitle].join('|');
+    const firstIndex = firstIndexByKey.get(key);
+    if (firstIndex === undefined) {
+      firstIndexByKey.set(key, index);
+      return;
+    }
+    duplicateIndexes.add(firstIndex);
+    duplicateIndexes.add(index);
+  });
+
+  return duplicateIndexes;
+};
 
 interface Modalidade {
   id: string;
   nome: string;
+  subtitulo?: string;
+  ordem_modalidade?: number;
   descricao?: string;
   imagem_url?: string;
   tem_nivelamento: boolean;
@@ -81,6 +133,8 @@ export default function ModalidadesPage() {
   const [showForm, setShowForm] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
+  const [saveError, setSaveError] = useState<string | null>(null);
+  const [expandedExerciseIndex, setExpandedExerciseIndex] = useState<number | null>(null);
   const [bibliotecaExercicios, setBibliotecaExercicios] = useState<any[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>({
@@ -166,6 +220,11 @@ export default function ModalidadesPage() {
       loadData();
     }
   }, [isAuthenticated, loadData]);
+
+  useEffect(() => {
+    document.body.classList.toggle('admin-editor-active', showForm);
+    return () => document.body.classList.remove('admin-editor-active');
+  }, [showForm]);
 
   const handleAddVideo = (nivel: string = 'iniciante', dia: string = '') => {
     // Calcular a próxima ordem para este nível ou para a trilha geral
@@ -296,8 +355,19 @@ export default function ModalidadesPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setSaveError(null);
     if (!formData.nome.trim()) {
-      toast.error('Nome é obrigatório');
+      const message = 'Informe o nome da modalidade antes de salvar.';
+      setSaveError(message);
+      toast.error(message);
+      return;
+    }
+
+    const duplicateIndexes = getDuplicateVideoIndexes(formData.videos);
+    if (duplicateIndexes.size > 0) {
+      const message = `Ainda existem ${duplicateIndexes.size} exercícios exatamente duplicados. Remova uma cópia de cada par antes de salvar.`;
+      setSaveError(message);
+      toast.error(message, { duration: 7000 });
       return;
     }
 
@@ -330,8 +400,13 @@ export default function ModalidadesPage() {
       if (modalidadeId) {
         // 1. Deletar vídeos removidos
         if (deletedVideoIds.length > 0) {
-          // Usamos Promise.allSettled para evitar que um erro de deleção pare todo o processo
-          await Promise.allSettled(deletedVideoIds.map(id => api.deleteTreino(id)));
+          for (const id of deletedVideoIds) {
+            try {
+              await api.deleteTreino(id);
+            } catch (error: any) {
+              throw new Error(`Não foi possível excluir o exercício ${id.slice(0, 8)}. ${error.message || 'A API recusou a exclusão.'}`);
+            }
+          }
         }
 
         // 2. Salvar/Atualizar vídeos atuais
@@ -408,7 +483,9 @@ export default function ModalidadesPage() {
       setDeletedVideoIds([]);
       await loadData();
     } catch (err: any) {
-      toast.error(err.message || 'Erro ao salvar modalidade');
+      const message = err.message || 'Erro ao salvar modalidade';
+      setSaveError(message);
+      toast.error(message, { duration: 8000 });
     } finally {
       setSaving(false);
     }
@@ -497,6 +574,8 @@ export default function ModalidadesPage() {
     
     const isExpanded = expandedSections[nivel];
     const displayTitle = formData.tem_nivelamento ? title : 'Conteúdo da Modalidade (Trilha Geral)';
+    const duplicateIndexes = getPotentialDuplicateVideoIndexes(formData.videos);
+    const exactDuplicateIndexes = getDuplicateVideoIndexes(formData.videos);
     
     // 1. Pega os vídeos e ordena
     // Lógica Corrigida:
@@ -537,7 +616,7 @@ export default function ModalidadesPage() {
         });
 
     return (
-      <div className="bg-white dark:bg-[#0f0f0f] border border-gray-200 dark:border-[#222] rounded-2xl shadow-sm overflow-hidden mb-8 transition-all">
+      <div className="modality-level-section bg-white dark:bg-[#0f0f0f] border border-gray-200 dark:border-[#222] rounded-2xl shadow-sm overflow-hidden mb-8 transition-all">
         <div className="p-6 sm:p-10 space-y-8">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-gray-100 dark:border-[#1a1a1a] pb-4 gap-4">
             <h3 className="text-[11px] font-normal uppercase tracking-wide text-gray-600 dark:text-gray-400 flex items-center gap-2 sm:gap-3 leading-snug">
@@ -549,7 +628,7 @@ export default function ModalidadesPage() {
               <button
                 type="button"
                 onClick={() => handleAddVideo(nivel)}
-                className={`text-[9px] font-normal uppercase tracking-wide ${color.replace('bg-', 'text-')} hover:underline flex items-center gap-2 whitespace-nowrap`}
+                className={`modality-section-action text-[9px] font-normal uppercase tracking-wide ${color.replace('bg-', 'text-')} flex items-center gap-2 whitespace-nowrap`}
               >
                 <PlusCircle size={14} /> <span className="hidden sm:inline">Adicionar</span> Vídeo
               </button>
@@ -557,7 +636,7 @@ export default function ModalidadesPage() {
               <button
                 type="button"
                 onClick={() => toggleSection(nivel)}
-                className="px-3 py-2 rounded-lg bg-gray-50 dark:bg-[#1a1a1a] text-gray-500 dark:text-gray-400 hover:text-[#c8921a] hover:bg-white dark:hover:bg-[#222] transition-all flex items-center gap-1.5 whitespace-nowrap border border-gray-200 dark:border-[#333]"
+                className="modality-collapse-button px-3 py-2 rounded-lg bg-gray-50 dark:bg-[#1a1a1a] text-gray-500 dark:text-gray-400 hover:text-[#c8921a] hover:bg-white dark:hover:bg-[#222] transition-all flex items-center gap-1.5 whitespace-nowrap border border-gray-200 dark:border-[#333]"
               >
                 <span className="text-[9px] font-normal uppercase tracking-wide mr-1">{isExpanded ? 'Colapsar' : 'Expandir'}</span>
                 {isExpanded ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
@@ -569,7 +648,7 @@ export default function ModalidadesPage() {
             <div className="space-y-12 animate-in fade-in slide-in-from-top-2 duration-300">
               {/* Campo de Descrição Específica da Trilha */}
               {formData.tem_nivelamento && (
-                <div className="space-y-3 p-6 rounded-2xl bg-gray-50/50 dark:bg-[#111]/50 border border-gray-200 dark:border-[#222]">
+                <div className="modality-track-description space-y-3 p-6 rounded-2xl bg-gray-50/50 dark:bg-[#111]/50 border border-gray-200 dark:border-[#222]">
                   <div className="flex items-center gap-2">
                     <Edit3 size={12} className="text-[#c8921a]" />
                     <label className="text-[10px] font-normal uppercase tracking-wide text-gray-500">Descrição Técnica da Trilha {title.split(' ').pop()}</label>
@@ -645,7 +724,25 @@ export default function ModalidadesPage() {
                         ) : (
                           <div className="space-y-6 animate-in fade-in duration-300">
                             {videosDoDia.map((video, fIndex) => (
-                              <div key={`${nivel}-${video.id || video.originalIndex}-${video.ordem}`} className="group relative p-6 sm:p-8 rounded-2xl border border-gray-400 dark:border-[#444] bg-gray-50/30 dark:bg-[#0a0a0a] hover:border-[#c8921a]/40 transition-all flex flex-col gap-6 sm:gap-8 mt-4 sm:mt-0">
+                              <div key={`${nivel}-${video.id || video.originalIndex}-${video.ordem}`} className={`modality-exercise-card ${expandedExerciseIndex === video.originalIndex ? 'is-expanded' : ''} group relative p-6 sm:p-8 rounded-2xl border bg-gray-50/30 dark:bg-[#0a0a0a] transition-all flex flex-col gap-6 sm:gap-8 mt-4 sm:mt-0 ${duplicateIndexes.has(video.originalIndex) ? 'border-red-400 ring-1 ring-red-300' : 'border-gray-400 dark:border-[#444] hover:border-[#c8921a]/40'}`}>
+                                <button
+                                  type="button"
+                                  className="exercise-mobile-summary"
+                                  onClick={() => setExpandedExerciseIndex(current => current === video.originalIndex ? null : video.originalIndex)}
+                                  aria-expanded={expandedExerciseIndex === video.originalIndex}
+                                >
+                                  <span className="exercise-mobile-number">{fIndex + 1}</span>
+                                  <span className="exercise-mobile-copy">
+                                    <strong>{video.titulo || 'Exercício sem título'}</strong>
+                                    <small>{video.series || '—'} séries · {video.repeticoes || 'sem repetições'}</small>
+                                  </span>
+                                  {expandedExerciseIndex === video.originalIndex ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+                                </button>
+                                {duplicateIndexes.has(video.originalIndex) && (
+                                  <div className="absolute top-3 right-14 rounded-full bg-red-50 px-3 py-1 text-[9px] font-medium uppercase tracking-wide text-red-600">
+                                    {exactDuplicateIndexes.has(video.originalIndex) ? 'Duplicado' : 'Mesmo título'}
+                                  </div>
+                                )}
                                 <div className="absolute -left-3 sm:-left-4 top-4 sm:top-8 flex flex-col gap-1.5 sm:gap-2 z-10 scale-[0.80] sm:scale-100">
                                   <div className={`w-8 h-8 rounded-lg ${color} text-white flex items-center justify-center text-[11px] font-normal shadow-sm`}>
                                     {fIndex + 1}
@@ -707,7 +804,7 @@ export default function ModalidadesPage() {
                                     <label className="text-[10px] font-normal uppercase tracking-wide text-gray-500">Vídeo de Execução</label>
                                     <div className="flex items-center gap-3">
                                       <div className="flex-1 h-[42px] bg-white dark:bg-[#111] border border-gray-400 dark:border-[#333] rounded-md flex items-center px-3 sm:px-4 overflow-hidden shadow-inner">
-                                        <span className="text-[9px] sm:text-[11px] text-gray-400 truncate flex-1 font-normal">{video.video_url || 'Selecione mídia...'}</span>
+                                        <span className="truncate text-[11px] font-normal text-gray-500">{video.video_url ? 'Vídeo de execução adicionado' : 'Nenhum vídeo selecionado'}</span>
                                       </div>
                                       <div className="flex items-center gap-2 shrink-0">
                                         <FileUpload type="video" value={video.video_url} onChange={(url) => handleVideoChange(video.originalIndex, 'video_url', url)} hideUrlInput compact />
@@ -727,7 +824,7 @@ export default function ModalidadesPage() {
                                     <label className="text-[10px] font-normal uppercase tracking-wide text-gray-500">Vídeo Explicativo</label>
                                     <div className="flex items-center gap-3">
                                       <div className="flex-1 h-[42px] bg-white dark:bg-[#111] border border-gray-400 dark:border-[#333] rounded-md flex items-center px-3 sm:px-4 overflow-hidden shadow-inner">
-                                        <span className="text-[9px] sm:text-[11px] text-gray-400 truncate flex-1 font-normal">{video.video_explicativo_url || 'Selecione mídia...'}</span>
+                                        <span className="truncate text-[11px] font-normal text-gray-500">{video.video_explicativo_url ? 'Vídeo explicativo adicionado' : 'Nenhum vídeo selecionado'}</span>
                                       </div>
                                       <div className="flex items-center gap-2 shrink-0">
                                         <FileUpload type="video" value={video.video_explicativo_url} onChange={(url) => handleVideoChange(video.originalIndex, 'video_explicativo_url', url)} hideUrlInput compact />
@@ -746,7 +843,7 @@ export default function ModalidadesPage() {
 
                                 <div className="lg:col-span-4 space-y-2">
                                   <label className="text-[10px] font-normal uppercase tracking-wide text-gray-500 block text-center">Imagem de Capa (Opcional)</label>
-                                  <div className="h-[148px] rounded-xl border border-gray-400 dark:border-[#333] bg-white/30 dark:bg-[#111]/30 flex items-center justify-center p-4 shadow-inner overflow-hidden">
+                                  <div className="modality-cover-field flex min-h-[120px] items-center justify-center overflow-hidden">
                                     <FileUpload 
                                       type="imagem" 
                                       value={video.imagem_capa_url || ''} 
@@ -768,7 +865,7 @@ export default function ModalidadesPage() {
                               </div>
 
                               {/* Informações Técnicas do Exercício Principal */}
-                              <div className="w-full grid grid-cols-2 md:grid-cols-4 gap-6 p-6 rounded-xl bg-white/50 dark:bg-[#111]/50 border border-gray-200 dark:border-[#222]">
+                              <div className="modality-technical-grid w-full grid grid-cols-2 md:grid-cols-4 gap-6 p-6 rounded-xl bg-white/50 dark:bg-[#111]/50 border border-gray-200 dark:border-[#222]">
                                 <div className="space-y-2"><label className="text-[10px] font-normal uppercase tracking-wide text-gray-500 ml-0.5 truncate block">Séries</label><input value={video.series || ''} onChange={(e) => handleVideoChange(video.originalIndex, 'series', e.target.value)} placeholder="3" className="w-full bg-white dark:bg-[#0a0a0a] border border-gray-400 dark:border-[#444] rounded-md px-3 sm:px-4 py-2.5 text-xs focus:border-[#c8921a] outline-none text-gray-700 dark:text-gray-300 font-normal" /></div>
                                 <div className="space-y-2"><label className="text-[10px] font-normal uppercase tracking-wide text-gray-500 ml-0.5 truncate block">Repetições</label><input value={video.repeticoes || ''} onChange={(e) => handleVideoChange(video.originalIndex, 'repeticoes', e.target.value)} placeholder="12-15" className="w-full bg-white dark:bg-[#0a0a0a] border border-gray-400 dark:border-[#444] rounded-md px-3 sm:px-4 py-2.5 text-xs focus:border-[#c8921a] outline-none text-gray-700 dark:text-gray-300 font-normal" /></div>
                                 <div className="space-y-2"><label className="text-[10px] font-normal uppercase tracking-wide text-gray-500 ml-0.5 truncate block" title="Tempo Descanso">Descanso</label><input value={video.descanso || ''} onChange={(e) => handleVideoChange(video.originalIndex, 'descanso', e.target.value)} placeholder="45s" className="w-full bg-white dark:bg-[#0a0a0a] border border-gray-400 dark:border-[#444] rounded-md px-3 sm:px-4 py-2.5 text-xs focus:border-[#c8921a] outline-none text-gray-700 dark:text-gray-300 font-normal" /></div>
@@ -805,7 +902,7 @@ export default function ModalidadesPage() {
                                     const info = video[infoField] || {};
 
                                     return (
-                                      <div key={num} className="p-8 rounded-2xl border border-[#c8921a]/30 bg-white dark:bg-[#050505] shadow-sm space-y-8 relative animate-in fade-in slide-in-from-top-4 duration-500">
+                                      <div key={num} className="modality-substitute-card p-8 rounded-2xl border border-[#c8921a]/30 bg-white dark:bg-[#050505] shadow-sm space-y-8 relative animate-in fade-in slide-in-from-top-4 duration-500">
                                         <div className="absolute -top-3 left-6 px-4 py-1 rounded-full bg-[#fbf5e8] dark:bg-[#1a1305] border border-[#c8921a]/30 text-[#2d2106] dark:text-[#c8921a] text-[9px] font-normal uppercase tracking-wide">
                                           Exercício Substituto {num}
                                         </div>
@@ -886,7 +983,7 @@ export default function ModalidadesPage() {
 
                                           <div className="space-y-2">
                                             <label className="text-[10px] font-normal uppercase tracking-wide text-gray-500 ml-0.5 block text-center">Imagem de Capa do Substituto</label>
-                                            <div className="h-[148px] rounded-xl border border-gray-300 dark:border-[#222] bg-gray-50 dark:bg-[#111] flex items-center justify-center p-2 shadow-inner overflow-hidden">
+                                            <div className="modality-cover-field flex min-h-[120px] items-center justify-center overflow-hidden">
                                               <FileUpload 
                                                 type="imagem" 
                                                 value={info.imagem_capa_url || ''} 
@@ -898,7 +995,7 @@ export default function ModalidadesPage() {
                                           </div>
                                         </div>
 
-                                        <div className="w-full grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 p-4 sm:p-6 rounded-xl bg-white/50 dark:bg-[#111]/50 border border-gray-200 dark:border-[#222]">
+                                        <div className="modality-substitute-metrics w-full grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 p-4 sm:p-6 rounded-xl bg-white/50 dark:bg-[#111]/50 border border-gray-200 dark:border-[#222]">
                                           <div className="space-y-2">
                                             <label className="text-[10px] font-normal uppercase tracking-wide text-gray-500 ml-0.5 truncate block">Séries</label>
                                             <input 
@@ -985,10 +1082,10 @@ export default function ModalidadesPage() {
   }
 
   return (
-    <div className="p-6 pb-28 sm:p-10 sm:pb-10 bg-[#fafafa] dark:bg-[#0a0a0a] min-h-screen">
+    <div className="modalidades-page p-6 pb-28 sm:p-10 sm:pb-10 bg-[#fafafa] dark:bg-[#0a0a0a] min-h-screen">
       <div className="w-full max-w-[1400px] mx-auto space-y-12">
         
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-gray-100 dark:border-[#222] pb-8 gap-6">
+        <div className="modalidades-page-header flex flex-col sm:flex-row sm:items-center justify-between border-b border-gray-100 dark:border-[#222] pb-8 gap-6">
           <div className="flex items-center gap-5">
             <div className="p-4 bg-white dark:bg-[#111] border border-[#c8921a]/20 rounded-xl shadow-sm">
               <LayoutGrid size={32} className="text-[#c8921a]" />
@@ -1008,6 +1105,8 @@ export default function ModalidadesPage() {
                 setEditingId(null);
                 setFormData({ 
                   nome: '', 
+                  subtitulo: '',
+                  ordem_modalidade: 0,
                   descricao: '', 
                   imagem_url: '', 
                   tem_nivelamento: false, 
@@ -1027,8 +1126,8 @@ export default function ModalidadesPage() {
         </div>
 
         {showForm ? (
-          <div className="animate-in fade-in slide-in-from-top-4 duration-500">
-            <div className="flex items-center gap-4 mb-8">
+          <div className="modality-editor animate-in fade-in slide-in-from-top-4 duration-500">
+            <div className="modality-editor-header flex items-center gap-4 mb-8">
               <button 
                 onClick={() => setShowForm(false)}
                 className="p-2 rounded-full bg-white dark:bg-[#111] border border-gray-200 dark:border-[#333] text-gray-400 hover:text-[#c8921a] transition-all shadow-sm"
@@ -1044,25 +1143,33 @@ export default function ModalidadesPage() {
               </div>
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-10">
-              <div className="bg-white dark:bg-[#0f0f0f] border border-gray-200 dark:border-[#222] rounded-2xl shadow-sm overflow-hidden">
-                <div className="p-8 sm:p-12 space-y-12">
+            <nav className="modality-editor-steps" aria-label="Etapas da modalidade">
+              <a href="#dados-modalidade"><span>1</span> Dados</a>
+              <a href="#niveis-modalidade"><span>2</span> Níveis</a>
+              <a href="#exercicios-modalidade"><span>3</span> Exercícios</a>
+            </nav>
+
+            <form onSubmit={handleSubmit} className="modalidades-form space-y-10">
+              <div id="dados-modalidade" className="modality-identity-card bg-white dark:bg-[#0f0f0f] border border-gray-200 dark:border-[#222] rounded-2xl shadow-sm overflow-hidden">
+                <div className="modality-card-content p-8 sm:p-12 space-y-12">
                   <div className="border-b border-gray-100 dark:border-[#1a1a1a] pb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                     <h3 className="text-[11px] font-normal uppercase tracking-wide text-gray-400 flex items-center gap-3">
                       <div className="w-1.5 h-1.5 rounded-full bg-[#c8921a]"></div>
                       Identidade da Trilha
                     </h3>
-                    <div className="flex items-center gap-6">
-                      <div className="flex items-center gap-3">
+                    <div className="modality-toggle-grid flex items-center gap-6">
+                      <div className="modality-toggle-card flex items-center gap-3">
                         <span className="text-[9px] font-normal uppercase tracking-wide text-gray-400">Status Ativo</span>
                         <Switch
+                          className="modality-switch"
                           checked={formData.ativo}
                           onCheckedChange={(v) => setFormData({...formData, ativo: v})}
                         />
                       </div>
-                      <div className="flex items-center gap-3">
+                      <div className="modality-toggle-card flex items-center gap-3">
                         <span className="text-[9px] font-normal uppercase tracking-wide text-gray-400">Nivelamento</span>
                         <Switch
+                          className="modality-switch"
                           checked={formData.tem_nivelamento}
                           onCheckedChange={(v) => setFormData({...formData, tem_nivelamento: v})}
                         />
@@ -1118,7 +1225,7 @@ export default function ModalidadesPage() {
 
                     <div className="lg:col-span-5 space-y-4">
                       <label className="text-[10px] font-normal uppercase tracking-wide text-gray-500 block text-center">Banner de Topo (App Mobile)</label>
-                      <div className="p-4 rounded-xl border border-gray-400 dark:border-[#444] bg-white/30 dark:bg-[#0a0a0a] shadow-inner min-h-[160px] flex items-center justify-center">
+                      <div className="modality-cover-field flex min-h-[120px] items-center justify-center overflow-hidden">
                         <FileUpload
                           type="imagem"
                           value={formData.imagem_url}
@@ -1155,9 +1262,9 @@ export default function ModalidadesPage() {
                   {renderVideoSection('iniciante', 'Conteúdo Geral', 'bg-[#c8921a]')}
                 </>
               ) : (
-                <div className="space-y-6">
+                <div id="niveis-modalidade" className="space-y-6">
                   {/* Menu Horizontal de Níveis */}
-                  <div className="flex items-center gap-3 overflow-x-auto pb-2 custom-scrollbar">
+                  <div className="modality-level-tabs flex items-center gap-3 overflow-x-auto pb-2 custom-scrollbar">
                     {[
                       { id: 'iniciante', title: 'Iniciante', color: 'bg-emerald-500', textClass: 'text-emerald-500', borderClass: 'border-emerald-500/50', bgClass: 'bg-emerald-500/10' },
                       { id: 'intermediario', title: 'Intermediário', color: 'bg-[#c8921a]', textClass: 'text-[#c8921a]', borderClass: 'border-[#c8921a]/50', bgClass: 'bg-[#c8921a]/10' },
@@ -1186,7 +1293,7 @@ export default function ModalidadesPage() {
                     })}
                   </div>
 
-                  <div className="animate-in fade-in duration-300">
+                  <div id="exercicios-modalidade" className="animate-in fade-in duration-300">
                     {selectedNivelTab === 'iniciante' && renderVideoSection('iniciante', 'Trilha Nível Iniciante', 'bg-emerald-500')}
                     {selectedNivelTab === 'intermediario' && renderVideoSection('intermediario', 'Trilha Nível Intermediário', 'bg-[#c8921a]')}
                     {selectedNivelTab === 'avancado' && renderVideoSection('avancado', 'Trilha Nível Avançado', 'bg-red-500')}
@@ -1195,7 +1302,14 @@ export default function ModalidadesPage() {
               )}
 
               {/* Botões de Ação Fixos no Rodapé durante Edição */}
-              <div className="fixed bottom-0 left-0 right-0 sm:left-64 bg-white/80 dark:bg-black/80 backdrop-blur-md border-t border-gray-200 dark:border-[#222] p-4 z-[100] flex gap-4 justify-end shadow-2xl">
+              {saveError && (
+                <div className="modality-save-error" role="alert">
+                  <AlertTriangle size={18} />
+                  <span>{saveError}</span>
+                  <button type="button" onClick={() => setSaveError(null)} aria-label="Fechar aviso"><X size={16} /></button>
+                </div>
+              )}
+              <div className="modality-action-bar fixed bottom-0 left-0 right-0 sm:left-64 bg-white/80 dark:bg-black/80 backdrop-blur-md border-t border-gray-200 dark:border-[#222] p-4 z-[100] flex gap-4 justify-end shadow-2xl">
                 <button type="button" onClick={() => setShowForm(false)} className="px-6 py-2.5 rounded-md border border-gray-300 dark:border-[#333] text-[10px] font-normal uppercase tracking-wide text-gray-500 hover:bg-gray-50 transition-all bg-white dark:bg-black">Cancelar</button>
                 <button type="submit" disabled={saving} className="px-10 py-2.5 rounded-md bg-[#c8921a] text-[#2d2106] text-[10px] font-normal uppercase tracking-wide shadow-sm shadow-[#c8921a]/20 hover:scale-105 transition-all disabled:opacity-50 flex items-center gap-2">
                   {saving ? (<><div className="w-3 h-3 border-2 border-[#2d2106]/20 border-t-[#2d2106] rounded-full animate-spin"></div> Sincronizando...</>) : (<><Save size={14} /> {editingId ? 'Salvar Alterações' : 'Confirmar Registro'}</>)}

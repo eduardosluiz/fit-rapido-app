@@ -7,6 +7,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
     shouldShowAlert: true,
+    shouldShowBanner: true,
+    shouldShowList: true,
     shouldPlaySound: true,
     shouldSetBadge: true,
   }),
@@ -213,4 +215,3 @@ export class NotificationService {
 }
 
 export const notificationService = NotificationService.getInstance();
-

@@ -6,14 +6,15 @@
     "jsx": "react-native",
     "skipLibCheck": true,
     "resolveJsonModule": true,
-    "moduleResolution": "node"
+    "moduleResolution": "bundler"
   },
   "include": [
     "src/**/*",
     "index.js"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "src/services/iap.ts"
   ]
 }
 
