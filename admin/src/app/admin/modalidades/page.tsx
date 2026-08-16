@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { api } from '@/lib/api';
 import { useAuth } from '@/lib/useAuth';
 import { Switch } from '@/components/ui/switch';
@@ -134,6 +134,7 @@ export default function ModalidadesPage() {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
   const [saveError, setSaveError] = useState<string | null>(null);
+  const saveInFlightRef = useRef(false);
   const [expandedExerciseIndex, setExpandedExerciseIndex] = useState<number | null>(null);
   const [bibliotecaExercicios, setBibliotecaExercicios] = useState<any[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
@@ -355,11 +356,14 @@ export default function ModalidadesPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (saveInFlightRef.current) return;
+    saveInFlightRef.current = true;
     setSaveError(null);
     if (!formData.nome.trim()) {
       const message = 'Informe o nome da modalidade antes de salvar.';
       setSaveError(message);
       toast.error(message);
+      saveInFlightRef.current = false;
       return;
     }
 
@@ -368,6 +372,7 @@ export default function ModalidadesPage() {
       const message = `Ainda existem ${duplicateIndexes.size} exercícios exatamente duplicados. Remova uma cópia de cada par antes de salvar.`;
       setSaveError(message);
       toast.error(message, { duration: 7000 });
+      saveInFlightRef.current = false;
       return;
     }
 
@@ -422,8 +427,6 @@ export default function ModalidadesPage() {
           grouped[key].push(v);
         });
 
-        const savePromises = [];
-
         for (const key in grouped) {
           // Para cada grupo (ex: iniciante-segunda), atribuímos ordens sequenciais 0, 1, 2...
           // A ordem no array grouped[key] já é a ordem visual que o usuário vê.
@@ -465,16 +468,20 @@ export default function ModalidadesPage() {
 
             if (video.id) {
               if (video._isDirty) {
-                savePromises.push(api.updateTreino(video.id, treinoData));
+                await api.updateTreino(video.id, treinoData);
+                video._isDirty = false;
               }
             } else {
-              savePromises.push(api.createTreino(treinoData));
+              const created = await api.createTreino(treinoData);
+              video.id = created.id;
+              video._isDirty = false;
             }
           }
         }
-        
-        // Executa todas as requisições de forma concorrente para acelerar o salvamento
-        await Promise.all(savePromises);
+
+        // Mantém os IDs devolvidos pela API no formulário. Assim, um próximo
+        // salvamento atualiza os registros em vez de criá-los novamente.
+        setFormData(prev => ({ ...prev, videos: currentVideos }));
       }
 
       if (!editingId && modalidadeId) {
@@ -488,6 +495,7 @@ export default function ModalidadesPage() {
       toast.error(message, { duration: 8000 });
     } finally {
       setSaving(false);
+      saveInFlightRef.current = false;
     }
   };
 

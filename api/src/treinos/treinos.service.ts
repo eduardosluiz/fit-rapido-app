@@ -20,6 +20,23 @@ export class TreinosService {
   ) {}
 
   async create(createTreinoDto: CreateTreinoDto): Promise<Treino> {
+    // Salvamentos do editor de modalidades precisam ser idempotentes. Em caso
+    // de repetição da mesma requisição, devolvemos o registro já persistido.
+    if (createTreinoDto.modalidade_id && createTreinoDto.video_url) {
+      const existing = await this.treinoRepository.findOne({
+        where: {
+          modalidade_id: createTreinoDto.modalidade_id,
+          nivel: createTreinoDto.nivel || 'iniciante',
+          dia_semana: createTreinoDto.dia_semana,
+          titulo: createTreinoDto.titulo,
+          video_url: createTreinoDto.video_url,
+        },
+        relations: ['categorias'],
+      });
+
+      if (existing) return existing;
+    }
+
     // Verificar se categorias existem (se fornecidas)
     if (createTreinoDto.categoria_ids && createTreinoDto.categoria_ids.length > 0) {
       const categorias = await this.categoriaRepository.find({
@@ -289,4 +306,3 @@ export class TreinosService {
     });
   }
 }
-
