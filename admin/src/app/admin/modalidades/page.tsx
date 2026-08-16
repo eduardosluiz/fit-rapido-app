@@ -376,6 +376,28 @@ export default function ModalidadesPage() {
       return;
     }
 
+    const incompleteVideo = formData.videos.find(video => {
+      const hasAnyContent = Boolean(
+        video.titulo.trim() ||
+        video.video_url.trim() ||
+        video.video_explicativo_url?.trim() ||
+        video.series?.trim() ||
+        video.repeticoes?.trim()
+      );
+      return hasAnyContent && (!video.titulo.trim() || !video.video_url.trim());
+    });
+
+    if (incompleteVideo) {
+      const nivelLabel = incompleteVideo.nivel === 'intermediario'
+        ? 'Intermediário'
+        : incompleteVideo.nivel === 'avancado' ? 'Avançado' : 'Iniciante';
+      const message = `O exercício de ${nivelLabel} — ${getDiaNome(incompleteVideo.dia_semana)} precisa ter título e vídeo de execução antes de salvar.`;
+      setSaveError(message);
+      toast.error(message, { duration: 8000 });
+      saveInFlightRef.current = false;
+      return;
+    }
+
     setSaving(true);
     try {
       let modalidadeId = editingId;
@@ -473,6 +495,9 @@ export default function ModalidadesPage() {
               }
             } else {
               const created = await api.createTreino(treinoData);
+              if (!created?.id) {
+                throw new Error(`A API não confirmou o cadastro de “${video.titulo}”. Tente novamente.`);
+              }
               video.id = created.id;
               video._isDirty = false;
             }
