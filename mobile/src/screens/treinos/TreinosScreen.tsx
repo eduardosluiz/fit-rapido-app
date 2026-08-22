@@ -30,6 +30,7 @@ interface Modalidade {
   subtitulo?: string;
   ordem_modalidade?: number;
   descricao?: string;
+  configuracao_dias?: Record<string, Record<string, { titulo?: string; imagem_url?: string }>>;
   imagem_url?: string;
   ativa: boolean;
   tem_nivelamento: boolean;
@@ -74,7 +75,8 @@ export default function TreinosScreen() {
       descricao: modalidade.descricao,
       descricao_iniciante: modalidade.descricao_iniciante,
       descricao_intermediario: modalidade.descricao_intermediario,
-      descricao_avancado: modalidade.descricao_avancado
+      descricao_avancado: modalidade.descricao_avancado,
+      configuracaoDias: modalidade.configuracao_dias || {},
     });
   };
 

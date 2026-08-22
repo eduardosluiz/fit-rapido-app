@@ -20,6 +20,7 @@ import TreinosScreen from '../screens/treinos/TreinosScreen';
 import TreinoDetailScreen from '../screens/treinos/TreinoDetailScreen';
 import ExerciseDetailScreen from '../screens/treinos/ExerciseDetailScreen';
 import ModalityWorkoutsScreen from '../screens/treinos/ModalityWorkoutsScreen';
+import ModalityDayWorkoutScreen from '../screens/treinos/ModalityDayWorkoutScreen';
 import BibliotecaTreinosScreen from '../screens/treinos/BibliotecaTreinosScreen';
 import FavoritosScreen from '../screens/favoritos/FavoritosScreen';
 import ProfileScreen from '../screens/profile/ProfileScreen';
@@ -56,7 +57,7 @@ export type MainStackParamList = {
   Feed: undefined;
   ReceitaDetail: { receitaId: string };
   TreinoDetail: { treinoId: string };
-  ExerciseDetail: { treinoId: string };
+  ExerciseDetail: { treinoId: string; exerciseIndex?: number };
   Subscriptions: undefined;
   PrivacyPolicy: undefined;
   TermsOfService: undefined;
@@ -153,6 +154,11 @@ function TreinosStack() {
         options={{
           headerShown: false,
         }}
+      />
+      <TreinosStackNav.Screen
+        name="ModalityDayWorkout"
+        component={ModalityDayWorkoutScreen}
+        options={{ headerShown: false }}
       />
       <TreinosStackNav.Screen
         name="BibliotecaTreinos"
@@ -362,4 +368,3 @@ export default function Navigation() {
     </NavigationContainer>
   );
 }
-

@@ -42,6 +42,7 @@ interface ModalityParams {
   descricao_iniciante?: string;
   descricao_intermediario?: string;
   descricao_avancado?: string;
+  configuracaoDias?: Record<string, Record<string, { titulo?: string; imagem_url?: string }>>;
 }
 
 const TreinoListItem = ({ item, index, initiallyExpanded }: { item: Treino, index: number, initiallyExpanded?: boolean }) => {
@@ -280,13 +281,13 @@ export default function ModalityWorkoutsScreen() {
     descricao_iniciante,
     descricao_intermediario,
     descricao_avancado,
+    configuracaoDias = {},
     expandTreinoId
   } = route.params as ModalityParams & { expandTreinoId?: string };
   
   const [treinos, setTreinos] = useState<Treino[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedNivel, setSelectedNivel] = useState<'iniciante' | 'intermediario' | 'avancado'>('iniciante');
-  const [expandedDay, setExpandedDay] = useState<number | null>(new Date().getDay() === 0 ? 6 : new Date().getDay() - 1);
 
   const loadTreinos = useCallback(async () => {
     try {
@@ -340,20 +341,19 @@ export default function ModalityWorkoutsScreen() {
 
   const handleDayPress = (index: number, treinosDoDia: Treino[]) => {
     if (treinosDoDia.length === 0) return;
-    setExpandedDay(expandedDay === index ? null : index);
+    const { titulo, imagem } = getDayData(index);
+    (navigation as any).navigate('ModalityDayWorkout', {
+      modalityId,
+      modalityName,
+      dayIndex: index,
+      dayLabel: diasSemana[index],
+      workoutTitle: titulo,
+      workoutImage: imagem,
+      nivel: hasNivelamento ? selectedNivel : undefined,
+    });
   };
 
   const renderHeader = () => {
-    // Pega a descrição correta baseada no nível selecionado
-    const getDescricaoNivel = () => {
-      if (selectedNivel === 'iniciante') return descricao_iniciante;
-      if (selectedNivel === 'intermediario') return descricao_intermediario;
-      if (selectedNivel === 'avancado') return descricao_avancado;
-      return null;
-    };
-
-    const currentDescricao = getDescricaoNivel();
-
     return (
       <View style={{ paddingBottom: hasNivelamento ? 10 : 10 }}>
         <View style={styles.headerContainer}>
@@ -406,78 +406,51 @@ export default function ModalityWorkoutsScreen() {
           </View>
         )}
 
-        {/* Descrição Técnica do Nível (Exibida em cima dos exercícios) */}
-        {hasNivelamento && currentDescricao ? (
-          <View style={styles.nivelDescContainer}>
-            <View style={styles.nivelDescHeader}>
-              <Ionicons name="information-circle-outline" size={16} color="#E7C48A" />
-              <Text style={styles.nivelDescTitle}>ORIENTAÇÕES DA TRILHA</Text>
-            </View>
-            <Text style={styles.nivelDescText}>
-              {formatDescription(currentDescricao)}
-            </Text>
-          </View>
-        ) : null}
       </View>
     );
   };
 
-  const renderDayItem = ({ item: dia, index }: { item: string, index: number }) => {
-    // Ordenar treinos do dia pelo campo ordem
+  const getDayData = (index: number) => {
+    const levelKey = hasNivelamento ? selectedNivel : 'geral';
+    const config = configuracaoDias[levelKey]?.[String(index)] || {};
     const treinosDoDia = treinos
       .filter((t) => t.dia_semana === index)
       .sort((a, b) => (a.ordem || 0) - (b.ordem || 0));
+    return {
+      config,
+      treinosDoDia,
+      titulo: config.titulo || treinosDoDia[0]?.titulo || 'Descanso',
+      // A capa do card do dia é uma configuração própria. Não reutilizar a
+      // imagem do primeiro exercício, pois ela pertence à ficha do exercício.
+      imagem: config.imagem_url,
+    };
+  };
+
+  const renderDayCard = (dia: string, index: number) => {
+    // Ordenar treinos do dia pelo campo ordem
+    const { treinosDoDia, titulo, imagem } = getDayData(index);
       
-    const isExpanded = expandedDay === index;
     const temTreino = treinosDoDia.length > 0;
 
     return (
-      <View style={{ marginBottom: 12 }}>
-        <View style={{ paddingHorizontal: 0 }}>
-          <TouchableOpacity 
-            style={[
-              styles.glassCard, 
-              isExpanded && temTreino && styles.glassCardActive,
-              { borderRadius: 0, borderLeftWidth: 0, borderRightWidth: 0 }
-            ]}
-            onPress={() => handleDayPress(index, treinosDoDia)}
-            activeOpacity={0.7}
-          >
-            <View style={[styles.glassContent, { paddingHorizontal: 20 }]}>
-              <View style={styles.glassInfo}>
-                <Text style={[styles.glassDayTitle, { color: temTreino ? '#FFFFFF' : 'rgba(255,255,255,0.4)' }]}>
-                  {dia.split('-')[0].toUpperCase()}
-                </Text>
-                <Text style={[styles.glassStatusText, { color: temTreino ? '#fff' : 'rgba(255,255,255,0.3)' }]}>
-                  {temTreino 
-                    ? (treinosDoDia.length === 1 ? treinosDoDia[0].titulo.toUpperCase() : `${treinosDoDia.length} EXERCÍCIOS DISPONÍVEIS`)
-                    : 'DESCANSO'}
-                </Text>
-              </View>
-              <View style={[styles.glassIconContainer, { borderColor: temTreino ? colors.primary : 'rgba(255,255,255,0.1)' }]}>
-                <Ionicons 
-                  name={isExpanded && temTreino ? "chevron-up" : "chevron-down"} 
-                  size={20} 
-                  color={temTreino ? colors.primary : 'rgba(255,255,255,0.2)'} 
-                />
-              </View>
-            </View>
-          </TouchableOpacity>
-        </View>
-
-        {isExpanded && temTreino && (
-          <View style={{ paddingHorizontal: 15, marginTop: 15 }}>
-            {treinosDoDia.map((treino) => (
-              <TreinoListItem 
-                key={treino.id} 
-                item={treino} 
-                index={treinosDoDia.indexOf(treino)}
-                initiallyExpanded={expandTreinoId === treino.id} 
-              />
-            ))}
+      <TouchableOpacity
+        key={dia}
+        style={styles.dayCard}
+        onPress={() => handleDayPress(index, treinosDoDia)}
+        activeOpacity={temTreino ? 0.78 : 1}
+      >
+        <View style={styles.dayImageArea}>
+          {imagem ? <Image source={{ uri: getImageUrl(imagem) }} style={styles.dayImage} resizeMode="cover" /> : <View style={styles.dayImagePlaceholder} />}
+          <View style={styles.dayImageOverlay} />
+          <View style={styles.dayBadge}>
+            <Ionicons name={temTreino ? 'barbell-outline' : 'moon-outline'} size={15} color={colors.primary} />
           </View>
-        )}
-      </View>
+        </View>
+        <View style={styles.dayCardCopy}>
+          <Text style={[styles.dayName, !temTreino && styles.dayNameDisabled]}>{dia.split('(')[1]?.replace(')', '') || dia}</Text>
+          <Text style={[styles.dayWorkoutName, !temTreino && styles.dayWorkoutDisabled]} numberOfLines={2}>{titulo}</Text>
+        </View>
+      </TouchableOpacity>
     );
   };
   if (!canAccessWorkouts) {
@@ -490,19 +463,24 @@ export default function ModalityWorkoutsScreen() {
     );
   }
 
+  const shouldShowDayCards = hasNivelamento ||
+    treinos.some((treino) => treino.dia_semana !== null && treino.dia_semana !== undefined) ||
+    Object.keys(configuracaoDias.geral || {}).length > 0;
+
   return (
     <AppBackground>
       <SafeAreaView style={styles.container}>
-        {hasNivelamento ? (
-          <FlatList
-            data={diasSemana}
-            keyExtractor={(item) => item}
-            ListHeaderComponent={renderHeader}
-            renderItem={renderDayItem}
-            contentContainerStyle={styles.list}
-            showsVerticalScrollIndicator={false}
-            ListEmptyComponent={loading ? <ActivityIndicator color={colors.primary} /> : null}
-          />
+        {shouldShowDayCards ? (
+          <ScrollView contentContainerStyle={styles.list} showsVerticalScrollIndicator={false}>
+            {renderHeader()}
+            {loading ? <ActivityIndicator color={colors.primary} style={{ marginTop: 30 }} /> : (
+              <>
+                <View style={styles.daysGrid}>
+                  {diasSemana.map(renderDayCard)}
+                </View>
+              </>
+            )}
+          </ScrollView>
         ) : (
           <FlatList
             data={treinos.sort((a, b) => (a.ordem || 0) - (b.ordem || 0))}
@@ -583,6 +561,18 @@ const styles = StyleSheet.create({
   nivelTabText: { fontSize: 11, fontFamily: fonts.body, color: '#FFFFFF', textTransform: 'uppercase', letterSpacing: 1 },
   nivelTabTextActive: { color: colors.primary, fontFamily: fonts.bold },
   nivelTabIndicator: { position: 'absolute', bottom: 0, height: 3, width: '100%', backgroundColor: colors.primary },
+  daysGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: 10, paddingHorizontal: 12, paddingTop: 14 },
+  dayCard: { width: '48.4%', minHeight: 178, borderRadius: 12, overflow: 'hidden', backgroundColor: '#171717', borderWidth: 1, borderColor: 'rgba(255,255,255,0.08)' },
+  dayImageArea: { height: 112, position: 'relative', backgroundColor: '#111' },
+  dayImage: { width: '100%', height: '100%' },
+  dayImagePlaceholder: { width: '100%', height: '100%', backgroundColor: '#202020' },
+  dayImageOverlay: { ...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(0,0,0,0.18)' },
+  dayBadge: { position: 'absolute', left: 10, bottom: 8, width: 30, height: 30, borderRadius: 15, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(8,8,8,0.88)', borderWidth: 1, borderColor: colors.primary },
+  dayCardCopy: { minHeight: 66, paddingHorizontal: 11, paddingVertical: 9, justifyContent: 'center' },
+  dayName: { color: colors.primary, fontSize: 14, lineHeight: 18, fontFamily: fonts.bold, textTransform: 'uppercase' },
+  dayNameDisabled: { color: 'rgba(231,196,138,0.65)' },
+  dayWorkoutName: { color: '#f3f4f6', fontSize: 11, lineHeight: 15, fontFamily: fonts.body, marginTop: 2 },
+  dayWorkoutDisabled: { color: 'rgba(255,255,255,0.48)' },
   glassCard: {
     backgroundColor: 'rgba(255, 255, 255, 0.08)',
     borderRadius: 20,
@@ -613,34 +603,6 @@ const styles = StyleSheet.create({
     fontFamily: fonts.bold, 
     color: '#E7C48A', 
     letterSpacing: 1 
-  },
-  nivelDescContainer: {
-    marginHorizontal: 20,
-    marginTop: 25,
-    marginBottom: 10,
-    padding: 18,
-    backgroundColor: 'rgba(231,196,138, 0.05)',
-    borderRadius: 16,
-    borderWidth: 1,
-    borderColor: 'rgba(231,196,138, 0.2)',
-  },
-  nivelDescHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 6,
-    marginBottom: 8,
-  },
-  nivelDescTitle: {
-    fontSize: 10,
-    fontFamily: fonts.bold,
-    color: '#E7C48A',
-    letterSpacing: 1.5,
-  },
-  nivelDescText: {
-    fontSize: 13,
-    fontFamily: fonts.body,
-    color: 'rgba(255,255,255,0.7)',
-    lineHeight: 20,
   },
   accordionCard: {
     backgroundColor: '#262626',

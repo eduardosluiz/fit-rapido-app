@@ -39,6 +39,12 @@ export class TreinoModalidade {
   @Column({ type: 'text', nullable: true })
   descricao_avancado: string;
 
+  @Column({ type: 'jsonb', nullable: true, default: {} })
+  configuracao_dias?: Record<string, Record<string, {
+    titulo?: string;
+    imagem_url?: string;
+  }>>;
+
   @Column({ default: true })
   ativo: boolean;
 

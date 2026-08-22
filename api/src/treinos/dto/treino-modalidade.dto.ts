@@ -1,4 +1,4 @@
-import { IsString, IsBoolean, IsOptional, IsNumber } from 'class-validator';
+import { IsString, IsBoolean, IsOptional, IsNumber, IsObject } from 'class-validator';
 
 export class CreateTreinoModalidadeDto {
   @IsString()
@@ -47,6 +47,13 @@ export class CreateTreinoModalidadeDto {
   @IsString()
   @IsOptional()
   descricao_avancado?: string;
+
+  @IsObject()
+  @IsOptional()
+  configuracao_dias?: Record<string, Record<string, {
+    titulo?: string;
+    imagem_url?: string;
+  }>>;
 
   @IsBoolean()
   @IsOptional()

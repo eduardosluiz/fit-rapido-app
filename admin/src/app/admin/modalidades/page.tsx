@@ -122,6 +122,7 @@ interface Modalidade {
   descricao_iniciante?: string;
   descricao_intermediario?: string;
   descricao_avancado?: string;
+  configuracao_dias?: Record<string, Record<string, { titulo?: string; imagem_url?: string }>>;
   ativo: boolean;
   treinos?: any[];
 }
@@ -154,6 +155,25 @@ export default function ModalidadesPage() {
     setSelectedDayByNivel(prev => ({ ...prev, [nivel]: dia }));
   };
 
+  const getDayConfigKey = (nivel: string) => formData.tem_nivelamento ? nivel : 'geral';
+
+  const updateDayConfig = (nivel: string, dia: string, field: 'titulo' | 'imagem_url', value: string) => {
+    const levelKey = getDayConfigKey(nivel);
+    setFormData(prev => ({
+      ...prev,
+      configuracao_dias: {
+        ...prev.configuracao_dias,
+        [levelKey]: {
+          ...(prev.configuracao_dias[levelKey] || {}),
+          [dia]: {
+            ...(prev.configuracao_dias[levelKey]?.[dia] || {}),
+            [field]: value,
+          },
+        },
+      },
+    }));
+  };
+
   const getDiaNome = (dia: string) => {
     const dias: Record<string, string> = {
       '': 'Conteúdo Geral / Sem Dia Definido',
@@ -178,6 +198,7 @@ export default function ModalidadesPage() {
     descricao_iniciante: '',
     descricao_intermediario: '',
     descricao_avancado: '',
+    configuracao_dias: {} as Record<string, Record<string, { titulo?: string; imagem_url?: string }>>,
     ativo: true,
     videos: [] as VideoTreino[]
   });
@@ -412,6 +433,7 @@ export default function ModalidadesPage() {
         descricao_iniciante: formData.descricao_iniciante,
         descricao_intermediario: formData.descricao_intermediario,
         descricao_avancado: formData.descricao_avancado,
+        configuracao_dias: formData.configuracao_dias,
         ativo: formData.ativo
       };
 
@@ -537,6 +559,7 @@ export default function ModalidadesPage() {
       descricao_iniciante: mod.descricao_iniciante || '',
       descricao_intermediario: mod.descricao_intermediario || '',
       descricao_avancado: mod.descricao_avancado || '',
+      configuracao_dias: mod.configuracao_dias || {},
       ativo: mod.ativo,
       videos: mod.treinos?.map((t, index) => ({
         id: t.id,
@@ -633,7 +656,7 @@ export default function ModalidadesPage() {
     // 2. Agrupa por dia da semana
     const groupedByDay: Record<string, typeof allFilteredVideos> = {};
     allFilteredVideos.forEach(video => {
-      const dia = video.dia_semana || '';
+      const dia = String(video.dia_semana ?? '');
       if (!groupedByDay[dia]) groupedByDay[dia] = [];
       groupedByDay[dia].push(video);
     });
@@ -748,6 +771,45 @@ export default function ModalidadesPage() {
                             <Plus size={14} /> Adicionar Exercício
                           </button>
                         </div>
+
+                        {activeDay !== '' && (() => {
+                          const levelKey = getDayConfigKey(nivel);
+                          const dayConfig = formData.configuracao_dias[levelKey]?.[activeDay] || {};
+                          return (
+                            <div className="grid grid-cols-1 md:grid-cols-[1fr_280px] gap-4 rounded-xl border-2 border-[#c8921a]/45 bg-[#c8921a]/5 p-4 sm:p-5">
+                              <div className="md:col-span-2 flex items-center gap-3 border-b border-[#c8921a]/20 pb-3">
+                                <div className="w-9 h-9 rounded-lg bg-[#c8921a]/15 text-[#c8921a] flex items-center justify-center shrink-0">
+                                  <ImageIcon size={18} />
+                                </div>
+                                <div>
+                                  <h5 className="text-xs font-medium text-gray-800 dark:text-gray-100">Card de {getDiaNome(activeDay)} no aplicativo</h5>
+                                  <p className="text-[10px] text-gray-500 mt-0.5">Esta configuração é separada da imagem de capa dos exercícios.</p>
+                                </div>
+                              </div>
+                              <div className="space-y-2">
+                                <label className="text-[10px] font-medium uppercase tracking-wide text-gray-700 dark:text-gray-300">Nome exibido no card do dia</label>
+                                <input
+                                  value={dayConfig.titulo || ''}
+                                  onChange={(event) => updateDayConfig(nivel, activeDay, 'titulo', event.target.value)}
+                                  placeholder={videosDoDia[0]?.titulo || `Treino de ${getDiaNome(activeDay)}`}
+                                  className="w-full bg-white dark:bg-[#111] border border-gray-400 dark:border-[#444] rounded-md px-3 py-2.5 text-xs text-gray-700 dark:text-gray-200 outline-none focus:border-[#c8921a]"
+                                />
+                                <p className="text-[10px] text-gray-500">Este nome aparece abaixo do dia da semana no aplicativo.</p>
+                              </div>
+                              <div className="space-y-2">
+                                <label className="text-[10px] font-medium uppercase tracking-wide text-gray-700 dark:text-gray-300">Imagem exclusiva do card do dia</label>
+                                <div className="min-h-[120px] rounded-lg border border-gray-400 dark:border-[#444] bg-white dark:bg-[#111] p-2 flex items-center justify-center">
+                                  <FileUpload
+                                    type="imagem"
+                                    value={dayConfig.imagem_url || ''}
+                                    onChange={(url) => updateDayConfig(nivel, activeDay, 'imagem_url', url)}
+                                    hideUrlInput
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                          );
+                        })()}
                         
                         {videosDoDia.length === 0 ? (
                           <div className="py-12 flex flex-col items-center justify-center border-2 border-dashed border-gray-200 dark:border-[#222] rounded-2xl text-gray-400">
@@ -1146,6 +1208,7 @@ export default function ModalidadesPage() {
                   descricao_iniciante: '',
                   descricao_intermediario: '',
                   descricao_avancado: '',
+                  configuracao_dias: {},
                   ativo: true, 
                   videos: [] 
                 });

@@ -12,24 +12,37 @@ export function useAuth() {
   const pathname = usePathname();
 
   const loadUser = useCallback(async () => {
+    const currentPath = typeof window !== 'undefined' ? window.location.pathname : pathname;
     try {
       const userData = await api.getProfile();
       // A API retorna o objeto user diretamente
       if (userData && userData.id) {
         setUser(userData);
         setIsAuthenticated(true);
+        if (currentPath === '/admin/login') {
+          router.replace('/admin');
+        }
       } else {
+        setUser(null);
         setIsAuthenticated(false);
+        if (currentPath !== '/admin/login') {
+          router.replace('/admin/login');
+        }
       }
     } catch (error) {
-      console.error('Erro ao carregar usuário:', error);
+      // Sessão expirada é um fluxo esperado: limpar e voltar ao login sem
+      // disparar o overlay vermelho do Next.js em desenvolvimento.
       setIsAuthenticated(false);
+      setUser(null);
       // Limpar token inválido
       if (typeof window !== 'undefined') {
         localStorage.removeItem('auth_token');
       }
+      if (currentPath !== '/admin/login') {
+        router.replace('/admin/login');
+      }
     }
-  }, []);
+  }, [pathname, router]);
 
   const logout = useCallback(() => {
     if (typeof window !== 'undefined') {
@@ -54,11 +67,6 @@ export function useAuth() {
       
       if (token) {
         loadUser();
-        // Só redirecionar para /admin se estiver REALMENTE na página de login
-        // (evita bug de F5 redirecionar para dashboard em outras páginas)
-        if (currentPath === '/admin/login') {
-          router.replace('/admin');
-        }
       } else {
         setIsAuthenticated(false);
         // Só redirecionar se não estiver na página de login
@@ -71,4 +79,3 @@ export function useAuth() {
 
   return { isAuthenticated, user, logout };
 }
-
