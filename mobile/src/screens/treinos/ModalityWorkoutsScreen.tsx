@@ -10,7 +10,7 @@ import {
   ScrollView,
   Platform,
 } from 'react-native';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { useFocusEffect, useNavigation, useRoute } from '@react-navigation/native';
 import { api, Treino, getImageUrl } from '../../services/api';
 import { useAuth } from '../../contexts/AuthContext';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -281,19 +281,26 @@ export default function ModalityWorkoutsScreen() {
     descricao_iniciante,
     descricao_intermediario,
     descricao_avancado,
-    configuracaoDias = {},
+    configuracaoDias: initialConfiguracaoDias = {},
     expandTreinoId
   } = route.params as ModalityParams & { expandTreinoId?: string };
   
   const [treinos, setTreinos] = useState<Treino[]>([]);
+  const [configuracaoDias, setConfiguracaoDias] = useState(initialConfiguracaoDias);
   const [loading, setLoading] = useState(true);
   const [selectedNivel, setSelectedNivel] = useState<'iniciante' | 'intermediario' | 'avancado'>('iniciante');
 
   const loadTreinos = useCallback(async () => {
     try {
       setLoading(true);
-      const params: any = { modalidade_id: modalityId };
-      const treinosRaw = await api.getTreinos(params);
+      // A rota individual já devolve a configuração atual e os exercícios da
+      // modalidade. Isso evita baixar todas as modalidades e fazer uma segunda
+      // consulta redundante sempre que a tela recebe foco.
+      const modalidadeAtual = await api.getModalidadeTreino(modalityId);
+      if (modalidadeAtual) {
+        setConfiguracaoDias(modalidadeAtual.configuracao_dias || {});
+      }
+      const treinosRaw = modalidadeAtual?.treinos || [];
       let data = Array.isArray(treinosRaw) ? treinosRaw : [];
       
       if (hasNivelamento) {
@@ -325,7 +332,9 @@ export default function ModalityWorkoutsScreen() {
     }
   }, [modalityId, hasNivelamento, selectedNivel, user?.subscription_tier, expandTreinoId]);
 
-  useEffect(() => { loadTreinos(); }, [loadTreinos]);
+  useFocusEffect(useCallback(() => {
+    loadTreinos();
+  }, [loadTreinos]));
 
     // Componente renderTreinoCard removido pois agora usamos TreinoListItem
 

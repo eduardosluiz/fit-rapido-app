@@ -250,6 +250,10 @@ class ApiService {
       return [];
     }
   }
+
+  async getModalidadeTreino(id: string) {
+    return this.request<any>(`/treinos-modalidades/${id}`);
+  }
   
   async getCategoriasTreinos() { 
     try {
