@@ -222,8 +222,7 @@ export default function ReceitaDetailScreen() {
       await checkFavorito();
     } catch (error) {
       console.error('Erro ao favoritar:', error);
-      // Reverter estado em caso de erro
-      setIsFavorito(!isFavorito);
+      await checkFavorito();
     } finally {
       setLoadingFavorito(false);
     }

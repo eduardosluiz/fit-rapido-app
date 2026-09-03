@@ -19,6 +19,7 @@ export interface Favorito {
   item_id: string;
   tipo: 'receita' | 'treino';
   created_at: string;
+  popularidade?: number;
   receita?: Receita;
   treino?: Treino;
 }
@@ -293,18 +294,27 @@ class ApiService {
   }
 
   async toggleFavorito(itemId: string, tipo: string) {
-    return this.request<any>('/favoritos/toggle', {
-      method: 'POST',
-      body: JSON.stringify({ itemId, tipo }),
-    });
+    const status = await this.checkIsFavorito(tipo, itemId);
+    if (status.is_favorito) {
+      await this.removeFavorito(tipo, itemId);
+      return { is_favorito: false };
+    }
+
+    await this.addFavorito(tipo, itemId);
+    return { is_favorito: true };
   }
 
   async addFavorito(tipo: string, itemId: string) {
-    return this.toggleFavorito(itemId, tipo);
+    return this.request<any>('/favoritos', {
+      method: 'POST',
+      body: JSON.stringify({ item_id: itemId, tipo }),
+    });
   }
 
   async removeFavorito(tipo: string, itemId: string) {
-    return this.toggleFavorito(itemId, tipo);
+    return this.request<void>(`/favoritos/${tipo}/${itemId}`, {
+      method: 'DELETE',
+    });
   }
 
   // Banners

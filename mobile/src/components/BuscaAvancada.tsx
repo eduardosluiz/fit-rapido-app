@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -47,6 +47,13 @@ export default function BuscaAvancada({
   const [filters, setFilters] = useState<BuscaFilters>(initialFilters);
   const [showCategorySelect, setShowCategorySelect] = useState(false);
 
+  useEffect(() => {
+    if (visible) {
+      setFilters(initialFilters);
+      setShowCategorySelect(false);
+    }
+  }, [initialFilters, visible]);
+
   const handleSearch = () => {
     onSearch(filters);
     onClose();
@@ -85,6 +92,7 @@ export default function BuscaAvancada({
                 <TextInput
                   style={styles.input}
                   placeholder="Ex: Waffle de proteína"
+                  placeholderTextColor={colors.textMuted}
                   value={filters.nome}
                   onChangeText={(text) => setFilters({ ...filters, nome: text })}
                 />
@@ -96,6 +104,7 @@ export default function BuscaAvancada({
                 <TextInput
                   style={styles.input}
                   placeholder="Ex: frango, ovo, aveia"
+                  placeholderTextColor={colors.textMuted}
                   value={filters.ingrediente}
                   onChangeText={(text) => setFilters({ ...filters, ingrediente: text })}
                 />
@@ -158,6 +167,7 @@ export default function BuscaAvancada({
                   <TextInput
                     style={styles.input}
                     placeholder="Ex: Café da manhã, Lanche"
+                    placeholderTextColor={colors.textMuted}
                     value={filters.categoria}
                     onChangeText={(text) => setFilters({ ...filters, categoria: text })}
                   />
@@ -170,6 +180,7 @@ export default function BuscaAvancada({
                 <TextInput
                   style={styles.input}
                   placeholder="Ex: 20"
+                  placeholderTextColor={colors.textMuted}
                   keyboardType="numeric"
                   value={filters.proteinasMin?.toString()}
                   onChangeText={(text) => {
@@ -188,6 +199,7 @@ export default function BuscaAvancada({
                 <TextInput
                   style={styles.input}
                   placeholder="Ex: 30"
+                  placeholderTextColor={colors.textMuted}
                   keyboardType="numeric"
                   value={filters.tempoMaximo?.toString()}
                   onChangeText={(text) => {

@@ -153,8 +153,8 @@ export default function ExerciseDetailScreen() {
     if (savingFavorite) return;
     try {
       setSavingFavorite(true);
-      await api.toggleFavorito(treinoId, 'treino');
-      setIsFavorite((value) => !value);
+      const result = await api.toggleFavorito(treinoId, 'treino');
+      setIsFavorite(result.is_favorito);
     } catch {
       Alert.alert('Erro', 'Não foi possível atualizar o favorito.');
     } finally {

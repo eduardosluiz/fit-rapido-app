@@ -101,7 +101,7 @@ export default function TreinoDetailScreen() {
       await checkFavorito();
     } catch (error) {
       console.error('Erro ao favoritar:', error);
-      setIsFavorito(!isFavorito);
+      await checkFavorito();
     } finally {
       setLoadingFavorito(false);
     }

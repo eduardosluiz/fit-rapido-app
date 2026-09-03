@@ -15,7 +15,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import { api, Receita, getImageUrl } from '../../services/api';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
-import colors from '../../constants/colors';
+import colors, { mobileSpacing } from '../../constants/colors';
 import fonts from '../../constants/fonts';
 import AppBackground from '../../components/AppBackground';
 import ReceitaCardAnimated from '../../components/ReceitaCardAnimated';
@@ -556,7 +556,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 20,
     marginTop: 5,
-    marginBottom: 30,
+    marginBottom: mobileSpacing.controlToContent,
     gap: 10,
   },
   searchContainer: { 
