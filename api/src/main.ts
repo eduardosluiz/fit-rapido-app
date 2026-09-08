@@ -33,6 +33,9 @@ async function bootstrap() {
   
   // Configurar timeouts do servidor para 30 minutos, permitindo uploads de arquivos grandes (vídeos de 1GB+)
   server.setTimeout(30 * 60 * 1000);
+  // setTimeout controla inatividade; requestTimeout limita o recebimento inteiro.
+  // Sem este ajuste, o Node encerra uploads longos após o padrão de 5 minutos.
+  server.requestTimeout = 30 * 60 * 1000;
   server.keepAliveTimeout = 30 * 60 * 1000;
   server.headersTimeout = 31 * 60 * 1000;
 }
