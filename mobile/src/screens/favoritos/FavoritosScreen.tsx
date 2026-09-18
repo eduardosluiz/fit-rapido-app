@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useRef, useState } from 'react';
 import {
   ActivityIndicator, Alert, KeyboardAvoidingView, Modal, Platform, ScrollView,
   Image, StyleSheet, Text, TextInput, TouchableOpacity, View,
@@ -14,6 +14,7 @@ import colors, { mobileSpacing } from '../../constants/colors';
 import fonts from '../../constants/fonts';
 
 type FilterType = 'receitas' | 'treinos';
+type ContentFilter = 'tudo' | FilterType;
 interface RecipeFilters { query: string; categoryId: string }
 interface WorkoutFilters { query: string; categoryId: string; modalityId: string }
 
@@ -44,42 +45,39 @@ export default function FavoritosScreen() {
   const [workoutModalities, setWorkoutModalities] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [removing, setRemoving] = useState<string[]>([]);
+  const [contentFilter, setContentFilter] = useState<ContentFilter>('tudo');
+  const [favoritesQuery, setFavoritesQuery] = useState('');
   const [activeFilter, setActiveFilter] = useState<FilterType | null>(null);
   const [categoryListOpen, setCategoryListOpen] = useState(false);
   const [recipeFilters, setRecipeFilters] = useState<RecipeFilters>(DEFAULT_RECIPE_FILTERS);
   const [workoutFilters, setWorkoutFilters] = useState<WorkoutFilters>(DEFAULT_WORKOUT_FILTERS);
   const [recipeDraftFilters, setRecipeDraftFilters] = useState<RecipeFilters>(DEFAULT_RECIPE_FILTERS);
   const [workoutDraftFilters, setWorkoutDraftFilters] = useState<WorkoutFilters>(DEFAULT_WORKOUT_FILTERS);
+  const hasLoadedFavorites = useRef(false);
 
   const loadFavorites = useCallback(async () => {
     if (!user) return;
     try {
-      setLoading(true);
-      const [favoriteData, recipeCategoryData, workoutCategoryData, modalityData] = await Promise.all([
-        api.getFavoritos() as Promise<Favorito[]>,
-        api.getCategorias(),
-        canAccessWorkouts ? api.getCategoriasTreinos() : Promise.resolve([]),
-        canAccessWorkouts ? api.getModalidadesTreinos() : Promise.resolve([]),
-      ]);
-      const recipeFavorites = favoriteData.filter((item) => item.tipo === 'receita' && item.item_id);
-      const workoutFavorites = canAccessWorkouts
-        ? favoriteData.filter((item) => item.tipo === 'treino' && item.item_id) : [];
-      const [recipeData, workoutData] = await Promise.all([
-        Promise.all(recipeFavorites.map((item) => api.getReceita(item.item_id).catch(() => null))),
-        Promise.all(workoutFavorites.map((item) => api.getTreino(item.item_id).catch(() => null))),
-      ]);
+      if (!hasLoadedFavorites.current) setLoading(true);
+      const favoriteData = await api.getFavoritos() as Favorito[];
+      const recipeData = favoriteData
+        .filter((item) => item.tipo === 'receita' && item.receita?.ativa !== false)
+        .map((item) => item.receita)
+        .filter((item): item is Receita => !!item);
+      const workoutData = canAccessWorkouts
+        ? favoriteData
+          .filter((item) => item.tipo === 'treino' && item.treino?.ativa !== false)
+          .map((item) => item.treino)
+          .filter((item): item is Treino => !!item)
+        : [];
       setFavorites(favoriteData);
-      setRecipes(recipeData.filter((item): item is Receita => !!item && item.ativa !== false));
-      setWorkouts(workoutData.filter((item): item is Treino => !!item && item.ativa !== false));
-      setRecipeCategories((recipeCategoryData || []).filter((item: any) => item.ativa !== false));
-      setWorkoutCategories((workoutCategoryData || []).filter((item: any) => item.ativa !== false));
-      setWorkoutModalities((modalityData || []).filter(
-        (item: any) => item.ativo === true || item.ativa === true,
-      ));
+      setRecipes(recipeData);
+      setWorkouts(workoutData);
     } catch (error) {
       console.error('Erro ao carregar favoritos:', error);
       Alert.alert('Não foi possível carregar', 'Verifique sua conexão e tente novamente.');
     } finally {
+      hasLoadedFavorites.current = true;
       setLoading(false);
     }
   }, [canAccessWorkouts, user]);
@@ -88,24 +86,29 @@ export default function FavoritosScreen() {
 
   const filteredRecipes = useMemo(() => {
     const query = normalize(recipeFilters.query);
+    const generalQuery = normalize(favoritesQuery);
     const result = recipes.filter((recipe) => {
       const ingredients = Array.isArray(recipe.ingredientes)
         ? recipe.ingredientes.map((item) => normalize(
           typeof item === 'string' ? item : JSON.stringify(item),
         )).join(' ') : normalize(recipe.ingredientes);
+      const searchableContent = `${normalize(recipe.titulo)} ${ingredients}`;
+      const matchesGeneralQuery = !generalQuery || searchableContent.includes(generalQuery);
       const matchesQuery = !query
         || normalize(recipe.titulo).includes(query)
         || ingredients.includes(query);
       const matchesCategory = !recipeFilters.categoryId
         || recipe.categorias?.some((category: any) => category.id === recipeFilters.categoryId);
-      return matchesQuery && matchesCategory;
+      return matchesGeneralQuery && matchesQuery && matchesCategory;
     });
     return result;
-  }, [recipeFilters, recipes]);
+  }, [favoritesQuery, recipeFilters, recipes]);
 
   const filteredWorkouts = useMemo(() => {
     const query = normalize(workoutFilters.query);
+    const generalQuery = normalize(favoritesQuery);
     const result = workouts.filter((workout) => {
+      const matchesGeneralQuery = !generalQuery || normalize(workout.titulo).includes(generalQuery);
       const matchesQuery = !query || normalize(workout.titulo).includes(query);
       const matchesCategory = !workoutFilters.categoryId
         || workout.categorias?.some((category: any) => category.id === workoutFilters.categoryId)
@@ -113,16 +116,60 @@ export default function FavoritosScreen() {
       const matchesModality = !workoutFilters.modalityId
         || workout.modalidade_id === workoutFilters.modalityId
         || workout.modalidade?.id === workoutFilters.modalityId;
-      return matchesQuery && matchesCategory && matchesModality;
+      return matchesGeneralQuery && matchesQuery && matchesCategory && matchesModality;
     });
     return result;
-  }, [workoutFilters, workouts]);
+  }, [favoritesQuery, workoutFilters, workouts]);
+
+  const showRecipes = contentFilter !== 'treinos';
+  const showWorkouts = canAccessWorkouts && contentFilter !== 'receitas';
+  const visibleFavoritesCount = contentFilter === 'receitas'
+    ? recipes.length
+    : contentFilter === 'treinos'
+      ? workouts.length
+      : recipes.length + workouts.length;
 
   const openFilter = (type: FilterType) => {
     if (type === 'receitas') setRecipeDraftFilters(DEFAULT_RECIPE_FILTERS);
     else setWorkoutDraftFilters(DEFAULT_WORKOUT_FILTERS);
     setCategoryListOpen(false);
     setActiveFilter(type);
+    if (type === 'receitas' && recipeCategories.length === 0) {
+      void api.getCategorias().then((items) => setRecipeCategories(
+        (items || []).filter((item: any) => item.ativa !== false),
+      ));
+    }
+    if (type === 'treinos' && workoutCategories.length === 0) {
+      void api.getCategoriasTreinos().then((items) => setWorkoutCategories(
+        (items || []).filter((item: any) => item.ativa !== false),
+      ));
+    }
+    if (type === 'treinos' && workoutModalities.length === 0) {
+      void api.getModalidadesTreinos().then((items) => setWorkoutModalities(
+        (items || []).filter((item: any) => item.ativo === true || item.ativa === true),
+      ));
+    }
+  };
+
+  const openVisibleFilter = () => {
+    openFilter(contentFilter === 'treinos' ? 'treinos' : 'receitas');
+  };
+
+  const clearVisibleFilters = () => {
+    setFavoritesQuery('');
+    if (contentFilter === 'receitas') setRecipeFilters(DEFAULT_RECIPE_FILTERS);
+    else if (contentFilter === 'treinos') setWorkoutFilters(DEFAULT_WORKOUT_FILTERS);
+    else {
+      setRecipeFilters(DEFAULT_RECIPE_FILTERS);
+      setWorkoutFilters(DEFAULT_WORKOUT_FILTERS);
+    }
+  };
+
+  const showAllOfType = (type: FilterType) => {
+    setContentFilter(type);
+    setFavoritesQuery('');
+    if (type === 'receitas') setRecipeFilters(DEFAULT_RECIPE_FILTERS);
+    else setWorkoutFilters(DEFAULT_WORKOUT_FILTERS);
   };
 
   const applyFilters = (type: FilterType) => {
@@ -210,17 +257,59 @@ export default function FavoritosScreen() {
             <Text style={styles.pageTitle}>Favoritos</Text>
             <Text style={styles.pageSubtitle}>Tudo o que você salvou em um só lugar.</Text>
           </View>
-          <FavoriteSection icon="restaurant-outline" title="Receitas favoritas"
-            count={filteredRecipes.length} onFilter={() => openFilter('receitas')}
-            onClear={() => setRecipeFilters(DEFAULT_RECIPE_FILTERS)}
-            emptyTitle={recipes.length ? 'Nenhuma receita corresponde ao filtro' : 'Nenhuma receita favorita'}>
+          <View style={styles.contentTabs}>
+            <ContentTab icon="grid-outline" label="Tudo" active={contentFilter === 'tudo'}
+              onPress={() => setContentFilter('tudo')} />
+            <View style={styles.tabDivider} />
+            <ContentTab icon="restaurant-outline" label="Receitas"
+              active={contentFilter === 'receitas'} onPress={() => setContentFilter('receitas')} />
+            {canAccessWorkouts && <>
+              <View style={styles.tabDivider} />
+              <ContentTab icon="barbell-outline" label="Treinos"
+                active={contentFilter === 'treinos'} onPress={() => setContentFilter('treinos')} />
+            </>}
+          </View>
+          <View style={styles.mainSearchField}>
+            <Ionicons name="search-outline" size={21} color={colors.textMuted} />
+            <TextInput value={favoritesQuery} onChangeText={setFavoritesQuery}
+              style={styles.mainSearchInput} placeholder="Buscar nos favoritos"
+              placeholderTextColor={colors.textMuted} returnKeyType="search"
+              clearButtonMode="while-editing" />
+          </View>
+          <View style={styles.filterToolbar}>
+            <TouchableOpacity onPress={openVisibleFilter} activeOpacity={0.8}
+              style={styles.toolbarButton}>
+              <Ionicons name="options-outline" size={16} color={colors.textSecondary} />
+              <Text style={styles.toolbarButtonText}>Filtrar</Text>
+              <Ionicons name="chevron-down" size={13} color={colors.textMuted} />
+            </TouchableOpacity>
+            <View style={styles.favoriteTotal}>
+              <Ionicons name="heart-outline" size={21} color={colors.textMuted} />
+              <Text style={styles.favoriteTotalLabel}>
+                {visibleFavoritesCount} {visibleFavoritesCount === 1 ? 'favorito' : 'favoritos'}
+              </Text>
+            </View>
+            <TouchableOpacity onPress={clearVisibleFilters} activeOpacity={0.8}
+              style={[styles.toolbarButton, styles.toolbarClearButton]}>
+              <Ionicons name="close-circle-outline" size={15} color={colors.textSecondary} />
+              <Text style={styles.toolbarButtonText}>Limpar</Text>
+            </TouchableOpacity>
+          </View>
+          {showRecipes && <FavoriteSection icon="restaurant-outline" title="Receitas favoritas"
+            count={filteredRecipes.length} seeAllLabel="Ver todas"
+            onSeeAll={() => showAllOfType('receitas')}
+            emptyTitle={recipes.length ? 'Nenhuma receita encontrada' : 'Você ainda não salvou nenhuma receita favorita.'}
+            emptyHint={recipes.length ? 'Tente outra busca ou limpe os filtros desta seção.'
+              : 'Toque no coração das receitas para encontrá-las aqui.'}>
             {filteredRecipes.map((item) => renderCard(item, 'receita'))}
-          </FavoriteSection>
-          {canAccessWorkouts && (
+          </FavoriteSection>}
+          {showWorkouts && (
             <FavoriteSection icon="barbell-outline" title="Treinos favoritos"
-              count={filteredWorkouts.length} onFilter={() => openFilter('treinos')}
-              onClear={() => setWorkoutFilters(DEFAULT_WORKOUT_FILTERS)}
-              emptyTitle={workouts.length ? 'Nenhum treino corresponde ao filtro' : 'Nenhum treino favorito'}>
+              count={filteredWorkouts.length} seeAllLabel="Ver todos"
+              onSeeAll={() => showAllOfType('treinos')}
+              emptyTitle={workouts.length ? 'Nenhum treino encontrado' : 'Você ainda não salvou nenhum treino favorito.'}
+              emptyHint={workouts.length ? 'Tente outra busca ou limpe os filtros desta seção.'
+                : 'Toque no coração dos treinos para encontrá-los aqui.'}>
               {filteredWorkouts.map((item) => renderCard(item, 'treino'))}
             </FavoriteSection>
           )}
@@ -238,32 +327,40 @@ export default function FavoritosScreen() {
   );
 }
 
-function FavoriteSection({ icon, title, count, onFilter, onClear, emptyTitle, children }: {
+function ContentTab({ icon, label, active, onPress }: {
+  icon: keyof typeof Ionicons.glyphMap; label: string; active: boolean; onPress: () => void;
+}) {
+  return <TouchableOpacity onPress={onPress} activeOpacity={0.82}
+    accessibilityRole="tab" accessibilityState={{ selected: active }}
+    style={[styles.contentTab, active && styles.contentTabActive]}>
+    <Ionicons name={icon} size={18} color={active ? '#17130c' : colors.textSecondary} />
+    <Text style={[styles.contentTabText, active && styles.contentTabTextActive]}>{label}</Text>
+  </TouchableOpacity>;
+}
+
+function FavoriteSection({ icon, title, count, seeAllLabel, onSeeAll, emptyTitle, emptyHint, children }: {
   icon: keyof typeof Ionicons.glyphMap; title: string; count: number;
-  onFilter: () => void; onClear: () => void; emptyTitle: string; children: React.ReactNode;
+  seeAllLabel: string; onSeeAll: () => void; emptyTitle: string; emptyHint: string;
+  children: React.ReactNode;
 }) {
   return <View style={styles.section}>
     <View style={styles.sectionHeader}>
       <View style={styles.sectionTitleRow}>
-        <Ionicons name={icon} size={15} color={colors.primary} />
+        <Ionicons name={icon} size={13} color={colors.primary} />
         <Text style={styles.sectionTitle}>{title}</Text>
         <View style={styles.countBadge}><Text style={styles.countText}>{count}</Text></View>
       </View>
-      <View style={styles.sectionActions}>
-        <TouchableOpacity onPress={onFilter} style={styles.filterLink}>
-          <Ionicons name="options-outline" size={14} color={colors.primary} />
-          <Text style={styles.filterLinkText}>Filtrar</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={onClear} style={styles.clearLink}>
-          <Ionicons name="close-circle-outline" size={13} color={colors.textSecondary} />
-          <Text style={styles.clearLinkText}>Limpar</Text>
-        </TouchableOpacity>
-      </View>
+      <TouchableOpacity onPress={onSeeAll} hitSlop={8}>
+        <Text style={styles.seeAllText}>{seeAllLabel}</Text>
+      </TouchableOpacity>
     </View>
     <View style={styles.titleUnderline} />
     {count ? <View style={styles.cardGrid}>{children}</View> : <View style={styles.emptySection}>
-      <Ionicons name="heart-outline" size={24} color={colors.textMuted} />
+      <View style={styles.emptyIcon}>
+        <Ionicons name={icon} size={23} color={colors.textMuted} />
+      </View>
       <Text style={styles.emptyText}>{emptyTitle}</Text>
+      <Text style={styles.emptyHint}>{emptyHint}</Text>
     </View>}
   </View>;
 }
@@ -395,18 +492,38 @@ const styles = StyleSheet.create({
   pageHeader: { marginBottom: 26 },
   pageTitle: { color: '#E7C48A', fontFamily: fonts.title, fontSize: 25 },
   pageSubtitle: { color: colors.textSecondary, fontFamily: fonts.body, fontSize: 11, marginTop: 5 },
+  contentTabs: { height: 44, marginBottom: 12, padding: 3, borderRadius: 13, borderWidth: 1,
+    borderColor: 'rgba(231,196,138,0.28)', backgroundColor: 'rgba(18,17,18,0.68)',
+    flexDirection: 'row', alignItems: 'center' },
+  contentTab: { flex: 1, height: 36, borderRadius: 10, flexDirection: 'row', alignItems: 'center',
+    justifyContent: 'center', gap: 6 },
+  contentTabActive: { backgroundColor: colors.primary },
+  contentTabText: { color: colors.textSecondary, fontFamily: fonts.bodyMedium, fontSize: 11 },
+  contentTabTextActive: { color: '#17130c', fontFamily: fonts.bodySemiBold },
+  tabDivider: { width: StyleSheet.hairlineWidth, height: 24,
+    backgroundColor: 'rgba(231,196,138,0.2)' },
+  mainSearchField: { width: '100%', height: 48, borderRadius: 15, borderWidth: 1,
+    borderColor: colors.border, backgroundColor: 'rgba(35,33,41,0.72)', paddingHorizontal: 15,
+    flexDirection: 'row', alignItems: 'center', marginBottom: 9 },
+  mainSearchInput: { flex: 1, marginLeft: 10, color: colors.textPrimary,
+    fontFamily: fonts.body, fontSize: 12, outlineStyle: 'none' as any },
+  filterToolbar: { minHeight: 46, flexDirection: 'row', alignItems: 'center',
+    justifyContent: 'space-between', marginBottom: mobileSpacing.section },
+  toolbarButton: { width: 88, height: 34, borderRadius: 10, borderWidth: 1,
+    borderColor: colors.border, backgroundColor: 'rgba(18,17,18,0.58)', flexDirection: 'row',
+    alignItems: 'center', justifyContent: 'center', gap: 5 },
+  toolbarClearButton: { width: 84 },
+  toolbarButtonText: { color: colors.textSecondary, fontFamily: fonts.bodyMedium, fontSize: 10 },
+  favoriteTotal: { flex: 1, alignItems: 'center', justifyContent: 'center', gap: 1 },
+  favoriteTotalLabel: { color: colors.textMuted, fontFamily: fonts.body, fontSize: 9 },
   section: { marginBottom: mobileSpacing.section },
   sectionHeader: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
   sectionTitleRow: { flexDirection: 'row', alignItems: 'center', flex: 1 },
-  sectionTitle: { color: colors.textPrimary, fontFamily: fonts.bodySemiBold, fontSize: 12, marginLeft: 6 },
+  sectionTitle: { color: colors.textPrimary, fontFamily: fonts.body, fontSize: 11, marginLeft: 6 },
   countBadge: { minWidth: 20, height: 18, paddingHorizontal: 5, borderRadius: 9, marginLeft: 7,
     alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(255,210,111,0.12)' },
   countText: { color: colors.primary, fontFamily: fonts.bodySemiBold, fontSize: 9 },
-  sectionActions: { flexDirection: 'row', alignItems: 'center', gap: 8 },
-  filterLink: { flexDirection: 'row', alignItems: 'center', gap: 4, paddingVertical: 8, paddingLeft: 10 },
-  filterLinkText: { color: colors.primary, fontFamily: fonts.bodyMedium, fontSize: 10 },
-  clearLink: { flexDirection: 'row', alignItems: 'center', gap: 3, paddingVertical: 8 },
-  clearLinkText: { color: colors.textSecondary, fontFamily: fonts.bodyMedium, fontSize: 10 },
+  seeAllText: { color: colors.primary, fontFamily: fonts.body, fontSize: 12 },
   titleUnderline: { width: 112, height: 2, borderRadius: 2, backgroundColor: colors.primary,
     marginTop: 5, marginBottom: mobileSpacing.controlToContent },
   cardGrid: { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between' },
@@ -414,9 +531,15 @@ const styles = StyleSheet.create({
   favoriteButton: { position: 'absolute', top: 8, left: 8, zIndex: 5, width: 30, height: 30,
     borderRadius: 15, backgroundColor: 'rgba(8,8,8,0.78)', borderWidth: 1,
     borderColor: 'rgba(255,210,111,0.32)', alignItems: 'center', justifyContent: 'center' },
-  emptySection: { minHeight: 86, borderRadius: 14, borderWidth: 1, borderColor: colors.border,
-    backgroundColor: 'rgba(35,33,41,0.62)', alignItems: 'center', justifyContent: 'center', gap: 7 },
-  emptyText: { color: colors.textMuted, fontFamily: fonts.body, fontSize: 11, textAlign: 'center' },
+  emptySection: { minHeight: 154, borderRadius: 16, borderWidth: 1, borderColor: colors.border,
+    backgroundColor: 'rgba(25,23,25,0.72)', alignItems: 'center', justifyContent: 'center',
+    gap: 7, paddingHorizontal: 28, paddingVertical: 22 },
+  emptyIcon: { width: 48, height: 48, borderRadius: 24, backgroundColor: 'rgba(255,255,255,0.06)',
+    alignItems: 'center', justifyContent: 'center', marginBottom: 3 },
+  emptyText: { color: colors.textSecondary, fontFamily: fonts.bodyMedium, fontSize: 12,
+    lineHeight: 17, textAlign: 'center' },
+  emptyHint: { color: colors.textMuted, fontFamily: fonts.body, fontSize: 10,
+    lineHeight: 15, textAlign: 'center' },
   modalOverlay: { flex: 1, justifyContent: 'flex-end', backgroundColor: 'rgba(0,0,0,0.58)' },
   modalCard: { backgroundColor: '#1C1B1E', borderTopLeftRadius: 24, borderTopRightRadius: 24,
     borderWidth: 1, borderColor: colors.border, paddingHorizontal: 20, paddingTop: 10,
