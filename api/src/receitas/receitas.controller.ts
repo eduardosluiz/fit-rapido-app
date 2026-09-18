@@ -76,7 +76,7 @@ export class ReceitasController {
       search,
       nome,
       ingrediente,
-      isPremium === 'true',
+      isPremium === undefined ? undefined : isPremium === 'true',
       dificuldade,
       incluirInativas === 'true',
       tipoRefeicao,
@@ -157,4 +157,3 @@ export class ReceitasController {
     await this.receitasService.delete(id);
   }
 }
-

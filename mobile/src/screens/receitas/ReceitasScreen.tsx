@@ -151,6 +151,7 @@ export default function ReceitasScreen() {
       setOnlyIneditas(params.onlyIneditas || false);
       setOnlyPopulares(params.onlyPopulares || false);
       setOnlyMaisFavoritadas(params.onlyMaisFavoritadas || false);
+      setFilterMode('todos');
 
       const newFilters: BuscaFilters = {};
       if (params.semGluten) newFilters.semGluten = true;
@@ -320,7 +321,7 @@ export default function ReceitasScreen() {
     <View style={{ paddingBottom: 20 }}>
       <View style={styles.headerContainer}>
         <View style={styles.headerRow}>
-          <Text style={styles.headerTitle}>Receitas</Text>
+          <Text style={styles.headerTitle}>{onlyMaisFavoritadas ? 'Favoritas de vocês' : 'Receitas'}</Text>
         </View>
         <View style={styles.headerDivider} />
       </View>
@@ -403,7 +404,7 @@ export default function ReceitasScreen() {
         </View>
       )}
 
-      {receitasPopulares.length > 0 && (
+      {!onlyMaisFavoritadas && receitasPopulares.length > 0 && (
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
             <View style={styles.titleWithIcon}>
@@ -430,7 +431,7 @@ export default function ReceitasScreen() {
         </View>
       )}
 
-      {receitasRapidas.length > 0 && (
+      {!onlyMaisFavoritadas && receitasRapidas.length > 0 && (
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
             <View style={styles.titleWithIcon}>
@@ -461,7 +462,7 @@ export default function ReceitasScreen() {
         <View style={styles.titleWithIcon}>
           <Ionicons name="restaurant" size={16} color={colors.primary} />
           <Text style={styles.sectionTitle}>
-            {filterMode === 'populares' ? 'Populares' : filterMode === 'rapidas' ? 'Receitas de 10 min' : 'Todas as Receitas'}
+            {onlyMaisFavoritadas ? 'Selecionadas e mais favoritadas' : filterMode === 'populares' ? 'Populares' : filterMode === 'rapidas' ? 'Receitas de 10 min' : 'Todas as Receitas'}
           </Text>
         </View>
         {filterMode !== 'todos' && (

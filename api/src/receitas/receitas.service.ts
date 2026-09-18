@@ -313,8 +313,8 @@ export class ReceitasService {
     }
 
     if (onlyMaisFavoritadas) {
-      page = 1;
-      limit = 20;
+      // Manter a pagina solicitada pelo aplicativo para não repetir sempre
+      // os mesmos itens quando houver mais receitas favoritadas.
       queryBuilder
         .leftJoin(qb => {
           return qb
