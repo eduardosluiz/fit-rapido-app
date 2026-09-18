@@ -451,7 +451,7 @@ export default function ReceitasScreen() {
             renderItem={({ item }) => renderReceitaCard(item, true)}
           />
           {receitasPopulares.length > 2 && (
-            <View style={[styles.scrollIndicator, { marginTop: -5 }]}>
+            <View style={styles.scrollIndicator}>
               <Ionicons name="arrow-forward" size={16} color="rgba(231,196,138,0.6)" />
             </View>
           )}
@@ -481,7 +481,7 @@ export default function ReceitasScreen() {
             renderItem={({ item }) => renderReceitaCard(item, true)}
           />
           {receitasRapidas.length > 2 && (
-            <View style={[styles.scrollIndicator, { marginTop: -5 }]}>
+            <View style={styles.scrollIndicator}>
               <Ionicons name="arrow-forward" size={16} color="rgba(231,196,138,0.6)" />
             </View>
           )}
@@ -650,7 +650,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.cardBackground,
     borderWidth: 1.2,
     borderColor: 'rgba(231,196,138,0.3)',
-    marginRight: 12,
+    marginRight: 6,
     justifyContent: 'center',
     alignItems: 'center',
     overflow: 'hidden',
@@ -713,8 +713,9 @@ const styles = StyleSheet.create({
   retryButtonText: { color: colors.primary, fontFamily: fonts.bodySemiBold, fontSize: 12 },
   scrollIndicator: {
     alignItems: 'flex-end',
-    paddingRight: 25,
-    marginTop: 2,
+    paddingRight: 14,
+    marginTop: 6,
+    marginBottom: 6,
   },
   backToTopButton: {
     position: 'absolute',
