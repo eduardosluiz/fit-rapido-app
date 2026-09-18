@@ -325,11 +325,20 @@ export default function ReceitasScreen() {
     />
   );
 
+  const isShortcutFilter = onlyIneditas || onlyPopulares || onlyMaisFavoritadas;
+  const shortcutTitle = onlyIneditas
+    ? 'Receitas inéditas'
+    : onlyPopulares
+      ? 'Mais acessadas'
+      : onlyMaisFavoritadas
+        ? 'Favoritas de vocês'
+        : null;
+
   const renderHeader = () => (
     <View style={{ paddingBottom: 20 }}>
       <View style={styles.headerContainer}>
         <View style={styles.headerRow}>
-          <Text style={styles.headerTitle}>{onlyMaisFavoritadas ? 'Favoritas de vocês' : 'Receitas'}</Text>
+          <Text style={styles.headerTitle}>{shortcutTitle || 'Receitas'}</Text>
         </View>
         <View style={styles.headerDivider} />
       </View>
@@ -412,7 +421,7 @@ export default function ReceitasScreen() {
         </View>
       )}
 
-      {!onlyMaisFavoritadas && receitasPopulares.length > 0 && (
+      {!isShortcutFilter && receitasPopulares.length > 0 && (
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
             <View style={styles.titleWithIcon}>
@@ -439,7 +448,7 @@ export default function ReceitasScreen() {
         </View>
       )}
 
-      {!onlyMaisFavoritadas && receitasRapidas.length > 0 && (
+      {!isShortcutFilter && receitasRapidas.length > 0 && (
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
             <View style={styles.titleWithIcon}>
@@ -470,7 +479,7 @@ export default function ReceitasScreen() {
         <View style={styles.titleWithIcon}>
           <Ionicons name="restaurant" size={16} color={colors.primary} />
           <Text style={styles.sectionTitle}>
-            {onlyMaisFavoritadas ? 'Selecionadas e mais favoritadas' : filterMode === 'populares' ? 'Populares' : filterMode === 'rapidas' ? 'Receitas de 10 min' : 'Todas as Receitas'}
+            {onlyIneditas ? 'Inéditas' : onlyPopulares ? 'Mais acessadas' : onlyMaisFavoritadas ? 'Selecionadas e mais favoritadas' : filterMode === 'populares' ? 'Populares' : filterMode === 'rapidas' ? 'Receitas de 10 min' : 'Todas as Receitas'}
           </Text>
         </View>
         {filterMode !== 'todos' && (
@@ -529,7 +538,15 @@ export default function ReceitasScreen() {
           }
           ListEmptyComponent={!loading ? (
             <View style={styles.emptyContainer}>
-              <Text style={styles.emptyText}>{loadError || 'Nenhuma receita encontrada'}</Text>
+              <Text style={styles.emptyText}>
+                {loadError || (onlyIneditas
+                  ? 'Nenhuma receita inédita encontrada'
+                  : onlyPopulares
+                    ? 'Nenhuma receita popular encontrada'
+                    : onlyMaisFavoritadas
+                      ? 'Nenhuma receita favorita encontrada'
+                      : 'Nenhuma receita encontrada')}
+              </Text>
               {loadError ? (
                 <TouchableOpacity style={styles.retryButton} onPress={() => loadReceitas(searchText, 1)}>
                   <Text style={styles.retryButtonText}>Tentar novamente</Text>
