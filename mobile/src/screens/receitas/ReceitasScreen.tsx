@@ -45,6 +45,7 @@ export default function ReceitasScreen() {
     onlyIneditas?: boolean;
     onlyPopulares?: boolean;
     onlyMaisFavoritadas?: boolean;
+    onlyAte10Minutos?: boolean;
     tempoMaximo?: number;
     ingrediente?: string;
     proteinasMin?: number;
@@ -63,6 +64,7 @@ export default function ReceitasScreen() {
   const [onlyIneditas, setOnlyIneditas] = useState(params?.onlyIneditas || false);
   const [onlyPopulares, setOnlyPopulares] = useState(params?.onlyPopulares || false);
   const [onlyMaisFavoritadas, setOnlyMaisFavoritadas] = useState(params?.onlyMaisFavoritadas || false);
+  const [onlyAte10Minutos, setOnlyAte10Minutos] = useState(params?.onlyAte10Minutos || false);
   const [resetSequence, setResetSequence] = useState(0);
   const [filtrosBusca, setFiltrosBusca] = useState<BuscaFilters>(() => {
     const initial: BuscaFilters = {};
@@ -113,6 +115,7 @@ export default function ReceitasScreen() {
       onlyIneditas?: boolean;
       onlyPopulares?: boolean;
       onlyMaisFavoritadas?: boolean;
+      onlyAte10Minutos?: boolean;
       resetFiltersKey?: number;
       tempoMaximo?: number;
       ingrediente?: string;
@@ -155,6 +158,7 @@ export default function ReceitasScreen() {
       setOnlyIneditas(params.onlyIneditas || false);
       setOnlyPopulares(params.onlyPopulares || false);
       setOnlyMaisFavoritadas(params.onlyMaisFavoritadas || false);
+      setOnlyAte10Minutos(params.onlyAte10Minutos || false);
       setFilterMode('todos');
       if (params.resetFiltersKey !== undefined) {
         setResetSequence((current) => current + 1);
@@ -222,6 +226,7 @@ export default function ReceitasScreen() {
       if (filtrosBusca.semLactose) params.semLactose = true;
       if (filtrosBusca.semGluten) params.semGluten = true;
       if (filtrosBusca.lowCarb) params.lowCarb = true;
+      if (onlyAte10Minutos) params.tempoMaximo = Math.min(filtrosBusca.tempoMaximo || 10, 10);
 
       if (user?.subscription_tier !== 'premium_fit' && user?.subscription_tier !== 'premium' && user?.email !== 'dai@gmail.com') {
         params.onlyFree = true;
@@ -272,7 +277,7 @@ export default function ReceitasScreen() {
       setLoading(false);
       setLoadingMore(false);
     }
-  }, [searchText, selectedCategoria, user?.subscription_tier, filtrosBusca, onlyIneditas, onlyPopulares, onlyMaisFavoritadas]);
+  }, [searchText, selectedCategoria, user?.subscription_tier, filtrosBusca, onlyIneditas, onlyPopulares, onlyMaisFavoritadas, onlyAte10Minutos]);
 
   const loadMore = () => {
     if (receitas.length > 0 && !loadError && !loadingMore && hasMore && !loading && filterMode === 'todos') {
@@ -285,7 +290,7 @@ export default function ReceitasScreen() {
   // Use effect apenas para carregar inicialmente ou quando a categoria/filtros/atalhos mudarem
   useEffect(() => { 
     loadReceitas(searchText, 1); 
-  }, [selectedCategoria, filtrosBusca, user?.subscription_tier, onlyIneditas, onlyPopulares, onlyMaisFavoritadas, resetSequence]);
+  }, [selectedCategoria, filtrosBusca, user?.subscription_tier, onlyIneditas, onlyPopulares, onlyMaisFavoritadas, onlyAte10Minutos, resetSequence]);
 
   const handleSearchTextChange = (text: string) => {
     setSearchText(text);
@@ -325,14 +330,16 @@ export default function ReceitasScreen() {
     />
   );
 
-  const isShortcutFilter = onlyIneditas || onlyPopulares || onlyMaisFavoritadas;
+  const isShortcutFilter = onlyIneditas || onlyPopulares || onlyMaisFavoritadas || onlyAte10Minutos;
   const shortcutTitle = onlyIneditas
     ? 'Receitas inéditas'
     : onlyPopulares
       ? 'Mais acessadas'
-      : onlyMaisFavoritadas
-        ? 'Favoritas de vocês'
-        : null;
+      : onlyAte10Minutos
+        ? 'Até 10 minutos'
+        : onlyMaisFavoritadas
+          ? 'Favoritas de vocês'
+          : null;
 
   const renderHeader = () => (
     <View style={{ paddingBottom: 20 }}>
@@ -424,9 +431,12 @@ export default function ReceitasScreen() {
       {!isShortcutFilter && receitasPopulares.length > 0 && (
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
-            <View style={styles.titleWithIcon}>
-              <Ionicons name="star" size={16} color={colors.primary} />
-              <Text style={styles.sectionTitle}>Populares</Text>
+            <View style={styles.sectionHeading}>
+              <View style={styles.titleWithIcon}>
+                <Ionicons name="star" size={12} color={colors.primary} />
+                <Text style={styles.sectionTitle}>Populares</Text>
+              </View>
+              <View style={styles.sectionTitleUnderline} />
             </View>
             <TouchableOpacity onPress={() => handleViewAll('populares')}>
               <Text style={styles.seeAllText}>Ver todas</Text>
@@ -451,9 +461,12 @@ export default function ReceitasScreen() {
       {!isShortcutFilter && receitasRapidas.length > 0 && (
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
-            <View style={styles.titleWithIcon}>
-              <Ionicons name="flash" size={16} color="#FFD700" />
-              <Text style={styles.sectionTitle}>Em 10 Minutos</Text>
+            <View style={styles.sectionHeading}>
+              <View style={styles.titleWithIcon}>
+                <Ionicons name="flash" size={12} color="#FFD700" />
+                <Text style={styles.sectionTitle}>Em 10 Minutos</Text>
+              </View>
+              <View style={styles.sectionTitleUnderline} />
             </View>
             <TouchableOpacity onPress={() => handleViewAll('rapidas')}>
               <Text style={styles.seeAllText}>Ver todas</Text>
@@ -476,11 +489,14 @@ export default function ReceitasScreen() {
       )}
 
       <View style={styles.sectionHeader}>
-        <View style={styles.titleWithIcon}>
-          <Ionicons name="restaurant" size={16} color={colors.primary} />
-          <Text style={styles.sectionTitle}>
-            {onlyIneditas ? 'Inéditas' : onlyPopulares ? 'Mais acessadas' : onlyMaisFavoritadas ? 'Selecionadas e mais favoritadas' : filterMode === 'populares' ? 'Populares' : filterMode === 'rapidas' ? 'Receitas de 10 min' : 'Todas as Receitas'}
-          </Text>
+        <View style={styles.sectionHeading}>
+          <View style={styles.titleWithIcon}>
+            <Ionicons name="restaurant" size={12} color={colors.primary} />
+            <Text style={styles.sectionTitle}>
+              {onlyIneditas ? 'Inéditas' : onlyPopulares ? 'Mais acessadas' : onlyAte10Minutos ? 'Até 10 minutos' : onlyMaisFavoritadas ? 'Selecionadas e mais favoritadas' : filterMode === 'populares' ? 'Populares' : filterMode === 'rapidas' ? 'Receitas de 10 min' : 'Todas as Receitas'}
+            </Text>
+          </View>
+          <View style={styles.sectionTitleUnderline} />
         </View>
         {filterMode !== 'todos' && (
           <TouchableOpacity onPress={() => setFilterMode('todos')}>
@@ -543,9 +559,11 @@ export default function ReceitasScreen() {
                   ? 'Nenhuma receita inédita encontrada'
                   : onlyPopulares
                     ? 'Nenhuma receita popular encontrada'
-                    : onlyMaisFavoritadas
-                      ? 'Nenhuma receita favorita encontrada'
-                      : 'Nenhuma receita encontrada')}
+                    : onlyAte10Minutos
+                      ? 'Nenhuma receita de até 10 minutos encontrada'
+                      : onlyMaisFavoritadas
+                        ? 'Nenhuma receita favorita encontrada'
+                        : 'Nenhuma receita encontrada')}
               </Text>
               {loadError ? (
                 <TouchableOpacity style={styles.retryButton} onPress={() => loadReceitas(searchText, 1)}>
@@ -672,17 +690,19 @@ const styles = StyleSheet.create({
   sectionHeader: { 
     flexDirection: 'row', 
     justifyContent: 'space-between', 
-    paddingHorizontal: 20, 
-    marginBottom: 10, 
+    paddingHorizontal: 14,
+    marginBottom: 12,
     alignItems: 'center' 
   },
   seeAllText: {
-    fontSize: 14,
-    color: '#c8921a',
-    fontWeight: '600',
+    fontSize: 12,
+    color: colors.primary,
+    fontFamily: fonts.body,
   },
   titleWithIcon: { flexDirection: 'row', alignItems: 'center' },
-  sectionTitle: { fontSize: 16, fontFamily: fonts.title, color: '#fff', marginLeft: 8 },
+  sectionHeading: { alignSelf: 'flex-start' },
+  sectionTitle: { fontSize: 11, fontFamily: fonts.body, color: '#fff', marginLeft: 4, marginBottom: 4 },
+  sectionTitleUnderline: { height: 2, backgroundColor: colors.primary, width: '100%', borderRadius: 1 },
   horizontalScroll: { paddingLeft: 20 },
   list: { paddingBottom: 40 },
   gridRow: { justifyContent: 'space-between', paddingHorizontal: 11 },

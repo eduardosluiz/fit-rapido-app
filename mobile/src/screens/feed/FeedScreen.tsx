@@ -94,7 +94,7 @@ export default function FeedScreen() {
       iconName: 'timer-outline',
       onPress: () => (navigation as any).navigate('Receitas', { 
         screen: 'ReceitasList', 
-        params: { tempoMaximo: 10 } 
+        params: { onlyAte10Minutos: true }
       }),
     },
     {
