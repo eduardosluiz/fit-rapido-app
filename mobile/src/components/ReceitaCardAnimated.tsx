@@ -1,5 +1,5 @@
 import React, { useRef } from "react";
-import { View, Text, StyleSheet, Animated, Pressable, Dimensions } from "react-native";
+import { View, Text, StyleSheet, Animated, Pressable, useWindowDimensions } from "react-native";
 import { Image } from "expo-image";
 import { Ionicons } from '@expo/vector-icons';
 import { Video, ResizeMode } from 'expo-av';
@@ -10,12 +10,13 @@ import { Receita, getImageUrl } from "../services/api";
 interface ReceitaCardProps {
   item: Receita;
   isHorizontal?: boolean;
+  compact?: boolean;
   onPress: () => void;
   orderNumber?: number;
   isLocked?: boolean;
 }
 
-export default function ReceitaCardAnimated({ item, isHorizontal, onPress, orderNumber, isLocked }: ReceitaCardProps) {
+export default function ReceitaCardAnimated({ item, isHorizontal, compact, onPress, orderNumber, isLocked }: ReceitaCardProps) {
   const scale = useRef(new Animated.Value(1)).current;
 
   const onPressIn = () => {
@@ -78,13 +79,14 @@ export default function ReceitaCardAnimated({ item, isHorizontal, onPress, order
     );
   };
 
-  const windowWidth = Dimensions.get('window').width;
+  const { width: windowWidth } = useWindowDimensions();
   const CARD_WIDTH = (windowWidth - 32) / 2;
+  const compactStyle = isHorizontal || compact;
 
   return (
     <Pressable onPress={onPress} onPressIn={onPressIn} onPressOut={onPressOut} style={[isHorizontal && { width: CARD_WIDTH, marginRight: 10 }]}>
-      <Animated.View style={[styles.card, isHorizontal && styles.horizontalCard, { transform: [{ scale }] }]}>
-        <View style={[styles.imageContainer, isHorizontal && styles.horizontalImageContainer]}>
+      <Animated.View style={[styles.card, compactStyle && styles.horizontalCard, { transform: [{ scale }] }]}>
+        <View style={[styles.imageContainer, compactStyle && styles.horizontalImageContainer]}>
           {renderMedia()}
           
           {isLocked && (
@@ -106,9 +108,9 @@ export default function ReceitaCardAnimated({ item, isHorizontal, onPress, order
           )}
         </View>
 
-        <View style={[styles.content, isHorizontal && styles.horizontalContent]}>
-          <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: isHorizontal ? 3 : 6, minHeight: isHorizontal ? 18 : 24 }}>
-            <Text style={[styles.title, isHorizontal && styles.horizontalTitle, { flex: 1, marginBottom: 0, marginRight: 8 }]} numberOfLines={1}>
+        <View style={[styles.content, compactStyle && styles.horizontalContent]}>
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: compactStyle ? 3 : 6, minHeight: compactStyle ? 18 : 24 }}>
+            <Text style={[styles.title, compactStyle && styles.horizontalTitle, { flex: 1, marginBottom: 0, marginRight: 8 }]} numberOfLines={1}>
               {item.titulo}
             </Text>
             {(item.substituto_id_1 || item.substituto_id_2) && (

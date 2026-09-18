@@ -9,6 +9,7 @@ import {
   ActivityIndicator,
   TextInput,
   Image,
+  useWindowDimensions,
 } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { useAuth } from '../../contexts/AuthContext';
@@ -32,6 +33,7 @@ interface Categoria {
 export default function ReceitasScreen() {
   const navigation = useNavigation();
   const route = useRoute();
+  const { width: windowWidth } = useWindowDimensions();
   const { user } = useAuth();
   
   const params = route.params as { 
@@ -61,6 +63,7 @@ export default function ReceitasScreen() {
   const [onlyIneditas, setOnlyIneditas] = useState(params?.onlyIneditas || false);
   const [onlyPopulares, setOnlyPopulares] = useState(params?.onlyPopulares || false);
   const [onlyMaisFavoritadas, setOnlyMaisFavoritadas] = useState(params?.onlyMaisFavoritadas || false);
+  const [resetSequence, setResetSequence] = useState(0);
   const [filtrosBusca, setFiltrosBusca] = useState<BuscaFilters>(() => {
     const initial: BuscaFilters = {};
     if (params?.semGluten) initial.semGluten = true;
@@ -110,6 +113,7 @@ export default function ReceitasScreen() {
       onlyIneditas?: boolean;
       onlyPopulares?: boolean;
       onlyMaisFavoritadas?: boolean;
+      resetFiltersKey?: number;
       tempoMaximo?: number;
       ingrediente?: string;
       proteinasMin?: number;
@@ -152,6 +156,9 @@ export default function ReceitasScreen() {
       setOnlyPopulares(params.onlyPopulares || false);
       setOnlyMaisFavoritadas(params.onlyMaisFavoritadas || false);
       setFilterMode('todos');
+      if (params.resetFiltersKey !== undefined) {
+        setResetSequence((current) => current + 1);
+      }
 
       const newFilters: BuscaFilters = {};
       if (params.semGluten) newFilters.semGluten = true;
@@ -278,7 +285,7 @@ export default function ReceitasScreen() {
   // Use effect apenas para carregar inicialmente ou quando a categoria/filtros/atalhos mudarem
   useEffect(() => { 
     loadReceitas(searchText, 1); 
-  }, [selectedCategoria, filtrosBusca, user?.subscription_tier, onlyIneditas, onlyPopulares, onlyMaisFavoritadas]);
+  }, [selectedCategoria, filtrosBusca, user?.subscription_tier, onlyIneditas, onlyPopulares, onlyMaisFavoritadas, resetSequence]);
 
   const handleSearchTextChange = (text: string) => {
     setSearchText(text);
@@ -308,11 +315,12 @@ export default function ReceitasScreen() {
     }, 100);
   };
 
-  const renderReceitaCard = (item: Receita, isHorizontal = false) => (
+  const renderReceitaCard = (item: Receita, isHorizontal = false, compact = false) => (
     <ReceitaCardAnimated 
       key={item.id} 
       item={item} 
       isHorizontal={isHorizontal} 
+      compact={compact}
       onPress={() => (navigation as any).navigate('ReceitaDetail', { receitaId: item.id })} 
     />
   );
@@ -497,13 +505,11 @@ export default function ReceitasScreen() {
           data={displayReceitas}
           keyExtractor={item => `grid-${item.id}`}
           numColumns={2}
+          columnWrapperStyle={styles.gridRow}
           ListHeaderComponent={renderHeader()}
-          renderItem={({ item, index }) => (
-            <View style={[
-              styles.gridItem, 
-              { paddingLeft: index % 2 === 0 ? 20 : 5, paddingRight: index % 2 === 0 ? 5 : 20 }
-            ]}>
-              {renderReceitaCard(item)}
+          renderItem={({ item }) => (
+            <View style={{ width: (windowWidth - 32) / 2 }}>
+              {renderReceitaCard(item, false, true)}
             </View>
           )}
           onScroll={handleScroll}
@@ -662,9 +668,7 @@ const styles = StyleSheet.create({
   sectionTitle: { fontSize: 16, fontFamily: fonts.title, color: '#fff', marginLeft: 8 },
   horizontalScroll: { paddingLeft: 20 },
   list: { paddingBottom: 40 },
-  gridItem: {
-    width: '50%',
-  },
+  gridRow: { justifyContent: 'space-between', paddingHorizontal: 11 },
   emptyContainer: { padding: 40, alignItems: 'center' },
   emptyText: { color: '#666', fontSize: 14 },
   retryButton: { marginTop: 14, borderRadius: 10, borderWidth: 1, borderColor: colors.primary,

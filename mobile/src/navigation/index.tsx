@@ -218,19 +218,14 @@ function TabsNavigator() {
         }}
         listeners={({ navigation }) => ({
           tabPress: (e) => {
-            // Se já estiver na aba de receitas, o comportamento padrão já tenta dar pop to top
-            // Se estiver em outra aba, queremos garantir que ao entrar vá para a lista
+            e.preventDefault();
             navigation.dispatch(
-              CommonActions.reset({
-                index: 0,
-                routes: [
-                  {
-                    name: 'Receitas',
-                    state: {
-                      routes: [{ name: 'ReceitasList' }],
-                    },
-                  },
-                ],
+              CommonActions.navigate({
+                name: 'Receitas',
+                params: {
+                  screen: 'ReceitasList',
+                  params: { resetFiltersKey: Date.now() },
+                },
               })
             );
           },

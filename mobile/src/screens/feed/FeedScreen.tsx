@@ -384,7 +384,9 @@ export default function FeedScreen() {
                     <View style={styles.sectionTitleUnderline} />
                   </View>
                 </View>
-                <TouchableOpacity onPress={() => (navigation as any).navigate('Receitas')}>
+                <TouchableOpacity onPress={() => (navigation as any).navigate('Receitas', {
+                  screen: 'ReceitasList', params: { resetFiltersKey: Date.now() },
+                })}>
                   <Text style={styles.seeAllText}>Ver todas</Text>
                 </TouchableOpacity>
               </View>
