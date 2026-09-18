@@ -207,12 +207,8 @@ class ApiService {
   }
 
   async getReceitas(params?: any) {
-    try {
-      const query = params ? `?${new URLSearchParams(params).toString()}` : '';
-      return await this.request<any>(`/receitas${query}`);
-    } catch (e) {
-      return params?.page ? { data: [], totalPages: 0 } : [];
-    }
+    const query = params ? `?${new URLSearchParams(params).toString()}` : '';
+    return this.request<any>(`/receitas${query}`);
   }
   
   async getReceita(id: string) { return this.request<Receita>(`/receitas/${id}`); }

@@ -54,6 +54,7 @@ export default function ReceitasScreen() {
   const [receitasRapidas, setReceitasRapidas] = useState<Receita[]>([]);
   const [categorias, setCategorias] = useState<Categoria[]>([]);
   const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState<string | null>(null);
   const [searchText, setSearchText] = useState(params?.searchQuery || '');
   const [selectedCategoria, setSelectedCategoria] = useState<string | null>(params?.categoriaId || null);
   const [buscaAvancadaVisible, setBuscaAvancadaVisible] = useState(false);
@@ -187,7 +188,10 @@ export default function ReceitasScreen() {
     const requestTime = Date.now();
     lastRequestTimeRef.current = requestTime;
     try {
-      if (pageNum === 1) setLoading(true);
+      if (pageNum === 1) {
+        setLoading(true);
+        setLoadError(null);
+      }
       else setLoadingMore(true);
 
       const params: any = { page: pageNum, limit: 15 };
@@ -251,6 +255,11 @@ export default function ReceitasScreen() {
       
     } catch (error) {
       console.error('Erro ao carregar receitas:', error);
+      if (requestTime === lastRequestTimeRef.current && pageNum === 1) {
+        setReceitas([]);
+        setHasMore(false);
+        setLoadError('Não foi possível carregar as receitas. Verifique sua conexão e tente novamente.');
+      }
     } finally {
       setLoading(false);
       setLoadingMore(false);
@@ -258,7 +267,7 @@ export default function ReceitasScreen() {
   }, [searchText, selectedCategoria, user?.subscription_tier, filtrosBusca, onlyIneditas, onlyPopulares, onlyMaisFavoritadas]);
 
   const loadMore = () => {
-    if (!loadingMore && hasMore && !loading && filterMode === 'todos') {
+    if (receitas.length > 0 && !loadError && !loadingMore && hasMore && !loading && filterMode === 'todos') {
       loadReceitas(searchText, page + 1);
     }
   };
@@ -511,7 +520,16 @@ export default function ReceitasScreen() {
               <ActivityIndicator color={colors.primary} style={{ marginVertical: 20 }} />
             ) : null
           }
-          ListEmptyComponent={!loading ? <View style={styles.emptyContainer}><Text style={styles.emptyText}>Nenhuma receita encontrada</Text></View> : <ActivityIndicator color={colors.primary} style={{ marginTop: 20 }} />}
+          ListEmptyComponent={!loading ? (
+            <View style={styles.emptyContainer}>
+              <Text style={styles.emptyText}>{loadError || 'Nenhuma receita encontrada'}</Text>
+              {loadError ? (
+                <TouchableOpacity style={styles.retryButton} onPress={() => loadReceitas(searchText, 1)}>
+                  <Text style={styles.retryButtonText}>Tentar novamente</Text>
+                </TouchableOpacity>
+              ) : null}
+            </View>
+          ) : <ActivityIndicator color={colors.primary} style={{ marginTop: 20 }} />}
         />
 
         {showBackToTop && (
@@ -648,6 +666,9 @@ const styles = StyleSheet.create({
   },
   emptyContainer: { padding: 40, alignItems: 'center' },
   emptyText: { color: '#666', fontSize: 14 },
+  retryButton: { marginTop: 14, borderRadius: 10, borderWidth: 1, borderColor: colors.primary,
+    paddingHorizontal: 18, paddingVertical: 10 },
+  retryButtonText: { color: colors.primary, fontFamily: fonts.bodySemiBold, fontSize: 12 },
   scrollIndicator: {
     alignItems: 'flex-end',
     paddingRight: 25,

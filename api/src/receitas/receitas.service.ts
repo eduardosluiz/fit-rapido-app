@@ -324,9 +324,12 @@ export class ReceitasService {
             .where("f.tipo = 'receita'")
             .groupBy('f.item_id');
         }, 'fav_stats', 'fav_stats.item_id = CAST(receita.id AS text)')
+        .addSelect('COALESCE(fav_stats.fav_count, 0)', 'favorite_count')
         .andWhere('(receita.destaque_favorito = true OR COALESCE(fav_stats.fav_count, 0) > 0)')
         .orderBy('receita.destaque_favorito', 'DESC')
-        .addOrderBy('COALESCE(fav_stats.fav_count, 0)', 'DESC')
+        // Com paginacao, o TypeORM cria uma consulta externa. Ordenar pelo alias
+        // selecionado evita referenciar fav_stats fora do escopo dessa consulta.
+        .addOrderBy('favorite_count', 'DESC')
         .addOrderBy('receita.created_at', 'DESC');
     } else {
       queryBuilder.orderBy('receita.created_at', 'DESC');
