@@ -12,7 +12,7 @@ import { useNavigation } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { notificationService } from '../../services/notifications';
 import * as Notifications from 'expo-notifications';
-import colors from '../../constants/colors';
+import colors, { mobileSpacing } from '../../constants/colors';
 import fonts from '../../constants/fonts';
 
 export default function NotificationSettingsScreen() {
@@ -193,7 +193,7 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   section: {
-    marginBottom: 24,
+    marginBottom: mobileSpacing.section,
   },
   sectionTitle: {
     fontSize: 18,
@@ -270,4 +270,3 @@ const styles = StyleSheet.create({
     fontFamily: fonts.bodyBold,
   },
 });
-

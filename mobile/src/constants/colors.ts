@@ -43,7 +43,8 @@ export const spacing = {
 /** Espaçamentos semânticos compartilhados pelas telas mobile. */
 export const mobileSpacing = {
   controlToContent: spacing.md,
-  section: spacing.xl,
+  section: spacing.md,
+  sectionHeaderToContent: spacing.md / 2,
 };
 
 export const radius = {

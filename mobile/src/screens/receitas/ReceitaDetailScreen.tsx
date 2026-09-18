@@ -18,7 +18,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import VideoPlayer from '../../components/VideoPlayer';
 import ImageCarousel from '../../components/ImageCarousel';
 import { useAuth } from '../../contexts/AuthContext';
-import colors from '../../constants/colors';
+import colors, { mobileSpacing } from '../../constants/colors';
 import fonts from '../../constants/fonts';
 import { getVideoThumbnail } from '../../utils/videoThumbnail';
 import { Ionicons } from '@expo/vector-icons';
@@ -1401,10 +1401,11 @@ const styles = StyleSheet.create({
     color: '#ffffff',
   },
   section: {
-    padding: 16,
+    paddingHorizontal: 16,
+    paddingVertical: mobileSpacing.sectionHeaderToContent,
   },
   sectionTitleContainer: {
-    marginBottom: 16,
+    marginBottom: mobileSpacing.sectionHeaderToContent,
   },
   sectionTitleRow: {
     flexDirection: 'row',

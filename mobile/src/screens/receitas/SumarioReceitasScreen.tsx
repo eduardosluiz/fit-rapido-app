@@ -12,7 +12,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import { api, Receita } from '../../services/api';
-import colors from '../../constants/colors';
+import colors, { mobileSpacing } from '../../constants/colors';
 import fonts from '../../constants/fonts';
 import AppBackground from '../../components/AppBackground';
 
@@ -362,9 +362,9 @@ const styles = StyleSheet.create({
   },
   sectionHeader: {
     backgroundColor: 'transparent',
-    paddingVertical: 12,
+    paddingVertical: mobileSpacing.sectionHeaderToContent,
     paddingHorizontal: 0,
-    marginTop: 8,
+    marginTop: mobileSpacing.sectionHeaderToContent,
   },
   sectionHeaderText: {
     color: '#c8921a',

@@ -18,7 +18,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import ScreenBanner from '../../components/ScreenBanner';
 import BuscaAvancada, { BuscaFilters } from '../../components/BuscaAvancada';
 import { Ionicons, FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons';
-import colors from '../../constants/colors';
+import colors, { mobileSpacing } from '../../constants/colors';
 import fonts from '../../constants/fonts';
 import AppBackground from '../../components/AppBackground';
 import ReceitaCardAnimated from '../../components/ReceitaCardAnimated';
@@ -623,7 +623,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
   section: {
-    marginBottom: 24,
+    marginBottom: mobileSpacing.section,
   },
   lastFeedSection: {
     marginBottom: 0,
@@ -633,7 +633,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: 14,
-    marginBottom: 12,
+    marginBottom: mobileSpacing.sectionHeaderToContent,
   },
   sectionTitleContainer: {
     flex: 1,

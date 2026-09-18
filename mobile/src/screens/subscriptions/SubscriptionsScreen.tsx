@@ -17,6 +17,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import { api } from '../../services/api';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { colors, fonts } from '../../theme'; // Importar do tema se disponível, senão usaremos valores locais
+import { mobileSpacing } from '../../constants/colors';
 
 // Se os imports acima falharem devido ao caminho, usaremos os backups manuais abaixo
 
@@ -529,7 +530,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(200, 146, 26, 0.08)',
     borderRadius: 20,
     padding: 20,
-    marginBottom: 24,
+    marginBottom: mobileSpacing.section,
     borderWidth: 1,
     borderColor: 'rgba(200, 146, 26, 0.3)',
   },
@@ -609,8 +610,8 @@ const styles = StyleSheet.create({
     paddingLeft: 36,
   },
   plansContainer: {
-    gap: 18,
-    marginBottom: 20,
+    gap: mobileSpacing.section,
+    marginBottom: mobileSpacing.section,
   },
   planCard: {
     backgroundColor: 'rgba(255,255,255,0.02)',
@@ -704,7 +705,7 @@ const styles = StyleSheet.create({
     fontWeight: '400',
   },
   periodosContainer: {
-    marginBottom: 24,
+    marginBottom: mobileSpacing.section,
     gap: 12,
   },
   periodosTitle: {
@@ -850,7 +851,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     gap: 7,
     marginTop: 4,
-    marginBottom: 24,
+    marginBottom: mobileSpacing.section,
     paddingHorizontal: 16,
     paddingVertical: 11,
     alignItems: 'center',

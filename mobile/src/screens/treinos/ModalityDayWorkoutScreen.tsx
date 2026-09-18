@@ -5,7 +5,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { api, getImageUrl, Treino } from '../../services/api';
 import AppBackground from '../../components/AppBackground';
-import colors from '../../constants/colors';
+import colors, { mobileSpacing } from '../../constants/colors';
 import fonts from '../../constants/fonts';
 
 interface DayWorkoutParams {
@@ -145,7 +145,7 @@ const styles = StyleSheet.create({
   heroTitle: { color: '#fff', fontSize: 17, fontFamily: fonts.bodySemiBold, marginTop: 6 },
   heroMeta: { flexDirection: 'row', flexWrap: 'wrap', gap: 12, marginTop: 10 },
   heroMetaText: { color: '#eee', fontSize: 10, fontFamily: fonts.body },
-  sectionHeader: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: 20, marginBottom: 10 },
+  sectionHeader: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: mobileSpacing.section, marginBottom: mobileSpacing.sectionHeaderToContent },
   sectionTitle: { color: '#fff', fontSize: 14, fontFamily: fonts.bodySemiBold },
   sectionCount: { color: colors.primary, fontSize: 11, fontFamily: fonts.bold },
   exerciseCard: { minHeight: 84, flexDirection: 'row', alignItems: 'center', gap: 10, padding: 9, borderRadius: 12, backgroundColor: 'rgba(13,13,13,0.9)', borderWidth: 1, borderColor: 'rgba(255,255,255,0.10)', marginBottom: 9 },

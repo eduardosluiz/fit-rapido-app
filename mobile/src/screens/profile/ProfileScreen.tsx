@@ -5,7 +5,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import { api, getImageUrl } from '../../services/api';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
-import colors from '../../constants/colors';
+import colors, { mobileSpacing } from '../../constants/colors';
 import fonts from '../../constants/fonts';
 import * as ImagePicker from 'expo-image-picker';
 
@@ -307,7 +307,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.cardBackground,
     borderRadius: 16,
     padding: 24,
-    marginBottom: 24,
+    marginBottom: mobileSpacing.section,
     borderWidth: 1,
     borderColor: colors.border,
     shadowColor: '#000',
@@ -415,9 +415,9 @@ const styles = StyleSheet.create({
     lineHeight: 22,
   },
   actionsContainer: {
-    marginBottom: 24,
+    marginBottom: mobileSpacing.section,
   },
-  activityCard: { backgroundColor: colors.cardBackground, borderRadius: 16, padding: 18, marginBottom: 24, borderWidth: 1, borderColor: colors.border },
+  activityCard: { backgroundColor: colors.cardBackground, borderRadius: 16, padding: 18, marginBottom: mobileSpacing.section, borderWidth: 1, borderColor: colors.border },
   activityHeading: { color: colors.text, fontSize: 16, fontFamily: fonts.bodySemiBold, marginBottom: 16 },
   activityStats: { flexDirection: 'row', alignItems: 'stretch', marginBottom: 14 },
   activityStat: { flex: 1, alignItems: 'center', gap: 4 },

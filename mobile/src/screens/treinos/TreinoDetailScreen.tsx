@@ -17,7 +17,7 @@ import { Ionicons } from '@expo/vector-icons';
 import VideoPlayer from '../../components/VideoPlayer';
 import ImageCarousel from '../../components/ImageCarousel';
 import { useAuth } from '../../contexts/AuthContext';
-import colors from '../../constants/colors';
+import colors, { mobileSpacing } from '../../constants/colors';
 import fonts from '../../constants/fonts';
 
 export default function TreinoDetailScreen() {
@@ -421,8 +421,8 @@ const styles = StyleSheet.create({
   completionTitle: { color: '#111', fontSize: 14, fontFamily: fonts.bodySemiBold },
   completionTitleDone: { color: '#0b3d2e' },
   completionSubtitle: { color: '#3f2d06', fontSize: 11, fontFamily: fonts.body, marginTop: 2 },
-  section: { padding: 16 },
-  sectionTitleContainer: { marginBottom: 16 },
+  section: { paddingHorizontal: 16, paddingVertical: mobileSpacing.sectionHeaderToContent },
+  sectionTitleContainer: { marginBottom: mobileSpacing.sectionHeaderToContent },
   sectionTitleRow: { flexDirection: 'row', alignItems: 'center', marginBottom: 6 },
   sectionTitle: { fontSize: 18, fontFamily: fonts.title, color: colors.primary, flex: 1, letterSpacing: 0.5 },
   sectionTitleUnderline: { height: 1.5, backgroundColor: 'rgba(200, 146, 26, 0.2)', width: '100%', borderRadius: 1, marginTop: 2 },

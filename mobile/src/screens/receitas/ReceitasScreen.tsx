@@ -342,7 +342,7 @@ export default function ReceitasScreen() {
           : null;
 
   const renderHeader = () => (
-    <View style={{ paddingBottom: 20 }}>
+    <View style={{ paddingBottom: mobileSpacing.sectionHeaderToContent }}>
       <View style={styles.headerContainer}>
         <View style={styles.headerRow}>
           <Text style={styles.headerTitle}>{shortcutTitle || 'Receitas'}</Text>
@@ -641,7 +641,7 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(231,196,138,0.35)',
   },
   searchInput: { flex: 1, color: '#fff', marginLeft: 10, fontSize: 14, outlineStyle: 'none' as any },
-  filtersContainer: { marginBottom: 30 },
+  filtersContainer: { marginBottom: mobileSpacing.section },
   filtersContent: { paddingHorizontal: 20 },
   filterChip: {
     width: 70,
@@ -686,12 +686,12 @@ const styles = StyleSheet.create({
   filterChipTextActive: {
     color: '#c8921a',
   },
-  section: { marginBottom: 20 },
+  section: { marginBottom: mobileSpacing.section },
   sectionHeader: { 
     flexDirection: 'row', 
     justifyContent: 'space-between', 
     paddingHorizontal: 14,
-    marginBottom: 12,
+    marginBottom: mobileSpacing.sectionHeaderToContent,
     alignItems: 'center' 
   },
   seeAllText: {

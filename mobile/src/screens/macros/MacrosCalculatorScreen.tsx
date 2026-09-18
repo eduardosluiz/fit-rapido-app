@@ -11,6 +11,7 @@ import {
 import { useNavigation } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { api } from '../../services/api';
+import { mobileSpacing } from '../../constants/colors';
 
 interface MacrosDiarios {
   calorias: number;
@@ -317,7 +318,7 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   section: {
-    marginBottom: 24,
+    marginBottom: mobileSpacing.section,
   },
   sectionTitle: {
     fontSize: 18,
@@ -431,7 +432,7 @@ const styles = StyleSheet.create({
     padding: 18,
     borderRadius: 12,
     alignItems: 'center',
-    marginBottom: 24,
+    marginBottom: mobileSpacing.sectionHeaderToContent,
   },
   calculateButtonDisabled: {
     opacity: 0.6,
@@ -442,7 +443,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   resultsSection: {
-    marginTop: 24,
+    marginTop: mobileSpacing.sectionHeaderToContent,
     padding: 20,
     backgroundColor: '#1a1a1a',
     borderRadius: 16,

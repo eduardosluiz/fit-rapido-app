@@ -18,7 +18,7 @@ import { api, Treino, getImageUrl } from '../../services/api';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
-import { colors, radius, spacing } from '../../constants/colors';
+import { colors, mobileSpacing, radius, spacing } from '../../constants/colors';
 import fonts from '../../constants/fonts';
 import BuscaAvancadaTreinos, { BuscaFiltersTreino } from '../../components/BuscaAvancadaTreinos';
 import AppBackground from '../../components/AppBackground';
@@ -263,10 +263,10 @@ export default function TreinosScreen() {
   };
 
   const renderHeader = () => (
-    <View style={{ paddingBottom: 10 }}>
+    <View style={{ paddingBottom: mobileSpacing.sectionHeaderToContent }}>
       {canAccessWorkouts && renderFeaturedWorkout()}
 
-      <View style={{ height: canAccessWorkouts ? 20 : 0 }} />
+      <View style={{ height: canAccessWorkouts ? mobileSpacing.section : 0 }} />
 
       {!canAccessWorkouts ? (
         <View style={styles.lockedContainer}>
@@ -500,7 +500,7 @@ const styles = StyleSheet.create({
   categoriesScroll: {
     paddingHorizontal: 12,
     gap: 8,
-    marginBottom: 24,
+    marginBottom: mobileSpacing.section,
   },
   categoryCard: {
     backgroundColor: 'rgba(15,15,15,0.75)',
@@ -531,7 +531,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: 20,
-    marginBottom: 24,
+    marginBottom: mobileSpacing.section,
     gap: 10,
   },
   searchContainer: {
@@ -560,7 +560,7 @@ const styles = StyleSheet.create({
   // List Header
   sectionHeaderRow: {
     paddingHorizontal: 20,
-    marginBottom: 15,
+    marginBottom: mobileSpacing.sectionHeaderToContent,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-start',
