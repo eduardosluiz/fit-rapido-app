@@ -77,8 +77,8 @@ export class SubscriptionsController {
       },
       [SubscriptionTier.PREMIUM_FIT]: {
         [SubscriptionPeriod.MONTHLY]: 79.90,
-        [SubscriptionPeriod.QUARTERLY]: 229.90, // Ajustado de 239.90 para 229.90 para garantir desconto real (79.9*3 = 239.7)
-        [SubscriptionPeriod.ANNUAL]: 489.90,
+        [SubscriptionPeriod.QUARTERLY]: 249.90,
+        [SubscriptionPeriod.ANNUAL]: 499.90,
       },
     };
 
