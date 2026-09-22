@@ -77,7 +77,7 @@ export class SubscriptionsController {
       },
       [SubscriptionTier.PREMIUM_FIT]: {
         [SubscriptionPeriod.MONTHLY]: 79.90,
-        [SubscriptionPeriod.QUARTERLY]: 249.90,
+        [SubscriptionPeriod.QUARTERLY]: 199.90,
         [SubscriptionPeriod.ANNUAL]: 499.90,
       },
     };
