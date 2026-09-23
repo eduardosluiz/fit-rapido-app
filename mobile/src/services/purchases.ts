@@ -1,20 +1,32 @@
 import Purchases, { LOG_LEVEL } from 'react-native-purchases';
 import { Platform } from 'react-native';
 
-// TODO: Substituir pelas chaves reais geradas no painel do RevenueCat da cliente
 export const REVENUECAT_API_KEYS = {
-  apple: 'appl_api_key_placeholder',
-  google: 'goog_api_key_placeholder',
+  // Chave pública do SDK iOS; pode ser incluída no aplicativo distribuído.
+  apple: process.env.EXPO_PUBLIC_REVENUECAT_IOS_API_KEY?.trim() || 'appl_UzqLynGzJFsrevqDWCzknDtLxtB',
+  google: process.env.EXPO_PUBLIC_REVENUECAT_ANDROID_API_KEY?.trim(),
 };
 
-export const configurePurchases = async () => {
-  if (Platform.OS === 'web') return; // RevenueCat não suporta Web nativamente
+let configuredPlatform: 'ios' | 'android' | null = null;
 
-  Purchases.setLogLevel(LOG_LEVEL.DEBUG);
+export const configurePurchases = async (): Promise<boolean> => {
+  if (Platform.OS === 'web') return false;
 
-  if (Platform.OS === 'ios') {
-    Purchases.configure({ apiKey: REVENUECAT_API_KEYS.apple });
-  } else if (Platform.OS === 'android') {
-    Purchases.configure({ apiKey: REVENUECAT_API_KEYS.google });
+  const platform = Platform.OS === 'ios' ? 'ios' : 'android';
+  if (configuredPlatform === platform) return true;
+
+  const apiKey = platform === 'ios'
+    ? REVENUECAT_API_KEYS.apple
+    : REVENUECAT_API_KEYS.google;
+
+  if (!apiKey) {
+    console.warn(`RevenueCat não configurado para ${platform}: chave pública ausente.`);
+    return false;
   }
+
+  Purchases.setLogLevel(__DEV__ ? LOG_LEVEL.DEBUG : LOG_LEVEL.INFO);
+  Purchases.configure({ apiKey });
+  configuredPlatform = platform;
+
+  return true;
 };

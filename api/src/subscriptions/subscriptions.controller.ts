@@ -49,27 +49,27 @@ export class SubscriptionsController {
   @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.OK)
   async validateIos(@Request() req, @Body() dto: ValidateIosReceiptDto) {
-    return this.subscriptionsService.validateIosReceipt(req.user.id, dto);
+    return this.subscriptionsService.validateIosReceipt(req.user.sub, dto);
   }
 
   @Post('validate-android')
   @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.OK)
   async validateAndroid(@Request() req, @Body() dto: ValidateAndroidPurchaseDto) {
-    return this.subscriptionsService.validateAndroidPurchase(req.user.id, dto);
+    return this.subscriptionsService.validateAndroidPurchase(req.user.sub, dto);
   }
 
   @Get('status')
   @UseGuards(JwtAuthGuard)
   async getStatus(@Request() req) {
-    return this.subscriptionsService.getStatus(req.user.id);
+    return this.subscriptionsService.getStatus(req.user.sub);
   }
 
   @Post('restore')
   @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.OK)
   async restore(@Request() req, @Body() dto: RestorePurchasesDto) {
-    return this.subscriptionsService.restorePurchases(req.user.id, dto.plataforma);
+    return this.subscriptionsService.restorePurchases(req.user.sub, dto.plataforma);
   }
 
   @Get('plans')

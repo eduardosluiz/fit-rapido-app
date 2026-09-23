@@ -28,6 +28,7 @@ export default function LoginScreen() {
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
   const [loading, setLoading] = useState(false);
+  const [loginError, setLoginError] = useState('');
   const [coverUrl, setCoverUrl] = useState<string | null>(null);
   const [showPassword, setShowPassword] = useState(false);
   const [lembrarDados, setLembrarDados] = useState(false);
@@ -60,31 +61,19 @@ export default function LoginScreen() {
       return;
     }
 
+    if (loading) return;
+    setLoginError('');
     setLoading(true);
     try {
-      await login(email, senha);
+      await login(email.trim().toLowerCase(), senha);
       // Se chegou aqui, o login foi bem-sucedido
       // A navegação será feita automaticamente pelo AuthContext
     } catch (error: any) {
-      // Mensagem de erro mais amigável
-      const errorMessage = error.message || 'Erro ao fazer login';
-      
-      // Verificar se é erro de credenciais
-      if (errorMessage.includes('incorretos') || errorMessage.includes('Credenciais')) {
-        Alert.alert(
-          'Login Falhou',
-          'Email ou senha incorretos.\n\nVerifique suas credenciais e tente novamente.',
-          [{ text: 'OK' }]
-        );
-      } else if (errorMessage.includes('servidor') || errorMessage.includes('servidor')) {
-        Alert.alert(
-          'Erro de Conexão',
-          'Não foi possível conectar ao servidor.\n\nVerifique sua conexão com a internet e tente novamente.',
-          [{ text: 'OK' }]
-        );
-      } else {
-        Alert.alert('Erro', errorMessage);
-      }
+      setLoginError(error?.status === 401 || /Credenciais|incorretos/i.test(error?.message || '')
+        ? 'E-mail ou senha incorretos. Confira seus dados e tente novamente.'
+        : error?.status === 429
+          ? 'Muitas tentativas. Aguarde um minuto antes de tentar novamente.'
+          : 'Não foi possível entrar agora. Tente novamente em instantes.');
     } finally {
       setLoading(false);
     }
@@ -173,6 +162,7 @@ export default function LoginScreen() {
 
           {/* Form */}
           <View style={styles.form}>
+              {!!loginError && <Text accessibilityRole="alert" style={{ color: colors.primary, padding: 14, marginBottom: 16, borderRadius: 12, backgroundColor: 'rgba(231,196,138,0.12)' }}>{loginError}</Text>}
             {/* Input Email */}
             <View style={styles.inputContainer}>
               <Ionicons name="mail-outline" size={20} color="#8A8892" style={styles.absoluteInputIconLeft as any} />

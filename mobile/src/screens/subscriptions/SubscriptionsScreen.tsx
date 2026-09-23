@@ -9,7 +9,7 @@ import {
   Alert,
   Platform,
 } from 'react-native';
-import Purchases from 'react-native-purchases';
+import Purchases, { PurchasesStoreProduct } from 'react-native-purchases';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
@@ -18,6 +18,8 @@ import { api } from '../../services/api';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { colors, fonts } from '../../theme'; // Importar do tema se disponível, senão usaremos valores locais
 import { mobileSpacing } from '../../constants/colors';
+import BackButton from '../../components/BackButton';
+import { configurePurchases } from '../../services/purchases';
 
 // Se os imports acima falharem devido ao caminho, usaremos os backups manuais abaixo
 
@@ -118,7 +120,7 @@ function DaiTreinosBenefits() {
 
 export default function SubscriptionsScreen() {
   const navigation = useNavigation();
-  const { user } = useAuth();
+  const { user, updateUser } = useAuth();
   const [loading, setLoading] = useState(true);
   const [plans, setPlans] = useState<Plan[]>([]);
   const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
@@ -128,6 +130,7 @@ export default function SubscriptionsScreen() {
     tier: string;
     expiresAt: Date | null;
   } | null>(null);
+  const [storeProducts, setStoreProducts] = useState<Record<string, PurchasesStoreProduct>>({});
 
   useEffect(() => {
     loadData();
@@ -143,6 +146,22 @@ export default function SubscriptionsScreen() {
       setPlans(plansData.plans);
       if (status) {
         setSubscriptionStatus(status);
+      }
+
+      if (Platform.OS !== 'web' && await configurePurchases()) {
+        try {
+          const offerings = await Purchases.getOfferings();
+          const products = offerings.current?.availablePackages.reduce<Record<string, PurchasesStoreProduct>>(
+            (result, item) => {
+              result[item.product.identifier] = item.product;
+              return result;
+            },
+            {},
+          ) || {};
+          setStoreProducts(products);
+        } catch (error) {
+          console.warn('Produtos da loja ainda não disponíveis:', error);
+        }
       }
     } catch (error: any) {
       console.error('Erro ao carregar planos:', error);
@@ -166,7 +185,14 @@ export default function SubscriptionsScreen() {
          );
          return;
       }
+
+      if (!(await configurePurchases())) {
+        Alert.alert('Assinaturas indisponíveis', 'A loja ainda não foi configurada para esta versão do aplicativo.');
+        return;
+      }
       
+      if (!user?.id) throw new Error('Entre na sua conta para assinar.');
+      await Purchases.logIn(user.id);
       const offerings = await Purchases.getOfferings();
       
       if (offerings.current && offerings.current.availablePackages.length !== 0) {
@@ -181,10 +207,20 @@ export default function SubscriptionsScreen() {
 
         const { customerInfo } = await Purchases.purchasePackage(packageToBuy);
         
-        // Verifica se o usuário ganhou a permissão premium
-        if (typeof customerInfo.entitlements.active['premium'] !== "undefined") {
+        const hasPremium = Boolean(
+          customerInfo.entitlements.active.premium ||
+          customerInfo.entitlements.active.premium_fit
+        );
+        if (hasPremium) {
+          const purchasedTier = customerInfo.entitlements.active.premium_fit
+            ? 'premium_fit'
+            : 'premium';
+          const synced = await waitForSubscriptionSync(purchasedTier);
+          if (!synced) {
+            Alert.alert('Compra recebida', 'Sua compra foi confirmada pela loja. A liberação do acesso está sendo sincronizada; aguarde um momento e abra esta tela novamente.');
+            return;
+          }
           Alert.alert('Sucesso!', 'Sua assinatura foi ativada com sucesso. Aproveite o Fit & Rápido Premium!');
-          await loadData();
         }
       } else {
          Alert.alert('Indisponível', 'Nenhum plano disponível para compra no momento. Configure o painel do RevenueCat.');
@@ -205,11 +241,25 @@ export default function SubscriptionsScreen() {
         Alert.alert('Plataforma Web', 'Restauração indisponível na web.', [{ text: 'OK', onPress: () => setLoading(false) }]);
         return;
       }
+
+      if (!(await configurePurchases())) {
+        Alert.alert('Assinaturas indisponíveis', 'A loja ainda não foi configurada para esta versão do aplicativo.');
+        return;
+      }
       
+      if (!user?.id) throw new Error('Entre na sua conta para restaurar compras.');
+      await Purchases.logIn(user.id);
       const customerInfo = await Purchases.restorePurchases();
-      if (typeof customerInfo.entitlements.active['premium'] !== "undefined") {
+      if (customerInfo.entitlements.active.premium || customerInfo.entitlements.active.premium_fit) {
+        const restoredTier = customerInfo.entitlements.active.premium_fit
+          ? 'premium_fit'
+          : 'premium';
+        const synced = await waitForSubscriptionSync(restoredTier);
+        if (!synced) {
+          Alert.alert('Assinatura encontrada', 'Estamos sincronizando seu acesso. Aguarde um momento e abra esta tela novamente.');
+          return;
+        }
         Alert.alert('Sucesso', 'Suas compras foram restauradas com sucesso!');
-        await loadData();
       } else {
         Alert.alert('Aviso', 'Nenhuma assinatura ativa encontrada para esta conta nas lojas da Apple/Google.');
       }
@@ -222,6 +272,32 @@ export default function SubscriptionsScreen() {
 
   const formatPrice = (price: number) => {
     return `R$ ${price.toFixed(2).replace('.', ',')}`;
+  };
+
+  const waitForSubscriptionSync = async (expectedTier: string) => {
+    for (let attempt = 0; attempt < 6; attempt += 1) {
+      const status = await api.getSubscriptionStatus().catch(() => null);
+      if (status?.active && status.tier === expectedTier) {
+        setSubscriptionStatus(status);
+        updateUser({
+          subscription_tier: status.tier,
+          subscription_expires_at: status.expiresAt,
+        });
+        return true;
+      }
+      await new Promise(resolve => setTimeout(resolve, 800));
+    }
+
+    await loadData();
+    return false;
+  };
+
+  const formatStorePrice = (price: number, currencyCode: string) => {
+    try {
+      return new Intl.NumberFormat(undefined, { style: 'currency', currency: currencyCode }).format(price);
+    } catch {
+      return formatPrice(price);
+    }
   };
 
   const getCurrentPlan = () => {
@@ -245,12 +321,7 @@ export default function SubscriptionsScreen() {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity
-          onPress={() => navigation.goBack()}
-          style={styles.backButton}
-        >
-          <Ionicons name="arrow-back" size={19} color="#d5a43d" />
-        </TouchableOpacity>
+        <BackButton onPress={() => navigation.goBack()} />
         <Text style={styles.headerTitle}>Assinaturas</Text>
         <View style={styles.headerSpacer} />
       </View>
@@ -343,7 +414,19 @@ export default function SubscriptionsScreen() {
                   <Text style={styles.periodosTitle}>Escolha o período:</Text>
                   {plan.periodos.map((periodo) => {
                     const isSelected = selectedPlan === plan.tier && selectedPeriod === periodo.periodo;
-                    const hasDiscount = periodo.descontoPercentual > 0;
+                    const productId = `${plan.tier}_${periodo.periodo}`;
+                    const storeProduct = storeProducts[productId];
+                    const baseMonthlyProduct = storeProducts[`${plan.tier}_monthly`];
+                    const discountPercent = storeProduct && baseMonthlyProduct
+                      ? Math.max(0, Math.round(
+                        ((baseMonthlyProduct.price * periodo.meses - storeProduct.price) /
+                          (baseMonthlyProduct.price * periodo.meses)) * 100,
+                      ))
+                      : periodo.descontoPercentual;
+                    const hasDiscount = discountPercent > 0;
+                    const savings = storeProduct && baseMonthlyProduct
+                      ? baseMonthlyProduct.price * periodo.meses - storeProduct.price
+                      : plan.periodos[0].precoMensal * periodo.meses - periodo.precoTotal;
 
                     return (
                       <TouchableOpacity
@@ -363,7 +446,7 @@ export default function SubscriptionsScreen() {
                             {hasDiscount && (
                               <View style={styles.discountBadge}>
                                 <Text style={styles.discountText}>
-                                  {periodo.descontoPercentual}% OFF
+                                  {discountPercent}% OFF
                                 </Text>
                               </View>
                             )}
@@ -377,7 +460,7 @@ export default function SubscriptionsScreen() {
                         <View style={styles.periodoPriceContainer}>
                           <View>
                             <Text style={styles.periodoTotalPrice}>
-                              {formatPrice(periodo.precoTotal)}
+                              {storeProduct?.priceString || formatPrice(periodo.precoTotal)}
                             </Text>
                             <Text style={styles.periodoTotalLabel}>
                               Total ({periodo.meses} {periodo.meses === 1 ? 'mês' : 'meses'})
@@ -385,14 +468,16 @@ export default function SubscriptionsScreen() {
                           </View>
                           <View style={styles.periodoMonthlyContainer}>
                             <Text style={styles.periodoMonthlyPrice}>
-                              {formatPrice(periodo.precoMensal)}
+                              {storeProduct?.pricePerMonthString || formatPrice(periodo.precoMensal)}
                             </Text>
                             <Text style={styles.periodoMonthlyLabel}>/mês</Text>
                           </View>
                         </View>
                         {hasDiscount && (
                           <Text style={styles.economiaText}>
-                            Economize {formatPrice(plan.periodos[0].precoMensal * periodo.meses - periodo.precoTotal)}
+                            Economize {storeProduct
+                              ? formatStorePrice(savings, storeProduct.currencyCode)
+                              : formatPrice(savings)}
                           </Text>
                         )}
                       </TouchableOpacity>
@@ -502,14 +587,6 @@ const styles = StyleSheet.create({
     padding: 16,
     paddingTop: 20,
     backgroundColor: 'transparent',
-  },
-  backButton: {
-    width: 40,
-    height: 40,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(255,255,255,0.05)',
-    borderRadius: 20,
   },
   headerTitle: {
     fontSize: 16,

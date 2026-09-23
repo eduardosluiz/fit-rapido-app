@@ -154,7 +154,15 @@ class ApiService {
 
       if (!response.ok) {
         const errorText = await response.text();
-        throw new Error(errorText || `Erro ${response.status}`);
+        let message = 'Não foi possível concluir a solicitação. Tente novamente.';
+        try {
+          const body = JSON.parse(errorText);
+          if (response.status < 500) {
+            if (typeof body.message === 'string') message = body.message;
+            else if (Array.isArray(body.message)) message = body.message.filter((item: unknown) => typeof item === 'string').join(' ');
+          }
+        } catch { /* Não apresentar respostas técnicas ou HTML ao usuário. */ }
+        throw Object.assign(new Error(message), { status: response.status });
       }
 
       if (response.status === 204) return undefined as T;

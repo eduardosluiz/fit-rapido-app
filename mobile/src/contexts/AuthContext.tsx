@@ -4,6 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { notificationService } from '../services/notifications';
 import Purchases from 'react-native-purchases';
 import { Platform } from 'react-native';
+import { configurePurchases } from '../services/purchases';
 
 interface AuthContextType {
   user: User | null;
@@ -29,6 +30,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const configureRevenueCatUser = async (userId: string) => {
     if (Platform.OS === 'web') return;
     try {
+      const configured = await configurePurchases();
+      if (!configured) return;
       await Purchases.logIn(userId);
     } catch (e) {
       console.warn('Erro ao fazer login no RevenueCat:', e);
@@ -55,7 +58,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const login = async (email: string, senha: string) => {
     try {
-      console.log('Iniciando login para:', email);
+
       const data = await api.login(email, senha);
       
       // Verificar se a resposta é válida
@@ -86,7 +89,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         console.warn('Erro ao registrar token de notificação:', notifError);
       }
     } catch (error: any) {
-      console.error('Erro no login:', error);
+
       throw error;
     }
   };
@@ -139,7 +142,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setUser(null);
     if (Platform.OS !== 'web') {
       try {
-        await Purchases.logOut();
+        const configured = await configurePurchases();
+        if (configured) await Purchases.logOut();
       } catch (e) {
         console.warn('Erro ao fazer logout no RevenueCat:', e);
       }

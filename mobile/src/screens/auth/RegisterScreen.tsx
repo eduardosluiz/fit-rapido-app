@@ -20,6 +20,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import colors from '../../constants/colors';
 import fonts from '../../constants/fonts';
 import SocialLoginButtons from '../../components/SocialLoginButtons';
+import BackButton from '../../components/BackButton';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
@@ -30,6 +31,7 @@ export default function RegisterScreen() {
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
   const [loading, setLoading] = useState(false);
+  const [registrationError, setRegistrationError] = useState('');
   const [aceitaTermos, setAceitaTermos] = useState(false);
   const [aceitaPrivacidade, setAceitaPrivacidade] = useState(false);
   
@@ -81,14 +83,18 @@ export default function RegisterScreen() {
       return;
     }
 
+    if (loading) return;
+    setRegistrationError('');
     setLoading(true);
     try {
-      await register(email, nome, senha);
+      await register(email.trim().toLowerCase(), nome.trim(), senha);
       // Registrar consentimentos
       await api.createConsentimento('terms', true);
       await api.createConsentimento('privacy', true);
     } catch (error: any) {
-      Alert.alert('Erro', error.message || 'Erro ao criar conta');
+      setRegistrationError(error?.status === 409 || /email.*(uso|cadastr)/i.test(error?.message || '')
+        ? 'Este e-mail já tem uma conta. Entre com sua senha ou use outro e-mail para se cadastrar.'
+        : 'Não foi possível criar sua conta agora. Confira seus dados e tente novamente.');
     } finally {
       setLoading(false);
     }
@@ -124,13 +130,10 @@ export default function RegisterScreen() {
         </View>
 
         {/* Botão Voltar */}
-        <TouchableOpacity 
-          onPress={() => step === 2 ? setStep(1) : navigation.goBack()} 
-          style={styles.backButton}
-          activeOpacity={0.7}
-        >
-          <Ionicons name="arrow-back" size={24} color="#ffffff" />
-        </TouchableOpacity>
+        <BackButton
+          onPress={() => step === 2 ? setStep(1) : navigation.goBack()}
+          style={styles.backButtonPosition}
+        />
 
         <View style={styles.content}>
           {step === 1 ? (
@@ -227,6 +230,14 @@ export default function RegisterScreen() {
               <Text style={styles.subtitle}>Junte-se ao Fit & Rápido</Text>
 
               <View style={styles.form}>
+                {!!registrationError && (
+                  <View accessibilityRole="alert" style={{ padding: 14, marginBottom: 16, borderRadius: 12, backgroundColor: 'rgba(231,196,138,0.12)', borderWidth: 1, borderColor: colors.primary }}>
+                    <Text style={{ color: colors.primary, fontFamily: fonts.body, fontSize: 14 }}>{registrationError}</Text>
+                    <TouchableOpacity onPress={() => navigation.navigate('Login' as never)} style={{ paddingTop: 12 }}>
+                      <Text style={{ color: colors.primary, fontFamily: fonts.bodySemiBold }}>Ir para entrar</Text>
+                    </TouchableOpacity>
+                  </View>
+                )}
                 {/* Input Nome */}
                 <View style={styles.inputContainer}>
                   <Ionicons name="person-outline" size={20} color="#8A8892" style={styles.absoluteInputIconLeft as any} />
@@ -339,14 +350,11 @@ const styles = StyleSheet.create({
     height: '100%',
     opacity: 0.85,
   },
-  backButton: {
+  backButtonPosition: {
     position: 'absolute',
     top: Platform.OS === 'ios' ? 48 : 28,
     left: 20,
     zIndex: 10,
-    padding: 8,
-    backgroundColor: 'rgba(0, 0, 0, 0.3)',
-    borderRadius: 20,
   },
   content: {
     padding: 24,

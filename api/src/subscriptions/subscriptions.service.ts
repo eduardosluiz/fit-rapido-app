@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
+import { Injectable, NotFoundException, ServiceUnavailableException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Subscription, SubscriptionStatus } from './entities/subscription.entity';
@@ -10,6 +10,7 @@ import {
   ValidateIosReceiptDto,
   ValidateAndroidPurchaseDto,
 } from './dto/subscription.dto';
+import { getRevenueCatTier } from './revenuecat.helper';
 
 @Injectable()
 export class SubscriptionsService {
@@ -63,64 +64,54 @@ export class SubscriptionsService {
     try {
       console.log('Recebido Webhook do RevenueCat:', event.type, event.app_user_id);
       
+      if (event.type === 'TEST') return;
       const usuarioId = event.app_user_id;
       if (!usuarioId) return;
 
       const user = await this.userRepository.findOne({ where: { id: usuarioId } });
       if (!user) return;
 
-      const isPremium = event.type === 'INITIAL_PURCHASE' || event.type === 'RENEWAL' || event.type === 'UNCANCELLATION' || event.type === 'NON_RENEWING_PURCHASE';
-      
-      if (isPremium || event.entitlement_id === 'premium') {
-        const dataFim = event.expiration_at_ms ? new Date(event.expiration_at_ms) : new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
-        
+      const tier = getRevenueCatTier(event);
+      if (!tier) {
+        console.warn('Webhook do RevenueCat ignorado: produto ou entitlement desconhecido');
+        return;
+      }
+
+      const activeEventTypes = new Set([
+        'INITIAL_PURCHASE',
+        'RENEWAL',
+        'UNCANCELLATION',
+        'NON_RENEWING_PURCHASE',
+        'SUBSCRIPTION_EXTENDED',
+        'REFUND_REVERSED',
+      ]);
+      const inactiveEventTypes = new Set(['EXPIRATION', 'REFUND']);
+
+      if (activeEventTypes.has(event.type)) {
+        const dataFim = event.expiration_at_ms ? new Date(event.expiration_at_ms) : null;
+
         await this.userRepository.update(usuarioId, {
-          subscription_tier: SubscriptionTier.PREMIUM,
+          subscription_tier: tier,
           subscription_expires_at: dataFim,
         });
-      } else if (event.type === 'EXPIRATION') {
+      } else if (inactiveEventTypes.has(event.type)) {
         await this.userRepository.update(usuarioId, {
-          subscription_tier: SubscriptionTier.BASIC,
+          subscription_tier: SubscriptionTier.NONE,
+          subscription_expires_at: null,
         });
       }
     } catch (e) {
       console.error('Erro ao processar webhook do RevenueCat', e);
+      throw new ServiceUnavailableException('Não foi possível processar a assinatura');
     }
   }
 
   async validateIosReceipt(usuarioId: string, dto: ValidateIosReceiptDto): Promise<Subscription> {
-    // TODO: Implementar validação real com Apple quando tiver conta de desenvolvedor
-    // Por enquanto, validação mock
-    console.log('Validating iOS receipt (mock):', dto.receipt.substring(0, 50));
-
-    // Simular validação bem-sucedida
-    const plano = SubscriptionTier.PREMIUM; // Assumir premium por padrão
-
-    return this.create(usuarioId, {
-      plano,
-      receipt_ios: dto.receipt,
-      transaction_id: dto.transaction_id,
-      plataforma: 'ios',
-    });
+    throw new ServiceUnavailableException('Validação de compras é processada pelo RevenueCat');
   }
 
   async validateAndroidPurchase(usuarioId: string, dto: ValidateAndroidPurchaseDto): Promise<Subscription> {
-    // TODO: Implementar validação real com Google quando tiver conta de desenvolvedor
-    // Por enquanto, validação mock
-    console.log('Validating Android purchase (mock):', dto.purchase_token.substring(0, 50));
-
-    // Determinar plano baseado no product_id
-    let plano = SubscriptionTier.BASIC;
-    if (dto.product_id.includes('premium')) {
-      plano = SubscriptionTier.PREMIUM;
-    }
-
-    return this.create(usuarioId, {
-      plano,
-      receipt_android: dto.purchase_token,
-      transaction_id: dto.transaction_id,
-      plataforma: 'android',
-    });
+    throw new ServiceUnavailableException('Validação de compras é processada pelo RevenueCat');
   }
 
   async getStatus(usuarioId: string): Promise<{ active: boolean; tier: SubscriptionTier; expiresAt: Date | null }> {
@@ -131,7 +122,7 @@ export class SubscriptionsService {
 
     const now = new Date();
     const isActive =
-      user.subscription_tier !== SubscriptionTier.NONE &&
+      [SubscriptionTier.PREMIUM, SubscriptionTier.PREMIUM_FIT].includes(user.subscription_tier) &&
       (!user.subscription_expires_at || user.subscription_expires_at > now);
 
     return {

@@ -39,20 +39,20 @@ export class LegalController {
   @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.CREATED)
   async createConsentimento(@Request() req, @Body() dto: CreateConsentimentoDto) {
-    return this.legalService.createConsentimento(req.user.id, dto);
+    return this.legalService.createConsentimento(req.user.sub, dto);
   }
 
   @Get('consents')
   @UseGuards(JwtAuthGuard)
   async getConsentimentos(@Request() req) {
-    return this.legalService.getConsentimentos(req.user.id);
+    return this.legalService.getConsentimentos(req.user.sub);
   }
 
   @Get('has-consent/:tipo')
   @UseGuards(JwtAuthGuard)
   async hasConsentimento(@Request() req, @Param('tipo') tipo: string) {
     return {
-      hasConsent: await this.legalService.hasConsentimento(req.user.id, tipo as any),
+      hasConsent: await this.legalService.hasConsentimento(req.user.sub, tipo as any),
     };
   }
 }
