@@ -7,6 +7,8 @@ import {
   Request,
   HttpCode,
   HttpStatus,
+  Headers,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { SubscriptionsService } from './subscriptions.service';
 import { SubscriptionPeriodService } from './subscription-period.service';
@@ -27,7 +29,16 @@ export class SubscriptionsController {
   ) {}
 
   @Post('webhook/revenuecat')
-  async revenueCatWebhook(@Body() payload: any) {
+  @HttpCode(HttpStatus.OK)
+  async revenueCatWebhook(
+    @Body() payload: any,
+    @Headers('authorization') authorization?: string,
+  ) {
+    const expectedAuthorization = process.env.REVENUECAT_WEBHOOK_AUTH?.trim();
+    if (!expectedAuthorization || authorization !== expectedAuthorization) {
+      throw new UnauthorizedException('Webhook não autorizado');
+    }
+
     if (payload && payload.event) {
       await this.subscriptionsService.processRevenueCatWebhook(payload.event);
     }
