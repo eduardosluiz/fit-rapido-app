@@ -389,31 +389,6 @@ export default function SubscriptionsScreen() {
           </View>
         )}
 
-        {Platform.OS !== 'web' && (
-          <View style={[styles.footer, { marginBottom: 20 }]}>
-            <TouchableOpacity accessibilityRole="button" style={styles.restoreButton}
-              onPress={() => openStorePage(Platform.OS === 'ios'
-                ? 'https://apps.apple.com/account/subscriptions'
-                : 'https://play.google.com/store/account/subscriptions')}>
-              <Text style={styles.restoreButtonText}>Gerenciar ou cancelar assinatura</Text>
-            </TouchableOpacity>
-            <Text style={styles.footerText}>
-              Abre o gerenciamento da loja. Cancelar a renovação impede a próxima cobrança e normalmente mantém seu acesso até o fim do período. Não solicita reembolso.
-            </Text>
-            {Platform.OS === 'ios' && (
-              <>
-                <TouchableOpacity accessibilityRole="link" style={styles.restoreButton}
-                  onPress={() => openStorePage('https://reportaproblem.apple.com/')}>
-                  <Text style={styles.restoreButtonText}>Solicitar reembolso à Apple</Text>
-                </TouchableOpacity>
-                <Text style={styles.footerText}>
-                  Abre o site da Apple para escolher a compra e solicitar a devolução. A Apple analisa o pedido; o envio não garante aprovação.
-                </Text>
-              </>
-            )}
-          </View>
-        )}
-
         {/* Planos */}
         <View style={styles.plansContainer}>
           {plans.map((plan) => {
@@ -581,19 +556,6 @@ export default function SubscriptionsScreen() {
           })}
         </View>
 
-        <Text style={[styles.currentPlanDesc, { textAlign: 'center' }]}>
-          Já assinou, mas seu acesso não aparece? Restaure suas compras para recuperar um acesso existente. Isso não cancela nem reativa a renovação.
-        </Text>
-        {/* Botão de restaurar compras */}
-        <TouchableOpacity
-          style={styles.restoreButton}
-          onPress={handleRestore}
-          disabled={loading}
-        >
-          <Ionicons name="refresh-outline" size={16} color="#d5a43d" />
-          <Text style={styles.restoreButtonText}>Restaurar Compras</Text>
-        </TouchableOpacity>
-
         {/* Informações adicionais */}
         <View style={styles.footer}>
           <Text style={styles.footerTitle}>Informações da assinatura</Text>
@@ -614,6 +576,48 @@ export default function SubscriptionsScreen() {
               <Ionicons name="pricetag-outline" size={15} color="#d5a43d" />
             </View>
             <Text style={styles.footerText}>Descontos aplicados aos planos trimestrais, semestrais e anuais.</Text>
+          </View>
+        </View>
+        <View style={styles.managementSection}>
+          {Platform.OS !== 'web' && (
+            <>
+              <View style={styles.managementCard}>
+                <TouchableOpacity accessibilityRole="button" style={styles.managementButton}
+                  onPress={() => openStorePage(Platform.OS === 'ios'
+                    ? 'https://apps.apple.com/account/subscriptions'
+                    : 'https://play.google.com/store/account/subscriptions')}>
+                  <Ionicons name="settings-outline" size={18} color="#d5a43d" />
+                  <Text style={styles.managementTitle}>Gerenciar ou cancelar assinatura</Text>
+                  <Ionicons name="chevron-forward" size={16} color="#d5a43d" />
+                </TouchableOpacity>
+                <Text style={styles.managementDescription}>
+                  Abre a loja para alterar o plano ou cancelar a renovação. O acesso normalmente continua até o fim do período. Não solicita reembolso.
+                </Text>
+              </View>
+              {Platform.OS === 'ios' && (
+                <View style={styles.managementCard}>
+                  <TouchableOpacity accessibilityRole="link" style={styles.managementButton}
+                    onPress={() => openStorePage('https://reportaproblem.apple.com/')}>
+                    <Ionicons name="receipt-outline" size={18} color="#d5a43d" />
+                    <Text style={styles.managementTitle}>Solicitar reembolso à Apple</Text>
+                    <Ionicons name="chevron-forward" size={16} color="#d5a43d" />
+                  </TouchableOpacity>
+                  <Text style={styles.managementDescription}>
+                    Escolha a compra e solicite a devolução no site da Apple. A aprovação depende da análise da Apple.
+                  </Text>
+                </View>
+              )}
+            </>
+          )}
+          <View style={styles.managementCard}>
+            <TouchableOpacity accessibilityRole="button" style={styles.managementButton}
+              onPress={handleRestore} disabled={loading}>
+              <Ionicons name="refresh-outline" size={18} color="#d5a43d" />
+              <Text style={styles.managementTitle}>Restaurar compras</Text>
+            </TouchableOpacity>
+            <Text style={styles.managementDescription}>
+              Já assinou, mas seu acesso não aparece? Recupere uma compra existente. Isso não cancela nem reativa a renovação.
+            </Text>
           </View>
         </View>
       </ScrollView>
@@ -664,8 +668,8 @@ const styles = StyleSheet.create({
   currentPlanCard: {
     backgroundColor: 'rgba(200, 146, 26, 0.08)',
     borderRadius: 20,
-    padding: 20,
-    marginBottom: mobileSpacing.section,
+    padding: 16,
+    marginBottom: 14,
     borderWidth: 1,
     borderColor: 'rgba(200, 146, 26, 0.3)',
   },
@@ -745,13 +749,13 @@ const styles = StyleSheet.create({
     paddingLeft: 36,
   },
   plansContainer: {
-    gap: mobileSpacing.section,
-    marginBottom: mobileSpacing.section,
+    gap: 18,
+    marginBottom: 14,
   },
   planCard: {
     backgroundColor: 'rgba(255,255,255,0.02)',
     borderRadius: 24,
-    padding: 20,
+    padding: 16,
     borderWidth: 1,
     borderColor: 'rgba(255,255,255,0.06)',
   },
@@ -788,7 +792,7 @@ const styles = StyleSheet.create({
     letterSpacing: 1,
   },
   planHeader: {
-    marginBottom: 24,
+    marginBottom: 16,
     paddingTop: 8,
     alignItems: 'center',
   },
@@ -811,8 +815,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
   beneficiosContainer: {
-    marginBottom: 28,
-    gap: 14,
+    marginBottom: 16,
+    gap: 10,
   },
   beneficioItem: {
     flexDirection: 'row',
@@ -840,8 +844,8 @@ const styles = StyleSheet.create({
     fontWeight: '400',
   },
   periodosContainer: {
-    marginBottom: mobileSpacing.section,
-    gap: 12,
+    marginBottom: 14,
+    gap: 8,
   },
   periodosTitle: {
     fontSize: 13,
@@ -854,7 +858,7 @@ const styles = StyleSheet.create({
   periodoCard: {
     backgroundColor: 'rgba(255,255,255,0.03)',
     borderRadius: 16,
-    padding: 18,
+    padding: 12,
     borderWidth: 1,
     borderColor: 'rgba(255,255,255,0.08)',
   },
@@ -981,26 +985,17 @@ const styles = StyleSheet.create({
     fontFamily: fonts.bodySemiBold,
     letterSpacing: 0.1,
   },
-  restoreButton: {
-    alignSelf: 'center',
-    flexDirection: 'row',
-    gap: 7,
-    marginTop: 4,
-    marginBottom: mobileSpacing.section,
-    paddingHorizontal: 16,
-    paddingVertical: 11,
-    alignItems: 'center',
+  managementSection: { marginTop: 12, gap: 8 },
+  managementCard: {
+    padding: 12,
     borderRadius: 14,
+    backgroundColor: 'rgba(255,255,255,0.03)',
     borderWidth: 1,
-    borderColor: 'rgba(200,146,26,0.2)',
-    backgroundColor: 'rgba(200,146,26,0.05)',
+    borderColor: 'rgba(255,255,255,0.08)',
   },
-  restoreButtonText: {
-    color: '#d5a43d',
-    fontSize: 11,
-    fontFamily: fonts.bodyMedium,
-    letterSpacing: 0.1,
-  },
+  managementButton: { flexDirection: 'row', alignItems: 'center', gap: 8, minHeight: 44 },
+  managementTitle: { flex: 1, color: '#d5a43d', fontSize: 13, fontFamily: fonts.bodyMedium },
+  managementDescription: { color: 'rgba(255,255,255,0.65)', fontSize: 12, lineHeight: 17, marginTop: 2 },
   footer: {
     marginTop: 4,
     padding: 16,
@@ -1037,7 +1032,7 @@ const styles = StyleSheet.create({
     fontFamily: fonts.body,
   },
   daiReceitasContainer: {
-    gap: 12,
+    gap: 8,
     paddingVertical: 4,
   },
   daiReceitasTitle: {
@@ -1064,10 +1059,10 @@ const styles = StyleSheet.create({
   benefitsDivider: {
     height: 1,
     backgroundColor: 'rgba(200,146,26,0.28)',
-    marginVertical: 20,
+    marginVertical: 12,
   },
   daiTreinosContainer: {
-    gap: 14,
+    gap: 10,
   },
   daiTreinosTitle: {
     fontSize: 15,
