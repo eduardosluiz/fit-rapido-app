@@ -8,6 +8,7 @@ import {
   ActivityIndicator,
   Alert,
   Platform,
+  Linking,
 } from 'react-native';
 import Purchases, { PurchasesStoreProduct } from 'react-native-purchases';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -337,6 +338,18 @@ export default function SubscriptionsScreen() {
               </View>
             </View>
             <Text style={styles.currentPlanDesc}>{currentPlan.descricao}</Text>
+            {Platform.OS !== 'web' && (
+              <TouchableOpacity
+                accessibilityRole="button"
+                onPress={() => Linking.openURL(Platform.OS === 'ios'
+                  ? 'https://apps.apple.com/account/subscriptions'
+                  : 'https://play.google.com/store/account/subscriptions'
+                ).catch(() => Alert.alert('Não foi possível abrir a loja', 'Tente novamente em instantes.'))}
+                style={{ paddingVertical: 12 }}
+              >
+                <Text style={{ color: colors.primary }}>Gerenciar ou cancelar na {Platform.OS === 'ios' ? 'Apple' : 'Google Play'}</Text>
+              </TouchableOpacity>
+            )}
             {subscriptionStatus.expiresAt && (
               <Text style={styles.currentPlanExpiry}>
                 Válido até: {new Date(subscriptionStatus.expiresAt).toLocaleDateString('pt-BR')}

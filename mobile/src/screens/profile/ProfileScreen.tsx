@@ -97,13 +97,7 @@ export default function ProfileScreen() {
   };
 
   const handleManageSubscription = () => {
-    if (Platform.OS === 'ios') {
-      Linking.openURL('https://apps.apple.com/account/subscriptions');
-    } else if (Platform.OS === 'android') {
-      Linking.openURL('https://play.google.com/store/account/subscriptions');
-    } else {
-      navigation.navigate('Subscriptions' as never);
-    }
+    navigation.navigate('Subscriptions' as never);
   };
 
   const getPlanColor = () => {
@@ -217,8 +211,8 @@ export default function ProfileScreen() {
                     <Ionicons name="diamond" size={22} color={colors.primary} />
                   </View>
                   <View style={styles.actionButtonTextContainer}>
-                    <Text style={styles.actionButtonTitle}>Gerenciar Assinatura</Text>
-                    <Text style={styles.actionButtonSubtitle}>Atualizar ou cancelar seu plano</Text>
+                    <Text style={styles.actionButtonTitle}>Ver planos e assinatura</Text>
+                    <Text style={styles.actionButtonSubtitle}>Conheça os planos e consulte seu acesso</Text>
                   </View>
                   <Ionicons name="chevron-forward" size={20} color={colors.textMuted} />
                 </View>
