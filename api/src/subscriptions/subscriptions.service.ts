@@ -87,6 +87,11 @@ export class SubscriptionsService {
       ]);
       const inactiveEventTypes = new Set(['EXPIRATION', 'REFUND']);
 
+      // A Apple pode entregar notificações antigas após uma renovação/upgrade.
+      const storedExpiry = user.subscription_expires_at ? new Date(user.subscription_expires_at).getTime() : 0;
+      const eventExpiry = Number(event.expiration_at_ms || 0);
+      if (eventExpiry && storedExpiry > eventExpiry) return;
+
       if (activeEventTypes.has(event.type)) {
         const dataFim = event.expiration_at_ms ? new Date(event.expiration_at_ms) : null;
 
@@ -95,6 +100,7 @@ export class SubscriptionsService {
           subscription_expires_at: dataFim,
         });
       } else if (inactiveEventTypes.has(event.type)) {
+        if (user.subscription_tier && user.subscription_tier !== tier) return;
         await this.userRepository.update(usuarioId, {
           subscription_tier: SubscriptionTier.NONE,
           subscription_expires_at: null,

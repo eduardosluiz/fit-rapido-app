@@ -28,4 +28,16 @@ describe('RevenueCat webhook lifecycle', () => {
     users.findOne.mockResolvedValueOnce({ subscription_tier: SubscriptionTier.FREE });
     expect((await service.getStatus('user')).active).toBe(false);
   });
+  it('ignores expiration and renewal notifications older than the current subscription', async () => {
+    users.findOne.mockResolvedValue({ subscription_tier: SubscriptionTier.PREMIUM_FIT, subscription_expires_at: new Date(2000000000000) });
+    for (const type of ['EXPIRATION', 'RENEWAL']) {
+      await service.processRevenueCatWebhook({ type, app_user_id: 'user', product_id: 'premium_monthly', expiration_at_ms: 1900000000000 });
+    }
+    expect(users.update).not.toHaveBeenCalled();
+  });
+  it('does not revoke the complete plan when a different plan expires', async () => {
+    users.findOne.mockResolvedValue({ subscription_tier: SubscriptionTier.PREMIUM_FIT });
+    await service.processRevenueCatWebhook({ type: 'EXPIRATION', app_user_id: 'user', product_id: 'premium_monthly' });
+    expect(users.update).not.toHaveBeenCalled();
+  });
 });

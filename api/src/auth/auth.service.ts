@@ -7,6 +7,8 @@ import { User, UserRole, SubscriptionTier } from './entities/user.entity';
 import { RegisterDto, LoginDto, UpdateProfileDto, UpdateUserDto, UpdatePasswordDto, SocialLoginDto } from './dto/auth.dto';
 import { canManuallyChangeSubscription, getSubscriptionChangeErrorMessage } from '../common/helpers/subscription-validation.helper';
 import { SocialTokenVerifierService } from './social-token-verifier.service';
+import { ConsultaIA } from '../ingredientes/entities/consulta-ia.entity';
+import { SubstituicaoUsuario } from '../ingredientes/entities/substituicao-usuario.entity';
 
 @Injectable()
 export class AuthService {
@@ -282,6 +284,12 @@ export class AuthService {
     if (!user) {
       throw new NotFoundException('Usuário não encontrado');
     }
-    await this.userRepository.delete(id);
+    // Esses dois relacionamentos não possuem cascade no banco existente.
+    // A transação evita uma exclusão parcial se alguma operação falhar.
+    await this.userRepository.manager.transaction(async manager => {
+      await manager.delete(SubstituicaoUsuario, { usuario_id: id });
+      await manager.delete(ConsultaIA, { usuario_id: id });
+      await manager.delete(User, { id });
+    });
   }
 }
