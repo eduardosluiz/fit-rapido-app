@@ -3,7 +3,7 @@ import { api, User } from '../services/api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { notificationService } from '../services/notifications';
 import Purchases from 'react-native-purchases';
-import { Platform } from 'react-native';
+import { AppState, Platform } from 'react-native';
 import { configurePurchases } from '../services/purchases';
 
 interface AuthContextType {
@@ -26,6 +26,49 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     loadUser();
   }, []);
+
+  useEffect(() => {
+    if (!user?.id) return;
+    const userId = user.id;
+    let disposed = false;
+    let refreshing = false;
+    const refresh = async () => {
+      if (refreshing || AppState.currentState !== 'active') return;
+      refreshing = true;
+      try {
+        const status = await api.getSubscriptionStatus();
+        if (!disposed) setUser(current => current?.id === userId ? {
+          ...current,
+          subscription_tier: !status.active && ['premium', 'premium_fit'].includes(status.tier) ? 'none' : status.tier,
+          subscription_expires_at: status.expiresAt,
+        } : current);
+      } catch {
+        // Uma falha de rede não equivale a cancelamento da assinatura.
+      } finally {
+        refreshing = false;
+      }
+    };
+    void refresh();
+    const listener = AppState.addEventListener('change', state => {
+      if (state === 'active') void refresh();
+    });
+    const interval = setInterval(() => void refresh(), 60000);
+    return () => { disposed = true; listener.remove(); clearInterval(interval); };
+  }, [user?.id]);
+
+  useEffect(() => {
+    if (!user?.subscription_expires_at || !['premium', 'premium_fit'].includes(user.subscription_tier)) return;
+    const expiresAt = new Date(user.subscription_expires_at).getTime();
+    if (!Number.isFinite(expiresAt)) return;
+    const delay = Math.max(0, expiresAt - Date.now());
+    const expire = () => {
+      if (Date.now() >= expiresAt) setUser(current => current?.id === user.id &&
+        current.subscription_expires_at === user.subscription_expires_at ? { ...current, subscription_tier: 'none' } : current);
+    };
+    const timer = setTimeout(expire, Math.min(delay, 2147483647));
+    const interval = setInterval(expire, 60000);
+    return () => { clearTimeout(timer); clearInterval(interval); };
+  }, [user?.id, user?.subscription_tier, user?.subscription_expires_at]);
 
   const configureRevenueCatUser = async (userId: string) => {
     if (Platform.OS === 'web') return;
@@ -132,12 +175,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       await configureRevenueCatUser(data.user.id.toString());
     }
     // Registrar token de notificação após registro
-    await notificationService.registerToken();
+    try { await notificationService.registerToken(); } catch { /* Cadastro já concluído. */ }
   };
 
   const logout = async () => {
     // Remover token de notificação antes de fazer logout
-    await notificationService.unregisterToken();
+    try { await notificationService.unregisterToken(); } catch { /* Permitir sair mesmo sem rede. */ }
     await api.logout();
     setUser(null);
     if (Platform.OS !== 'web') {

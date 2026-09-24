@@ -6,6 +6,7 @@ import { Ionicons } from '@expo/vector-icons';
 import colors from '../../constants/colors';
 import fonts from '../../constants/fonts';
 import { api } from '../../services/api';
+import BackButton from '../../components/BackButton';
 
 export default function PrivacyPolicyScreen() {
   const navigation = useNavigation();
@@ -261,13 +262,7 @@ Ao usar o Fit & Rápido, você declara ter lido, compreendido e concordado com e
     <SafeAreaView style={styles.container} edges={['top', 'bottom']}>
       {/* Header Premium */}
       <View style={styles.header}>
-        <TouchableOpacity
-          onPress={() => navigation.goBack()}
-          style={styles.backButton}
-          activeOpacity={0.7}
-        >
-          <Ionicons name="chevron-back" size={24} color={colors.primary} />
-        </TouchableOpacity>
+        <BackButton onPress={() => navigation.goBack()} />
         <Text style={styles.headerTitle}>Política de Privacidade</Text>
         <View style={{ width: 40 }} />
       </View>

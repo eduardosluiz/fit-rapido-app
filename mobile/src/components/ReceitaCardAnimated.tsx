@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, Animated, Pressable, useWindowDimensions } from
 import { Image } from "expo-image";
 import { Ionicons } from '@expo/vector-icons';
 import { Video, ResizeMode } from 'expo-av';
-import { colors } from "../constants/colors";
+import { colors, mobileSpacing } from "../constants/colors";
 import fonts from "../constants/fonts";
 import { Receita, getImageUrl } from "../services/api";
 
@@ -80,11 +80,11 @@ export default function ReceitaCardAnimated({ item, isHorizontal, compact, onPre
   };
 
   const { width: windowWidth } = useWindowDimensions();
-  const CARD_WIDTH = (windowWidth - 32) / 2;
+  const CARD_WIDTH = (windowWidth - mobileSpacing.pageGutter * 2 - mobileSpacing.cardGap) / 2;
   const compactStyle = isHorizontal || compact;
 
   return (
-    <Pressable onPress={onPress} onPressIn={onPressIn} onPressOut={onPressOut} style={[isHorizontal && { width: CARD_WIDTH, marginRight: 10 }]}>
+    <Pressable onPress={onPress} onPressIn={onPressIn} onPressOut={onPressOut} style={[isHorizontal && { width: CARD_WIDTH }]}>
       <Animated.View style={[styles.card, compactStyle && styles.horizontalCard, { transform: [{ scale }] }]}>
         <View style={[styles.imageContainer, compactStyle && styles.horizontalImageContainer]}>
           {renderMedia()}

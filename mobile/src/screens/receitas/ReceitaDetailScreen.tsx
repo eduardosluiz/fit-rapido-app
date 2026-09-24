@@ -17,6 +17,7 @@ import { api, Receita, getImageUrl } from '../../services/api';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import VideoPlayer from '../../components/VideoPlayer';
 import ImageCarousel from '../../components/ImageCarousel';
+import BackButton from '../../components/BackButton';
 import { useAuth } from '../../contexts/AuthContext';
 import colors, { mobileSpacing } from '../../constants/colors';
 import fonts from '../../constants/fonts';
@@ -99,13 +100,7 @@ export default function ReceitaDetailScreen() {
       headerTitleStyle: { color: '#c8921a' },
       headerBackTitleVisible: false,
       headerLeft: () => (
-        <TouchableOpacity
-          onPress={handleGoBack}
-          style={{ marginLeft: 8, padding: 8 }}
-          hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
-        >
-          <Ionicons name="arrow-back" size={24} color="#c8921a" />
-        </TouchableOpacity>
+        <BackButton onPress={handleGoBack} style={{ marginLeft: 8 }} />
       ),
     });
   }, [navigation]);

@@ -17,6 +17,7 @@ import { CreateTreinoDto, UpdateTreinoDto } from './dto/treino.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { JwtOptionalGuard } from '../auth/guards/jwt-optional.guard';
 import { AuthService } from '../auth/auth.service';
+import { WorkoutAccessGuard } from './workout-access.guard';
 
 @Controller('treinos')
 export class TreinosController {
@@ -80,6 +81,7 @@ export class TreinosController {
   }
 
   @Get(':id')
+  @UseGuards(JwtAuthGuard, WorkoutAccessGuard)
   findOne(@Param('id') id: string) {
     return this.treinosService.findOne(id);
   }
@@ -97,4 +99,3 @@ export class TreinosController {
     await this.treinosService.remove(id);
   }
 }
-

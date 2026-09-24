@@ -589,8 +589,14 @@ export default function SubscriptionsScreen() {
             <View style={styles.footerIcon}>
               <Ionicons name="pricetag-outline" size={15} color="#d5a43d" />
             </View>
-            <Text style={styles.footerText}>Descontos aplicados aos planos trimestrais, semestrais e anuais.</Text>
+            <Text style={styles.footerText}>Descontos aplicados aos planos trimestrais e anuais.</Text>
           </View>
+          <TouchableOpacity accessibilityRole="link" style={styles.managementButton} onPress={() => navigation.navigate('TermsOfService' as never)}>
+            <Text style={styles.managementTitle}>Termos de uso</Text>
+          </TouchableOpacity>
+          <TouchableOpacity accessibilityRole="link" style={styles.managementButton} onPress={() => navigation.navigate('PrivacyPolicy' as never)}>
+            <Text style={styles.managementTitle}>Política de privacidade</Text>
+          </TouchableOpacity>
         </View>
         <View style={styles.managementSection}>
           {Platform.OS !== 'web' && (

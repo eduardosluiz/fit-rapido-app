@@ -16,6 +16,7 @@ build/
 .next/
 out/
 */dist/
+dist-release/
 */build/
 */.next/
 */out/

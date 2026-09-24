@@ -390,7 +390,8 @@ export default function FeedScreen() {
                   <Text style={styles.seeAllText}>Ver todas</Text>
                 </TouchableOpacity>
               </View>
-              <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.horizontalScroll}>
+              <ScrollView horizontal showsHorizontalScrollIndicator={false}
+                contentContainerStyle={[styles.horizontalCardsContent, receitas.length === 1 && styles.singleCardContent]}>
                 {receitas.map(renderReceita)}
               </ScrollView>
             </View>
@@ -422,7 +423,8 @@ export default function FeedScreen() {
                   )}
                 </TouchableOpacity>
               </View>
-              <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.horizontalScroll}>
+              <ScrollView horizontal showsHorizontalScrollIndicator={false}
+                contentContainerStyle={[styles.horizontalCardsContent, treinos.length === 1 && styles.singleCardContent]}>
                 {treinos.map(renderTreino)}
               </ScrollView>
             </View>
@@ -632,7 +634,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingHorizontal: 14,
+    paddingHorizontal: mobileSpacing.pageGutter,
     marginBottom: mobileSpacing.sectionHeaderToContent,
   },
   sectionTitleContainer: {
@@ -660,6 +662,14 @@ const styles = StyleSheet.create({
   },
   horizontalScroll: {
     paddingLeft: 20,
+  },
+  horizontalCardsContent: {
+    paddingHorizontal: mobileSpacing.pageGutter,
+    gap: mobileSpacing.cardGap,
+  },
+  singleCardContent: {
+    flexGrow: 1,
+    justifyContent: 'center',
   },
   emptyContainer: {
     flex: 1,

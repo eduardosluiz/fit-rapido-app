@@ -1,5 +1,7 @@
 // require('dotenv').config();
 
+const googleIosUrlScheme = process.env.EXPO_PUBLIC_GOOGLE_IOS_URL_SCHEME;
+
 module.exports = {
   expo: {
     name: "Fit & Rápido",
@@ -22,10 +24,11 @@ module.exports = {
       "**/*"
     ],
     ios: {
+      usesAppleSignIn: true,
       runtimeVersion: {
         policy: "appVersion"
       },
-      supportsTablet: true,
+      supportsTablet: false,
       bundleIdentifier: "com.fitrapido.app",
       infoPlist: {
         ITSAppUsesNonExemptEncryption: false
@@ -47,12 +50,15 @@ module.exports = {
         }
       ],
       "expo-apple-authentication",
-      [
+      ["expo-image-picker", {
+        photosPermission: "Permita o acesso às fotos para escolher sua imagem de perfil.",
+        cameraPermission: false,
+        microphonePermission: false
+      }],
+      ...(googleIosUrlScheme ? [[
         "@react-native-google-signin/google-signin",
-        {
-          "iosUrlScheme": "com.googleusercontent.apps.1234567890-dummy"
-        }
-      ],
+        { iosUrlScheme: googleIosUrlScheme }
+      ]] : []),
       [
         "expo-build-properties",
         {
@@ -78,7 +84,7 @@ module.exports = {
         projectId: "eeccc68a-8c18-48ee-a4f1-89c4bd5389b3"
       },
       // Expor variáveis de ambiente para o app
-      EXPO_PUBLIC_API_URL: process.env.EXPO_PUBLIC_API_URL || "http://10.0.2.2:3001"
+      EXPO_PUBLIC_API_URL: process.env.EXPO_PUBLIC_API_URL || "https://backend.daipohlmann.com.br"
     }
   }
 };

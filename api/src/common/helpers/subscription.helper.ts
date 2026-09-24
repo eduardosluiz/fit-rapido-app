@@ -8,6 +8,17 @@ export enum AccessLevel {
   PREMIUM_FIT = 'premium_fit', // Premium receitas + treinos
 }
 
+/** Expiração é aplicada na leitura, mesmo antes da chegada do webhook. */
+export function getEffectiveSubscriptionTier(user: User | null): SubscriptionTier {
+  const tier = user?.subscription_tier || SubscriptionTier.NONE;
+  if (user?.subscription_expires_at &&
+      [SubscriptionTier.PREMIUM, SubscriptionTier.PREMIUM_FIT, SubscriptionTier.BASIC].includes(tier) &&
+      !(new Date(user.subscription_expires_at).getTime() > Date.now())) {
+    return SubscriptionTier.NONE;
+  }
+  return tier;
+}
+
 /**
  * Verifica se o usuário está dentro do período de trial (7 dias)
  */
@@ -26,7 +37,7 @@ export function canAccessRecipe(user: User | null, receita: Receita): boolean {
     return false;
   }
 
-  const tier = user.subscription_tier || SubscriptionTier.NONE;
+  const tier = getEffectiveSubscriptionTier(user);
 
   // Se está dentro do trial, pode acessar todas as receitas
   if (hasActiveTrial(user)) {
@@ -59,7 +70,7 @@ export function canAccessTreino(user: User | null): boolean {
     return false;
   }
 
-  const tier = user.subscription_tier || SubscriptionTier.NONE;
+  const tier = getEffectiveSubscriptionTier(user);
   return tier === SubscriptionTier.PREMIUM_FIT;
 }
 
@@ -71,7 +82,7 @@ export function getUserAccessLevel(user: User | null): AccessLevel {
     return AccessLevel.FREE;
   }
 
-  const tier = user.subscription_tier || SubscriptionTier.NONE;
+  const tier = getEffectiveSubscriptionTier(user);
 
   if (hasActiveTrial(user)) {
     return AccessLevel.FREE_TRIAL;

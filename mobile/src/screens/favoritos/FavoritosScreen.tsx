@@ -487,7 +487,7 @@ function FilterModal({ type, onClose, onApply, recipeFilters, setRecipeFilters, 
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: 'transparent' },
-  content: { paddingHorizontal: 16, paddingTop: 24, paddingBottom: 108 },
+  content: { paddingHorizontal: mobileSpacing.pageGutter, paddingTop: 24, paddingBottom: 108 },
   loadingContainer: { flex: 1, alignItems: 'center', justifyContent: 'center' },
   pageHeader: { marginBottom: mobileSpacing.section },
   pageTitle: { color: '#E7C48A', fontFamily: fonts.title, fontSize: 25 },

@@ -14,6 +14,7 @@ import { ExercicioCategoria } from './entities/exercicio-categoria.entity';
 import { TreinoModalidade } from './entities/treino-modalidade.entity';
 import { NotificationsModule } from '../notifications/notifications.module';
 import { AuthModule } from '../auth/auth.module';
+import { WorkoutAccessGuard } from './workout-access.guard';
 
 @Module({
   imports: [
@@ -34,7 +35,7 @@ import { AuthModule } from '../auth/auth.module';
     ExerciciosCategoriasController,
     TreinosModalidadesController
   ],
-  providers: [TreinosService, CategoriasTreinosService],
+  providers: [TreinosService, CategoriasTreinosService, WorkoutAccessGuard],
   exports: [TreinosService, TypeOrmModule],
 })
 export class TreinosModule {}

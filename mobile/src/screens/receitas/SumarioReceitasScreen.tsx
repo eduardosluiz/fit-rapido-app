@@ -15,6 +15,7 @@ import { api, Receita } from '../../services/api';
 import colors, { mobileSpacing } from '../../constants/colors';
 import fonts from '../../constants/fonts';
 import AppBackground from '../../components/AppBackground';
+import BackButton from '../../components/BackButton';
 
 export default function SumarioReceitasScreen() {
   const navigation = useNavigation();
@@ -127,9 +128,7 @@ export default function SumarioReceitasScreen() {
     <AppBackground>
       <SafeAreaView style={styles.safeArea}>
         <View style={styles.header}>
-          <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
-            <Ionicons name="arrow-back" size={24} color={colors.primary} />
-          </TouchableOpacity>
+          <BackButton onPress={() => navigation.goBack()} />
           <Text style={styles.headerTitle}>Sumário de Receitas</Text>
           <View style={styles.headerRight} />
         </View>

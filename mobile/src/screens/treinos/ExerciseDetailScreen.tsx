@@ -7,6 +7,7 @@ import { ResizeMode, Video } from 'expo-av';
 import { api, getImageUrl, Treino } from '../../services/api';
 import AppBackground from '../../components/AppBackground';
 import VideoPlayer from '../../components/VideoPlayer';
+import BackButton from '../../components/BackButton';
 import { useAuth } from '../../contexts/AuthContext';
 import colors from '../../constants/colors';
 import fonts from '../../constants/fonts';
@@ -206,9 +207,7 @@ export default function ExerciseDetailScreen() {
         <ScrollView contentContainerStyle={styles.page} showsVerticalScrollIndicator={false}>
           <View style={styles.detailFrame}>
             <View style={styles.topBar}>
-              <TouchableOpacity onPress={() => navigation.goBack()} style={styles.iconButton} accessibilityLabel="Voltar">
-                <Ionicons name="arrow-back" size={25} color={colors.primary} />
-              </TouchableOpacity>
+              <BackButton onPress={() => navigation.goBack()} />
               <View style={styles.topActions}>
                 <TouchableOpacity onPress={toggleFavorite} disabled={savingFavorite} style={styles.iconButton} accessibilityLabel="Favoritar exercício">
                   <Ionicons name={isFavorite ? 'heart' : 'heart-outline'} size={25} color={colors.primary} />

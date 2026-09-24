@@ -20,10 +20,11 @@
       "**/*"
     ],
     "ios": {
+      "usesAppleSignIn": true,
       "runtimeVersion": {
         "policy": "appVersion"
       },
-      "supportsTablet": true,
+      "supportsTablet": false,
       "bundleIdentifier": "com.fitrapido.app",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false
@@ -45,12 +46,6 @@
         }
       ],
       "expo-apple-authentication",
-      [
-        "@react-native-google-signin/google-signin",
-        {
-          "iosUrlScheme": "com.googleusercontent.apps.1234567890-dummy"
-        }
-      ],
       [
         "expo-build-properties",
         {

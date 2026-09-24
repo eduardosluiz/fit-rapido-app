@@ -12,7 +12,7 @@ import { CategoriaReceita } from './entities/categoria-receita.entity';
 import { CreateReceitaDto, UpdateReceitaDto } from './dto/receita.dto';
 import { NotificationsService } from '../notifications/notifications.service';
 import { User, SubscriptionTier, UserRole } from '../auth/entities/user.entity';
-import { hasActiveTrial } from '../common/helpers/subscription.helper';
+import { hasActiveTrial, getEffectiveSubscriptionTier } from '../common/helpers/subscription.helper';
 import { IAService } from '../ia/ia.service';
 
 @Injectable()
@@ -200,7 +200,7 @@ export class ReceitasService {
       const isDaiAdmin = user.email === 'dai@gmail.com';
       
       if (!isAdmin && !isDaiAdmin) {
-        const tier = user.subscription_tier || SubscriptionTier.NONE;
+        const tier = getEffectiveSubscriptionTier(user);
         const isInTrial = hasActiveTrial(user);
 
         if (!isInTrial) {

@@ -12,6 +12,7 @@ import { useNavigation } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { api } from '../../services/api';
 import { mobileSpacing } from '../../constants/colors';
+import BackButton from '../../components/BackButton';
 
 interface MacrosDiarios {
   calorias: number;
@@ -98,12 +99,7 @@ export default function MacrosCalculatorScreen() {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity
-          onPress={() => navigation.goBack()}
-          style={styles.backButton}
-        >
-          <Text style={styles.backIcon}>←</Text>
-        </TouchableOpacity>
+        <BackButton onPress={() => navigation.goBack()} />
         <Text style={styles.headerTitle}>Calculadora de Macros</Text>
         <View style={styles.backButton} />
       </View>

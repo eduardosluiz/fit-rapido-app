@@ -447,7 +447,7 @@ export default function ReceitasScreen() {
             showsHorizontalScrollIndicator={false}
             data={receitasPopulares}
             keyExtractor={r => `pop-${r.id}`}
-            contentContainerStyle={styles.horizontalScroll}
+            contentContainerStyle={[styles.horizontalScroll, receitasPopulares.length === 1 && styles.singleCardContent]}
             renderItem={({ item }) => renderReceitaCard(item, true)}
           />
           {receitasPopulares.length > 2 && (
@@ -477,7 +477,7 @@ export default function ReceitasScreen() {
             showsHorizontalScrollIndicator={false}
             data={receitasRapidas}
             keyExtractor={r => `fast-${r.id}`}
-            contentContainerStyle={styles.horizontalScroll}
+            contentContainerStyle={[styles.horizontalScroll, receitasRapidas.length === 1 && styles.singleCardContent]}
             renderItem={({ item }) => renderReceitaCard(item, true)}
           />
           {receitasRapidas.length > 2 && (
@@ -533,7 +533,7 @@ export default function ReceitasScreen() {
           columnWrapperStyle={styles.gridRow}
           ListHeaderComponent={renderHeader()}
           renderItem={({ item }) => (
-            <View style={{ width: (windowWidth - 32) / 2 }}>
+            <View style={{ width: (windowWidth - mobileSpacing.pageGutter * 2 - mobileSpacing.cardGap) / 2 }}>
               {renderReceitaCard(item, false, true)}
             </View>
           )}
@@ -591,7 +591,7 @@ export default function ReceitasScreen() {
 const styles = StyleSheet.create({
   container: { flex: 1 },
   headerContainer: {
-    paddingHorizontal: 20,
+    paddingHorizontal: mobileSpacing.pageGutter,
     marginTop: 30,
     marginBottom: 20,
   },
@@ -614,7 +614,7 @@ const styles = StyleSheet.create({
   searchRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 20,
+    paddingHorizontal: mobileSpacing.pageGutter,
     marginTop: 5,
     marginBottom: mobileSpacing.controlToContent,
     gap: 10,
@@ -642,7 +642,7 @@ const styles = StyleSheet.create({
   },
   searchInput: { flex: 1, color: '#fff', marginLeft: 10, fontSize: 14, outlineStyle: 'none' as any },
   filtersContainer: { marginBottom: mobileSpacing.section },
-  filtersContent: { paddingHorizontal: 20 },
+  filtersContent: { paddingHorizontal: mobileSpacing.pageGutter },
   filterChip: {
     width: 70,
     height: 70,
@@ -690,7 +690,7 @@ const styles = StyleSheet.create({
   sectionHeader: { 
     flexDirection: 'row', 
     justifyContent: 'space-between', 
-    paddingHorizontal: 14,
+    paddingHorizontal: mobileSpacing.pageGutter,
     marginBottom: mobileSpacing.sectionHeaderToContent,
     alignItems: 'center' 
   },
@@ -703,9 +703,10 @@ const styles = StyleSheet.create({
   sectionHeading: { alignSelf: 'flex-start' },
   sectionTitle: { fontSize: 11, fontFamily: fonts.body, color: '#fff', marginLeft: 4, marginBottom: 4 },
   sectionTitleUnderline: { height: 2, backgroundColor: colors.primary, width: '100%', borderRadius: 1 },
-  horizontalScroll: { paddingLeft: 20 },
+  horizontalScroll: { paddingHorizontal: mobileSpacing.pageGutter, gap: mobileSpacing.cardGap },
+  singleCardContent: { flexGrow: 1, justifyContent: 'center' },
   list: { paddingBottom: 40 },
-  gridRow: { justifyContent: 'space-between', paddingHorizontal: 11 },
+  gridRow: { paddingHorizontal: mobileSpacing.pageGutter, gap: mobileSpacing.cardGap },
   emptyContainer: { padding: 40, alignItems: 'center' },
   emptyText: { color: '#666', fontSize: 14 },
   retryButton: { marginTop: 14, borderRadius: 10, borderWidth: 1, borderColor: colors.primary,

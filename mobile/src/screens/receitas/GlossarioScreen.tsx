@@ -15,6 +15,7 @@ import { api } from '../../services/api';
 import colors from '../../constants/colors';
 import fonts from '../../constants/fonts';
 import AppBackground from '../../components/AppBackground';
+import BackButton from '../../components/BackButton';
 
 interface GlossarioItem {
   id: string;
@@ -77,9 +78,7 @@ export default function GlossarioScreen() {
     <AppBackground>
       <SafeAreaView style={styles.safeArea}>
         <View style={styles.header}>
-          <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
-            <Ionicons name="arrow-back" size={24} color={colors.primary} />
-          </TouchableOpacity>
+          <BackButton onPress={() => navigation.goBack()} />
           <Text style={styles.headerTitle}>Glossário de Ingredientes</Text>
           <View style={styles.headerRight} />
         </View>

@@ -13,6 +13,7 @@ import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, FindOptionsWhere, ILike } from 'typeorm';
 import { ExercicioBiblioteca } from './entities/exercicio-biblioteca.entity';
+import { WorkoutAccessGuard } from './workout-access.guard';
 
 @Controller('exercicios-biblioteca')
 @UseGuards(JwtAuthGuard)
@@ -51,6 +52,7 @@ export class ExerciciosBibliotecaController {
   }
 
   @Get()
+  @UseGuards(WorkoutAccessGuard)
   async findAll(
     @Query('grupo') grupo?: string,
     @Query('search') search?: string,
@@ -105,6 +107,7 @@ export class ExerciciosBibliotecaController {
   }
 
   @Get(':id')
+  @UseGuards(WorkoutAccessGuard)
   async findOne(@Param('id') id: string) {
     return this.repository.findOne({ where: { id } });
   }

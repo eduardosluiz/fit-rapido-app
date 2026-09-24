@@ -7,11 +7,18 @@ import { Ionicons } from '@expo/vector-icons';
 import colors from '../constants/colors';
 import fonts from '../constants/fonts';
 
-// Configuração do Google Sign In (TODO: Substituir webClientId real do Google Cloud)
-GoogleSignin.configure({
-  webClientId: 'SUA_CHAVE_WEB_AQUI.apps.googleusercontent.com',
-  iosClientId: 'SUA_CHAVE_IOS_AQUI.apps.googleusercontent.com',
-});
+const googleWebClientId = process.env.EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID?.trim();
+const googleIosClientId = process.env.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID?.trim();
+const googleConfigured = Boolean(
+  googleWebClientId && (Platform.OS !== 'ios' || googleIosClientId)
+);
+
+if (googleConfigured) {
+  GoogleSignin.configure({
+    webClientId: googleWebClientId,
+    iosClientId: googleIosClientId,
+  });
+}
 
 interface Props {
   onLoading: (isLoading: boolean) => void;
@@ -20,6 +27,9 @@ interface Props {
 
 export default function SocialLoginButtons({ onLoading, isSignUp = false }: Props) {
   const { socialLogin } = useAuth();
+  const showApple = Platform.OS === 'ios';
+
+  if (!showApple && !googleConfigured) return null;
 
   const handleAppleLogin = async () => {
     try {
@@ -73,19 +83,23 @@ export default function SocialLoginButtons({ onLoading, isSignUp = false }: Prop
       </View>
       
       <View style={styles.buttonRow}>
-        <TouchableOpacity style={styles.socialButton} onPress={handleAppleLogin} activeOpacity={0.8}>
-          <Ionicons name="logo-apple" size={20} color="#ffffff" style={{ marginRight: 10 }} />
-          <Text style={styles.socialButtonText}>
-            {isSignUp ? 'Cadastrar com Apple' : 'Continuar com Apple'}
-          </Text>
-        </TouchableOpacity>
+        {showApple && (
+          <TouchableOpacity style={styles.socialButton} onPress={handleAppleLogin} activeOpacity={0.8}>
+            <Ionicons name="logo-apple" size={20} color="#ffffff" style={{ marginRight: 10 }} />
+            <Text style={styles.socialButtonText}>
+              {isSignUp ? 'Cadastrar com Apple' : 'Continuar com Apple'}
+            </Text>
+          </TouchableOpacity>
+        )}
         
-        <TouchableOpacity style={styles.socialButton} onPress={handleGoogleLogin} activeOpacity={0.8}>
-          <Ionicons name="logo-google" size={18} color="#ffffff" style={{ marginRight: 10 }} />
-          <Text style={styles.socialButtonText}>
-            {isSignUp ? 'Cadastrar com Google' : 'Continuar com Google'}
-          </Text>
-        </TouchableOpacity>
+        {googleConfigured && (
+          <TouchableOpacity style={styles.socialButton} onPress={handleGoogleLogin} activeOpacity={0.8}>
+            <Ionicons name="logo-google" size={18} color="#ffffff" style={{ marginRight: 10 }} />
+            <Text style={styles.socialButtonText}>
+              {isSignUp ? 'Cadastrar com Google' : 'Continuar com Google'}
+            </Text>
+          </TouchableOpacity>
+        )}
       </View>
     </View>
   );

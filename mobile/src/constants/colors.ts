@@ -42,6 +42,8 @@ export const spacing = {
 
 /** Espaçamentos semânticos compartilhados pelas telas mobile. */
 export const mobileSpacing = {
+  pageGutter: spacing.lg,
+  cardGap: 10,
   controlToContent: spacing.md,
   section: spacing.md,
   sectionHeaderToContent: spacing.md / 2,

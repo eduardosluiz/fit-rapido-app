@@ -5,6 +5,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { api, getImageUrl, Treino } from '../../services/api';
 import AppBackground from '../../components/AppBackground';
+import BackButton from '../../components/BackButton';
 import colors, { mobileSpacing } from '../../constants/colors';
 import fonts from '../../constants/fonts';
 
@@ -57,9 +58,7 @@ export default function ModalityDayWorkoutScreen() {
       <SafeAreaView style={styles.container} edges={['top', 'bottom']}>
         <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
           <View style={styles.header}>
-            <TouchableOpacity onPress={() => navigation.goBack()} style={styles.iconButton}>
-              <Ionicons name="chevron-back" size={24} color={colors.primary} />
-            </TouchableOpacity>
+            <BackButton onPress={() => navigation.goBack()} />
             <View style={styles.headerCopy}>
               <Text style={styles.eyebrow}>{params.dayLabel.replace('(', '• ').replace(')', '')}</Text>
               <Text style={styles.title}>{params.workoutTitle}</Text>
@@ -130,7 +129,7 @@ export default function ModalityDayWorkoutScreen() {
 
 const styles = StyleSheet.create({
   container: { flex: 1 },
-  content: { paddingHorizontal: 14, paddingTop: 8, paddingBottom: 36 },
+  content: { paddingHorizontal: mobileSpacing.pageGutter, paddingTop: 8, paddingBottom: 36 },
   header: { flexDirection: 'row', alignItems: 'center', gap: 10, paddingVertical: 8 },
   iconButton: { width: 42, height: 42, borderRadius: 21, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(0,0,0,0.36)', borderWidth: 1, borderColor: 'rgba(231,196,138,0.22)' },
   headerCopy: { flex: 1, alignItems: 'center' },

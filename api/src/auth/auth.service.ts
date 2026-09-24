@@ -4,8 +4,9 @@ import { Repository } from 'typeorm';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { User, UserRole, SubscriptionTier } from './entities/user.entity';
-import { RegisterDto, LoginDto, UpdateUserDto, UpdatePasswordDto, SocialLoginDto } from './dto/auth.dto';
+import { RegisterDto, LoginDto, UpdateProfileDto, UpdateUserDto, UpdatePasswordDto, SocialLoginDto } from './dto/auth.dto';
 import { canManuallyChangeSubscription, getSubscriptionChangeErrorMessage } from '../common/helpers/subscription-validation.helper';
+import { SocialTokenVerifierService } from './social-token-verifier.service';
 
 @Injectable()
 export class AuthService {
@@ -13,6 +14,7 @@ export class AuthService {
     @InjectRepository(User)
     private userRepository: Repository<User>,
     private jwtService: JwtService,
+    private socialTokenVerifier: SocialTokenVerifierService,
   ) {}
 
   async register(registerDto: RegisterDto) {
@@ -92,28 +94,19 @@ export class AuthService {
   }
 
   async socialLogin(socialDto: SocialLoginDto) {
-    const { provider, token, email, name } = socialDto;
+    const { provider, token, name } = socialDto;
+    const identity = await this.socialTokenVerifier.verify(provider, token);
+    const decodedEmail = identity.email;
+    const socialId = identity.id;
     
-    let decodedEmail = email;
-    let socialId = null;
-    
-    if (token) {
-      try {
-        const decoded = this.jwtService.decode(token) as any;
-        if (decoded) {
-           decodedEmail = decoded.email || email;
-           socialId = decoded.sub;
-        }
-      } catch (e) {
-        // Ignorar erro de decode
-      }
-    }
-    
-    if (!decodedEmail) {
+    let user = await this.userRepository.findOne({
+      where: provider === 'apple' ? { apple_id: socialId } : { google_id: socialId },
+    });
+    if (!user && !decodedEmail) {
        throw new BadRequestException('Email não fornecido pelo provedor social.');
     }
     
-    let user = await this.userRepository.findOne({
+    if (!user) user = await this.userRepository.findOne({
       where: { email: decodedEmail },
     });
     
@@ -176,6 +169,20 @@ export class AuthService {
     });
     // Remover senha_hash de todos os usuários
     return users.map(({ senha_hash: _, ...userWithoutPassword }) => userWithoutPassword as Omit<User, 'senha_hash'>);
+  }
+
+  async updateProfile(id: string, updateProfileDto: UpdateProfileDto): Promise<Omit<User, 'senha_hash'>> {
+    const user = await this.userRepository.findOne({ where: { id } });
+    if (!user) throw new NotFoundException('Usuário não encontrado');
+
+    if (updateProfileDto.nome !== undefined) user.nome = updateProfileDto.nome;
+    if (updateProfileDto.avatar_url !== undefined) user.avatar_url = updateProfileDto.avatar_url;
+    if (updateProfileDto.dieta_atual !== undefined) user.dieta_atual = updateProfileDto.dieta_atual;
+    if (updateProfileDto.alergias !== undefined) user.alergias = updateProfileDto.alergias;
+
+    await this.userRepository.save(user);
+    const { senha_hash: _, ...userWithoutPassword } = user;
+    return userWithoutPassword as Omit<User, 'senha_hash'>;
   }
 
   async updateUser(id: string, updateUserDto: UpdateUserDto, requestingUserRole?: UserRole): Promise<Omit<User, 'senha_hash'>> {
@@ -278,4 +285,3 @@ export class AuthService {
     await this.userRepository.delete(id);
   }
 }
-

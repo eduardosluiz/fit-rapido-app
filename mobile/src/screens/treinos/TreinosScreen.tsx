@@ -252,7 +252,8 @@ export default function TreinosScreen() {
     return (
       <View style={[
         styles.gridItem, 
-        { paddingLeft: index % 2 === 0 ? 20 : 5, paddingRight: index % 2 === 0 ? 5 : 20 }
+        { paddingLeft: index % 2 === 0 ? mobileSpacing.pageGutter : mobileSpacing.cardGap / 2,
+          paddingRight: index % 2 === 0 ? mobileSpacing.cardGap / 2 : mobileSpacing.pageGutter }
       ]}>
         <TreinoCardAnimated
           item={item}
@@ -391,7 +392,7 @@ export default function TreinosScreen() {
 const styles = StyleSheet.create({
   container: { flex: 1 },
   headerContainer: {
-    paddingHorizontal: 20,
+    paddingHorizontal: mobileSpacing.pageGutter,
     marginTop: 30,
     marginBottom: 20,
   },
@@ -498,7 +499,7 @@ const styles = StyleSheet.create({
 
   // Categories
   categoriesScroll: {
-    paddingHorizontal: 12,
+    paddingHorizontal: mobileSpacing.pageGutter,
     gap: 8,
     marginBottom: mobileSpacing.section,
   },
@@ -530,7 +531,7 @@ const styles = StyleSheet.create({
   searchRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 20,
+    paddingHorizontal: mobileSpacing.pageGutter,
     marginBottom: mobileSpacing.section,
     gap: 10,
   },
@@ -559,7 +560,7 @@ const styles = StyleSheet.create({
 
   // List Header
   sectionHeaderRow: {
-    paddingHorizontal: 20,
+    paddingHorizontal: mobileSpacing.pageGutter,
     marginBottom: mobileSpacing.sectionHeaderToContent,
     flexDirection: 'row',
     alignItems: 'center',

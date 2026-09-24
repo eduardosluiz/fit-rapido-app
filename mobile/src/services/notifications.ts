@@ -2,6 +2,7 @@ import * as Notifications from 'expo-notifications';
 import { Platform } from 'react-native';
 import { api } from './api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Constants from 'expo-constants';
 
 // Configurar como as notificações devem ser tratadas quando o app está em foreground
 Notifications.setNotificationHandler({
@@ -78,8 +79,13 @@ export class NotificationService {
       }
 
       // Em produção, obter token real do Expo
+      const projectId = Constants.expoConfig?.extra?.eas?.projectId || Constants.easConfig?.projectId;
+      if (!projectId) {
+        console.error('Project ID do Expo não encontrado para registrar notificações.');
+        return null;
+      }
       const tokenData = await Notifications.getExpoPushTokenAsync({
-        projectId: 'your-project-id', // Substituir quando tiver Firebase configurado
+        projectId,
       });
 
       this.token = tokenData.data;

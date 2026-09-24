@@ -18,7 +18,7 @@ import {
 } from '@nestjs/common';
 import { Throttle } from '@nestjs/throttler';
 import { AuthService } from './auth.service';
-import { RegisterDto, LoginDto, UpdateUserDto, UpdatePasswordDto, SocialLoginDto } from './dto/auth.dto';
+import { RegisterDto, LoginDto, UpdateProfileDto, UpdateUserDto, UpdatePasswordDto, SocialLoginDto } from './dto/auth.dto';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { ThrottleExceptionFilter } from '../common/guards/throttle-exception.filter';
 
@@ -92,6 +92,12 @@ export class AuthController {
     }
     const { senha_hash: _, ...userWithoutPassword } = user;
     return userWithoutPassword;
+  }
+
+  @Patch('profile')
+  @UseGuards(JwtAuthGuard)
+  async updateProfile(@Request() req, @Body() updateProfileDto: UpdateProfileDto) {
+    return this.authService.updateProfile(req.user.sub, updateProfileDto);
   }
 
   @Get('users')

@@ -43,6 +43,7 @@ export interface User {
   subscription_expires_at?: string;
   trial_expires_at?: string;
   dieta_atual?: string;
+  avatar_url?: string;
 }
 
 export interface Receita {
@@ -212,6 +213,31 @@ class ApiService {
     } catch (e) {
       return null;
     }
+  }
+
+  async updateProfile(updates: Pick<Partial<User>, 'nome' | 'avatar_url' | 'dieta_atual'>) {
+    return this.request<User>('/auth/profile', {
+      method: 'PATCH',
+      body: JSON.stringify(updates),
+    });
+  }
+
+  async uploadImage(uri: string): Promise<{ url: string; filename: string }> {
+    const token = await AsyncStorage.getItem('auth_token');
+    const formData = new FormData();
+    const filename = uri.split('/').pop() || `avatar-${Date.now()}.jpg`;
+    const extension = filename.split('.').pop()?.toLowerCase();
+    const type = extension === 'png' ? 'image/png' : extension === 'webp' ? 'image/webp' : 'image/jpeg';
+
+    formData.append('file', { uri, name: filename, type } as any);
+    const response = await fetch(`${API_URL}/upload/imagem`, {
+      method: 'POST',
+      headers: token ? { Authorization: `Bearer ${token}` } : undefined,
+      body: formData,
+    });
+
+    if (!response.ok) throw new Error(await response.text() || `Erro ${response.status}`);
+    return response.json();
   }
 
   async getReceitas(params?: any) {
@@ -409,11 +435,7 @@ class ApiService {
   }
   
   async getSubscriptionStatus() {
-    try {
-      return await this.request<any>('/subscriptions/status');
-    } catch {
-      return { tier: 'none' };
-    }
+    return this.request<any>('/subscriptions/status');
   }
 
   async getSubscriptionPlans() {

@@ -11,6 +11,7 @@ import {
   HttpCode,
   HttpStatus,
   Request,
+  ForbiddenException,
 } from '@nestjs/common';
 import { ReceitasService } from './receitas.service';
 import { MacrosService } from './macros.service';
@@ -18,6 +19,7 @@ import { CreateReceitaDto, UpdateReceitaDto } from './dto/receita.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { JwtOptionalGuard } from '../auth/guards/jwt-optional.guard';
 import { AuthService } from '../auth/auth.service';
+import { canAccessRecipe } from '../common/helpers/subscription.helper';
 
 @Controller('receitas')
 export class ReceitasController {
@@ -105,8 +107,12 @@ export class ReceitasController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.receitasService.findOne(id);
+  @UseGuards(JwtOptionalGuard)
+  async findOne(@Param('id') id: string, @Request() req: any) {
+    const receita = await this.receitasService.findOne(id);
+    const user = req.user?.sub ? await this.authService.findById(req.user.sub) : null;
+    if (receita.is_free || (user && ['admin', 'personal_trainer'].includes(user.role)) || canAccessRecipe(user, receita)) return receita;
+    throw new ForbiddenException('Esta receita requer uma assinatura ativa.');
   }
 
   @Get(':id/macros')

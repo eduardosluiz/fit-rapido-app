@@ -9,6 +9,7 @@ import {
   Matches,
   IsEnum,
   IsArray,
+  IsIn,
 } from 'class-validator';
 
 export class RegisterDto {
@@ -45,9 +46,8 @@ export class LoginDto {
 }
 
 export class SocialLoginDto {
-  @IsString()
-  @IsNotEmpty()
-  provider: string; // 'apple' or 'google'
+  @IsIn(['apple', 'google'])
+  provider: 'apple' | 'google';
 
   @IsString()
   @IsNotEmpty()

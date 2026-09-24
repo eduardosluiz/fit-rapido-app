@@ -13,10 +13,11 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { api, getImageUrl } from '../../services/api';
-import colors from '../../constants/colors';
+import colors, { mobileSpacing } from '../../constants/colors';
 import fonts from '../../constants/fonts';
 import VideoPlayer from '../../components/VideoPlayer';
 import AppBackground from '../../components/AppBackground';
+import BackButton from '../../components/BackButton';
 import { useAuth } from '../../contexts/AuthContext';
 
 export default function BibliotecaTreinosScreen({ navigation }: any) {
@@ -102,9 +103,7 @@ export default function BibliotecaTreinosScreen({ navigation }: any) {
     <AppBackground>
       <SafeAreaView style={styles.container} edges={['top', 'bottom']}>
         <View style={styles.header}>
-          <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
-            <Ionicons name="chevron-back" size={24} color="#E7C48A" />
-          </TouchableOpacity>
+          <BackButton onPress={() => navigation.goBack()} />
           <Text style={styles.headerTitle}>BIBLIOTECA DE EXECUÇÕES</Text>
           <View style={{ width: 40 }} />
         </View>
@@ -196,7 +195,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: 'rgba(15,15,15,0.75)',
-    marginHorizontal: 20,
+    marginHorizontal: mobileSpacing.pageGutter,
     marginBottom: 20,
     paddingHorizontal: 15,
     height: 50,

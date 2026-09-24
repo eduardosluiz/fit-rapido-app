@@ -14,6 +14,7 @@ import { notificationService } from '../../services/notifications';
 import * as Notifications from 'expo-notifications';
 import colors, { mobileSpacing } from '../../constants/colors';
 import fonts from '../../constants/fonts';
+import BackButton from '../../components/BackButton';
 
 export default function NotificationSettingsScreen() {
   const navigation = useNavigation();
@@ -82,12 +83,7 @@ export default function NotificationSettingsScreen() {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity
-          onPress={() => navigation.goBack()}
-          style={styles.backButton}
-        >
-          <Text style={styles.backIcon}>←</Text>
-        </TouchableOpacity>
+        <BackButton onPress={() => navigation.goBack()} />
         <Text style={styles.headerTitle}>Notificações</Text>
         <View style={styles.backButton} />
       </View>

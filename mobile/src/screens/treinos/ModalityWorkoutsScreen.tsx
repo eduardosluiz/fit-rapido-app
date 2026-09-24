@@ -15,9 +15,10 @@ import { api, Treino, getImageUrl } from '../../services/api';
 import { useAuth } from '../../contexts/AuthContext';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
-import colors from '../../constants/colors';
+import colors, { mobileSpacing } from '../../constants/colors';
 import fonts from '../../constants/fonts';
 import AppBackground from '../../components/AppBackground';
+import BackButton from '../../components/BackButton';
 import { Video, ResizeMode } from 'expo-av';
 
 const formatDescription = (text: string) => {
@@ -367,9 +368,7 @@ export default function ModalityWorkoutsScreen() {
       <View style={{ paddingBottom: hasNivelamento ? 10 : 10 }}>
         <View style={styles.headerContainer}>
           <View style={styles.headerRow}>
-            <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
-              <Ionicons name="chevron-back" size={24} color="#E7C48A" />
-            </TouchableOpacity>
+            <BackButton onPress={() => navigation.goBack()} style={styles.backButtonSpacing} />
             <View style={styles.titleWrapper}>
               <Text style={styles.headerTitle} numberOfLines={2}>{modalityName}</Text>
               {!loading && (
@@ -496,7 +495,7 @@ export default function ModalityWorkoutsScreen() {
             keyExtractor={(item) => item.id}
             ListHeaderComponent={renderHeader}
             renderItem={({ item, index }) => (
-              <View style={{ width: '100%', paddingHorizontal: 15, marginBottom: 15 }}>
+              <View style={{ width: '100%', paddingHorizontal: mobileSpacing.pageGutter, marginBottom: 15 }}>
                 <TreinoListItem 
                   item={item} 
                   index={index} 
@@ -517,7 +516,7 @@ export default function ModalityWorkoutsScreen() {
 const styles = StyleSheet.create({
   container: { flex: 1 },
   headerContainer: {
-    paddingHorizontal: 20,
+    paddingHorizontal: mobileSpacing.pageGutter,
     marginTop: 30,
     marginBottom: 0,
   },
@@ -526,7 +525,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 15,
   },
-  backButton: { width: 40, height: 40, borderRadius: 20, backgroundColor: 'rgba(255,255,255,0.05)', justifyContent: 'center', alignItems: 'center', marginRight: 15 },
+  backButtonSpacing: { marginRight: 15 },
   titleWrapper: {
     flex: 1,
     flexDirection: 'row',
@@ -570,7 +569,7 @@ const styles = StyleSheet.create({
   nivelTabText: { fontSize: 11, fontFamily: fonts.body, color: '#FFFFFF', textTransform: 'uppercase', letterSpacing: 1 },
   nivelTabTextActive: { color: colors.primary, fontFamily: fonts.bold },
   nivelTabIndicator: { position: 'absolute', bottom: 0, height: 3, width: '100%', backgroundColor: colors.primary },
-  daysGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: 10, paddingHorizontal: 12, paddingTop: 14 },
+  daysGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: 10, paddingHorizontal: mobileSpacing.pageGutter, paddingTop: 14 },
   dayCard: { width: '48.4%', minHeight: 178, borderRadius: 12, overflow: 'hidden', backgroundColor: '#171717', borderWidth: 1, borderColor: 'rgba(255,255,255,0.08)' },
   dayImageArea: { height: 112, position: 'relative', backgroundColor: '#111' },
   dayImage: { width: '100%', height: '100%' },

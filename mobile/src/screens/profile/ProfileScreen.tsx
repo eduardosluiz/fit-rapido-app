@@ -10,6 +10,7 @@ import fonts from '../../constants/fonts';
 import * as ImagePicker from 'expo-image-picker';
 
 import AppBackground from '../../components/AppBackground';
+import BackButton from '../../components/BackButton';
 
 export default function ProfileScreen() {
   const navigation = useNavigation();
@@ -50,12 +51,10 @@ export default function ProfileScreen() {
       if (!result.canceled && result.assets && result.assets.length > 0) {
         setUploading(true);
         const imageUri = result.assets[0].uri;
-        
-        // Simulação de upload (já que o endpoint exato pode variar)
-        // No mundo real, aqui você chamaria a API de upload
-        // const uploadResult = await api.uploadAvatar(imageUri);
-        // updateUser({ ...user, avatar_url: uploadResult.url });
-        
+
+        const uploadResult = await api.uploadImage(imageUri);
+        const updatedProfile = await api.updateProfile({ avatar_url: uploadResult.url });
+        updateUser(updatedProfile);
         Alert.alert('Sucesso', 'Sua foto de perfil foi atualizada!');
       }
     } catch (error) {
@@ -69,7 +68,7 @@ export default function ProfileScreen() {
   const handleDeleteAccount = () => {
     Alert.alert(
       'Excluir Conta',
-      'Tem certeza que deseja excluir sua conta? Esta ação é irreversível e todos os seus dados serão apagados permanentemente.',
+      'Esta ação é irreversível e apagará seus dados. Se você tiver uma assinatura ativa, a cobrança continuará pela loja até que a renovação seja cancelada.',
       [
         { text: 'Cancelar', style: 'cancel' },
         { 
@@ -90,10 +89,10 @@ export default function ProfileScreen() {
   };
 
   const getPlanDisplayName = () => {
-    if (user?.subscription_tier === 'premium_fit') return 'Premium Fit';
-    if (user?.subscription_tier === 'premium') return 'Premium';
+    if (user?.subscription_tier === 'premium_fit') return 'DAI + Completo';
+    if (user?.subscription_tier === 'premium') return 'DAI + Receitas';
     if (user?.subscription_tier === 'basic') return 'Básico';
-    return 'Nenhum';
+    return 'Gratuito';
   };
 
   const handleManageSubscription = () => {
@@ -112,9 +111,7 @@ export default function ProfileScreen() {
       <SafeAreaView style={styles.container}>
         <View style={styles.headerContainer}>
           <View style={styles.headerRow}>
-            <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
-              <Ionicons name="chevron-back" size={24} color="#E7C48A" />
-            </TouchableOpacity>
+            <BackButton onPress={() => navigation.goBack()} />
             <Text style={styles.headerTitle}>Perfil</Text>
           </View>
           <View style={styles.headerDivider} />
@@ -263,7 +260,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
   },
   headerContainer: {
-    paddingHorizontal: 20,
+    paddingHorizontal: mobileSpacing.pageGutter,
     marginTop: 30,
     marginBottom: 20,
   },
@@ -295,7 +292,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   content: {
-    padding: 20,
+    paddingHorizontal: mobileSpacing.pageGutter,
+    paddingVertical: 20,
   },
   profileCard: {
     backgroundColor: colors.cardBackground,
