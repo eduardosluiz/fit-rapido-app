@@ -304,6 +304,20 @@ export default function SubscriptionsScreen() {
     }
   };
 
+  const handleManageSubscription = async () => {
+    if (Platform.OS !== 'ios') {
+      await openStorePage('https://play.google.com/store/account/subscriptions');
+      return;
+    }
+    try {
+      if (!(await configurePurchases())) throw new Error('Loja indisponível');
+      await Purchases.showManageSubscriptions();
+      await loadData();
+    } catch {
+      Alert.alert('Não foi possível abrir as assinaturas', 'Tente novamente. O gerenciamento precisa ser aberto pela tela da Apple dentro do aplicativo.');
+    }
+  };
+
   const waitForSubscriptionSync = async (expectedTier: string) => {
     for (let attempt = 0; attempt < 6; attempt += 1) {
       const status = await api.getSubscriptionStatus().catch(() => null);
@@ -583,9 +597,7 @@ export default function SubscriptionsScreen() {
             <>
               <View style={styles.managementCard}>
                 <TouchableOpacity accessibilityRole="button" style={styles.managementButton}
-                  onPress={() => openStorePage(Platform.OS === 'ios'
-                    ? 'https://apps.apple.com/account/subscriptions'
-                    : 'https://play.google.com/store/account/subscriptions')}>
+                  onPress={handleManageSubscription}>
                   <Ionicons name="settings-outline" size={18} color="#d5a43d" />
                   <Text style={styles.managementTitle}>Gerenciar ou cancelar assinatura</Text>
                   <Ionicons name="chevron-forward" size={16} color="#d5a43d" />
