@@ -9,6 +9,7 @@ import {
   Alert,
   Platform,
   Linking,
+  AppState,
 } from 'react-native';
 import Purchases, { PurchasesStoreProduct } from 'react-native-purchases';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -147,6 +148,10 @@ export default function SubscriptionsScreen() {
       setPlans(plansData.plans);
       if (status) {
         setSubscriptionStatus(status);
+        updateUser({
+          subscription_tier: !status.active && ['premium', 'premium_fit'].includes(status.tier) ? 'none' : status.tier,
+          subscription_expires_at: status.expiresAt,
+        });
       }
 
       if (Platform.OS !== 'web' && await configurePurchases()) {
@@ -260,9 +265,10 @@ export default function SubscriptionsScreen() {
           Alert.alert('Assinatura encontrada', 'Estamos sincronizando seu acesso. Aguarde um momento e abra esta tela novamente.');
           return;
         }
-        Alert.alert('Sucesso', 'Suas compras foram restauradas com sucesso!');
+        Alert.alert('Acesso atualizado', 'Sua assinatura ativa foi reconhecida. Restaurar não cancela nem reativa a renovação e não gera uma nova cobrança.');
       } else {
-        Alert.alert('Aviso', 'Nenhuma assinatura ativa encontrada para esta conta nas lojas da Apple/Google.');
+        await loadData();
+        Alert.alert('Nenhuma assinatura ativa', 'Não encontramos uma assinatura ativa na conta da loja. Restaurar não renova assinaturas expiradas nem desfaz cancelamentos.');
       }
     } catch (error: any) {
       Alert.alert('Erro', error.message || 'Erro ao restaurar compras');
@@ -273,6 +279,29 @@ export default function SubscriptionsScreen() {
 
   const formatPrice = (price: number) => {
     return `R$ ${price.toFixed(2).replace('.', ',')}`;
+  };
+
+  useEffect(() => {
+    const listener = AppState.addEventListener('change', state => {
+      if (state === 'active') {
+        api.getSubscriptionStatus().then(status => {
+          setSubscriptionStatus(status);
+          updateUser({
+            subscription_tier: !status.active && ['premium', 'premium_fit'].includes(status.tier) ? 'none' : status.tier,
+            subscription_expires_at: status.expiresAt,
+          });
+        }).catch(() => {});
+      }
+    });
+    return () => listener.remove();
+  }, []);
+
+  const openStorePage = async (url: string) => {
+    try {
+      await Linking.openURL(url);
+    } catch {
+      Alert.alert('Não foi possível abrir a página', `Tente novamente ou acesse: ${url}`);
+    }
   };
 
   const waitForSubscriptionSync = async (expectedTier: string) => {
@@ -338,18 +367,6 @@ export default function SubscriptionsScreen() {
               </View>
             </View>
             <Text style={styles.currentPlanDesc}>{currentPlan.descricao}</Text>
-            {Platform.OS !== 'web' && (
-              <TouchableOpacity
-                accessibilityRole="button"
-                onPress={() => Linking.openURL(Platform.OS === 'ios'
-                  ? 'https://apps.apple.com/account/subscriptions'
-                  : 'https://play.google.com/store/account/subscriptions'
-                ).catch(() => Alert.alert('Não foi possível abrir a loja', 'Tente novamente em instantes.'))}
-                style={{ paddingVertical: 12 }}
-              >
-                <Text style={{ color: colors.primary }}>Gerenciar ou cancelar na {Platform.OS === 'ios' ? 'Apple' : 'Google Play'}</Text>
-              </TouchableOpacity>
-            )}
             {subscriptionStatus.expiresAt && (
               <Text style={styles.currentPlanExpiry}>
                 Válido até: {new Date(subscriptionStatus.expiresAt).toLocaleDateString('pt-BR')}
@@ -369,6 +386,31 @@ export default function SubscriptionsScreen() {
             <Text style={styles.infoText}>
               Desbloqueie todo o conteúdo premium e tenha acesso a receitas e treinos exclusivos.
             </Text>
+          </View>
+        )}
+
+        {Platform.OS !== 'web' && (
+          <View style={[styles.footer, { marginBottom: 20 }]}>
+            <TouchableOpacity accessibilityRole="button" style={styles.restoreButton}
+              onPress={() => openStorePage(Platform.OS === 'ios'
+                ? 'https://apps.apple.com/account/subscriptions'
+                : 'https://play.google.com/store/account/subscriptions')}>
+              <Text style={styles.restoreButtonText}>Gerenciar ou cancelar assinatura</Text>
+            </TouchableOpacity>
+            <Text style={styles.footerText}>
+              Abre o gerenciamento da loja. Cancelar a renovação impede a próxima cobrança e normalmente mantém seu acesso até o fim do período. Não solicita reembolso.
+            </Text>
+            {Platform.OS === 'ios' && (
+              <>
+                <TouchableOpacity accessibilityRole="link" style={styles.restoreButton}
+                  onPress={() => openStorePage('https://reportaproblem.apple.com/')}>
+                  <Text style={styles.restoreButtonText}>Solicitar reembolso à Apple</Text>
+                </TouchableOpacity>
+                <Text style={styles.footerText}>
+                  Abre o site da Apple para escolher a compra e solicitar a devolução. A Apple analisa o pedido; o envio não garante aprovação.
+                </Text>
+              </>
+            )}
           </View>
         )}
 
@@ -539,6 +581,9 @@ export default function SubscriptionsScreen() {
           })}
         </View>
 
+        <Text style={[styles.currentPlanDesc, { textAlign: 'center' }]}>
+          Já assinou, mas seu acesso não aparece? Restaure suas compras para recuperar um acesso existente. Isso não cancela nem reativa a renovação.
+        </Text>
         {/* Botão de restaurar compras */}
         <TouchableOpacity
           style={styles.restoreButton}
