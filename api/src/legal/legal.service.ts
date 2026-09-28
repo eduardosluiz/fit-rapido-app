@@ -57,7 +57,7 @@ export class LegalService {
     }
     
     // Fallback para conteúdo básico se arquivo não existir
-    return `# Política de Privacidade - Fit & Rápido\n\n**Última atualização**: ${new Date().toLocaleDateString('pt-BR')}\n\nConsulte a versão completa em: privacidade@fitrapido.com.br`;
+    return `# Política de Privacidade - Fit & Rápido\n\n**Última atualização**: ${new Date().toLocaleDateString('pt-BR')}\n\nConsulte a versão completa em: https://daipohlmann.com.br/privacidade/ — Contato: contato@daipohlmann.com.br`;
   }
 
   getTermsOfService(): string {

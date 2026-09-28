@@ -1,220 +1,71 @@
-# POLÍTICA DE PRIVACIDADE - FIT & RÁPIDO
+# Política de Privacidade
 
-**Última atualização**: Janeiro de 2025  
-**Versão**: 1.0
+Aplicativo Fit & Rápido · Atualizada em 28 de setembro de 2026
 
-## 1. INTRODUÇÃO
+Esta política explica o tratamento de dados pessoais no aplicativo Fit & Rápido, de receitas e treinos, sob responsabilidade de Daiane Pohlmann dos Santos. Ela se refere ao aplicativo e não descreve as práticas de lojas ou sites externos acessados por links.
 
-A Fit & Rápido ("nós", "nosso" ou "aplicativo") respeita sua privacidade e está comprometida em proteger seus dados pessoais. Esta Política de Privacidade explica como coletamos, usamos, compartilhamos e protegemos suas informações quando você utiliza nosso aplicativo móvel e serviços relacionados.
+## 1. Dados utilizados e suas finalidades
 
-Ao usar o Fit & Rápido, você concorda com as práticas descritas nesta política. Se não concordar, por favor, não utilize nossos serviços.
+- Conta: nome, e-mail, identificador da conta e credenciais de autenticação, para cadastro, login e manutenção do acesso. Senhas de cadastro próprio são armazenadas como hash, não em texto legível. O login com Apple pode fornecer um identificador e um e-mail de retransmissão, conforme suas escolhas.
 
-## 2. INFORMAÇÕES QUE COLETAMOS
+- Foto de perfil: a imagem escolhida por você é enviada ao serviço e associada à sua conta. O aplicativo não precisa receber toda a sua biblioteca de fotos.
 
-### 2.1. Informações Fornecidas por Você
+- Interações: favoritos, avaliações, receitas marcadas como feitas e treinos marcados como concluídos, para exibir seus registros e disponibilizar essas funcionalidades. Os registros de treinos concluídos são dados de condicionamento físico associados à sua conta.
 
-- **Dados de Cadastro**: Nome completo, endereço de e-mail, senha (armazenada de forma criptografada)
-- **Dados de Perfil**: Foto de perfil (opcional), preferências alimentares, objetivos de treino
-- **Dados de Assinatura**: Informações sobre planos contratados, histórico de pagamentos (processados pelas lojas Apple App Store e Google Play Store)
-- **Dados de Consentimento**: Registro de aceitação de termos e políticas
+- Consultas sobre receitas: perguntas enviadas ao recurso de inteligência artificial, respostas e substituições de ingredientes, para responder às solicitações e manter seu histórico.
 
-### 2.2. Informações Coletadas Automaticamente
+- Assinaturas: identificadores de usuário e transação, produto contratado, situação da assinatura, renovações e expiração, para validar compras, restaurar o acesso e gerar relatórios de assinaturas. Não recebemos os dados completos do cartão usado na App Store.
 
-- **Dados de Uso**: Receitas e treinos visualizados, favoritos marcados, histórico de atividades, tempo de uso
-- **Dados de Dispositivo**: Tipo de dispositivo, sistema operacional, identificador único do dispositivo
-- **Dados de Notificações**: Token para notificações push, preferências de notificação
-- **Dados de Localização**: Apenas se você permitir (para funcionalidades futuras de localização)
+- Notificações: identificador de envio de notificações, plataforma e vínculo com a conta, para entregar notificações quando autorizadas. Você pode desativá-las nos ajustes do aparelho.
 
-### 2.3. Informações de Terceiros
+- Segurança e consentimentos: registros de aceitação dos termos e da política, informações de autenticação e registros técnicos necessários à operação e proteção do serviço.
 
-- **Dados de Pagamento**: Processados exclusivamente pelas lojas Apple e Google, não armazenamos informações de cartão de crédito
-- **Dados de Analytics**: Informações agregadas e anonimizadas sobre uso do aplicativo
+O aplicativo não solicita acesso à agenda de contatos, localização precisa, HealthKit ou sensores de movimento para essas funções. A calculadora de macros, quando utilizada, envia os valores informados para realizar o cálculo; a rotina de cálculo não os salva no perfil nem em um histórico próprio.
 
-## 3. COMO USAMOS SUAS INFORMAÇÕES
+## 2. Prestadores de serviço e compartilhamento
 
-Utilizamos suas informações pessoais para as seguintes finalidades:
+Os dados necessários ao funcionamento podem ser tratados por prestadores de hospedagem e infraestrutura e pelos seguintes serviços:
 
-### 3.1. Prestação de Serviços
+- Apple: autenticação, quando escolhida, processamento das compras e infraestrutura de notificações no iOS.
 
-- Criar e gerenciar sua conta
-- Fornecer acesso a receitas e treinos
-- Personalizar sua experiência no aplicativo
-- Processar assinaturas e pagamentos
-- Enviar notificações sobre novos conteúdos
+- RevenueCat: validação e gerenciamento de assinaturas, associação das compras à conta e análise de assinaturas e receita.
 
-### 3.2. Melhoria dos Serviços
+- Expo: entrega de notificações e atualizações do aplicativo, com os identificadores e informações técnicas necessários a essas funções.
 
-- Analisar padrões de uso para melhorar funcionalidades
-- Desenvolver novos recursos e conteúdos
-- Corrigir bugs e problemas técnicos
-- Realizar pesquisas e análises
+- OpenAI: processamento das perguntas e do contexto da receita enviados ao recurso de inteligência artificial, quando utilizado. As perguntas também ficam registradas no serviço do Fit & Rápido. Evite inserir documentos, senhas ou informações pessoais desnecessárias nas perguntas.
 
-### 3.3. Comunicação
+Não vendemos dados pessoais nem utilizamos os dados aqui descritos para rastreamento publicitário entre aplicativos e sites de outras empresas. Informações também poderão ser fornecidas quando necessárias ao cumprimento de obrigação legal ou ao exercício de direitos.
 
-- Enviar notificações push sobre novos conteúdos
-- Responder a suas solicitações e dúvidas
-- Enviar informações importantes sobre o serviço
-- Comunicar mudanças em termos e políticas
+Prestadores podem processar dados fora do Brasil. O tratamento e as transferências internacionais devem observar as exigências aplicáveis da legislação de proteção de dados.
 
-### 3.4. Conformidade Legal
+## 3. Fundamentos do tratamento
 
-- Cumprir obrigações legais e regulatórias
-- Responder a solicitações de autoridades competentes
-- Proteger nossos direitos e propriedade
-- Prevenir fraudes e atividades ilegais
+Tratamos dados necessários para executar os serviços solicitados e cumprir obrigações legais. Quando exigido, o tratamento depende de consentimento específico, que pode ser revogado. Outras hipóteses previstas em lei somente se aplicam quando seus requisitos forem atendidos; esta política não representa uma autorização genérica para qualquer uso de dados.
 
-## 4. BASE LEGAL PARA PROCESSAMENTO (LGPD)
+## 4. Conservação, exclusão e assinaturas
 
-Processamos seus dados pessoais com base nas seguintes bases legais:
+Os dados são mantidos pelo tempo necessário às finalidades descritas. Você pode solicitar a exclusão da conta pela opção correspondente nas configurações do aplicativo ou pelo contato indicado abaixo. Dados necessários ao cumprimento de obrigações legais, prevenção de fraude ou exercício de direitos poderão ser conservados pelo prazo aplicável, com acesso restrito. Cópias de segurança e registros de prestadores podem seguir ciclos próprios de retenção e exclusão.
 
-- **Consentimento**: Quando você nos dá permissão explícita (ex: notificações push, marketing)
-- **Execução de Contrato**: Para fornecer os serviços solicitados
-- **Obrigação Legal**: Para cumprir requisitos legais e regulatórios
-- **Legítimo Interesse**: Para melhorar nossos serviços e segurança
+Excluir a conta não cancela automaticamente uma assinatura da Apple. Gerencie o cancelamento nas assinaturas da sua conta Apple. Pedidos de reembolso são tratados pela Apple.
 
-## 5. COMPARTILHAMENTO DE DADOS
+## 5. Seus direitos e escolhas
 
-### 5.1. Não Vendemos Seus Dados
+Nos termos da LGPD, você pode solicitar confirmação e acesso ao tratamento, correção, informações sobre compartilhamento, anonimização, bloqueio ou exclusão nas hipóteses aplicáveis, portabilidade conforme regulamentação, revogação de consentimento e oposição quando cabível. Podemos solicitar informações proporcionais para confirmar sua identidade e proteger sua conta. As solicitações serão tratadas nos prazos legais aplicáveis.
 
-Não vendemos, alugamos ou comercializamos seus dados pessoais para terceiros.
+Permissões de fotos e notificações podem ser gerenciadas nos ajustes do aparelho. A revogação de uma permissão não exclui automaticamente dados já enviados; para esses dados, utilize as opções da conta ou entre em contato.
 
-### 5.2. Compartilhamento com Prestadores de Serviços
+## 6. Segurança
 
-Podemos compartilhar dados com:
+Utilizamos conexão HTTPS, proteção das credenciais de acesso e controles de autenticação para reduzir riscos de acesso indevido. Nenhum sistema oferece garantia absoluta de segurança. Proteja suas credenciais e informe situações suspeitas pelo canal de contato.
 
-- **Provedores de Hospedagem**: Para armazenar e processar dados
-- **Provedores de Analytics**: Para análise de uso (dados anonimizados)
-- **Provedores de Notificações**: Para enviar notificações push (Firebase/Expo)
-- **Processadores de Pagamento**: Apple e Google (para assinaturas)
+## 7. Público e alterações
 
-Todos os prestadores de serviço são obrigados a manter a confidencialidade e segurança dos dados.
+O aplicativo é destinado ao público adulto, conforme seus termos de uso. Se identificar uso ou fornecimento de dados por menor de idade em desacordo com esses termos, entre em contato para avaliação e providências cabíveis.
 
-### 5.3. Compartilhamento por Obrigação Legal
+Esta política pode ser atualizada para refletir mudanças no serviço ou exigências legais. A data no início identifica a versão desta página. Mudanças que exigirem novo consentimento dependerão de uma solicitação específica.
 
-Podemos divulgar informações se exigido por lei, ordem judicial ou autoridade competente.
+## 8. Contato de privacidade
 
-### 5.4. Transferências Internacionais
+Responsável: Daiane Pohlmann dos Santos — Fit & Rápido.
 
-Seus dados podem ser processados em servidores localizados fora do Brasil. Garantimos que tais transferências seguem padrões adequados de proteção de dados.
-
-## 6. SEUS DIREITOS (LGPD)
-
-Conforme a Lei Geral de Proteção de Dados (LGPD - Lei 13.709/2018), você tem os seguintes direitos:
-
-### 6.1. Direito de Acesso
-
-Você pode solicitar uma cópia dos dados pessoais que mantemos sobre você.
-
-### 6.2. Direito de Correção
-
-Você pode solicitar a correção de dados incompletos, inexatos ou desatualizados.
-
-### 6.3. Direito de Exclusão
-
-Você pode solicitar a exclusão de dados pessoais desnecessários, excessivos ou tratados em desconformidade com a LGPD.
-
-### 6.4. Direito de Portabilidade
-
-Você pode solicitar a portabilidade de seus dados para outro prestador de serviço.
-
-### 6.5. Direito de Revogação de Consentimento
-
-Você pode revogar consentimentos anteriormente dados a qualquer momento.
-
-### 6.6. Direito de Oposição
-
-Você pode se opor ao tratamento de dados pessoais em certas circunstâncias.
-
-### 6.7. Direito de Informação
-
-Você tem direito a informações claras sobre o tratamento de seus dados.
-
-### Como Exercer Seus Direitos
-
-Para exercer qualquer um desses direitos, entre em contato conosco através de:
-- **E-mail**: privacidade@fitrapido.com.br
-- **Formulário no aplicativo**: Configurações > Privacidade
-
-Responderemos sua solicitação em até 15 (quinze) dias úteis.
-
-## 7. RETENÇÃO DE DADOS
-
-Mantemos seus dados pessoais apenas pelo tempo necessário para:
-
-- Fornecer os serviços solicitados
-- Cumprir obrigações legais
-- Resolver disputas
-- Aplicar nossos acordos
-
-Após o período de retenção, excluímos ou anonimizamos seus dados de forma segura.
-
-## 8. SEGURANÇA DOS DADOS
-
-Implementamos medidas técnicas e organizacionais para proteger seus dados:
-
-### 8.1. Medidas Técnicas
-
-- **Criptografia**: Senhas são armazenadas usando hash seguro (bcrypt)
-- **HTTPS**: Todas as comunicações são criptografadas
-- **Autenticação**: Sistema de autenticação JWT seguro
-- **Rate Limiting**: Proteção contra ataques e abuso
-- **Validação de Inputs**: Sanitização de dados de entrada
-
-### 8.2. Medidas Organizacionais
-
-- Acesso restrito a dados pessoais apenas para funcionários autorizados
-- Treinamento regular sobre proteção de dados
-- Políticas internas de segurança
-- Auditorias periódicas de segurança
-
-## 9. COOKIES E TECNOLOGIAS SIMILARES
-
-Utilizamos tecnologias para melhorar sua experiência:
-
-- **Tokens de Autenticação**: Para manter sua sessão ativa
-- **Local Storage**: Para preferências do aplicativo
-- **Analytics**: Para entender como você usa o aplicativo (dados anonimizados)
-
-Você pode gerenciar essas preferências nas configurações do aplicativo.
-
-## 10. DADOS DE MENORES DE IDADE
-
-Nossos serviços são destinados a usuários com 18 anos ou mais. Não coletamos intencionalmente dados de menores de 18 anos. Se descobrirmos que coletamos dados de um menor, excluiremos essas informações imediatamente.
-
-## 11. ALTERAÇÕES NESTA POLÍTICA
-
-Podemos atualizar esta Política de Privacidade periodicamente. Notificaremos sobre mudanças significativas através de:
-
-- Notificação no aplicativo
-- E-mail (se você tiver cadastrado)
-- Atualização da data de "Última atualização" no topo desta política
-
-A continuação do uso do aplicativo após mudanças significa que você aceita a política atualizada.
-
-## 12. CONTATO E ENCARREGADO DE DADOS (DPO)
-
-Para questões relacionadas a privacidade e proteção de dados:
-
-**Encarregado de Proteção de Dados (DPO)**  
-**E-mail**: privacidade@fitrapido.com.br  
-**Horário de Atendimento**: Segunda a Sexta, 9h às 18h
-
-## 13. AUTORIDADE DE FISCALIZAÇÃO
-
-Se você acredita que seus dados pessoais foram tratados de forma inadequada, você pode apresentar uma reclamação à Autoridade Nacional de Proteção de Dados (ANPD):
-
-**ANPD**  
-Site: www.gov.br/anpd  
-E-mail: ouvidoria@anpd.gov.br
-
-## 14. DISPOSIÇÕES FINAIS
-
-Esta Política de Privacidade é regida pela legislação brasileira, especialmente pela Lei Geral de Proteção de Dados (Lei 13.709/2018).
-
-Ao usar o Fit & Rápido, você declara ter lido, compreendido e concordado com esta Política de Privacidade.
-
----
-
-**Fit & Rápido**  
-*Sua saúde e bem-estar em primeiro lugar*
-
+E-mail: contato@daipohlmann.com.br. Utilize esse canal para dúvidas sobre privacidade e solicitações relativas aos seus dados.
