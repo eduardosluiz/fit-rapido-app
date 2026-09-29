@@ -160,6 +160,9 @@ export default function SubscriptionsScreen() {
           const products = offerings.current?.availablePackages.reduce<Record<string, PurchasesStoreProduct>>(
             (result, item) => {
               result[item.product.identifier] = item.product;
+              if (Platform.OS === 'android') {
+                result[item.product.identifier.split(':')[0]] = item.product;
+              }
               return result;
             },
             {},
@@ -203,7 +206,10 @@ export default function SubscriptionsScreen() {
       
       if (offerings.current && offerings.current.availablePackages.length !== 0) {
         // Encontra o pacote pelo identifier do RevenueCat
-        const packageToBuy = offerings.current.availablePackages.find(p => p.identifier === productId || p.product.identifier === productId);
+        const packageToBuy = offerings.current.availablePackages.find(p =>
+          p.identifier === productId || p.product.identifier === productId ||
+          (Platform.OS === 'android' && p.product.identifier.split(':')[0] === productId)
+        );
         
         if (!packageToBuy) {
            Alert.alert('Produto não encontrado', `O plano ${productId} ainda não foi configurado nas lojas.`);
