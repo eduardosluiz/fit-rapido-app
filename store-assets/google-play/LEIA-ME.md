@@ -29,7 +29,7 @@ Faça upload dos quatro PNGs em “Capturas de tela do telefone”. O ZIP inclui
 - A rota da calculadora pessoal de macros foi retirada da navegação. O cálculo de nutrientes das substituições de ingredientes foi preservado.
 - Validação local: TypeScript sem erros; inspeção das dimensões, formato e aparência dos arquivos visuais.
 
-## Compilações solicitadas — ainda na fila do Expo
+## Compilações anteriores — substituídas pelo build 5
 
 - AAB para Google Play, versão 1.0.0 (2): https://expo.dev/accounts/dudemkt2s-team/projects/fit-rapido/builds/142cc033-beff-4882-9728-1cb387c7f945
 - APK para instalação e capturas, versão 1.0.0 (3): https://expo.dev/accounts/dudemkt2s-team/projects/fit-rapido/builds/8dfe95b0-9fad-43aa-8cef-f1a00fbb224a
@@ -38,7 +38,7 @@ Os números são independentes do build 23 do iOS. As duas compilações Android
 
 ## Antes de publicar
 
-Estas compilações não estão prontas para lançamento com assinaturas funcionando. O usuário confirmou que apenas a Apple foi conectada ao RevenueCat. Falta cadastrar os produtos Google Play, conectá-los ao RevenueCat e incluir EXPO_PUBLIC_REVENUECAT_ANDROID_API_KEY na configuração de produção, depois gerar novo build e testar compras/restauração/expiração.
+A versão atual para testes é 1.0.0 (5), commit 3d21a97. O usuário configurou seis produtos Google Play, entitlements, offerings e confirmou a recepção de notificação de teste no RevenueCat. A chave pública Android foi incluída no código e o reconhecimento dos IDs com plano básico foi corrigido. TypeScript passou sem erros. Consulte TESTE-INTERNO.md para o link atual e instruções. Compras e restauração ainda precisam ser testadas no dispositivo.
 
 O ambiente production do Expo não retornou variáveis configuradas nesta verificação. O login com Google depende de EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID e da configuração OAuth Android; não foi validado. Não declarar esse login como disponível sem testar. E-mail e senha continuam sendo o caminho para os testes.
 
