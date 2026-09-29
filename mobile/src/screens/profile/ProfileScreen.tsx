@@ -35,10 +35,13 @@ export default function ProfileScreen() {
 
   const handleEditAvatar = async () => {
     try {
-      const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-      if (status !== 'granted') {
-        Alert.alert('Erro', 'Precisamos de permissão para acessar suas fotos.');
-        return;
+      // Android uses the system photo picker, which grants access only to the selected photo.
+      if (Platform.OS !== 'android') {
+        const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+        if (status !== 'granted') {
+          Alert.alert('Erro', 'Precisamos de permissão para acessar suas fotos.');
+          return;
+        }
       }
 
       const result = await ImagePicker.launchImageLibraryAsync({

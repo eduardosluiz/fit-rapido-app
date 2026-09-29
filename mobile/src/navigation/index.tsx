@@ -28,7 +28,6 @@ import SubscriptionsScreen from '../screens/subscriptions/SubscriptionsScreen';
 import PrivacyPolicyScreen from '../screens/legal/PrivacyPolicyScreen';
 import TermsOfServiceScreen from '../screens/legal/TermsOfServiceScreen';
 import NotificationSettingsScreen from '../screens/settings/NotificationSettingsScreen';
-import MacrosCalculatorScreen from '../screens/macros/MacrosCalculatorScreen';
 import FeedScreen from '../screens/feed/FeedScreen';
 import SumarioReceitasScreen from '../screens/receitas/SumarioReceitasScreen';
 
@@ -62,7 +61,6 @@ export type MainStackParamList = {
   PrivacyPolicy: undefined;
   TermsOfService: undefined;
   NotificationSettings: undefined;
-  MacrosCalculator: undefined;
   SumarioReceitas: undefined;
 };
 
@@ -320,15 +318,6 @@ function MainNavigator() {
         component={NotificationSettingsScreen}
         options={{
           headerShown: false,
-        }}
-      />
-      <MainStack.Screen
-        name="MacrosCalculator"
-        component={MacrosCalculatorScreen}
-        options={{
-          title: 'Calculadora de Macros',
-          headerStyle: { backgroundColor: '#1a1a1a' },
-          headerTintColor: '#c8921a',
         }}
       />
     </MainStack.Navigator>

@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="500" viewBox="0 0 1024 500">
+<defs><linearGradient id="bg" x2="1" y2="1"><stop stop-color="#101010"/><stop offset="1" stop-color="#292522"/></linearGradient><linearGradient id="gold"><stop stop-color="#f5d999"/><stop offset="1" stop-color="#c8921a"/></linearGradient></defs>
+<rect width="1024" height="500" fill="url(#bg)"/>
+<circle cx="902" cy="260" r="232" fill="none" stroke="#c8921a" stroke-opacity=".14" stroke-width="1"/>
+<circle cx="902" cy="260" r="195" fill="none" stroke="#c8921a" stroke-opacity=".1" stroke-width="1"/>
+<rect x="64" y="62" width="72" height="72" rx="16" fill="#101010" stroke="#70614a"/>
+<text x="100" y="111" text-anchor="middle" font-family="Arial,sans-serif" font-size="34" fill="#fff">FR</text>
+<text x="156" y="108" font-family="Arial,sans-serif" font-size="17" letter-spacing="3" fill="#e7ca8c">RECEITAS + TREINOS</text>
+<text x="60" y="232" font-family="Georgia,serif" font-weight="bold" font-size="72" fill="#f7f1e5">Fit &amp; Rápido</text>
+<rect x="64" y="260" width="64" height="4" rx="2" fill="url(#gold)"/>
+<text x="64" y="313" font-family="Arial,sans-serif" font-size="27" fill="#e8dfd1">Inspiração para sua alimentação.</text>
+<text x="64" y="353" font-family="Arial,sans-serif" font-size="27" fill="#e8dfd1">Movimento para sua rotina.</text>
+<text x="64" y="430" font-family="Arial,sans-serif" font-size="15" letter-spacing="2" fill="#bfa77c">COM DAIANE POHLMANN</text>
+<g transform="translate(754 90)" stroke="#e7ca8c" fill="none" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+<circle cx="83" cy="78" r="58"/><circle cx="83" cy="78" r="42" stroke-width="2"/>
+<path d="M2 26v35q0 15 12 15V132M14 26v36M26 26v35q0 15-12 15M162 26q-16 20-16 49h16V132M162 26v49"/>
+</g>
+<g transform="translate(763 301) rotate(-18 80 50)" stroke="#e7ca8c" fill="#211f1c" stroke-width="4" stroke-linejoin="round"><rect x="39" y="42" width="84" height="17" rx="3"/><rect x="20" y="19" width="22" height="63" rx="5"/><rect x="4" y="32" width="16" height="38" rx="4"/><rect x="123" y="19" width="22" height="63" rx="5"/><rect x="145" y="32" width="16" height="38" rx="4"/></g>
+</svg>
