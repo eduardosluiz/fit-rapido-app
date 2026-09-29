@@ -2,9 +2,9 @@ import Purchases, { LOG_LEVEL } from 'react-native-purchases';
 import { Platform } from 'react-native';
 
 export const REVENUECAT_API_KEYS = {
-  // Chave pública do SDK iOS; pode ser incluída no aplicativo distribuído.
+  // Chaves públicas dos SDKs; podem ser incluídas no aplicativo distribuído.
   apple: process.env.EXPO_PUBLIC_REVENUECAT_IOS_API_KEY?.trim() || 'appl_UzqLynGzJFsrevqDWCzknDtLxtB',
-  google: process.env.EXPO_PUBLIC_REVENUECAT_ANDROID_API_KEY?.trim(),
+  google: process.env.EXPO_PUBLIC_REVENUECAT_ANDROID_API_KEY?.trim() || 'goog_oLicaPNhWwAkxAlgAWizYLvhOgm',
 };
 
 let configuredPlatform: 'ios' | 'android' | null = null;
