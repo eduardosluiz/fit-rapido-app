@@ -513,15 +513,10 @@ export default function SubscriptionsScreen() {
                               {storeProduct?.priceString || formatPrice(periodo.precoTotal)}
                             </Text>
                             <Text style={styles.periodoTotalLabel}>
-                              Total ({periodo.meses} {periodo.meses === 1 ? 'mês' : 'meses'})
+                              {periodo.meses === 1 ? 'Cobrado a cada mês' : `Cobrado a cada ${periodo.meses} meses`}
                             </Text>
                           </View>
-                          <View style={styles.periodoMonthlyContainer}>
-                            <Text style={styles.periodoMonthlyPrice}>
-                              {storeProduct?.pricePerMonthString || formatPrice(periodo.precoMensal)}
-                            </Text>
-                            <Text style={styles.periodoMonthlyLabel}>/mês</Text>
-                          </View>
+
                         </View>
                         {hasDiscount && (
                           <Text style={styles.economiaText}>
@@ -946,13 +941,13 @@ const styles = StyleSheet.create({
     marginBottom: 6,
   },
   periodoTotalPrice: {
-    fontSize: 17,
+    fontSize: 30,
     fontFamily: fonts.bodySemiBold,
     color: '#fff',
   },
   periodoTotalLabel: {
-    fontSize: 12,
-    color: 'rgba(255,255,255,0.4)',
+    fontSize: 14,
+    color: 'rgba(255,255,255,0.85)',
     marginTop: 4,
   },
   periodoMonthlyContainer: {
