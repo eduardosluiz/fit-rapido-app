@@ -1,3 +1,4 @@
+import { isFreeWorkout } from '../treinos/workout-free.helper';
 import { Injectable, NotFoundException, ConflictException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -81,7 +82,7 @@ export class FavoritosService {
         ? this.receitaRepository.createQueryBuilder('receita')
           .leftJoinAndSelect('receita.categorias', 'categorias')
           .select([
-            'receita.id', 'receita.titulo', 'receita.ingredientes', 'receita.imagem_url',
+            'receita.id', 'receita.titulo', 'receita.imagem_url',
             'receita.imagens_url', 'receita.video_thumbnail_url', 'receita.is_inedito',
             'receita.avaliacao', 'receita.total_avaliacoes', 'receita.dificuldade',
             'receita.tempo_preparo', 'receita.calorias', 'receita.is_premium',
@@ -97,7 +98,7 @@ export class FavoritosService {
           .leftJoinAndSelect('treino.modalidade', 'modalidade')
           .select([
             'treino.id', 'treino.titulo', 'treino.imagem_url', 'treino.imagem_capa_url',
-            'treino.nivel', 'treino.duracao_minutos', 'treino.is_premium', 'treino.ativa',
+            'treino.is_free', 'treino.dia_semana', 'treino.nivel', 'treino.duracao_minutos', 'treino.is_premium', 'treino.ativa',
             'treino.avaliacao', 'treino.total_avaliacoes', 'treino.modalidade_id',
             'categoriasTreino', 'modalidade',
           ])
@@ -111,7 +112,7 @@ export class FavoritosService {
       contagens.map((item) => [`${item.tipo}:${item.item_id}`, Number(item.popularidade)]),
     );
     const receitasPorId = new Map(receitas.map((receita) => [receita.id, receita]));
-    const treinosPorId = new Map(treinos.map((treino) => [treino.id, treino]));
+    const treinosPorId = new Map(treinos.map((treino) => [treino.id, { ...treino, is_free: isFreeWorkout(treino) }]));
 
     return favoritos.map((favorito) => ({
       ...favorito,

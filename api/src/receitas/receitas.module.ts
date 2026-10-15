@@ -1,3 +1,4 @@
+import { WorkoutAdminGuard } from '../treinos/workout-admin.guard';
 import { Module, forwardRef } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ReceitasController } from './receitas.controller';
@@ -19,7 +20,7 @@ import { IAModule } from '../ia/ia.module';
     AuthModule,
   ],
   controllers: [ReceitasController, CategoriasReceitasController],
-  providers: [ReceitasService, CategoriasReceitasService, MacrosService],
+  providers: [WorkoutAdminGuard, ReceitasService, CategoriasReceitasService, MacrosService],
   exports: [ReceitasService, CategoriasReceitasService, MacrosService, TypeOrmModule],
 })
 export class ReceitasModule {}

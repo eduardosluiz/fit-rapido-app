@@ -33,20 +33,17 @@ export function hasActiveTrial(user: User | null): boolean {
  * Verifica se o usuário pode acessar uma receita específica
  */
 export function canAccessRecipe(user: User | null, receita: Receita): boolean {
+  if (receita.is_free === true) return true;
   if (!user) {
     return false;
   }
 
   const tier = getEffectiveSubscriptionTier(user);
 
-  // Se está dentro do trial, pode acessar todas as receitas
-  if (hasActiveTrial(user)) {
-    return true;
-  }
 
   // Se é FREE (após trial), apenas receitas FREE
   if (tier === SubscriptionTier.FREE || tier === SubscriptionTier.NONE) {
-    return receita.is_free === true;
+    return false;
   }
 
   // PREMIUM e PREMIUM_FIT podem acessar todas as receitas
@@ -54,10 +51,6 @@ export function canAccessRecipe(user: User | null, receita: Receita): boolean {
     return true;
   }
 
-  // BASIC (deprecated) - apenas receitas não premium
-  if (tier === SubscriptionTier.BASIC) {
-    return receita.is_premium === false;
-  }
 
   return false;
 }

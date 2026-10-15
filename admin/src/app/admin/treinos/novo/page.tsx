@@ -45,6 +45,7 @@ function NovoTreinoForm() {
     tags: '',
     ativa: true,
     is_premium: false,
+    is_free: false,
     is_inedito: false,
     exercicios_detalhados: [{ nome: '', repeticoes: '', imagem_url: '', video_url: '', video_explicativo_url: '' }]
   });
@@ -160,7 +161,7 @@ function NovoTreinoForm() {
           </div>
         </div>
 
-        <div className="bg-white dark:bg-[#0f0f0f] border border-gray-200 dark:border-[#222] rounded-xl shadow-sm overflow-hidden p-8 sm:p-12">
+        <div className="bg-white dark:bg-[#0f0f0f] border border-gray-200 dark:border-[#222] rounded-xl shadow-sm overflow-hidden p-4 sm:p-12">
           <form id="treino-form" onSubmit={handleSubmit} className="space-y-12">
             {/* Seção: Dados Técnicos */}
             <div className="space-y-8">
@@ -225,7 +226,7 @@ function NovoTreinoForm() {
 
                 {/* Coluna da Direita: Mídia e Status */}
                 <div className="lg:col-span-5 flex flex-col">
-                  <div className="grid grid-cols-2 gap-4 flex-1">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 flex-1">
                     <div className="space-y-2">
                       <label className="text-[9px] font-normal uppercase tracking-[0.15em] text-gray-800 dark:text-gray-200 ml-0.5">Identidade (Capa)</label>
                       <div className="p-4 rounded-xl border border-gray-400 dark:border-[#444] bg-white/30 dark:bg-[#0a0a0a] shadow-inner h-[218px] flex items-center justify-center">
@@ -253,10 +254,10 @@ function NovoTreinoForm() {
                   {/* Alinhado com a linha de Duração/Intensidade */}
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 mt-8">
                     <div className="flex items-center justify-between p-3 rounded-xl border border-gray-400 dark:border-[#444] bg-white/50 dark:bg-[#0f0f0f] shadow-sm">
-                      <p className="text-[9px] font-normal uppercase tracking-widest text-gray-800 dark:text-gray-200">Premium</p>
+                      <p className="text-[9px] font-normal uppercase tracking-widest text-gray-800 dark:text-gray-200">Disponível para Free</p>
                       <Switch
-                        checked={formData.is_premium}
-                        onCheckedChange={(checked) => setFormData({ ...formData, is_premium: checked })}
+                        checked={formData.is_free}
+                        onCheckedChange={(checked) => setFormData({ ...formData, is_free: checked })}
                         className="scale-75 data-[state=unchecked]:bg-gray-400"
                       />
                     </div>

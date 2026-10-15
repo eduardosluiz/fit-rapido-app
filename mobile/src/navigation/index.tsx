@@ -56,7 +56,7 @@ export type MainStackParamList = {
   Feed: undefined;
   ReceitaDetail: { receitaId: string };
   TreinoDetail: { treinoId: string };
-  ExerciseDetail: { treinoId: string; exerciseIndex?: number };
+  ExerciseDetail: { treinoId: string; exerciseIndex?: number; exerciseIds?: string[] };
   Subscriptions: undefined;
   PrivacyPolicy: undefined;
   TermsOfService: undefined;
@@ -180,8 +180,6 @@ function FeedStack() {
 }
 
 function TabsNavigator() {
-  const { user } = useAuth();
-  const canAccessWorkouts = user?.subscription_tier === 'premium_fit';
 
   return (
     <MainTabs.Navigator
@@ -236,24 +234,11 @@ function TabsNavigator() {
           tabBarIcon: ({ color, size }) => (
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <Ionicons name="fitness" size={size} color={color} />
-              {!canAccessWorkouts && (
-                <Ionicons 
-                  name="lock-closed" 
-                  size={10} 
-                  color={color} 
-                  style={{ position: 'absolute', top: -4, right: -6 }} 
-                />
-              )}
             </View>
           ),
         }}
         listeners={({ navigation }) => ({
           tabPress: (e) => {
-            if (!canAccessWorkouts) {
-              e.preventDefault();
-              navigation.navigate('Subscriptions');
-              return;
-            }
             navigation.dispatch(
               CommonActions.reset({
                 index: 0,

@@ -8,6 +8,12 @@
   flex-direction: column;
 }
 
+/* Cards empilhados devem acompanhar o conteúdo, não a altura da coluna. */
+.item-card.item-card-compact {
+  height: auto;
+  min-height: 0;
+}
+
 /* TEMA DARK - Aplicado via classe .dark-theme no container pai */
 .admin-container.dark-theme .item-card {
   background-color: #111111;

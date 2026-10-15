@@ -98,7 +98,7 @@ export default function UsuariosPage() {
     <div className="p-6 sm:p-10 bg-[#f4f7f9] dark:bg-[#0a0a0a] min-h-screen">
       <div className="w-full max-w-[1400px] mx-auto space-y-12">
         
-        <div className="flex items-center justify-between border-b border-gray-100 dark:border-[#222] pb-8">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-gray-100 dark:border-[#222] pb-8">
           <div>
             <h1 className="text-xl font-light text-gray-400 dark:text-gray-500 tracking-tight uppercase">
               Base de <span className="text-gray-800 dark:text-white font-normal">Usuários</span>
@@ -111,8 +111,8 @@ export default function UsuariosPage() {
           </div>
         </div>
 
-        <div className="flex items-center justify-between gap-10 mb-12">
-          <div className="relative w-full max-w-[300px] group">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 sm:gap-10 mb-8 sm:mb-12">
+          <div className="relative w-full sm:max-w-[300px] group">
             <Search className="absolute left-0 top-1/2 -translate-y-1/2 text-gray-300 group-focus-within:text-[#c8921a]" size={16} />
             <input 
               type="text" value={searchText} onChange={(e) => setSearchText(e.target.value)} 
@@ -121,7 +121,7 @@ export default function UsuariosPage() {
             />
           </div>
           
-          <div className="relative min-w-[180px]">
+          <div className="relative w-full sm:w-auto sm:min-w-[180px]">
             <select 
               value={selectedRole} onChange={(e) => setSelectedRole(e.target.value)}
               className="w-full appearance-none bg-transparent border-t-0 border-l-0 border-r-0 border-b border-gray-300 dark:border-[#333] pl-2 pr-8 py-2 text-xs text-black dark:text-white font-normal focus:outline-none focus:border-[#c8921a] cursor-pointer uppercase tracking-widest"

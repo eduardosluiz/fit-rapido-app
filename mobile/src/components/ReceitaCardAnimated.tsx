@@ -1,4 +1,7 @@
 import React, { useRef } from "react";
+import { useAuth } from '../contexts/AuthContext';
+import { useNavigation } from '@react-navigation/native';
+import { canAccessRecipeContent } from '../utils/recipeAccess';
 import { View, Text, StyleSheet, Animated, Pressable, useWindowDimensions } from "react-native";
 import { Image } from "expo-image";
 import { Ionicons } from '@expo/vector-icons';
@@ -16,7 +19,10 @@ interface ReceitaCardProps {
   isLocked?: boolean;
 }
 
-export default function ReceitaCardAnimated({ item, isHorizontal, compact, onPress, orderNumber, isLocked }: ReceitaCardProps) {
+export default function ReceitaCardAnimated({ item, isHorizontal, compact, onPress, orderNumber, isLocked: explicitLocked }: ReceitaCardProps) {
+  const { user } = useAuth();
+  const navigation = useNavigation();
+  const isLocked = explicitLocked ?? !canAccessRecipeContent(user, item);
   const scale = useRef(new Animated.Value(1)).current;
 
   const onPressIn = () => {
@@ -47,7 +53,7 @@ export default function ReceitaCardAnimated({ item, isHorizontal, compact, onPre
       );
     }
     
-    if (item.video_url) {
+    if (!isLocked && item.video_url) {
       // Se for Supabase, tentamos gerar uma thumbnail via query param de redimensionamento
       // Caso contrário, usamos o componente Video para mostrar o primeiro frame
       const isSupabase = item.video_url.includes('supabase.co');
@@ -84,7 +90,7 @@ export default function ReceitaCardAnimated({ item, isHorizontal, compact, onPre
   const compactStyle = isHorizontal || compact;
 
   return (
-    <Pressable onPress={onPress} onPressIn={onPressIn} onPressOut={onPressOut} style={[isHorizontal && { width: CARD_WIDTH }]}>
+    <Pressable onPress={() => isLocked ? navigation.navigate('Subscriptions' as never) : onPress()} onPressIn={onPressIn} onPressOut={onPressOut} style={[isHorizontal && { width: CARD_WIDTH }]}>
       <Animated.View style={[styles.card, compactStyle && styles.horizontalCard, { transform: [{ scale }] }]}>
         <View style={[styles.imageContainer, compactStyle && styles.horizontalImageContainer]}>
           {renderMedia()}

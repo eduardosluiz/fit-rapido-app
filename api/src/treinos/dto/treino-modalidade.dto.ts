@@ -52,6 +52,7 @@ export class CreateTreinoModalidadeDto {
   @IsOptional()
   configuracao_dias?: Record<string, Record<string, {
     titulo?: string;
+    is_free?: boolean;
     imagem_url?: string;
   }>>;
 

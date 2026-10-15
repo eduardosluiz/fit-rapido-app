@@ -98,6 +98,9 @@ export class Treino {
   is_premium: boolean;
 
   @Column({ type: 'boolean', default: false })
+  is_free: boolean;
+
+  @Column({ type: 'boolean', default: false })
   is_inedito: boolean;
 
   @Column({ type: 'simple-array', nullable: true })

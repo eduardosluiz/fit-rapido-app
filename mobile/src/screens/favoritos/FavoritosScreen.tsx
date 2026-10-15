@@ -1,3 +1,4 @@
+import { canAccessPaidWorkouts } from '../../utils/workoutAccess';
 import React, { useCallback, useMemo, useRef, useState } from 'react';
 import {
   ActivityIndicator, Alert, KeyboardAvoidingView, Modal, Platform, ScrollView,
@@ -36,7 +37,7 @@ const getModalityIcon = (name: string, index: number): keyof typeof Ionicons.gly
 export default function FavoritosScreen() {
   const navigation = useNavigation();
   const { user } = useAuth();
-  const canAccessWorkouts = user?.subscription_tier === 'premium_fit';
+  const canAccessWorkouts = canAccessPaidWorkouts(user);
   const [favorites, setFavorites] = useState<Favorito[]>([]);
   const [recipes, setRecipes] = useState<Receita[]>([]);
   const [workouts, setWorkouts] = useState<Treino[]>([]);
@@ -64,12 +65,10 @@ export default function FavoritosScreen() {
         .filter((item) => item.tipo === 'receita' && item.receita?.ativa !== false)
         .map((item) => item.receita)
         .filter((item): item is Receita => !!item);
-      const workoutData = canAccessWorkouts
-        ? favoriteData
+      const workoutData = favoriteData
           .filter((item) => item.tipo === 'treino' && item.treino?.ativa !== false)
           .map((item) => item.treino)
-          .filter((item): item is Treino => !!item)
-        : [];
+          .filter((item): item is Treino => !!item);
       setFavorites(favoriteData);
       setRecipes(recipeData);
       setWorkouts(workoutData);
@@ -122,7 +121,7 @@ export default function FavoritosScreen() {
   }, [favoritesQuery, workoutFilters, workouts]);
 
   const showRecipes = contentFilter !== 'treinos';
-  const showWorkouts = canAccessWorkouts && contentFilter !== 'receitas';
+  const showWorkouts = contentFilter !== 'receitas';
   const visibleFavoritesCount = contentFilter === 'receitas'
     ? recipes.length
     : contentFilter === 'treinos'
@@ -222,6 +221,7 @@ export default function FavoritosScreen() {
       <View key={key} style={styles.cardColumn}>
         <ReceitaCardAnimated
           item={displayData}
+            isLocked={isRecipe ? undefined : !(canAccessWorkouts || workout.is_free === true)}
           onPress={() => isRecipe
             ? (navigation as any).navigate('Receitas', {
               screen: 'ReceitaDetail', params: { receitaId: item.id },
@@ -263,7 +263,7 @@ export default function FavoritosScreen() {
             <View style={styles.tabDivider} />
             <ContentTab icon="restaurant-outline" label="Receitas"
               active={contentFilter === 'receitas'} onPress={() => setContentFilter('receitas')} />
-            {canAccessWorkouts && <>
+            {<>
               <View style={styles.tabDivider} />
               <ContentTab icon="barbell-outline" label="Treinos"
                 active={contentFilter === 'treinos'} onPress={() => setContentFilter('treinos')} />

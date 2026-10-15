@@ -251,7 +251,7 @@ export default function EditarReceita() {
           </div>
         </div>
 
-        <div className="bg-white dark:bg-[#0f0f0f] border border-gray-200 dark:border-[#222] rounded-xl shadow-sm overflow-hidden p-8 sm:p-12">
+        <div className="bg-white dark:bg-[#0f0f0f] border border-gray-200 dark:border-[#222] rounded-xl shadow-sm overflow-hidden p-4 sm:p-12">
           <form id="receita-form" onSubmit={handleSubmit} className="space-y-12">
             {/* Seção: Informações Básicas */}
             <div className="space-y-8">

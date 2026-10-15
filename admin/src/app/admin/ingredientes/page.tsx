@@ -135,7 +135,7 @@ export default function IngredientesPage() {
     <div className="p-6 sm:p-10 bg-[#f4f7f9] dark:bg-[#0a0a0a] min-h-screen">
       <div className="w-full max-w-[1400px] mx-auto space-y-12">
         
-        <div className="flex items-center justify-between border-b border-gray-200 dark:border-[#222] pb-8">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-gray-200 dark:border-[#222] pb-8">
           <div>
             <h1 className="text-xl font-light text-gray-400 dark:text-gray-500 tracking-tight uppercase">
               Base de <span className="text-gray-800 dark:text-white font-normal">Ingredientes</span>
@@ -144,7 +144,7 @@ export default function IngredientesPage() {
           </div>
           <button 
             onClick={() => handleOpenDialog()}
-            className="px-4 py-1.5 rounded-md border border-[#c8921a]/30 text-[#c8921a] text-[9px] font-normal uppercase tracking-widest hover:bg-[#c8921a] hover:text-white transition-all"
+            className="min-h-[44px] px-4 py-2 rounded-md border border-[#c8921a]/30 text-[#c8921a] text-[9px] font-normal uppercase tracking-widest hover:bg-[#c8921a] hover:text-white transition-all"
           >
             <Plus size={12} className="mr-1 inline" /> Novo Item
           </button>
@@ -165,17 +165,17 @@ export default function IngredientesPage() {
       </div>
 
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <DialogContent className="max-w-md p-0 overflow-hidden rounded-2xl border-none shadow-2xl bg-white">
+        <DialogContent className="max-w-md p-0 overflow-y-auto rounded-2xl border-none shadow-2xl bg-white">
           <DialogHeader className="px-8 py-5 border-b border-gray-50 flex items-center justify-between">
             <DialogTitle className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400">Ficha Técnica</DialogTitle>
           </DialogHeader>
-          <form onSubmit={handleSubmit} className="p-8 space-y-6">
+          <form onSubmit={handleSubmit} className="p-5 sm:p-8 space-y-6">
             <input 
               type="text" value={formData.nome} onChange={(e) => setFormData({...formData, nome: e.target.value})}
               className="w-full bg-transparent border-t-0 border-l-0 border-r-0 border-b border-gray-100 px-0 py-2 text-sm focus:outline-none focus:border-[#c8921a] text-gray-700 font-normal"
               placeholder="Nome do ingrediente..." required
             />
-            <div className="grid grid-cols-2 gap-x-8 gap-y-6">
+            <div className="grid grid-cols-2 gap-x-4 sm:gap-x-8 gap-y-6">
               {['calorias', 'proteinas', 'carboidratos', 'gorduras'].map(field => (
                 <div key={field}>
                   <label className="text-[8px] font-black text-gray-300 uppercase tracking-widest block mb-1">{field}</label>

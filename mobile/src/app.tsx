@@ -72,6 +72,16 @@ if (Platform.OS === 'web' && typeof window !== 'undefined') {
 }
 
 export default function App() {
+  useEffect(() => {
+    if (Platform.OS !== 'web' || typeof document === 'undefined') return;
+    let viewport = document.querySelector('meta[name="viewport"]');
+    if (!viewport) {
+      viewport = document.createElement('meta');
+      viewport.setAttribute('name', 'viewport');
+      document.head.appendChild(viewport);
+    }
+    viewport.setAttribute('content', 'width=device-width, initial-scale=1, user-scalable=yes');
+  }, []);
   const [fontsLoaded] = useFonts({
     PlayfairDisplay_700Bold,
     Montserrat_400Regular,

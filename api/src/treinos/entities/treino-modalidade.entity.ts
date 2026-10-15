@@ -42,6 +42,7 @@ export class TreinoModalidade {
   @Column({ type: 'jsonb', nullable: true, default: {} })
   configuracao_dias?: Record<string, Record<string, {
     titulo?: string;
+    is_free?: boolean;
     imagem_url?: string;
   }>>;
 

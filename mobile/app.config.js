@@ -6,7 +6,7 @@ module.exports = {
   expo: {
     name: "Fit & Rápido",
     slug: "fit-rapido",
-    version: "1.0.0",
+    version: "1.0.1",
     sdkVersion: "54.0.0",
     orientation: "portrait",
     icon: "./assets/icon.png",

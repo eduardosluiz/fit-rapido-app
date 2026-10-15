@@ -13,6 +13,7 @@ import {
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useAuth } from '../../contexts/AuthContext';
+import { canAccessPaidWorkouts } from '../../utils/workoutAccess';
 import { api, Banner, Receita, Treino, getImageUrl } from '../../services/api';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import ScreenBanner from '../../components/ScreenBanner';
@@ -41,7 +42,6 @@ const { width: SCREEN_WIDTH } = Dimensions.get('window');
 export default function FeedScreen() {
   const navigation = useNavigation();
   const { user } = useAuth();
-  const canAccessWorkouts = user?.subscription_tier === 'premium_fit';
   const [banners, setBanners] = useState<Banner[]>([]);
   const [receitas, setReceitas] = useState<Receita[]>([]);
   const [treinos, setTreinos] = useState<Treino[]>([]);
@@ -242,7 +242,7 @@ export default function FeedScreen() {
   );
 
   const renderTreino = (treino: Treino) => {
-    const canAccessWorkouts = user?.subscription_tier === 'premium_fit';
+    const canAccessWorkouts = canAccessPaidWorkouts(user) || treino.is_free === true;
     const displayData: any = {
       ...treino,
       tempo_preparo: treino.duracao_minutos,
@@ -410,17 +410,10 @@ export default function FeedScreen() {
                 <TouchableOpacity 
                   style={{ flexDirection: 'row', alignItems: 'center' }}
                   onPress={() => {
-                    if (!canAccessWorkouts) {
-                      (navigation as any).navigate('Subscriptions');
-                    } else {
-                      (navigation as any).navigate('Tabs', { screen: 'Treinos' });
-                    }
+                    (navigation as any).navigate('Tabs', { screen: 'Treinos' });
                   }}
                 >
                   <Text style={styles.seeAllText}>Ver todos</Text>
-                  {!canAccessWorkouts && (
-                    <Ionicons name="lock-closed" size={12} color="#E7C48A" style={{ marginLeft: 4 }} />
-                  )}
                 </TouchableOpacity>
               </View>
               <ScrollView horizontal showsHorizontalScrollIndicator={false}

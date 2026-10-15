@@ -175,15 +175,15 @@ export default function GlossarioPage() {
             </p>
           </div>
           
-          <div className="flex items-center gap-3">
-            <div className="relative">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-3">
+            <div className="relative min-w-0">
               <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
               <input
                 type="text"
                 placeholder="Buscar ingrediente..."
                 value={searchText}
                 onChange={(e) => setSearchText(e.target.value)}
-                className="pl-9 pr-4 py-2 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-[#c8921a] focus:border-[#c8921a] transition-all w-64 shadow-sm text-gray-800 placeholder-gray-400"
+                className="pl-9 pr-4 py-2 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-[#c8921a] focus:border-[#c8921a] transition-all w-full sm:w-64 shadow-sm text-gray-800 placeholder-gray-400"
               />
             </div>
             
@@ -216,7 +216,7 @@ export default function GlossarioPage() {
 
       {/* Modal Form */}
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <DialogContent className="sm:max-w-[500px] bg-white rounded-xl border-gray-200 p-0 overflow-hidden">
+        <DialogContent className="sm:max-w-[500px] bg-white rounded-xl border-gray-200 p-0 overflow-y-auto">
           <div className="p-6">
             <DialogHeader className="mb-6">
               <DialogTitle className="text-lg font-normal text-gray-900 flex items-center gap-2">
@@ -254,7 +254,7 @@ export default function GlossarioPage() {
                 />
               </div>
 
-              <div className="flex justify-end gap-3 pt-4 border-t border-gray-100 mt-6">
+              <div className="flex flex-col sm:flex-row justify-end gap-3 pt-4 border-t border-gray-100 mt-6">
                 <AdminButton 
                   type="button" 
                   variant="outline" 

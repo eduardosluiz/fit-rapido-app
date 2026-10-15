@@ -1,3 +1,5 @@
+import ZoomableContent from '../../components/ZoomableContent';
+import { canAccessPaidWorkouts } from '../../utils/workoutAccess';
 import React, { useState, useEffect } from 'react';
 import {
   View,
@@ -74,6 +76,7 @@ export default function TreinoDetailScreen() {
       setTreino(data);
     } catch (error) {
       console.error('Erro ao carregar treino:', error);
+      if ((error as any)?.status === 403) navigation.navigate('Subscriptions' as never);
     } finally {
       setLoading(false);
     }
@@ -137,29 +140,29 @@ export default function TreinoDetailScreen() {
 
   if (loading) {
     return (
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView style={styles.container}><ZoomableContent>
         <View style={styles.loadingContainer}>
           <ActivityIndicator size="large" color="#c8921a" />
         </View>
-        </SafeAreaView>
+        </ZoomableContent></SafeAreaView>
         );
         }
 
         if (!treino) {
     return (
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView style={styles.container}><ZoomableContent>
         <View style={styles.loadingContainer}>
           <Text style={styles.errorText}>Treino não encontrado</Text>
         </View>
-      </SafeAreaView>
+      </ZoomableContent></SafeAreaView>
     );
   }
 
-  const isPremiumLocked = user?.subscription_tier !== 'premium_fit';
+  const isPremiumLocked = !canAccessPaidWorkouts(user) && treino.is_free !== true;
 
   if (isPremiumLocked) {
     return (
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView style={styles.container}><ZoomableContent>
         <View style={styles.premiumLockContainer}>
           <View style={styles.premiumLockIconContainer}>
             <Ionicons name="lock-closed" size={80} color={colors.primary} />
@@ -175,12 +178,12 @@ export default function TreinoDetailScreen() {
             <Text style={styles.premiumLockBackButtonText}>VOLTAR</Text>
           </TouchableOpacity>
         </View>
-      </SafeAreaView>
+      </ZoomableContent></SafeAreaView>
     );
   }
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.container}><ZoomableContent>
       <ScrollView contentContainerStyle={styles.content}>
         <View style={styles.imageContainer}>
           {(() => {
@@ -393,7 +396,7 @@ export default function TreinoDetailScreen() {
           <VideoPlayer videoUrl={exerciseVideo.url} title={exerciseVideo.title} onClose={() => setExerciseVideo(null)} />
         </Modal>
       )}
-    </SafeAreaView>
+    </ZoomableContent></SafeAreaView>
   );
 }
 

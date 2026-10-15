@@ -1,4 +1,7 @@
 import React, { useRef } from "react";
+import { useAuth } from '../contexts/AuthContext';
+import { useNavigation } from '@react-navigation/native';
+import { canAccessPaidWorkouts } from '../utils/workoutAccess';
 import { View, Text, StyleSheet, Animated, Pressable, Dimensions } from "react-native";
 import { Image } from "expo-image";
 import { Ionicons } from '@expo/vector-icons';
@@ -14,6 +17,9 @@ interface TreinoCardProps {
 }
 
 export default function TreinoCardAnimated({ item, isHorizontal, onPress }: TreinoCardProps) {
+  const { user } = useAuth();
+  const navigation = useNavigation();
+  const locked = item.locked === true || !(item.is_free === true || canAccessPaidWorkouts(user));
   const scale = useRef(new Animated.Value(1)).current;
 
   const onPressIn = () => {
@@ -37,6 +43,8 @@ export default function TreinoCardAnimated({ item, isHorizontal, onPress }: Trei
   const renderTags = () => {
     return (
       <View style={styles.tagsContainer}>
+        {locked && <View style={styles.badge}><Ionicons name="lock-closed" size={16} color={colors.primary} /><Text style={styles.badgeText}>Completo</Text></View>}
+        {item.is_free === true && <View style={[styles.badge, { backgroundColor: '#173D32' }]}><Text style={[styles.badgeText, { color: '#A7E3C1' }]}>Grátis</Text></View>}
         {item.is_inedito && (
           <View style={[styles.badge, { backgroundColor: colors.primary }]}>
             <Text style={styles.badgeText}>Novo</Text>
@@ -66,7 +74,7 @@ export default function TreinoCardAnimated({ item, isHorizontal, onPress }: Trei
       : null;
 
   return (
-    <Pressable onPress={onPress} onPressIn={onPressIn} onPressOut={onPressOut} style={[isHorizontal && { width: CARD_WIDTH, marginRight: spacing.lg }]}>
+    <Pressable onPress={() => locked ? navigation.navigate('Subscriptions' as never) : onPress()} onPressIn={onPressIn} onPressOut={onPressOut} style={[isHorizontal && { width: CARD_WIDTH, marginRight: spacing.lg }]}>
       <Animated.View style={[styles.card, { transform: [{ scale }], height: CARD_HEIGHT }]}>
         
         {/* Background Media */}

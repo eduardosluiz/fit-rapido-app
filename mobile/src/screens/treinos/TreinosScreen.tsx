@@ -1,4 +1,6 @@
+import { canAccessPaidWorkouts } from '../../utils/workoutAccess';
 import React, { useState, useEffect, useCallback } from 'react';
+import { compareModalities } from '../../utils/modalityOrder';
 import {
   View,
   Text,
@@ -108,9 +110,7 @@ export default function TreinosScreen() {
         t && (t.ativa === true || t.ativo === true)
       );
       
-      if (user?.subscription_tier !== 'premium_fit') {
-        treinosAtivos = treinosAtivos.filter((t: any) => t.is_premium === false);
-      }
+
       
       if (pageNum === 1) {
         setTreinos(treinosAtivos);
@@ -163,7 +163,7 @@ export default function TreinosScreen() {
       <TouchableOpacity 
         style={styles.featuredBannerContainer} 
         activeOpacity={0.9}
-        onPress={() => (navigation as any).navigate('TreinoDetail', { treinoId: featuredWorkout.id })}
+        onPress={() => (navigation as any).navigate(!canAccessPaidWorkouts(user) && !featuredWorkout.is_free ? 'Subscriptions' : 'TreinoDetail', { treinoId: featuredWorkout.id })}
       >
         {thumbnail ? (
           <ImageBackground source={{ uri: thumbnail }} style={styles.bannerImage} resizeMode="cover">
@@ -172,7 +172,7 @@ export default function TreinosScreen() {
               style={StyleSheet.absoluteFillObject} 
             />
             <View style={styles.bannerOverlay}>
-              <Text style={styles.bannerBadge}>✨ NOVO TREINO</Text>
+              <Text style={styles.bannerBadge}>{!canAccessPaidWorkouts(user) && !featuredWorkout.is_free ? '🔒 PLANO COMPLETO' : '✨ NOVO TREINO'}</Text>
               <Text style={styles.headerTitleBanner} numberOfLines={2}>{featuredWorkout.titulo}</Text>
               <View style={styles.titleUnderline} />
               <Text style={styles.bannerSubtitle}>{featuredWorkout.duracao_minutos} min • {
@@ -181,7 +181,7 @@ export default function TreinosScreen() {
               }</Text>
               <TouchableOpacity 
                 style={styles.bannerButton}
-                onPress={() => (navigation as any).navigate('TreinoDetail', { treinoId: featuredWorkout.id })}
+                onPress={() => (navigation as any).navigate(!canAccessPaidWorkouts(user) && !featuredWorkout.is_free ? 'Subscriptions' : 'TreinoDetail', { treinoId: featuredWorkout.id })}
               >
                 <Text style={styles.bannerButtonText}>Explorar Agora</Text>
                 <Ionicons name="arrow-forward" size={16} color="#000" />
@@ -216,12 +216,7 @@ export default function TreinosScreen() {
       ? (windowWidth - totalPaddings - (gap * (visibleCount - 1))) / visibleCount 
       : 115;
 
-    const sortedModalidades = [...modalidades].sort((a, b) => {
-      const orderA = a.ordem_modalidade ?? 0;
-      const orderB = b.ordem_modalidade ?? 0;
-      if (orderA !== orderB) return orderA - orderB;
-      return (a.nome || '').localeCompare(b.nome || '');
-    });
+    const sortedModalidades = [...modalidades].sort(compareModalities);
 
     return (
       <ScrollView 
@@ -230,16 +225,17 @@ export default function TreinosScreen() {
         contentContainerStyle={styles.categoriesScroll}
       >
         {sortedModalidades.map((mod, index) => {
+          const isJourney = mod.nome.trim().toLocaleLowerCase('pt-BR') === 'sua jornada';
           return (
             <TouchableOpacity 
               key={mod.id} 
-              style={[styles.categoryCard, { width: cardWidth, height: 110 }]} 
+              style={[styles.categoryCard, { width: cardWidth, height: 110 }, isJourney && { borderColor: '#E7C48A', borderWidth: 2, backgroundColor: 'rgba(200,146,26,0.18)' }]}
               onPress={() => handleModalityPress(mod)}
             >
               <Ionicons name={getIconForCategory(mod.nome, index)} size={26} color={colors.primary} style={{marginBottom: 6}} />
               <Text style={styles.categoryTitle} numberOfLines={2}>{mod.nome}</Text>
               <Text style={styles.categoryDesc} numberOfLines={2}>
-                {mod.subtitulo || mod.descricao || 'Acompanhe sua evolução'}
+                {isJourney ? '★ Comece aqui' : mod.subtitulo || mod.descricao || 'Acompanhe sua evolução'}
               </Text>
             </TouchableOpacity>
           );
@@ -265,22 +261,10 @@ export default function TreinosScreen() {
 
   const renderHeader = () => (
     <View style={{ paddingBottom: mobileSpacing.sectionHeaderToContent }}>
-      {canAccessWorkouts && renderFeaturedWorkout()}
+      {renderFeaturedWorkout()}
 
-      <View style={{ height: canAccessWorkouts ? mobileSpacing.section : 0 }} />
+      <View style={{ height: mobileSpacing.section }} />
 
-      {!canAccessWorkouts ? (
-        <View style={styles.lockedContainer}>
-          <Ionicons name="lock-closed" size={64} color={colors.primary} />
-          <Text style={styles.lockedTitle}>Conteúdo Premium</Text>
-          <Text style={styles.lockedDescription}>
-            Assine o plano Premium Fit para acessar todas as modalidades e rotinas de treino.
-          </Text>
-          <TouchableOpacity style={styles.upgradeButton} onPress={handleUpgradePress}>
-            <Text style={styles.upgradeButtonText}>Ver Planos</Text>
-          </TouchableOpacity>
-        </View>
-      ) : (
         <>
           {renderCategories()}
 
@@ -336,12 +320,9 @@ export default function TreinosScreen() {
             </ScrollView>
           </View>
         </>
-      )}
     </View>
   );
 
-  const canAccessWorkouts = user?.subscription_tier === 'premium_fit';
-  const handleUpgradePress = () => (navigation as any).navigate('Subscriptions' as never);
 
   // Filter listWorkouts based on activeFilter mock logic
   const displayedWorkouts = listWorkouts.filter(w => {
@@ -357,7 +338,7 @@ export default function TreinosScreen() {
       <SafeAreaView style={styles.container}>
         <FlatList
           key="grid-2-treinos"
-          data={canAccessWorkouts ? displayedWorkouts : []}
+          data={displayedWorkouts}
           keyExtractor={item => `grid-${item.id}`}
           numColumns={2}
           ListHeaderComponent={renderHeader()}
@@ -375,12 +356,12 @@ export default function TreinosScreen() {
               <ActivityIndicator color={colors.primary} style={{ marginVertical: 20 }} />
             ) : null
           }
-          ListEmptyComponent={!loading && canAccessWorkouts ? (
+          ListEmptyComponent={!loading ? (
             <View style={styles.emptyContainer}>
               <Ionicons name="alert-circle-outline" size={48} color="rgba(255,255,255,0.1)" />
               <Text style={styles.emptyText}>Nenhum treino encontrado</Text>
             </View>
-          ) : loading && canAccessWorkouts ? (
+          ) : loading ? (
             <ActivityIndicator color={colors.primary} style={{marginTop: 40}} />
           ) : null}
         />

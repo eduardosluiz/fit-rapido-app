@@ -1,3 +1,4 @@
+import ZoomableContent from '../../components/ZoomableContent';
 import React, { useState, useEffect, useLayoutEffect } from 'react';
 import {
   View,
@@ -19,6 +20,7 @@ import VideoPlayer from '../../components/VideoPlayer';
 import ImageCarousel from '../../components/ImageCarousel';
 import BackButton from '../../components/BackButton';
 import { useAuth } from '../../contexts/AuthContext';
+import { canAccessRecipeContent } from '../../utils/recipeAccess';
 import colors, { mobileSpacing } from '../../constants/colors';
 import fonts from '../../constants/fonts';
 import { getVideoThumbnail } from '../../utils/videoThumbnail';
@@ -189,6 +191,7 @@ export default function ReceitaDetailScreen() {
       setReceita(data);
     } catch (error) {
       console.error('Erro ao carregar receita:', error);
+      if ((error as any)?.status === 403) navigation.navigate('Subscriptions' as never);
     } finally {
       setLoading(false);
     }
@@ -679,30 +682,30 @@ export default function ReceitaDetailScreen() {
 
   if (loading) {
     return (
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView style={styles.container}><ZoomableContent>
         <View style={styles.loadingContainer}>
           <ActivityIndicator size="large" color="#c8921a" />
         </View>
-      </SafeAreaView>
+      </ZoomableContent></SafeAreaView>
     );
   }
 
   if (!receita) {
     return (
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView style={styles.container}><ZoomableContent>
         <View style={styles.loadingContainer}>
           <Text style={styles.errorText}>Receita não encontrada</Text>
         </View>
-      </SafeAreaView>
+      </ZoomableContent></SafeAreaView>
     );
   }
 
   // Verificar se o conteúdo é premium e o usuário não é
-  const isPremiumLocked = receita.is_premium && !receita.is_free && user?.subscription_tier !== 'premium_fit' && user?.subscription_tier !== 'premium';
+  const isPremiumLocked = !canAccessRecipeContent(user, receita);
 
   if (isPremiumLocked) {
     return (
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView style={styles.container}><ZoomableContent>
         <View style={styles.premiumLockContainer}>
           <View style={styles.premiumLockIconContainer}>
             <Ionicons name="lock-closed" size={80} color={colors.primary} />
@@ -724,12 +727,12 @@ export default function ReceitaDetailScreen() {
             <Text style={styles.premiumLockBackButtonText}>VOLTAR</Text>
           </TouchableOpacity>
         </View>
-      </SafeAreaView>
+      </ZoomableContent></SafeAreaView>
     );
   }
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.container}><ZoomableContent>
       <ScrollView contentContainerStyle={styles.content}>
         {/* Container da imagem com título sobreposto */}
         <View style={styles.imageContainer}>
@@ -1271,7 +1274,7 @@ export default function ReceitaDetailScreen() {
         </Modal>
       )}
 
-    </SafeAreaView>
+    </ZoomableContent></SafeAreaView>
   );
 }
 

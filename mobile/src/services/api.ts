@@ -47,6 +47,7 @@ export interface User {
 }
 
 export interface Receita {
+  locked?: boolean;
   id: string;
   titulo: string;
   descricao?: string;
@@ -86,6 +87,8 @@ export interface Receita {
 }
 
 export interface Treino {
+  is_free?: boolean;
+  locked?: boolean;
   id: string;
   titulo: string;
   descricao?: string;
@@ -241,6 +244,51 @@ class ApiService {
   }
 
   async getReceitas(params?: any) {
+    params = { ...params };
+    for (const key of ['nome', 'ingrediente', 'search']) {
+      if (typeof params[key] === 'string') {
+        params[key] = params[key].trim();
+        if (!params[key]) delete params[key];
+      }
+    }
+    // Compatibilidade com a API publicada, que ainda compara proteína como texto.
+    // Buscar todas as páginas antes de filtrar evita perder resultados válidos.
+    if (Number(params?.proteinasMin) > 0 || params.lowCarb || params.semLactose || params.semGluten) {
+      const { proteinasMin, lowCarb, semLactose, semGluten, page = 1, limit = 15, ...otherFilters } = params;
+      const items: Receita[] = [];
+      let currentPage = 1;
+      let totalPages = 1;
+      do {
+        const query = new URLSearchParams({ ...otherFilters, page: String(currentPage), limit: '100' });
+        const result = await this.request<any>(`/receitas?${query}`);
+        items.push(...(Array.isArray(result) ? result : result.data || []));
+        totalPages = Array.isArray(result) ? 1 : Number(result.totalPages) || 1;
+        currentPage++;
+      } while (currentPage <= totalPages);
+      // A listagem antiga não inclui os macros; consultar os detalhes quando necessário.
+      const detailed: Receita[] = [];
+      for (let start = 0; start < items.length; start += 6) {
+        detailed.push(...await Promise.all(items.slice(start, start + 6).map(item =>
+          (Number(proteinasMin) > 0 && item.proteinas === undefined) || (lowCarb && item.carboidratos === undefined)
+            ? (item.locked ? Promise.resolve(item) : this.getReceita(item.id)) : Promise.resolve(item))));
+      }
+      const filtered = detailed.filter(item => {
+        const labels = [item.titulo, ...(item.categorias || []).map((category: any) => category.nome)].join(' ').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+        if (semLactose && !labels.includes('sem lactose')) return false;
+        if (semGluten && !labels.includes('sem gluten')) return false;
+        const match = String(item.proteinas ?? '').trim().replace(',', '.').match(/^[0-9]+[.]?[0-9]*/);
+        if (Number(proteinasMin) > 0 && (match === null || Number(match[0]) < Number(proteinasMin))) return false;
+        if (lowCarb) {
+          const carbs = String(item.carboidratos ?? '').trim().replace(',', '.').match(/^[0-9]+(?:[.][0-9]+)?(?:\s*[-–]\s*([0-9]+(?:[.][0-9]+)?))?/);
+          const maximum = carbs ? Number(carbs[1] || carbs[0]) : NaN;
+          const tagged = item.categorias?.some((category: any) => category.nome?.toLowerCase().includes('low carb'));
+          if (!tagged && !(maximum <= 15)) return false;
+        }
+        return true;
+      });
+      const offset = (Number(page) - 1) * Number(limit);
+      return { data: filtered.slice(offset, offset + Number(limit)), total: filtered.length, totalPages: Math.ceil(filtered.length / Number(limit)), page: Number(page) };
+    }
     const query = params ? `?${new URLSearchParams(params).toString()}` : '';
     return this.request<any>(`/receitas${query}`);
   }
@@ -372,11 +420,12 @@ class ApiService {
     }
   }
 
-  async verificarFezHoje(itemId: string, tipo: string) {
+  async verificarFezHoje(itemId: string, tipo: string, throwOnError = false) {
     try {
       const result = await this.request<{ fez_hoje: boolean }>(`/atividades/check/${tipo}/${itemId}`);
       return result.fez_hoje;
-    } catch {
+    } catch (error) {
+      if (throwOnError) throw error;
       return false;
     }
   }

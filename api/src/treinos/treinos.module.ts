@@ -1,3 +1,4 @@
+import { WorkoutAdminGuard } from './workout-admin.guard';
 import { Module, forwardRef } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TreinosController } from './treinos.controller';
@@ -35,7 +36,7 @@ import { WorkoutAccessGuard } from './workout-access.guard';
     ExerciciosCategoriasController,
     TreinosModalidadesController
   ],
-  providers: [TreinosService, CategoriasTreinosService, WorkoutAccessGuard],
+  providers: [WorkoutAdminGuard, TreinosService, CategoriasTreinosService, WorkoutAccessGuard],
   exports: [TreinosService, TypeOrmModule],
 })
 export class TreinosModule {}

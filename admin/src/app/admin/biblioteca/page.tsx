@@ -393,8 +393,8 @@ export default function BibliotecaVideosPage() {
           </div>
         </div>
 
-        <div className="flex items-center justify-between gap-10 mb-12">
-          <div className="relative w-full max-w-[300px] group">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 sm:gap-10 mb-8 sm:mb-12">
+          <div className="relative w-full sm:max-w-[300px] group">
             <Search className="absolute left-0 top-1/2 -translate-y-1/2 text-gray-300 group-focus-within:text-[#c8921a] transition-colors" size={16} />
             <input 
               type="text" value={searchText} onChange={(e) => setSearchText(e.target.value)} 
@@ -403,7 +403,7 @@ export default function BibliotecaVideosPage() {
             />
           </div>
           
-          <div className="relative min-w-[180px]">
+          <div className="relative w-full sm:w-auto sm:min-w-[180px]">
             <select 
               value={selectedCategoria} onChange={(e) => setSelectedCategoria(e.target.value)}
               className="w-full appearance-none bg-transparent border-t-0 border-l-0 border-r-0 border-b border-gray-300 dark:border-[#333] pl-2 pr-8 py-2 text-xs text-black dark:text-white font-normal focus:outline-none focus:border-[#c8921a] cursor-pointer uppercase tracking-widest"
@@ -609,7 +609,7 @@ export default function BibliotecaVideosPage() {
       {/* Modal Upload */}
       {isUploadModalOpen && (
         <div className="fixed inset-0 z-[1000] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-300">
-          <div className="bg-white dark:bg-[#111] rounded-xl shadow-2xl w-full max-w-xl overflow-hidden border border-gray-100 dark:border-[#222]">
+          <div className="bg-white dark:bg-[#111] rounded-xl shadow-2xl w-full max-w-xl max-h-[90dvh] overflow-y-auto border border-gray-100 dark:border-[#222]">
             <div className="px-8 py-4 border-b border-gray-50 dark:border-[#1a1a1a] flex items-center justify-between">
               <h2 className="text-[10px] font-normal uppercase tracking-widest text-gray-800 dark:text-white">Adicionar Mídia</h2>
               <button onClick={() => !isUploading && setIsUploadModalOpen(false)} className="text-red-500 hover:text-red-600 bg-red-50 hover:bg-red-100 dark:bg-red-500/10 dark:hover:bg-red-500/20 p-1.5 rounded transition-all"><X size={18} /></button>

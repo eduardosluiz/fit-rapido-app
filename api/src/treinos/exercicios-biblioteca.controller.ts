@@ -1,3 +1,4 @@
+import { WorkoutAdminGuard } from './workout-admin.guard';
 import {
   Controller,
   Get,
@@ -24,6 +25,7 @@ export class ExerciciosBibliotecaController {
   ) {}
 
   @Post()
+  @UseGuards(WorkoutAdminGuard)
   async create(@Body() data: Partial<ExercicioBiblioteca>) {
     if (data.nome) {
       data.nome = data.nome.normalize('NFC');
@@ -43,6 +45,7 @@ export class ExerciciosBibliotecaController {
   }
 
   @Patch(':id')
+  @UseGuards(WorkoutAdminGuard)
   async update(@Param('id') id: string, @Body() data: Partial<ExercicioBiblioteca>) {
     if (data.nome) {
       data.nome = data.nome.normalize('NFC');
@@ -95,6 +98,7 @@ export class ExerciciosBibliotecaController {
   }
 
   @Get('check-duplicate/name')
+  @UseGuards(WorkoutAdminGuard)
   async checkDuplicateName(@Query('name') name?: string) {
     const normalizedName = name?.trim().normalize('NFC');
     if (!normalizedName) return { exists: false, item: null };
@@ -113,6 +117,7 @@ export class ExerciciosBibliotecaController {
   }
 
   @Delete(':id')
+  @UseGuards(WorkoutAdminGuard)
   async remove(@Param('id') id: string) {
     await this.repository.delete(id);
     return { message: 'Excluído com sucesso' };

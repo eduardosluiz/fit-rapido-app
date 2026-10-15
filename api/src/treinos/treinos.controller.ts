@@ -1,3 +1,4 @@
+import { WorkoutAdminGuard } from './workout-admin.guard';
 import {
   Controller,
   Get,
@@ -18,6 +19,7 @@ import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { JwtOptionalGuard } from '../auth/guards/jwt-optional.guard';
 import { AuthService } from '../auth/auth.service';
 import { WorkoutAccessGuard } from './workout-access.guard';
+import { isFreeWorkout } from './workout-free.helper';
 
 @Controller('treinos')
 export class TreinosController {
@@ -27,7 +29,7 @@ export class TreinosController {
   ) {}
 
   @Post()
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, WorkoutAdminGuard)
   create(@Body() createTreinoDto: CreateTreinoDto) {
     return this.treinosService.create(createTreinoDto);
   }
@@ -82,18 +84,19 @@ export class TreinosController {
 
   @Get(':id')
   @UseGuards(JwtAuthGuard, WorkoutAccessGuard)
-  findOne(@Param('id') id: string) {
-    return this.treinosService.findOne(id);
+  async findOne(@Param('id') id: string) {
+    const treino = await this.treinosService.findOne(id);
+    return { ...treino, is_free: isFreeWorkout(treino) };
   }
 
   @Patch(':id')
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, WorkoutAdminGuard)
   update(@Param('id') id: string, @Body() updateTreinoDto: UpdateTreinoDto) {
     return this.treinosService.update(id, updateTreinoDto);
   }
 
   @Delete(':id')
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, WorkoutAdminGuard)
   @HttpCode(HttpStatus.NO_CONTENT)
   async remove(@Param('id') id: string) {
     await this.treinosService.remove(id);

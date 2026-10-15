@@ -51,7 +51,9 @@ export default function ModalityDayWorkoutScreen() {
 
   const totalMinutes = useMemo(() => exercicios.reduce((total, item) => total + (Number(item.duracao_minutos) || 0), 0), [exercicios]);
 
-  const openExercise = (treinoId: string, exerciseIndex = 1) => (navigation as any).navigate('ExerciseDetail', { treinoId, exerciseIndex });
+  const openExercise = (treinoId: string, exerciseIndex = 1) => (navigation as any).navigate('ExerciseDetail', {
+    treinoId, exerciseIndex, exerciseIds: exercicios.map((item) => item.id),
+  });
 
   return (
     <AppBackground>

@@ -12,7 +12,7 @@ import { CategoriaReceita } from './entities/categoria-receita.entity';
 import { CreateReceitaDto, UpdateReceitaDto } from './dto/receita.dto';
 import { NotificationsService } from '../notifications/notifications.service';
 import { User, SubscriptionTier, UserRole } from '../auth/entities/user.entity';
-import { hasActiveTrial, getEffectiveSubscriptionTier } from '../common/helpers/subscription.helper';
+import { canAccessRecipe, hasActiveTrial, getEffectiveSubscriptionTier } from '../common/helpers/subscription.helper';
 import { IAService } from '../ia/ia.service';
 
 @Injectable()
@@ -147,7 +147,7 @@ export class ReceitasService {
     onlyMaisFavoritadas?: boolean,
   ): Promise<any> {
     // Verificar se é admin ANTES de aplicar filtros
-    const isAdmin = user && (user.role === UserRole.ADMIN || String(user.role) === 'admin' || String(user.role) === 'personal_trainer' || user.email === 'dai@gmail.com');
+    const isAdmin = user && (user.role === UserRole.ADMIN || String(user.role) === 'admin' || String(user.role) === 'personal_trainer');
     // Se for admin, ignorar filtro isPremium - admins devem ver todas as receitas
     if (isAdmin && isPremium !== undefined) {
       console.log(`[DEBUG] ⚠️  Admin detectado - ignorando filtro isPremium=${isPremium}`);
@@ -181,6 +181,8 @@ export class ReceitasService {
           'receita.dificuldade',
           'receita.tempo_preparo',
           'receita.calorias',
+          'receita.proteinas',
+          'receita.carboidratos',
           'receita.is_premium',
           'receita.is_free',
           'receita.ativa',
@@ -190,28 +192,25 @@ export class ReceitasService {
     }
 
     // Filtrar por ativa apenas se não for para incluir inativas
-    if (!incluirInativas) {
+    if (!isAdmin || !incluirInativas) {
       queryBuilder.where('receita.ativa = :ativa', { ativa: true });
     }
 
-    // Filtrar por plano do usuário (FREE, BASIC, PREMIUM) diretamente na query para não quebrar a paginação
-    if (user) {
-      const isAdmin = user.role === UserRole.ADMIN || String(user.role) === 'admin' || String(user.role) === 'personal_trainer' || user.email === 'dai@gmail.com';
-      const isDaiAdmin = user.email === 'dai@gmail.com';
-      
-      if (!isAdmin && !isDaiAdmin) {
-        const tier = getEffectiveSubscriptionTier(user);
-        const isInTrial = hasActiveTrial(user);
-
-        if (!isInTrial) {
-          if (tier === SubscriptionTier.FREE || tier === SubscriptionTier.NONE) {
-            queryBuilder.andWhere('receita.is_free = :isFreeUser', { isFreeUser: true });
-          }
-        }
-      }
-    } else {
-      queryBuilder.andWhere('receita.is_free = :isFreeUser', { isFreeUser: true });
-    }
+    const present = (receita: Receita) => {
+      const locked = !isAdmin && !receita.is_free && !canAccessRecipe(user || null, receita);
+      if (!locked) return { ...receita, locked: false };
+      return {
+        id: receita.id, titulo: receita.titulo, imagem_url: receita.imagem_url,
+        imagens_url: receita.imagens_url, video_thumbnail_url: receita.video_thumbnail_url,
+        categorias: receita.categorias, dificuldade: receita.dificuldade,
+        tempo_preparo: receita.tempo_preparo, calorias: receita.calorias,
+        proteinas: receita.proteinas, carboidratos: receita.carboidratos,
+        is_premium: receita.is_premium, is_free: receita.is_free, ativa: receita.ativa,
+        is_inedito: receita.is_inedito, avaliacao: receita.avaliacao,
+        destaque_popular: receita.destaque_popular, destaque_favorito: receita.destaque_favorito,
+        created_at: receita.created_at, locked: true,
+      };
+    };
 
     if (categoriaId) {
       queryBuilder
@@ -224,17 +223,17 @@ export class ReceitasService {
     if (search) {
       queryBuilder.andWhere(
         '(receita.titulo ILIKE :search OR CAST(receita.ingredientes AS text) ILIKE :search)',
-        { search: `%${search}%` },
+        { search: `%${search.trim()}%` },
       );
     }
 
     if (nome) {
-      queryBuilder.andWhere('receita.titulo ILIKE :nome', { nome: `%${nome}%` });
+      queryBuilder.andWhere('receita.titulo ILIKE :nome', { nome: `%${nome.trim()}%` });
     }
 
     if (ingrediente) {
       queryBuilder.andWhere('CAST(receita.ingredientes AS text) ILIKE :ingrediente', {
-        ingrediente: `%${ingrediente}%`,
+        ingrediente: `%${ingrediente.trim()}%`,
       });
     }
 
@@ -275,21 +274,25 @@ export class ReceitasService {
     }
 
     if (proteinasMin) {
-      queryBuilder.andWhere('receita.proteinas >= :proteinasMin', {
+      // O campo é texto e pode conter unidades, vírgulas e intervalos.
+      // Em intervalos, usar o limite inferior por porção.
+      queryBuilder.andWhere("CAST(SUBSTRING(REPLACE(TRIM(receita.proteinas), ',', '.') FROM '^[0-9]+[.]?[0-9]*') AS numeric) >= :proteinasMin", {
         proteinasMin,
       });
     }
 
     if (semLactose) {
+      queryBuilder.leftJoin('receita.categorias', 'lactoseCategory');
       queryBuilder.andWhere(
-        '(receita.titulo ILIKE :semLactose OR categorias.nome ILIKE :semLactose)',
+        '(receita.titulo ILIKE :semLactose OR lactoseCategory.nome ILIKE :semLactose)',
         { semLactose: '%sem lactose%' },
       );
     }
 
     if (semGluten) {
+      queryBuilder.leftJoin('receita.categorias', 'glutenCategory');
       queryBuilder.andWhere(
-        '(receita.titulo ILIKE :semGluten OR receita.titulo ILIKE :semGlutenAccent OR categorias.nome ILIKE :semGluten OR categorias.nome ILIKE :semGlutenAccent)',
+        '(receita.titulo ILIKE :semGluten OR receita.titulo ILIKE :semGlutenAccent OR glutenCategory.nome ILIKE :semGluten OR glutenCategory.nome ILIKE :semGlutenAccent)',
         { 
           semGluten: '%sem gluten%', 
           semGlutenAccent: '%sem glúten%'
@@ -298,9 +301,10 @@ export class ReceitasService {
     }
 
     if (lowCarb) {
+      queryBuilder.leftJoin('receita.categorias', 'carbCategory');
       queryBuilder.andWhere(
-        '(receita.carboidratos <= :lowCarbMax OR categorias.nome ILIKE :lowCarbText)',
-        { lowCarbMax: 30, lowCarbText: '%low carb%' },
+        "(CAST(SUBSTRING(REGEXP_REPLACE(REPLACE(TRIM(receita.carboidratos), ',', '.'), '[[:space:]]*[gG][[:space:]]*$', '') FROM '[0-9]+[.]?[0-9]*$') AS numeric) <= :lowCarbMax OR carbCategory.nome ILIKE :lowCarbText)",
+        { lowCarbMax: 15, lowCarbText: '%low carb%' },
       );
     }
 
@@ -344,7 +348,7 @@ export class ReceitasService {
       receitas = receitasList;
       
       return {
-        data: receitas,
+        data: receitas.map(present),
         total,
         page,
         limit,
@@ -354,7 +358,7 @@ export class ReceitasService {
       receitas = await queryBuilder.getMany();
     }
 
-    return receitas;
+    return receitas.map(present);
   }
 
   async getFreeRecipesCount(): Promise<number> {

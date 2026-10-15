@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { api } from '@/lib/api';
+import { compareModalities, modalityPosition } from '@/lib/modalityOrder';
 import { useAuth } from '@/lib/useAuth';
 import { Switch } from '@/components/ui/switch';
 import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover';
@@ -122,7 +123,7 @@ interface Modalidade {
   descricao_iniciante?: string;
   descricao_intermediario?: string;
   descricao_avancado?: string;
-  configuracao_dias?: Record<string, Record<string, { titulo?: string; imagem_url?: string }>>;
+  configuracao_dias?: Record<string, Record<string, { titulo?: string; imagem_url?: string; is_free?: boolean }>>;
   ativo: boolean;
   treinos?: any[];
 }
@@ -157,7 +158,7 @@ export default function ModalidadesPage() {
 
   const getDayConfigKey = (nivel: string) => formData.tem_nivelamento ? nivel : 'geral';
 
-  const updateDayConfig = (nivel: string, dia: string, field: 'titulo' | 'imagem_url', value: string) => {
+  const updateDayConfig = (nivel: string, dia: string, field: 'titulo' | 'imagem_url' | 'is_free', value: string | boolean) => {
     const levelKey = getDayConfigKey(nivel);
     setFormData(prev => ({
       ...prev,
@@ -198,7 +199,7 @@ export default function ModalidadesPage() {
     descricao_iniciante: '',
     descricao_intermediario: '',
     descricao_avancado: '',
-    configuracao_dias: {} as Record<string, Record<string, { titulo?: string; imagem_url?: string }>>,
+    configuracao_dias: {} as Record<string, Record<string, { titulo?: string; imagem_url?: string; is_free?: boolean }>>,
     ativo: true,
     videos: [] as VideoTreino[]
   });
@@ -782,6 +783,7 @@ export default function ModalidadesPage() {
                                   <ImageIcon size={18} />
                                 </div>
                                 <div>
+                                  <label className="flex items-center gap-2 text-sm"><input type="checkbox" checked={dayConfig.is_free === true} onChange={event => updateDayConfig(nivel, activeDay, 'is_free', event.target.checked)} />Disponível para Free — todos os exercícios desta sessão</label>
                                   <h5 className="text-xs font-medium text-gray-800 dark:text-gray-100">Card de {getDiaNome(activeDay)} no aplicativo</h5>
                                   <p className="text-[10px] text-gray-500 mt-0.5">Esta configuração é separada da imagem de capa dos exercícios.</p>
                                 </div>
@@ -1287,14 +1289,18 @@ export default function ModalidadesPage() {
                           />
                         </div>
                         <div className="space-y-2">
-                          <label className="text-[10px] font-normal uppercase tracking-wide text-gray-500">Ordem de Exibição (Numérico)</label>
+                          <label htmlFor="modality-order" className="text-[10px] font-normal uppercase tracking-wide text-gray-500">Ordem de exibição no mobile</label>
                           <input
+                            id="modality-order"
                             type="number"
+                            min={0}
+                            step={1}
                             value={formData.ordem_modalidade}
                             onChange={(e) => setFormData({ ...formData, ordem_modalidade: parseInt(e.target.value) || 0 })}
                             placeholder="Ex: 1"
                             className="w-full bg-white dark:bg-[#111] border border-gray-400 dark:border-[#444] rounded-md px-4 py-3 text-xs focus:outline-none focus:border-[#c8921a] text-gray-700 dark:text-gray-300 font-normal transition-all"
                           />
+                          <p className="text-xs text-gray-500">Use 1 para a primeira posição, 2 para a segunda e 3 para a terceira. Zero usa o padrão: Sua Jornada → Academia → Em Casa. Salve as alterações para aplicar.</p>
                         </div>
                       </div>
 
@@ -1418,7 +1424,7 @@ export default function ModalidadesPage() {
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {modalidades.map((mod) => (
+            {[...modalidades].sort(compareModalities).map((mod) => (
               <div key={mod.id} className="item-card group overflow-hidden border border-[#c8921a]/20">
                 <div className="h-44 relative bg-black">
                   {mod.imagem_url ? (
@@ -1435,6 +1441,7 @@ export default function ModalidadesPage() {
                 <div className="p-6 flex flex-col gap-4">
                   <div>
                     <h3 className="text-lg font-normal text-gray-900 dark:text-white uppercase tracking-tight group-hover:text-[#c8921a] transition-colors">{mod.nome}</h3>
+                    <p className="text-xs text-[#c8921a] mt-1">Ordem no mobile: {modalityPosition(mod) === 999 ? 'após as principais' : modalityPosition(mod)}{!mod.ordem_modalidade ? ' (automática)' : ''}</p>
                     <p className="text-xs text-gray-500 line-clamp-2 mt-2 leading-relaxed">{mod.descricao || 'Sem descrição técnica disponível para esta modalidade.'}</p>
                   </div>
                   <div className="flex gap-2 pt-2 border-t border-gray-50 dark:border-[#1a1a1a]">

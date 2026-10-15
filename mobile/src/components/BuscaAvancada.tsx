@@ -46,16 +46,30 @@ export default function BuscaAvancada({
 }: BuscaAvancadaProps) {
   const [filters, setFilters] = useState<BuscaFilters>(initialFilters);
   const [showCategorySelect, setShowCategorySelect] = useState(false);
+  const [proteinInput, setProteinInput] = useState('');
+  const [timeInput, setTimeInput] = useState('');
+  const [validationError, setValidationError] = useState('');
 
   useEffect(() => {
     if (visible) {
       setFilters(initialFilters);
+      setProteinInput(initialFilters.proteinasMin?.toString() || '');
+      setTimeInput(initialFilters.tempoMaximo?.toString() || '');
+      setValidationError('');
       setShowCategorySelect(false);
     }
   }, [initialFilters, visible]);
 
   const handleSearch = () => {
-    onSearch(filters);
+    const parse = (value: string) => value.trim() ? Number(value.trim().replace(',', '.')) : undefined;
+    const protein = parse(proteinInput);
+    const time = parse(timeInput);
+    if ((protein !== undefined && (!Number.isFinite(protein) || protein < 0)) ||
+        (time !== undefined && (!Number.isFinite(time) || time <= 0))) {
+      setValidationError('Informe proteína igual ou maior que zero e tempo maior que zero, ou deixe os campos vazios.');
+      return;
+    }
+    onSearch({ ...filters, proteinasMin: protein, tempoMaximo: time, nome: filters.nome?.trim() || undefined, ingrediente: filters.ingrediente?.trim() || undefined });
     onClose();
   };
 
@@ -176,20 +190,14 @@ export default function BuscaAvancada({
 
               {/* Quantidade de proteína */}
               <View style={styles.inputGroup}>
-                <Text style={styles.label}>Quantidade mínima de proteína (g)</Text>
+                <Text style={styles.label}>Proteína mínima por porção (g)</Text>
                 <TextInput
                   style={styles.input}
                   placeholder="Ex: 20"
                   placeholderTextColor={colors.textMuted}
                   keyboardType="numeric"
-                  value={filters.proteinasMin?.toString()}
-                  onChangeText={(text) => {
-                    const num = parseInt(text);
-                    setFilters({
-                      ...filters,
-                      proteinasMin: isNaN(num) ? undefined : num,
-                    });
-                  }}
+                  value={proteinInput}
+                  onChangeText={setProteinInput}
                 />
               </View>
 
@@ -201,14 +209,8 @@ export default function BuscaAvancada({
                   placeholder="Ex: 30"
                   placeholderTextColor={colors.textMuted}
                   keyboardType="numeric"
-                  value={filters.tempoMaximo?.toString()}
-                  onChangeText={(text) => {
-                    const num = parseInt(text);
-                    setFilters({
-                      ...filters,
-                      tempoMaximo: isNaN(num) ? undefined : num,
-                    });
-                  }}
+                  value={timeInput}
+                  onChangeText={setTimeInput}
                 />
               </View>
             </View>
@@ -253,6 +255,7 @@ export default function BuscaAvancada({
           </ScrollView>
 
           {/* Botões */}
+          {!!validationError && <Text style={{ color: '#ffb4ab', paddingHorizontal: 20 }}>{validationError}</Text>}
           <View style={styles.buttonContainer}>
             <TouchableOpacity style={styles.resetButton} onPress={handleReset}>
               <Text style={styles.resetButtonText}>Limpar</Text>
@@ -407,6 +410,6 @@ const styles = StyleSheet.create({
   searchButtonText: {
     fontSize: 16,
     fontFamily: fonts.bold,
-    color: '#fff',
+    color: '#171717',
   },
 });

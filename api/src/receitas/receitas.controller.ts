@@ -1,3 +1,4 @@
+import { WorkoutAdminGuard } from '../treinos/workout-admin.guard';
 import {
   Controller,
   Get,
@@ -30,7 +31,7 @@ export class ReceitasController {
   ) {}
 
   @Post()
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, WorkoutAdminGuard)
   @HttpCode(HttpStatus.CREATED)
   create(@Body() createReceitaDto: CreateReceitaDto) {
     return this.receitasService.create(createReceitaDto);
@@ -83,8 +84,8 @@ export class ReceitasController {
       incluirInativas === 'true',
       tipoRefeicao,
       cuisine,
-      tempoMaximo ? parseInt(tempoMaximo, 10) : undefined,
-      proteinasMin ? parseFloat(proteinasMin) : undefined,
+      tempoMaximo ? parseFloat(tempoMaximo.replace(',', '.')) : undefined,
+      proteinasMin ? parseFloat(proteinasMin.replace(',', '.')) : undefined,
       semLactose === 'true',
       semGluten === 'true',
       lowCarb === 'true',
@@ -151,13 +152,13 @@ export class ReceitasController {
   }
 
   @Patch(':id')
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, WorkoutAdminGuard)
   update(@Param('id') id: string, @Body() updateReceitaDto: UpdateReceitaDto) {
     return this.receitasService.update(id, updateReceitaDto);
   }
 
   @Delete(':id')
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, WorkoutAdminGuard)
   @HttpCode(HttpStatus.NO_CONTENT)
   async remove(@Param('id') id: string) {
     await this.receitasService.delete(id);

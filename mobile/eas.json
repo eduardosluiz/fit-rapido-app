@@ -19,6 +19,12 @@
       "channel": "production",
       "autoIncrement": true
     },
+    "testflight": {
+      "extends": "production",
+      "environment": "production",
+      "distribution": "store",
+      "channel": "client-review"
+    },
     "android-review": {
       "extends": "production",
       "environment": "production",

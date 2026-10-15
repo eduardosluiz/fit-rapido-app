@@ -1,6 +1,9 @@
 import { IsString, IsOptional, IsArray, IsBoolean, IsEnum, IsInt, IsNumber, Min } from 'class-validator';
 
 export class CreateTreinoDto {
+  @IsBoolean()
+  @IsOptional()
+  is_free?: boolean;
   @IsString()
   titulo: string;
 
@@ -151,6 +154,9 @@ export class CreateTreinoDto {
 }
 
 export class UpdateTreinoDto {
+  @IsBoolean()
+  @IsOptional()
+  is_free?: boolean;
   @IsOptional()
   @IsString()
   titulo?: string;

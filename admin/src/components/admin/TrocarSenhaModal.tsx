@@ -45,7 +45,7 @@ export function TrocarSenhaModal({ open, onOpenChange, usuarioId, usuarioNome }:
     }}>
       <Dialog.Portal>
         <Dialog.Overlay className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 animate-in fade-in" />
-        <Dialog.Content className="fixed left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%] w-full max-w-md bg-white dark:bg-[#0a0a0a] rounded-xl shadow-2xl z-[51] border border-gray-200 dark:border-[#222] p-6 animate-in zoom-in-95 duration-200">
+        <Dialog.Content className="fixed left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%] w-[calc(100%_-_2rem)] max-w-md max-h-[calc(100dvh_-_2rem)] overflow-y-auto bg-white dark:bg-[#0a0a0a] rounded-xl shadow-2xl z-[51] border border-gray-200 dark:border-[#222] p-6 animate-in zoom-in-95 duration-200">
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-3">
               <div className="p-2.5 bg-yellow-50 dark:bg-yellow-900/20 text-yellow-600 dark:text-yellow-500 rounded-lg">
@@ -84,7 +84,7 @@ export function TrocarSenhaModal({ open, onOpenChange, usuarioId, usuarioNome }:
               </p>
             </div>
 
-            <div className="pt-2 flex justify-end gap-3">
+            <div className="pt-2 flex flex-col sm:flex-row justify-end gap-3">
               <Dialog.Close type="button" className="px-5 py-2.5 rounded-md border border-gray-300 dark:border-[#333] text-[10px] font-normal uppercase tracking-widest text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-[#111] transition-all">
                 Cancelar
               </Dialog.Close>

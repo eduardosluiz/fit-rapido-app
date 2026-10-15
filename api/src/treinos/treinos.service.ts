@@ -1,3 +1,4 @@
+import { isFreeWorkout } from './workout-free.helper';
 import { Injectable, Inject, forwardRef, ForbiddenException, BadRequestException, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, In } from 'typeorm';
@@ -105,20 +106,7 @@ export class TreinosService {
   ) {
     if (incluirInativas === undefined) incluirInativas = false;
     
-    // IMPORTANTE: Admins sempre veem todos os treinos, independente do plano
-    if (user && (user.role === UserRole.ADMIN || String(user.role) === 'admin' || String(user.role) === 'personal_trainer')) {
-      // Admin vê tudo, continuar sem filtro de acesso
-    } else {
-      // Verificar acesso - apenas PREMIUM_FIT pode acessar treinos
-      if (user && !canAccessTreino(user)) {
-        return []; // Retornar array vazio ao invés de erro para não quebrar a UI
-      }
-
-      // Se não há usuário, retornar array vazio (treinos são apenas para assinantes)
-      if (!user) {
-        return [];
-      }
-    }
+    const fullAccess = user && (['admin', 'personal_trainer'].includes(user.role) || canAccessTreino(user));
     const queryBuilder = this.treinoRepository
       .createQueryBuilder('treino')
       .select([
@@ -139,6 +127,7 @@ export class TreinosService {
         'treino.dias_por_semana',
         'treino.grupos_musculares',
         'treino.is_premium',
+        'treino.is_free',
         'treino.is_inedito',
         'treino.equipamentos',
         'treino.tags',
@@ -160,7 +149,19 @@ export class TreinosService {
         'treino.updated_at',
         'treino.modalidade_id',
       ])
-      .leftJoinAndSelect('treino.categorias', 'categorias');
+      .leftJoinAndSelect('treino.categorias', 'categorias')
+      .leftJoinAndSelect('treino.modalidade', 'modalidade');
+    const present = (t: Treino) => {
+      const is_free = isFreeWorkout(t);
+      if (fullAccess || is_free) return { ...t, is_free, locked: false };
+      return {
+        id: t.id, titulo: t.titulo, imagem_url: t.imagem_url, imagem_capa_url: t.imagem_capa_url,
+        nivel: t.nivel, dia_semana: t.dia_semana, ordem: t.ordem, ativa: t.ativa,
+        duracao_minutos: t.duracao_minutos, categorias: t.categorias, modalidade_id: t.modalidade_id,
+        modalidade: t.modalidade, is_free: false, locked: true,
+      };
+    };
+    if (!fullAccess) queryBuilder.andWhere('treino.ativa = true');
 
     if (apenasAvulsos) {
       queryBuilder.andWhere('treino.modalidade_id IS NULL');
@@ -229,7 +230,7 @@ export class TreinosService {
       const skip = (page - 1) * limit;
       const [data, total] = await queryBuilder.skip(skip).take(limit).getManyAndCount();
       return {
-        data,
+        data: data.map(present),
         total,
         page,
         limit,
@@ -237,7 +238,7 @@ export class TreinosService {
       };
     }
 
-    return await queryBuilder.getMany();
+    return (await queryBuilder.getMany()).map(present);
   }
 
   async findOne(id: string): Promise<Treino> {

@@ -1,4 +1,5 @@
 import React from "react";
+import ZoomableContent from './ZoomableContent';
 import { View, StyleSheet, ImageBackground, Image } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 
@@ -29,7 +30,7 @@ export default function AppBackground({ children }: AppBackgroundProps) {
 
         {/* Container blindado para o conteúdo não ser escurecido indevidamente */}
         <View style={{ flex: 1, zIndex: 10, position: 'relative' }}>
-          {children}
+          <ZoomableContent>{children}</ZoomableContent>
         </View>
 
       </ImageBackground>

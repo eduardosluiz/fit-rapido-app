@@ -1,3 +1,4 @@
+import { canAccessPaidWorkouts } from '../../utils/workoutAccess';
 import React, { useState, useEffect, useCallback } from 'react';
 import {
   View,
@@ -22,7 +23,7 @@ import { useAuth } from '../../contexts/AuthContext';
 
 export default function BibliotecaTreinosScreen({ navigation }: any) {
   const { user } = useAuth();
-  const canAccessWorkouts = user?.subscription_tier === 'premium_fit';
+  const canAccessWorkouts = canAccessPaidWorkouts(user);
 
   useEffect(() => {
     if (!canAccessWorkouts) {

@@ -180,7 +180,13 @@ export default function ReceitasScreen() {
     try {
       const data = await api.getCategorias();
       const activeCats = data.filter((cat: any) => cat.ativa !== false);
-      setCategorias(activeCats);
+      const priority = ['cafe da manha', 'almoco', 'lanches', 'jantar'];
+      const rank = (name: string) => {
+        const normalized = name.normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim().toLowerCase();
+        const index = priority.indexOf(normalized);
+        return index < 0 ? priority.length : index;
+      };
+      setCategorias([...activeCats].sort((a, b) => rank(a.nome) - rank(b.nome)));
       
       if (pendingCategoryNameRef.current) {
         const found = activeCats.find((c: any) => 
@@ -228,9 +234,7 @@ export default function ReceitasScreen() {
       if (filtrosBusca.lowCarb) params.lowCarb = true;
       if (onlyAte10Minutos) params.tempoMaximo = Math.min(filtrosBusca.tempoMaximo || 10, 10);
 
-      if (user?.subscription_tier !== 'premium_fit' && user?.subscription_tier !== 'premium' && user?.email !== 'dai@gmail.com') {
-        params.onlyFree = true;
-      }
+
 
       const response = await api.getReceitas(params);
       
@@ -331,6 +335,7 @@ export default function ReceitasScreen() {
   );
 
   const isShortcutFilter = onlyIneditas || onlyPopulares || onlyMaisFavoritadas || onlyAte10Minutos;
+  const hasSearchFilters = Boolean(searchText.trim() || selectedCategoria || Object.values(filtrosBusca).some(value => value !== undefined && value !== false && value !== ''));
   const shortcutTitle = onlyIneditas
     ? 'Receitas inéditas'
     : onlyPopulares
@@ -373,11 +378,14 @@ export default function ReceitasScreen() {
         visible={buscaAvancadaVisible}
         onClose={() => setBuscaAvancadaVisible(false)}
         onSearch={(filters) => {
+          setFilterMode('todos');
+          setOnlyIneditas(false);
+          setOnlyPopulares(false);
+          setOnlyMaisFavoritadas(false);
+          setOnlyAte10Minutos(false);
           setFiltrosBusca(filters);
           setSelectedCategoria(filters.categoria || null);
-          if (searchText.trim() && Object.values(filters).some(v => v !== '' && v !== false && v !== undefined)) {
-            setSearchText('');
-          }
+          setSearchText('');
         }}
         initialFilters={filtrosBusca}
         availableCategories={categorias}
@@ -428,7 +436,7 @@ export default function ReceitasScreen() {
         </View>
       )}
 
-      {!isShortcutFilter && receitasPopulares.length > 0 && (
+      {!isShortcutFilter && !hasSearchFilters && receitasPopulares.length > 0 && (
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
             <View style={styles.sectionHeading}>
@@ -458,7 +466,7 @@ export default function ReceitasScreen() {
         </View>
       )}
 
-      {!isShortcutFilter && receitasRapidas.length > 0 && (
+      {!isShortcutFilter && !hasSearchFilters && receitasRapidas.length > 0 && (
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
             <View style={styles.sectionHeading}>
@@ -493,7 +501,7 @@ export default function ReceitasScreen() {
           <View style={styles.titleWithIcon}>
             <Ionicons name="restaurant" size={12} color={colors.primary} />
             <Text style={styles.sectionTitle}>
-              {onlyIneditas ? 'Inéditas' : onlyPopulares ? 'Mais acessadas' : onlyAte10Minutos ? 'Até 10 minutos' : onlyMaisFavoritadas ? 'Selecionadas e mais favoritadas' : filterMode === 'populares' ? 'Populares' : filterMode === 'rapidas' ? 'Receitas de 10 min' : 'Todas as Receitas'}
+              {hasSearchFilters ? 'Resultados da busca' : onlyIneditas ? 'Inéditas' : onlyPopulares ? 'Mais acessadas' : onlyAte10Minutos ? 'Até 10 minutos' : onlyMaisFavoritadas ? 'Selecionadas e mais favoritadas' : filterMode === 'populares' ? 'Populares' : filterMode === 'rapidas' ? 'Receitas de 10 min' : 'Todas as Receitas'}
             </Text>
           </View>
           <View style={styles.sectionTitleUnderline} />

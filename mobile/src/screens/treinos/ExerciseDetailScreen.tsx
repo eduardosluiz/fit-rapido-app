@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { ActivityIndicator, Alert, Image, Modal, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
+import { StackActions } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { ResizeMode, Video } from 'expo-av';
@@ -8,7 +9,6 @@ import { api, getImageUrl, Treino } from '../../services/api';
 import AppBackground from '../../components/AppBackground';
 import VideoPlayer from '../../components/VideoPlayer';
 import BackButton from '../../components/BackButton';
-import { useAuth } from '../../contexts/AuthContext';
 import colors from '../../constants/colors';
 import fonts from '../../constants/fonts';
 
@@ -27,9 +27,9 @@ type DetailTab = 'instructions' | 'muscles' | 'substitutes' | 'explanation';
 export default function ExerciseDetailScreen() {
   const route = useRoute();
   const navigation = useNavigation();
-  const { user } = useAuth();
-  const { treinoId, exerciseIndex = 1 } = route.params as { treinoId: string; exerciseIndex?: number };
-  const canAccessWorkouts = user?.subscription_tier === 'premium_fit';
+  const { treinoId, exerciseIndex = 1, exerciseIds = [] } = route.params as { treinoId: string; exerciseIndex?: number; exerciseIds?: string[] };
+  const sequenceIndex = exerciseIds.indexOf(treinoId);
+  const nextId = sequenceIndex >= 0 ? exerciseIds[sequenceIndex + 1] : undefined;
 
   const [treino, setTreino] = useState<Treino | null>(null);
   const [loading, setLoading] = useState(true);
@@ -42,12 +42,13 @@ export default function ExerciseDetailScreen() {
   const [isComplete, setIsComplete] = useState(false);
   const [savingFavorite, setSavingFavorite] = useState(false);
   const [savingComplete, setSavingComplete] = useState(false);
+  const [finishing, setFinishing] = useState(false);
+  const [completionMessage, setCompletionMessage] = useState<string | null>(null);
+  const [pendingId, setPendingId] = useState<string | null>(null);
   const videoThumbnailRef = useRef<Video | null>(null);
   const explanationThumbnailRef = useRef<Video | null>(null);
 
-  useEffect(() => {
-    if (!canAccessWorkouts) navigation.navigate('Subscriptions' as never);
-  }, [canAccessWorkouts, navigation]);
+
 
   useEffect(() => {
     const load = async () => {
@@ -99,6 +100,7 @@ export default function ExerciseDetailScreen() {
         setIsComplete(Boolean(complete));
       } catch (error) {
         console.error('Erro ao carregar detalhes do exercício:', error);
+        if ((error as any)?.status === 403) navigation.navigate('Subscriptions' as never);
       } finally {
         setLoading(false);
       }
@@ -185,7 +187,31 @@ export default function ExerciseDetailScreen() {
     setActiveTab('instructions');
   };
 
-  if (loading || !canAccessWorkouts) {
+  const openSequenceExercise = (id: string) => {
+    navigation.dispatch(StackActions.replace('ExerciseDetail', {
+      treinoId: id, exerciseIndex: exerciseIds.indexOf(id) + 1, exerciseIds,
+    }));
+  };
+
+  const finishWorkout = async () => {
+    if (finishing || savingComplete) return;
+    setFinishing(true);
+    try {
+      const completed = await Promise.all(exerciseIds.map((id) => api.verificarFezHoje(id, 'treinei_hoje', true)));
+      const missingIndex = completed.findIndex((done) => !done);
+      setPendingId(missingIndex >= 0 ? exerciseIds[missingIndex] : null);
+      setCompletionMessage(missingIndex >= 0
+        ? 'Ainda há exercícios pendentes. Conclua todos para finalizar o treino.'
+        : 'Parabéns! Você concluiu todos os exercícios deste treino hoje.');
+    } catch {
+      setPendingId(null);
+      setCompletionMessage('Não foi possível verificar a conclusão do treino. Tente novamente.');
+    } finally {
+      setFinishing(false);
+    }
+  };
+
+  if (loading) {
     return <AppBackground><SafeAreaView style={styles.centered}><ActivityIndicator size="large" color={colors.primary} /></SafeAreaView></AppBackground>;
   }
   if (!treino || !display) {
@@ -374,20 +400,44 @@ export default function ExerciseDetailScreen() {
               ) : <Text style={styles.emptyTabText}>Nenhum exercício substituto cadastrado.</Text>)}
             </View>
 
-            <View style={styles.actions}>
               {substitutos.length > 0 && (
-                <TouchableOpacity style={styles.secondaryButton} onPress={showNextSubstitute}>
+                <TouchableOpacity style={[styles.secondaryButton, { width: '100%', marginBottom: 9 }]} onPress={showNextSubstitute}>
                   <Ionicons name="swap-horizontal" size={22} color={colors.primary} />
                   <Text style={styles.secondaryButtonText}>Substituir{`\n`}exercício</Text>
                 </TouchableOpacity>
               )}
-              <TouchableOpacity style={[styles.completeButton, !substitutos.length && styles.completeButtonFull, isComplete && styles.completeButtonDone]} onPress={toggleComplete} disabled={savingComplete}>
-                {savingComplete ? <ActivityIndicator size="small" color="#1b150c" /> : <Ionicons name={isComplete ? 'checkmark-circle' : 'checkmark-circle-outline'} size={23} color="#1b150c" />}
-                <Text style={styles.completeButtonText}>{isComplete ? 'Exercício concluído' : 'Marcar como concluído'}</Text>
+            <View style={styles.actions}>
+              <TouchableOpacity style={[styles.completeButton, styles.compactAction, styles.completeButtonDone]} onPress={toggleComplete} disabled={savingComplete || finishing}>
+                {savingComplete ? <ActivityIndicator size="small" color="#A7E3C1" /> : <Ionicons name={isComplete ? 'checkmark-circle' : 'checkmark-circle-outline'} size={18} color="#A7E3C1" />}
+                <Text style={[styles.completeButtonText, styles.completedText]}>{isComplete ? 'Exercício concluído' : 'Concluir Exercício'}</Text>
               </TouchableOpacity>
+            {sequenceIndex >= 0 && (
+              <TouchableOpacity
+                style={[styles.completeButton, styles.compactAction, styles.nextButton]}
+                disabled={savingComplete || finishing}
+                onPress={() => nextId ? openSequenceExercise(nextId) : finishWorkout()}
+              >
+                {finishing ? <ActivityIndicator color="#E7C48A" /> : <Ionicons name={nextId ? 'arrow-forward' : 'checkmark-done'} size={18} color="#E7C48A" />}
+                <Text style={[styles.completeButtonText, styles.nextButtonText]}>{nextId ? 'Próximo Exercício' : 'Finalizar Treino'}</Text>
+              </TouchableOpacity>
+            )}
             </View>
           </View>
         </ScrollView>
+
+        <Modal visible={completionMessage !== null} transparent animationType="fade" onRequestClose={() => setCompletionMessage(null)}>
+          <View style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.75)', justifyContent: 'center', padding: 24 }}>
+            <View style={{ backgroundColor: '#191919', padding: 24, borderRadius: 16, gap: 20 }}>
+              <Text style={{ color: '#fff', fontFamily: fonts.body, fontSize: 16, textAlign: 'center' }}>{completionMessage}</Text>
+              <TouchableOpacity style={[styles.completeButton, { flex: 0 }]} onPress={() => {
+                setCompletionMessage(null);
+                if (pendingId) openSequenceExercise(pendingId);
+              }}>
+                <Text style={styles.completeButtonText}>{pendingId ? 'Ir ao exercício pendente' : 'OK'}</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </Modal>
 
         <Modal visible={showVideoPlayer} animationType="fade" transparent onRequestClose={() => setShowVideoPlayer(false)}>
           <View style={styles.modalContent}><VideoPlayer videoUrl={playerVideo?.url || ''} title={playerVideo?.title || display.titulo} onClose={() => setShowVideoPlayer(false)} /></View>
@@ -448,9 +498,12 @@ const styles = StyleSheet.create({
   actions: { flexDirection: 'row', gap: 9, backgroundColor: 'rgba(18,18,20,0.94)', borderRadius: 10, padding: 8 },
   secondaryButton: { width: '45%', minHeight: 58, borderWidth: 1, borderColor: 'rgba(255,255,255,0.12)', borderRadius: 9, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8 },
   secondaryButtonText: { color: '#f1eef2', fontFamily: fonts.body, fontSize: 11, lineHeight: 15 },
-  completeButton: { flex: 1, minHeight: 58, borderRadius: 9, backgroundColor: '#f2c65d', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 7, paddingHorizontal: 8 },
-  completeButtonFull: { width: '100%' },
-  completeButtonDone: { backgroundColor: '#d8aa3f' },
-  completeButtonText: { flexShrink: 1, color: '#1b150c', fontFamily: fonts.bodySemiBold, fontSize: 11, lineHeight: 15, textAlign: 'center' },
+  completeButton: { flex: 1, minHeight: 58, borderRadius: 9, backgroundColor: '#242424', borderWidth: 1, borderColor: '#444444', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 7, paddingHorizontal: 8 },
+  compactAction: { flexBasis: 0, minWidth: 0, minHeight: 44, gap: 5, paddingHorizontal: 6 },
+  completeButtonDone: { backgroundColor: '#173D32', borderColor: '#32634F' },
+  completedText: { color: '#A7E3C1' },
+  nextButton: { borderColor: '#E7C48A' },
+  nextButtonText: { color: '#E7C48A' },
+  completeButtonText: { flexShrink: 1, color: '#F5F2EC', fontFamily: fonts.bodySemiBold, fontSize: 11, lineHeight: 15, textAlign: 'center' },
   modalContent: { flex: 1, backgroundColor: '#000' },
 });
