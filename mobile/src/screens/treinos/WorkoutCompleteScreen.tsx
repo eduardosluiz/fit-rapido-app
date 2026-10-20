@@ -1,7 +1,7 @@
-import React from 'react';
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import React, { useEffect, useRef, useState } from 'react';
+import { AccessibilityInfo, Animated, Easing, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { useIsFocused, useNavigation, useRoute } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import AppBackground from '../../components/AppBackground';
@@ -11,27 +11,78 @@ export default function WorkoutCompleteScreen() {
   const navigation = useNavigation<any>();
   const { exerciseCount = 0 } = (useRoute().params || {}) as { exerciseCount?: number };
 
+  const focused = useIsFocused();
+  const [reduceMotion, setReduceMotion] = useState(true);
+  const medal = useRef(new Animated.Value(1)).current;
+  const title = useRef(new Animated.Value(1)).current;
+  const details = useRef(new Animated.Value(1)).current;
+  const glow = useRef(new Animated.Value(0)).current;
+  const particles = useRef(Array.from({ length: 24 }, () => new Animated.Value(0))).current;
+
+  useEffect(() => {
+    let active = true;
+    let changed = false;
+    AccessibilityInfo.isReduceMotionEnabled().then(value => { if (active && !changed) setReduceMotion(value); }).catch(() => {});
+    const subscription = AccessibilityInfo.addEventListener('reduceMotionChanged', value => { changed = true; setReduceMotion(value); });
+    return () => { active = false; subscription.remove(); };
+  }, []);
+
+  useEffect(() => {
+    if (reduceMotion || !focused) {
+      medal.setValue(1); title.setValue(1); details.setValue(1); glow.setValue(0);
+      particles.forEach(value => value.setValue(0));
+      return;
+    }
+    const useNativeDriver = Platform.OS !== 'web';
+    medal.setValue(0); title.setValue(0); details.setValue(0);
+    particles.forEach(value => value.setValue(0));
+    const entrance = Animated.stagger(160, [
+      Animated.spring(medal, { toValue: 1, damping: 12, stiffness: 130, mass: 0.8, useNativeDriver }),
+      Animated.timing(title, { toValue: 1, duration: 650, easing: Easing.out(Easing.cubic), useNativeDriver }),
+      Animated.timing(details, { toValue: 1, duration: 550, easing: Easing.out(Easing.cubic), useNativeDriver }),
+    ]);
+    const shimmer = Animated.sequence([
+      Animated.timing(glow, { toValue: 1, duration: 1000, useNativeDriver }),
+      Animated.timing(glow, { toValue: 0, duration: 1400, useNativeDriver }),
+    ]);
+    const confetti = Animated.parallel(particles.map((value, index) => Animated.sequence([
+      Animated.delay((index % 8) * 110),
+      Animated.timing(value, { toValue: 1, duration: 2800 + (index % 5) * 220, easing: Easing.linear, useNativeDriver, isInteraction: false }),
+    ])));
+    entrance.start(); shimmer.start(); confetti.start();
+    return () => { entrance.stop(); shimmer.stop(); confetti.stop(); };
+  }, [focused, reduceMotion, medal, title, details, glow, particles]);
+
   return (
     <AppBackground>
       <SafeAreaView style={styles.screen} edges={['top']}>
         <ScrollView contentContainerStyle={styles.content}>
           <View style={styles.celebration} accessible={false} pointerEvents="none">
             {Array.from({ length: 24 }, (_, index) => (
-              <View key={index} style={[styles.confetti, {
+              <Animated.View key={index} style={[styles.confetti, {
                 left: `${(index * 37 + 3) % 96}%`,
-                top: `${(index * 19 + 7) % 92}%`,
-                opacity: 0.3 + (index % 4) * 0.2,
-                transform: [{ rotate: `${index * 47}deg` }],
+                top: reduceMotion ? `${(index * 19 + 7) % 92}%` : '0%',
+                opacity: reduceMotion ? 0.3 + (index % 4) * 0.2 : particles[index].interpolate({ inputRange: [0, 0.12, 0.72, 1], outputRange: [0, 0.9, 0.8, 0] }),
+                transform: reduceMotion ? [{ rotate: `${index * 47}deg` }] : [
+                  { translateY: particles[index].interpolate({ inputRange: [0, 1], outputRange: [-20, 240] }) },
+                  { translateX: particles[index].interpolate({ inputRange: [0, 0.5, 1], outputRange: [0, index % 2 ? 18 : -18, index % 2 ? -8 : 8] }) },
+                  { rotate: particles[index].interpolate({ inputRange: [0, 1], outputRange: [`${index * 47}deg`, `${index * 47 + 280}deg`] }) },
+                ],
               }]} />
             ))}
+            <Animated.View style={{ opacity: medal, transform: [{ scale: medal.interpolate({ inputRange: [0, 1], outputRange: [0.65, 1] }) }] }}>
+            <Animated.View style={{ transform: [{ scale: glow.interpolate({ inputRange: [0, 1], outputRange: [1, 1.06] }) }] }}>
             <LinearGradient colors={['rgba(255,207,103,0.22)', 'rgba(255,207,103,0)']} style={styles.halo}>
               <View style={styles.medal}>
                 <Ionicons name="checkmark" size={90} color="#FFD374" />
               </View>
             </LinearGradient>
+            </Animated.View>
+            </Animated.View>
           </View>
 
-          <Text accessibilityRole="header" style={styles.title}>TREINO{'\n'}CONCLUÍDO!</Text>
+          <Animated.Text accessibilityRole="header" style={[styles.title, { opacity: title, transform: [{ translateY: title.interpolate({ inputRange: [0, 1], outputRange: [22, 0] }) }, { scale: title.interpolate({ inputRange: [0, 1], outputRange: [0.94, 1] }) }] }]}>TREINO{'\n'}CONCLUÍDO!</Animated.Text>
+          <Animated.View style={{ width: '100%', alignItems: 'center', opacity: details, transform: [{ translateY: details.interpolate({ inputRange: [0, 1], outputRange: [16, 0] }) }] }}>
           <Text style={styles.message}>Você deu mais um passo.{'\n'}Parabéns!</Text>
 
           <View style={styles.stats}>
@@ -56,6 +107,7 @@ export default function WorkoutCompleteScreen() {
               <Ionicons name="chevron-forward" size={20} color="#211706" />
             </LinearGradient>
           </TouchableOpacity>
+          </Animated.View>
         </ScrollView>
       </SafeAreaView>
     </AppBackground>
