@@ -1,6 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Platform } from 'react-native';
-import NetInfo from '@react-native-community/netinfo';
 
 const PROD_URL = 'https://backend.daipohlmann.com.br';
 export const API_URL = PROD_URL;
@@ -134,7 +133,6 @@ export interface Treino {
 
 class ApiService {
   private async request<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
-    const netInfo = await NetInfo.fetch();
     const token = await AsyncStorage.getItem('auth_token');
     const headers = new Headers(options.headers);
     if (!headers.has('Content-Type')) headers.set('Content-Type', 'application/json');
@@ -324,7 +322,7 @@ class ApiService {
   
   async getModalidadesTreinos() { 
     try {
-      return await this.request<any[]>('/treinos-modalidades');
+      return await this.request<any[]>('/treinos-modalidades?summary=true');
     } catch (e) {
       return [];
     }

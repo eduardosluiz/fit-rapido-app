@@ -244,7 +244,7 @@ export class TreinosService {
   async findOne(id: string): Promise<Treino> {
     const treino = await this.treinoRepository.findOne({
       where: { id },
-      relations: ['categorias'],
+      relations: ['categorias', 'modalidade'],
     });
 
     if (!treino) {

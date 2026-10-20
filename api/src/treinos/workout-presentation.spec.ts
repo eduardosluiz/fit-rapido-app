@@ -20,6 +20,10 @@ describe('conteúdo de modalidades para Free', () => {
     repo.findOne.mockResolvedValue(modality);
     auth.findById.mockResolvedValue({ role: 'user', subscription_tier: 'free', created_at: new Date(Date.now() - 3600000), trial_expires_at: new Date(Date.now() + 3600000) });
   });
+  it('lista resumida consulta apenas modalidades ativas, sem carregar exercícios', async () => {
+    await controller.findAll(req, 'true');
+    expect(repo.find).toHaveBeenLastCalledWith({ where: { ativo: true }, order: { ordem_modalidade: 'ASC', nome: 'ASC' } });
+  });
   it('expõe mídia apenas da sessão liberada, mantendo título e bloqueio das demais', async () => {
     const result = await controller.findOne('m', req);
     expect(result.treinos).toHaveLength(3);

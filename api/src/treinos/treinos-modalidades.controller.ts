@@ -11,6 +11,7 @@ import {
   Logger,
   InternalServerErrorException,
   Request,
+  Query,
 } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -45,7 +46,10 @@ export class TreinosModalidadesController {
   }
 
   @Get()
-  async findAll(@Request() req: any) {
+  async findAll(@Request() req: any, @Query('summary') summary?: string) {
+    if (summary === 'true') {
+      return this.repository.find({ where: { ativo: true }, order: { ordem_modalidade: 'ASC', nome: 'ASC' } });
+    }
     const items = await this.repository.find({
       order: { ordem_modalidade: 'ASC', nome: 'ASC' },
       relations: ['treinos']

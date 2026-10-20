@@ -40,6 +40,8 @@ export default function ExerciseDetailScreen() {
 
   const [treino, setTreino] = useState<Treino | null>(null);
   const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState<string | null>(null);
+  const [retry, setRetry] = useState(0);
   const [showVideoPlayer, setShowVideoPlayer] = useState(false);
   const [playerVideo, setPlayerVideo] = useState<{ url: string; title: string } | null>(null);
   const [currentView, setCurrentView] = useState<'main' | 'sub1' | 'sub2'>('main');
@@ -58,11 +60,28 @@ export default function ExerciseDetailScreen() {
 
 
   useEffect(() => {
+    let cancelled = false;
     const load = async () => {
       try {
         setLoading(true);
+        setLoadError(null);
+        setTreino(null);
+        setSubstitutos([]);
+        setCurrentView('main');
+        setIsComplete(false);
+        setIsFavorite(false);
         const data = await api.getTreino(treinoId);
+        if (cancelled) return;
+        if (!data?.id) throw Object.assign(new Error('missing'), { status: 404 });
         setTreino(data);
+        const [favorite, complete] = await Promise.allSettled([
+          api.checkIsFavorito('treino', treinoId),
+          api.verificarFezHoje(treinoId, 'treinei_hoje'),
+        ]);
+        if (cancelled) return;
+        setIsFavorite(favorite.status === 'fulfilled' && Boolean(favorite.value?.is_favorito));
+        setIsComplete(complete.status === 'fulfilled' && Boolean(complete.value));
+        setLoading(false);
         const subs: Substituto[] = [];
 
         if (data.substituto_id_1) {
@@ -97,23 +116,22 @@ export default function ExerciseDetailScreen() {
             console.error('Erro ao carregar substituto 2:', error);
           }
         }
+        if (cancelled) return;
         setSubstitutos(subs);
 
-        const [favorite, complete] = await Promise.all([
-          api.checkIsFavorito('treino', treinoId),
-          api.verificarFezHoje(treinoId, 'treinei_hoje'),
-        ]);
-        setIsFavorite(Boolean(favorite?.is_favorito));
-        setIsComplete(Boolean(complete));
+
       } catch (error) {
         console.error('Erro ao carregar detalhes do exercício:', error);
-        if ((error as any)?.status === 403) navigation.navigate('Subscriptions' as never);
+        if (cancelled) return;
+        const status = (error as any)?.status;
+        setLoadError(status === 404 ? 'Este exercício não está mais disponível. Volte à lista para atualizar o treino.' : status === 403 ? 'Seu plano não libera este exercício. Volte à lista ou consulte as assinaturas.' : 'Não foi possível carregar o exercício. Verifique sua conexão e tente novamente.');
       } finally {
-        setLoading(false);
+        if (!cancelled) setLoading(false);
       }
     };
     load();
-  }, [treinoId]);
+    return () => { cancelled = true; };
+  }, [treinoId, retry]);
 
   const display = useMemo(() => {
     if (!treino) return null;
@@ -220,11 +238,18 @@ export default function ExerciseDetailScreen() {
     }
   };
 
+  const returnToExercises = () => {
+    if (navigation.canGoBack()) navigation.goBack();
+    else (navigation as any).navigate('TreinosList');
+  };
+
   if (loading) {
     return <AppBackground><SafeAreaView style={styles.centered}><ActivityIndicator size="large" color={colors.primary} /></SafeAreaView></AppBackground>;
   }
   if (!treino || !display) {
-    return <AppBackground><SafeAreaView style={styles.centered}><Text style={styles.emptyText}>Exercício não encontrado</Text></SafeAreaView></AppBackground>;
+    return <AppBackground><SafeAreaView style={styles.centered}><Text style={[styles.emptyText, { paddingHorizontal: 24, textAlign: 'center' }]}>{loadError || 'Não foi possível exibir este exercício.'}</Text>
+      <TouchableOpacity style={[styles.completeButton, { flex: 0, marginTop: 20 }]} onPress={() => setRetry(value => value + 1)}><Text style={styles.completeButtonText}>Tentar novamente</Text></TouchableOpacity>
+      <TouchableOpacity style={{ padding: 20 }} onPress={returnToExercises}><Text style={{ color: colors.primary, fontFamily: fonts.bodySemiBold }}>Voltar aos exercícios</Text></TouchableOpacity></SafeAreaView></AppBackground>;
   }
 
   if (!canAccessWorkoutContent(user, treino)) return <SubscriptionPrompt visible contentType="workout" onClose={() => navigation.goBack()} />;
@@ -419,7 +444,7 @@ export default function ExerciseDetailScreen() {
               )}
             <View style={styles.actions}>
               <TouchableOpacity style={[styles.completeButton, styles.compactAction, styles.completeButtonDone]} onPress={toggleComplete} disabled={savingComplete || finishing}>
-                {savingComplete ? <ActivityIndicator size="small" color="#A7E3C1" /> : <Ionicons name={isComplete ? 'checkmark-circle' : 'checkmark-circle-outline'} size={18} color="#A7E3C1" />}
+                {savingComplete ? <ActivityIndicator size="small" color="#FFFFFF" /> : <Ionicons name={isComplete ? 'checkmark-circle' : 'checkmark-circle-outline'} size={18} color="#FFFFFF" />}
                 <Text style={[styles.completeButtonText, styles.completedText]}>{isComplete ? 'Exercício concluído' : 'Concluir Exercício'}</Text>
               </TouchableOpacity>
             {sequenceIndex >= 0 && (
@@ -512,7 +537,7 @@ const styles = StyleSheet.create({
   completeButton: { flex: 1, minHeight: 58, borderRadius: 9, backgroundColor: '#242424', borderWidth: 1, borderColor: '#444444', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 7, paddingHorizontal: 8 },
   compactAction: { flexBasis: 0, minWidth: 0, minHeight: 44, gap: 5, paddingHorizontal: 6 },
   completeButtonDone: { backgroundColor: '#173D32', borderColor: '#32634F' },
-  completedText: { color: '#A7E3C1' },
+  completedText: { color: '#FFFFFF' },
   nextButton: { borderColor: '#E7C48A' },
   nextButtonText: { color: '#E7C48A' },
   completeButtonText: { flexShrink: 1, color: '#F5F2EC', fontFamily: fonts.bodySemiBold, fontSize: 11, lineHeight: 15, textAlign: 'center' },
