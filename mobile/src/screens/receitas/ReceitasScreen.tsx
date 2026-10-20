@@ -446,7 +446,15 @@ export default function ReceitasScreen() {
 
       {trialActive && trialRecipes.some(item => canAccessRecipeContent(user, item)) && (
         <View style={styles.section}>
-          <View style={styles.sectionHeader}><View style={styles.titleWithIcon}><Ionicons name="gift-outline" size={14} color={colors.primary} /><Text style={styles.sectionTitle}>Liberadas para você experimentar</Text></View></View>
+          <View style={styles.sectionHeader}>
+            <View style={styles.sectionHeading}>
+              <View style={styles.titleWithIcon}>
+                <Ionicons name="gift-outline" size={12} color={colors.primary} />
+                <Text style={styles.sectionTitle}>Liberadas para você experimentar</Text>
+              </View>
+              <View style={styles.sectionTitleUnderline} />
+            </View>
+          </View>
           <FlatList horizontal showsHorizontalScrollIndicator={false}
             data={trialRecipes.filter(item => canAccessRecipeContent(user, item))}
             keyExtractor={item => 'trial-' + item.id}
@@ -476,11 +484,7 @@ export default function ReceitasScreen() {
             contentContainerStyle={[styles.horizontalScroll, receitasPopulares.length === 1 && styles.singleCardContent]}
             renderItem={({ item }) => renderReceitaCard(item, true)}
           />
-          {receitasPopulares.length > 2 && (
-            <View style={styles.scrollIndicator}>
-              <Ionicons name="arrow-forward" size={16} color="rgba(231,196,138,0.6)" />
-            </View>
-          )}
+
         </View>
       )}
 
@@ -506,11 +510,7 @@ export default function ReceitasScreen() {
             contentContainerStyle={[styles.horizontalScroll, receitasRapidas.length === 1 && styles.singleCardContent]}
             renderItem={({ item }) => renderReceitaCard(item, true)}
           />
-          {receitasRapidas.length > 2 && (
-            <View style={styles.scrollIndicator}>
-              <Ionicons name="arrow-forward" size={16} color="rgba(231,196,138,0.6)" />
-            </View>
-          )}
+
         </View>
       )}
 

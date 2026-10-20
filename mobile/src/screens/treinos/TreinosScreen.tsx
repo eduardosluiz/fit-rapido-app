@@ -313,7 +313,7 @@ export default function TreinosScreen() {
           />
 
           {trialActive && trialWorkouts.some(item => item.is_free && canAccessWorkoutContent(user, item)) && (
-            <View style={{ marginBottom: 24 }}>
+            <View style={{ marginBottom: mobileSpacing.section }}>
               <View style={[styles.sectionHeaderRow, { justifyContent: 'flex-start', gap: 6 }]}>
                 <Ionicons name="gift-outline" size={14} color={colors.primary} />
                 <Text style={[styles.sectionTitle, { flexShrink: 1 }]}>Liberados para você experimentar</Text>
