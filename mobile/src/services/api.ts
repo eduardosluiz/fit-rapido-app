@@ -132,7 +132,7 @@ export interface Treino {
 }
 
 class ApiService {
-  private async request<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
+  private async request<T>(endpoint: string, options: RequestInit = {}, timeoutMs?: number): Promise<T> {
     const token = await AsyncStorage.getItem('auth_token');
     const headers = new Headers(options.headers);
     if (!headers.has('Content-Type')) headers.set('Content-Type', 'application/json');
@@ -143,8 +143,10 @@ class ApiService {
 
     const url = `${API_URL}${endpoint.startsWith('/') ? endpoint : `/${endpoint}`}`;
     
+    const controller = timeoutMs ? new AbortController() : undefined;
+    const timer = controller ? setTimeout(() => controller.abort(), timeoutMs) : undefined;
     try {
-      const response = await fetch(url, { ...options, headers });
+      const response = await fetch(url, { ...options, headers, ...(controller ? { signal: controller.signal } : {}) });
       
       if (response.status === 401) {
         if (!endpoint.includes('/auth/login')) {
@@ -172,7 +174,12 @@ class ApiService {
       const text = await response.text();
       return (text ? JSON.parse(text) : undefined) as T;
     } catch (error: any) {
+      if (controller?.signal.aborted) {
+        throw Object.assign(new Error('O servidor demorou para responder. Verifique sua conexão e tente novamente.'), { code: 'TIMEOUT' });
+      }
       throw error;
+    } finally {
+      if (timer) clearTimeout(timer);
     }
   }
 
@@ -420,7 +427,7 @@ class ApiService {
 
   async verificarFezHoje(itemId: string, tipo: string, throwOnError = false) {
     try {
-      const result = await this.request<{ fez_hoje: boolean }>(`/atividades/check/${tipo}/${itemId}`);
+      const result = await this.request<{ fez_hoje: boolean }>(`/atividades/check/${tipo}/${itemId}`, {}, 10000);
       return result.fez_hoje;
     } catch (error) {
       if (throwOnError) throw error;
@@ -432,7 +439,7 @@ class ApiService {
     return this.request<any>('/atividades', {
       method: 'POST',
       body: JSON.stringify({ item_id: itemId, tipo }),
-    });
+    }, 15000);
   }
 
   async criarAtividade(itemId: string, tipo: string) {
@@ -440,7 +447,7 @@ class ApiService {
   }
 
   async removerAtividade(itemId: string, tipo: string) {
-    return this.request<any>(`/atividades/${tipo}/${itemId}`, { method: 'DELETE' });
+    return this.request<any>(`/atividades/${tipo}/${itemId}`, { method: 'DELETE' }, 15000);
   }
 
   async getAtividades(tipo?: 'fiz_receita' | 'treinei_hoje') {

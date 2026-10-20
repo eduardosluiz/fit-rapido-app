@@ -192,13 +192,26 @@ export default function ExerciseDetailScreen() {
 
   const toggleComplete = async () => {
     if (savingComplete) return;
+    const desiredComplete = !isComplete;
     try {
       setSavingComplete(true);
       if (isComplete) await api.removerAtividade(treinoId, 'treinei_hoje');
       else await api.criarAtividade(treinoId, 'treinei_hoje');
-      setIsComplete((value) => !value);
-    } catch {
-      Alert.alert('Erro', 'Não foi possível atualizar a conclusão do exercício.');
+      setIsComplete(desiredComplete);
+    } catch (error: any) {
+      // A resposta pode se perder depois de o servidor ter salvo a conclusão.
+      try {
+        const confirmed = await api.verificarFezHoje(treinoId, 'treinei_hoje', true);
+        setIsComplete(confirmed);
+        if (confirmed === desiredComplete) return;
+      } catch { /* Manter o último estado confirmado e permitir nova tentativa. */ }
+      const detail = error?.status === 401
+        ? 'Sua sessão expirou. Entre novamente para salvar seu progresso.'
+        : 'Não conseguimos confirmar a alteração. Verifique sua conexão e tente novamente. Seu exercício continua aberto.';
+      Alert.alert('Conclusão não confirmada', `${detail}\n\n${treino?.titulo || 'Exercício'} · ${error?.status ? `HTTP ${error.status}` : error?.code === 'TIMEOUT' ? 'Tempo de resposta excedido' : 'Falha de conexão'}`, [
+        { text: 'Agora não', style: 'cancel' },
+        { text: 'Tentar novamente', onPress: () => { void toggleComplete(); } },
+      ]);
     } finally {
       setSavingComplete(false);
     }

@@ -8,6 +8,8 @@ import { Ionicons } from '@expo/vector-icons';
 import colors, { mobileSpacing } from '../../constants/colors';
 import fonts from '../../constants/fonts';
 import * as ImagePicker from 'expo-image-picker';
+import Constants from 'expo-constants';
+import * as Updates from 'expo-updates';
 
 import AppBackground from '../../components/AppBackground';
 import BackButton from '../../components/BackButton';
@@ -121,6 +123,10 @@ export default function ProfileScreen() {
         </View>
         <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
           <View style={styles.content}>
+            <Text selectable style={{ color: colors.textMuted, fontFamily: fonts.regular, fontSize: 12, marginBottom: 16 }}>
+              Versão {Constants.expoConfig?.version || '1.0.1'} · Revisão 20/10-B{'\n'}
+              {Updates.updateId ? `Atualização ${Updates.updateId.slice(0, 8)}` : 'Versão local'}
+            </Text>
             {/* Profile Card Modernizado */}
             <View style={styles.profileCard}>
               <View style={styles.profileHeader}>
