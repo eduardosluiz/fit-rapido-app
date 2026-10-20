@@ -4,6 +4,7 @@ import { useState, useEffect, Suspense, useCallback, useRef } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { api } from '@/lib/api';
+import { WorkoutDraftNotice } from '@/components/admin/WorkoutDraftNotice';
 import { useAuth } from '@/lib/useAuth';
 import { Switch } from '@/components/ui/switch';
 import { FileUpload } from '@/components/admin/FileUpload';
@@ -170,10 +171,7 @@ function NovoTreinoForm() {
 
         <div className="bg-white dark:bg-[#0f0f0f] border border-gray-200 dark:border-[#222] rounded-xl shadow-sm overflow-hidden p-4 sm:p-12">
           <form id="treino-form" onSubmit={handleSubmit} className="space-y-12">
-            <p className="rounded-lg border border-amber-400/30 p-3 text-sm text-gray-700 dark:text-gray-200">
-              {editorState.revision ? 'Rascunho salvo · edições não publicadas.' : editorState.published ? 'Publicado · novas edições serão salvas como rascunho.' : 'Novo rascunho · ainda não aparece no aplicativo.'}
-              {' '}Salvar rascunho guarda seu trabalho. Publicar edições atualiza o aplicativo.
-            </p>
+            <WorkoutDraftNotice revision={editorState.revision} published={editorState.published} />
             {/* Seção: Dados Técnicos */}
             <div className="space-y-8">
               <div className="border-b border-gray-100 dark:border-[#1a1a1a] pb-4">

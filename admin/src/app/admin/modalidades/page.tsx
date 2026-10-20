@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { api } from '@/lib/api';
+import { WorkoutDraftNotice } from '@/components/admin/WorkoutDraftNotice';
 import { compareModalities, modalityPosition } from '@/lib/modalityOrder';
 import { useAuth } from '@/lib/useAuth';
 import { Switch } from '@/components/ui/switch';
@@ -1253,10 +1254,7 @@ export default function ModalidadesPage() {
             </nav>
 
             <form onSubmit={handleSubmit} className="modalidades-form space-y-10">
-              <p className="rounded-lg border border-amber-400/30 p-3 text-sm text-gray-700 dark:text-gray-200">
-                {editorState.revision ? 'Rascunho salvo · edições não publicadas.' : editorState.published ? 'Publicado · novas edições serão salvas como rascunho.' : 'Novo rascunho · ainda não aparece no aplicativo.'}
-                {' '}Salvar rascunho guarda seu trabalho. Publicar edições atualiza o aplicativo.
-              </p>
+              <WorkoutDraftNotice revision={editorState.revision} published={editorState.published} />
               <div id="dados-modalidade" className="modality-identity-card bg-white dark:bg-[#0f0f0f] border border-gray-200 dark:border-[#222] rounded-2xl shadow-sm overflow-hidden">
                 <div className="modality-card-content p-8 sm:p-12 space-y-12">
                   <div className="border-b border-gray-100 dark:border-[#1a1a1a] pb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
