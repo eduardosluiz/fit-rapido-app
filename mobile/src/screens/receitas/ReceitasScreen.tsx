@@ -1,3 +1,5 @@
+import { hasActiveTrial } from '../../utils/trialAccess';
+import { canAccessRecipeContent } from '../../utils/recipeAccess';
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import {
   View,
@@ -52,6 +54,8 @@ export default function ReceitasScreen() {
     lowCarb?: boolean;
   } | undefined;
 
+  const trialActive = hasActiveTrial(user) && !canAccessRecipeContent(user, { is_free: false });
+  const [trialRecipes, setTrialRecipes] = useState<Receita[]>([]);
   const [receitas, setReceitas] = useState<Receita[]>([]);
   const [receitasPopulares, setReceitasPopulares] = useState<Receita[]>([]);
   const [receitasRapidas, setReceitasRapidas] = useState<Receita[]>([]);
@@ -236,12 +240,16 @@ export default function ReceitasScreen() {
 
 
 
-      const response = await api.getReceitas(params);
+      const [response, freeResponse] = await Promise.all([
+        api.getReceitas(params),
+        trialActive && pageNum === 1 ? api.getReceitas({ ...params, onlyFree: true, page: 1, limit: 15 }).catch(() => []) : Promise.resolve(null),
+      ]);
       
       if (requestTime !== lastRequestTimeRef.current) {
         return;
       }
       
+      if (pageNum === 1) setTrialRecipes(freeResponse ? (Array.isArray(freeResponse) ? freeResponse : freeResponse.data || []) : []);
       const isPaginated = !Array.isArray(response) && response && response.data;
       const todasReceitasRaw = isPaginated ? response.data : (Array.isArray(response) ? response : []);
       const totalPages = isPaginated ? response.totalPages : 1;
@@ -281,7 +289,7 @@ export default function ReceitasScreen() {
       setLoading(false);
       setLoadingMore(false);
     }
-  }, [searchText, selectedCategoria, user?.subscription_tier, filtrosBusca, onlyIneditas, onlyPopulares, onlyMaisFavoritadas, onlyAte10Minutos]);
+  }, [searchText, selectedCategoria, user?.subscription_tier, trialActive, filtrosBusca, onlyIneditas, onlyPopulares, onlyMaisFavoritadas, onlyAte10Minutos]);
 
   const loadMore = () => {
     if (receitas.length > 0 && !loadError && !loadingMore && hasMore && !loading && filterMode === 'todos') {
@@ -294,7 +302,7 @@ export default function ReceitasScreen() {
   // Use effect apenas para carregar inicialmente ou quando a categoria/filtros/atalhos mudarem
   useEffect(() => { 
     loadReceitas(searchText, 1); 
-  }, [selectedCategoria, filtrosBusca, user?.subscription_tier, onlyIneditas, onlyPopulares, onlyMaisFavoritadas, onlyAte10Minutos, resetSequence]);
+  }, [selectedCategoria, filtrosBusca, user?.subscription_tier, trialActive, onlyIneditas, onlyPopulares, onlyMaisFavoritadas, onlyAte10Minutos, resetSequence]);
 
   const handleSearchTextChange = (text: string) => {
     setSearchText(text);
@@ -436,6 +444,17 @@ export default function ReceitasScreen() {
         </View>
       )}
 
+      {trialActive && trialRecipes.some(item => canAccessRecipeContent(user, item)) && (
+        <View style={styles.section}>
+          <View style={styles.sectionHeader}><Text style={styles.sectionTitle}>Liberadas para você experimentar</Text></View>
+          <Text style={{ color: colors.textSecondary, fontFamily: fonts.body, marginBottom: 12 }}>Estas receitas estão disponíveis durante seus 3 dias de teste.</Text>
+          <FlatList horizontal showsHorizontalScrollIndicator={false}
+            data={trialRecipes.filter(item => canAccessRecipeContent(user, item))}
+            keyExtractor={item => 'trial-' + item.id}
+            contentContainerStyle={styles.horizontalScroll}
+            renderItem={({ item }) => renderReceitaCard(item, true)} />
+        </View>
+      )}
       {!isShortcutFilter && !hasSearchFilters && receitasPopulares.length > 0 && (
         <View style={styles.section}>
           <View style={styles.sectionHeader}>

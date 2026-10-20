@@ -24,3 +24,15 @@ describe('SocialTokenVerifierService', () => {
     await expect(new SocialTokenVerifierService().verify('apple', parts.join('.'))).rejects.toThrow();
   });
 });
+
+describe('validação de identidade Google', () => {
+  const previous = process.env.GOOGLE_WEB_CLIENT_ID;
+  beforeEach(() => { process.env.GOOGLE_WEB_CLIENT_ID = 'test-client'; });
+  afterAll(() => { if (previous === undefined) delete process.env.GOOGLE_WEB_CLIENT_ID; else process.env.GOOGLE_WEB_CLIENT_ID = previous; });
+  it.each([['test-client', true, true], ['other-client', true, false], ['test-client', false, false]])('confere audiência e e-mail verificado (%s, %s)', async (aud, verified, valid) => {
+    (axios.get as jest.Mock).mockResolvedValue({ data: { aud, email_verified: verified, sub: 'google-user', email: 'test@example.invalid' } });
+    const result = new SocialTokenVerifierService().verify('google', 'token');
+    if (valid) await expect(result).resolves.toEqual({ id: 'google-user', email: 'test@example.invalid' });
+    else await expect(result).rejects.toThrow();
+  });
+});

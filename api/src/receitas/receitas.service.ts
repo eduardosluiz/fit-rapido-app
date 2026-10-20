@@ -315,6 +315,10 @@ export class ReceitasService {
       queryBuilder.andWhere('receita.destaque_popular = :onlyPopularesVal', { onlyPopularesVal: true });
     }
 
+    if (hasActiveTrial(user || null) && !canAccessRecipe(user || null, { is_free: false } as Receita) && !isAdmin) {
+      queryBuilder.orderBy('receita.is_free', 'DESC');
+    }
+
     if (onlyMaisFavoritadas) {
       // Manter a pagina solicitada pelo aplicativo para não repetir sempre
       // os mesmos itens quando houver mais receitas favoritadas.
@@ -329,13 +333,13 @@ export class ReceitasService {
         }, 'fav_stats', 'fav_stats.item_id = CAST(receita.id AS text)')
         .addSelect('COALESCE(fav_stats.fav_count, 0)', 'favorite_count')
         .andWhere('(receita.destaque_favorito = true OR COALESCE(fav_stats.fav_count, 0) > 0)')
-        .orderBy('receita.destaque_favorito', 'DESC')
+        .addOrderBy('receita.destaque_favorito', 'DESC')
         // Com paginacao, o TypeORM cria uma consulta externa. Ordenar pelo alias
         // selecionado evita referenciar fav_stats fora do escopo dessa consulta.
         .addOrderBy('favorite_count', 'DESC')
         .addOrderBy('receita.created_at', 'DESC');
     } else {
-      queryBuilder.orderBy('receita.created_at', 'DESC');
+      queryBuilder.addOrderBy('receita.created_at', 'DESC');
     }
 
     let receitas;
