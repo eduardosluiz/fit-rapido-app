@@ -59,7 +59,7 @@ export type MainStackParamList = {
   TreinoDetail: { treinoId: string };
   ExerciseDetail: { treinoId: string; exerciseIndex?: number; exerciseIds?: string[] };
   WorkoutComplete: { exerciseCount: number };
-  Subscriptions: undefined;
+  Subscriptions: { recommendedTier?: 'premium' | 'premium_fit' } | undefined;
   PrivacyPolicy: undefined;
   TermsOfService: undefined;
   NotificationSettings: undefined;

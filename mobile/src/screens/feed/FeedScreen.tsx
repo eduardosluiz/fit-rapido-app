@@ -13,6 +13,7 @@ import {
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useAuth } from '../../contexts/AuthContext';
+import { canAccessRecipeContent } from '../../utils/recipeAccess';
 import { canAccessPaidWorkouts } from '../../utils/workoutAccess';
 import { api, Banner, Receita, Treino, getImageUrl } from '../../services/api';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -23,6 +24,20 @@ import colors, { mobileSpacing } from '../../constants/colors';
 import fonts from '../../constants/fonts';
 import AppBackground from '../../components/AppBackground';
 import ReceitaCardAnimated from '../../components/ReceitaCardAnimated';
+
+// Load every catalog page so older Free items are not hidden behind recent paid items.
+async function loadFeedCatalog<T>(fetchPage: (page: number) => Promise<any>): Promise<T[]> {
+  const items: T[] = [];
+  let page = 1;
+  while (true) {
+    const response = await fetchPage(page);
+    const batch = Array.isArray(response) ? response : response?.data || [];
+    items.push(...batch);
+    if (Array.isArray(response) || !batch.length || page >= (response.totalPages || 1)) break;
+    page++;
+  }
+  return items;
+}
 
 interface Notification {
   id: string;
@@ -139,8 +154,8 @@ export default function FeedScreen() {
       
       const [bannersData, receitasResp, treinosResp] = await Promise.all([
         api.getBanners(),
-        api.getReceitas({ page: 1, limit: 6 }),
-        api.getTreinos({ apenasAvulsos: true, page: 1, limit: 6 }).catch(() => ({ data: [], totalPages: 0 })),
+        loadFeedCatalog<Receita>((page) => api.getReceitas({ page, limit: 100 })),
+        loadFeedCatalog<Treino>((page) => api.getTreinos({ apenasAvulsos: true, page, limit: 100 })).catch(() => []),
       ]);
 
       let notificacoesData: any[] = [];
@@ -150,19 +165,17 @@ export default function FeedScreen() {
         console.error('Erro ao carregar notificações:', error);
       }
 
-      const receitasData = !Array.isArray(receitasResp) && receitasResp && receitasResp.data ? receitasResp.data : (Array.isArray(receitasResp) ? receitasResp : []);
-      const treinosData = !Array.isArray(treinosResp) && treinosResp && treinosResp.data ? treinosResp.data : (Array.isArray(treinosResp) ? treinosResp : []);
+      const receitasData = receitasResp;
+      const treinosData = treinosResp;
 
       const safeReceitasData = Array.isArray(receitasData) ? receitasData : [];
       const safeTreinosData = Array.isArray(treinosData) ? treinosData : [];
 
       const receitasOrdenadas = safeReceitasData
-        .filter((r) => r && r.ativa)
-        .slice(0, 6);
+        .filter((r) => r && r.ativa);
 
       const treinosOrdenados = safeTreinosData
-        .filter((t) => t && t.ativa && !t.modalidade_id && !t.modalidade)
-        .slice(0, 6);
+        .filter((t) => t && t.ativa && !t.modalidade_id && !t.modalidade);
 
       setBanners(Array.isArray(bannersData) ? bannersData : []);
       setReceitas(receitasOrdenadas);
@@ -242,7 +255,7 @@ export default function FeedScreen() {
   );
 
   const renderTreino = (treino: Treino) => {
-    const canAccessWorkouts = canAccessPaidWorkouts(user) || treino.is_free === true;
+    const canAccessWorkouts = (treino as any).locked !== true && (canAccessPaidWorkouts(user) || treino.is_free === true);
     const displayData: any = {
       ...treino,
       tempo_preparo: treino.duracao_minutos,
@@ -255,6 +268,7 @@ export default function FeedScreen() {
         item={displayData}
         isHorizontal={true}
         isLocked={!canAccessWorkouts}
+        contentType="workout"
         onPress={() => {
           if (!canAccessWorkouts) {
             (navigation as any).navigate('Subscriptions');
@@ -278,6 +292,18 @@ export default function FeedScreen() {
       />
     );
   };
+
+  const openRecipes = receitas.filter(item => canAccessRecipeContent(user, item));
+  const lockedRecipes = receitas.filter(item => !canAccessRecipeContent(user, item));
+  const workoutAccessible = (item: Treino) => (item as any).locked !== true && (item.is_free === true || canAccessPaidWorkouts(user));
+  const openWorkouts = treinos.filter(workoutAccessible);
+  const lockedWorkouts = treinos.filter(item => !workoutAccessible(item));
+  const feedSections = [
+    { title: '🍽️ Receitas liberadas para você', items: openRecipes, type: 'recipe' },
+    { title: '💪 Treinos liberados para você', items: openWorkouts, type: 'workout' },
+    { title: '🔒 Receitas com assinatura', items: lockedRecipes, type: 'recipe' },
+    { title: '🔒 Treinos com assinatura', items: lockedWorkouts, type: 'workout' },
+  ];
 
   if (loading && receitas.length === 0) {
     return (
@@ -374,54 +400,26 @@ export default function FeedScreen() {
             </ScrollView>
           </View>
 
-          {/* Novas Receitas */}
-          {receitas.length > 0 && (
-            <View style={styles.section}>
+          {feedSections.filter(section => section.items.length > 0).map(section => (
+            <View key={section.title} style={styles.section}>
               <View style={styles.sectionHeader}>
-                <View style={styles.sectionTitleContainer}>
-                  <View style={styles.sectionHeading}>
-                    <Text style={styles.sectionTitle}>🍽️ Novas Receitas</Text>
-                    <View style={styles.sectionTitleUnderline} />
-                  </View>
+                <View style={[styles.sectionTitleContainer, { flex: 1 }]}>
+                  <Text style={styles.sectionTitle}>{section.title}</Text>
+                  <View style={styles.sectionTitleUnderline} />
                 </View>
-                <TouchableOpacity onPress={() => (navigation as any).navigate('Receitas', {
-                  screen: 'ReceitasList', params: { resetFiltersKey: Date.now() },
+                <TouchableOpacity onPress={() => (navigation as any).navigate(section.type === 'recipe' ? 'Receitas' : 'Treinos', {
+                  screen: section.type === 'recipe' ? 'ReceitasList' : 'TreinosList',
+                  params: { resetFiltersKey: Date.now() },
                 })}>
-                  <Text style={styles.seeAllText}>Ver todas</Text>
-                </TouchableOpacity>
-              </View>
-              <ScrollView horizontal showsHorizontalScrollIndicator={false}
-                contentContainerStyle={[styles.horizontalCardsContent, receitas.length === 1 && styles.singleCardContent]}>
-                {receitas.map(renderReceita)}
-              </ScrollView>
-            </View>
-          )}
-
-          {/* Novos Treinos */}
-          {treinos.length > 0 && (
-            <View style={[styles.section, styles.lastFeedSection]}>
-              <View style={styles.sectionHeader}>
-                <View style={styles.sectionTitleContainer}>
-                  <View style={styles.sectionHeading}>
-                    <Text style={styles.sectionTitle}>💪 Novos Treinos</Text>
-                    <View style={styles.sectionTitleUnderline} />
-                  </View>
-                </View>
-                <TouchableOpacity 
-                  style={{ flexDirection: 'row', alignItems: 'center' }}
-                  onPress={() => {
-                    (navigation as any).navigate('Tabs', { screen: 'Treinos' });
-                  }}
-                >
                   <Text style={styles.seeAllText}>Ver todos</Text>
                 </TouchableOpacity>
               </View>
               <ScrollView horizontal showsHorizontalScrollIndicator={false}
-                contentContainerStyle={[styles.horizontalCardsContent, treinos.length === 1 && styles.singleCardContent]}>
-                {treinos.map(renderTreino)}
+                contentContainerStyle={[styles.horizontalCardsContent, section.items.length === 1 && styles.singleCardContent]}>
+                {section.items.slice(0, 6).map(item => section.type === 'recipe' ? renderReceita(item as Receita) : renderTreino(item as Treino))}
               </ScrollView>
             </View>
-          )}
+          ))}
 
           {/* Mensagem quando não há conteúdo */}
           {receitas.length === 0 && treinos.length === 0 && (

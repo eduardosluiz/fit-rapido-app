@@ -1,6 +1,6 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { useAuth } from '../contexts/AuthContext';
-import { useNavigation } from '@react-navigation/native';
+import SubscriptionPrompt from './SubscriptionPrompt';
 import { canAccessRecipeContent } from '../utils/recipeAccess';
 import { View, Text, StyleSheet, Animated, Pressable, useWindowDimensions } from "react-native";
 import { Image } from "expo-image";
@@ -17,11 +17,12 @@ interface ReceitaCardProps {
   onPress: () => void;
   orderNumber?: number;
   isLocked?: boolean;
+  contentType?: 'recipe' | 'workout';
 }
 
-export default function ReceitaCardAnimated({ item, isHorizontal, compact, onPress, orderNumber, isLocked: explicitLocked }: ReceitaCardProps) {
+export default function ReceitaCardAnimated({ item, isHorizontal, compact, onPress, orderNumber, isLocked: explicitLocked, contentType = 'recipe' }: ReceitaCardProps) {
   const { user } = useAuth();
-  const navigation = useNavigation();
+  const [showSubscription, setShowSubscription] = useState(false);
   const isLocked = explicitLocked ?? !canAccessRecipeContent(user, item);
   const scale = useRef(new Animated.Value(1)).current;
 
@@ -90,10 +91,11 @@ export default function ReceitaCardAnimated({ item, isHorizontal, compact, onPre
   const compactStyle = isHorizontal || compact;
 
   return (
-    <Pressable onPress={() => isLocked ? navigation.navigate('Subscriptions' as never) : onPress()} onPressIn={onPressIn} onPressOut={onPressOut} style={[isHorizontal && { width: CARD_WIDTH }]}>
+    <>
+    <Pressable onPress={() => isLocked ? setShowSubscription(true) : onPress()} onPressIn={onPressIn} onPressOut={onPressOut} style={[isHorizontal && { width: CARD_WIDTH }]}>
       <Animated.View style={[styles.card, compactStyle && styles.horizontalCard, { transform: [{ scale }] }]}>
         <View style={[styles.imageContainer, compactStyle && styles.horizontalImageContainer]}>
-          {renderMedia()}
+          <View style={[StyleSheet.absoluteFillObject, isLocked && { opacity: 0.45, backgroundColor: '#888' }]}>{renderMedia()}</View>
           
           {isLocked && (
             <View style={styles.lockBadge}>
@@ -156,6 +158,8 @@ export default function ReceitaCardAnimated({ item, isHorizontal, compact, onPre
         </View>
       </Animated.View>
     </Pressable>
+    <SubscriptionPrompt visible={showSubscription} onClose={() => setShowSubscription(false)} contentType={contentType} />
+    </>
   );
 }
 

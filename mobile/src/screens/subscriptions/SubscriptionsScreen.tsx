@@ -14,7 +14,7 @@ import {
 import Purchases, { PurchasesStoreProduct } from 'react-native-purchases';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { useAuth } from '../../contexts/AuthContext';
 import { api } from '../../services/api';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -122,10 +122,15 @@ function DaiTreinosBenefits() {
 
 export default function SubscriptionsScreen() {
   const navigation = useNavigation();
+  const route = useRoute();
+  const recommendedTier = (route.params as { recommendedTier?: string } | undefined)?.recommendedTier;
   const { user, updateUser } = useAuth();
   const [loading, setLoading] = useState(true);
   const [plans, setPlans] = useState<Plan[]>([]);
   const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
+  useEffect(() => {
+    if (recommendedTier === 'premium' || recommendedTier === 'premium_fit') setSelectedPlan(recommendedTier);
+  }, [recommendedTier]);
   const [selectedPeriod, setSelectedPeriod] = useState<string | null>(null);
   const [subscriptionStatus, setSubscriptionStatus] = useState<{
     active: boolean;
@@ -411,7 +416,7 @@ export default function SubscriptionsScreen() {
 
         {/* Planos */}
         <View style={styles.plansContainer}>
-          {plans.map((plan) => {
+          {[...plans].sort((a, b) => Number(b.tier === recommendedTier) - Number(a.tier === recommendedTier)).map((plan) => {
             const isCurrentPlan = subscriptionStatus?.tier === plan.tier && subscriptionStatus?.active;
             const isPremiumFit = plan.tier === 'premium_fit';
 

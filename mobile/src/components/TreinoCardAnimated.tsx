@@ -1,6 +1,6 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { useAuth } from '../contexts/AuthContext';
-import { useNavigation } from '@react-navigation/native';
+import SubscriptionPrompt from './SubscriptionPrompt';
 import { canAccessPaidWorkouts } from '../utils/workoutAccess';
 import { View, Text, StyleSheet, Animated, Pressable, Dimensions } from "react-native";
 import { Image } from "expo-image";
@@ -18,7 +18,7 @@ interface TreinoCardProps {
 
 export default function TreinoCardAnimated({ item, isHorizontal, onPress }: TreinoCardProps) {
   const { user } = useAuth();
-  const navigation = useNavigation();
+  const [showSubscription, setShowSubscription] = useState(false);
   const locked = item.locked === true || !(item.is_free === true || canAccessPaidWorkouts(user));
   const scale = useRef(new Animated.Value(1)).current;
 
@@ -74,7 +74,8 @@ export default function TreinoCardAnimated({ item, isHorizontal, onPress }: Trei
       : null;
 
   return (
-    <Pressable onPress={() => locked ? navigation.navigate('Subscriptions' as never) : onPress()} onPressIn={onPressIn} onPressOut={onPressOut} style={[isHorizontal && { width: CARD_WIDTH, marginRight: spacing.lg }]}>
+    <>
+    <Pressable onPress={() => locked ? setShowSubscription(true) : onPress()} onPressIn={onPressIn} onPressOut={onPressOut} style={[isHorizontal && { width: CARD_WIDTH, marginRight: spacing.lg }]}>
       <Animated.View style={[styles.card, { transform: [{ scale }], height: CARD_HEIGHT }]}>
         
         {/* Background Media */}
@@ -86,6 +87,7 @@ export default function TreinoCardAnimated({ item, isHorizontal, onPress }: Trei
           </View>
         )}
 
+        {locked && <View pointerEvents="none" style={[StyleSheet.absoluteFillObject, { backgroundColor: 'rgba(100,100,100,0.45)' }]} />}
         {/* Gradient for text readability */}
         <LinearGradient
           colors={['transparent', 'rgba(28,27,30,0.5)', 'rgba(28,27,30,0.95)']}
@@ -112,6 +114,8 @@ export default function TreinoCardAnimated({ item, isHorizontal, onPress }: Trei
 
       </Animated.View>
     </Pressable>
+    <SubscriptionPrompt visible={showSubscription} onClose={() => setShowSubscription(false)} contentType={'workout'} />
+    </>
   );
 }
 
