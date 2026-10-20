@@ -266,6 +266,8 @@ function TabsNavigator() {
         name="Profile"
         component={ProfileScreen}
         options={{
+          title: 'Perfil',
+          tabBarLabel: 'Perfil',
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="person" size={size} color={color} />
           ),

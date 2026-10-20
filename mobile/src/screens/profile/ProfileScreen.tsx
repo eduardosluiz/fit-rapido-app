@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Alert, Image, ActivityIndicator, Platform, Linking } from 'react-native';
-import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import { CommonActions, useFocusEffect, useNavigation } from '@react-navigation/native';
 import { useAuth } from '../../contexts/AuthContext';
 import { api, getImageUrl } from '../../services/api';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -116,7 +116,10 @@ export default function ProfileScreen() {
       <SafeAreaView style={styles.container}>
         <View style={styles.headerContainer}>
           <View style={styles.headerRow}>
-            <BackButton onPress={() => navigation.goBack()} />
+            <BackButton onPress={() => {
+              if (navigation.canGoBack()) navigation.goBack();
+              else navigation.dispatch(CommonActions.navigate('Feed', { screen: 'FeedMain' }));
+            }} />
             <Text style={styles.headerTitle}>Perfil</Text>
           </View>
           <View style={styles.headerDivider} />
@@ -124,7 +127,7 @@ export default function ProfileScreen() {
         <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
           <View style={styles.content}>
             <Text selectable style={{ color: colors.textMuted, fontFamily: fonts.regular, fontSize: 12, marginBottom: 16 }}>
-              Versão {Constants.expoConfig?.version || '1.0.1'} · Revisão 20/10-B{'\n'}
+              Versão {Constants.expoConfig?.version || '1.0.1'} · Revisão 20/10-C{'\n'}
               {Updates.updateId ? `Atualização ${Updates.updateId.slice(0, 8)}` : 'Versão local'}
             </Text>
             {/* Profile Card Modernizado */}
