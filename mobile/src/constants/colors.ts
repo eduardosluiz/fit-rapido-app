@@ -44,6 +44,7 @@ export const spacing = {
 export const mobileSpacing = {
   pageGutter: spacing.lg,
   cardGap: 10,
+  cardRowGap: 12.5, // Metade dos 25 px antes acumulados nas listas de aulas.
   controlToContent: spacing.md,
   section: spacing.md,
   sectionHeaderToContent: spacing.md / 2,

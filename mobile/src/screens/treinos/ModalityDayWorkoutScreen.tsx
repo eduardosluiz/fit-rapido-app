@@ -152,7 +152,7 @@ const styles = StyleSheet.create({
   sectionHeader: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: mobileSpacing.section, marginBottom: mobileSpacing.sectionHeaderToContent },
   sectionTitle: { color: '#fff', fontSize: 14, fontFamily: fonts.bodySemiBold },
   sectionCount: { color: colors.primary, fontSize: 11, fontFamily: fonts.bold },
-  exerciseCard: { minHeight: 84, flexDirection: 'row', alignItems: 'center', gap: 10, padding: 9, borderRadius: 12, backgroundColor: 'rgba(13,13,13,0.9)', borderWidth: 1, borderColor: 'rgba(255,255,255,0.10)', marginBottom: 9 },
+  exerciseCard: { minHeight: 84, flexDirection: 'row', alignItems: 'center', gap: 10, padding: 9, borderRadius: 12, backgroundColor: 'rgba(13,13,13,0.9)', borderWidth: 1, borderColor: 'rgba(255,255,255,0.10)', marginBottom: mobileSpacing.cardRowGap },
   exerciseNumber: { width: 26, color: colors.primary, fontSize: 16, fontFamily: fonts.title, textAlign: 'center' },
   thumb: { width: 68, height: 64, borderRadius: 9, overflow: 'hidden', alignItems: 'center', justifyContent: 'center', backgroundColor: '#222' },
   thumbImage: { width: '100%', height: '100%' },

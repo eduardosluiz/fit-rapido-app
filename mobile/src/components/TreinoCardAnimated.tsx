@@ -6,7 +6,7 @@ import { View, Text, StyleSheet, Animated, Pressable, Dimensions } from "react-n
 import { Image } from "expo-image";
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from "expo-linear-gradient";
-import { colors, radius, shadows, spacing } from "../constants/colors";
+import { colors, radius, shadows, spacing, mobileSpacing } from "../constants/colors";
 import fonts from "../constants/fonts";
 import { Treino, getImageUrl } from "../services/api";
 
@@ -75,8 +75,8 @@ export default function TreinoCardAnimated({ item, isHorizontal, onPress }: Trei
 
   return (
     <>
-    <Pressable onPress={() => locked ? setShowSubscription(true) : onPress()} onPressIn={onPressIn} onPressOut={onPressOut} style={[isHorizontal && { width: CARD_WIDTH, marginRight: spacing.lg }]}>
-      <Animated.View style={[styles.card, { transform: [{ scale }], height: CARD_HEIGHT }]}>
+    <Pressable onPress={() => locked ? setShowSubscription(true) : onPress()} onPressIn={onPressIn} onPressOut={onPressOut} style={[isHorizontal && { width: CARD_WIDTH }]}>
+      <Animated.View style={[styles.card, isHorizontal && { marginBottom: 0 }, { transform: [{ scale }], height: CARD_HEIGHT }]}>
         
         {/* Background Media */}
         {thumbnail ? (
@@ -124,7 +124,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.backgroundSoft,
     borderRadius: radius.lg,
     overflow: "hidden",
-    marginBottom: spacing.lg,
+    marginBottom: mobileSpacing.cardRowGap,
     borderWidth: 1,
     borderColor: colors.border,
     justifyContent: 'space-between',

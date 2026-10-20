@@ -216,7 +216,7 @@ const styles = StyleSheet.create({
   },
   card: {
     width: '50%',
-    marginBottom: 20,
+    marginBottom: mobileSpacing.cardRowGap,
   },
   cardInner: {
     backgroundColor: 'rgba(255,255,255,0.03)',

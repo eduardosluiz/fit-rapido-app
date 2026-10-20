@@ -494,7 +494,7 @@ export default function ModalityWorkoutsScreen() {
             keyExtractor={(item) => item.id}
             ListHeaderComponent={renderHeader}
             renderItem={({ item, index }) => (
-              <View style={{ width: '100%', paddingHorizontal: mobileSpacing.pageGutter, marginBottom: 15 }}>
+              <View style={{ width: '100%', paddingHorizontal: mobileSpacing.pageGutter, marginBottom: mobileSpacing.cardRowGap }}>
                 <TreinoListItem 
                   isLesson={modalityName.trim().toLocaleLowerCase('pt-BR') === 'sua jornada'}
                   item={item} 
@@ -616,7 +616,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#262626',
     borderRadius: 8,
     padding: 15,
-    marginBottom: 10,
+    marginBottom: 0,
     width: '100%',
   },
   lessonCard: { padding: 6 },

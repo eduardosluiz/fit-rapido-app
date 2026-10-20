@@ -318,7 +318,7 @@ export default function TreinosScreen() {
                 <Ionicons name="gift-outline" size={14} color={colors.primary} />
                 <Text style={[styles.sectionTitle, { flexShrink: 1 }]}>Liberados para você experimentar</Text>
               </View>
-              <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: 12 }}>
+              <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: mobileSpacing.cardGap }}>
                 {trialWorkouts.filter(item => item.is_free && canAccessWorkoutContent(user, item)).map(item => (
                   <TreinoCardAnimated key={item.id} item={item} isHorizontal onPress={() => (navigation as any).navigate('TreinoDetail', { treinoId: item.id })} />
                 ))}

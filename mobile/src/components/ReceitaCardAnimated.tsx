@@ -93,7 +93,7 @@ export default function ReceitaCardAnimated({ item, isHorizontal, compact, onPre
   return (
     <>
     <Pressable onPress={() => isLocked ? setShowSubscription(true) : onPress()} onPressIn={onPressIn} onPressOut={onPressOut} style={[isHorizontal && { width: CARD_WIDTH }]}>
-      <Animated.View style={[styles.card, compactStyle && styles.horizontalCard, { transform: [{ scale }] }]}>
+      <Animated.View style={[styles.card, compactStyle && styles.horizontalCard, isHorizontal && { marginBottom: 0 }, { transform: [{ scale }] }]}>
         <View style={[styles.imageContainer, compactStyle && styles.horizontalImageContainer]}>
           <View style={[StyleSheet.absoluteFillObject, isLocked && { opacity: 0.45, backgroundColor: '#888' }]}>{renderMedia()}</View>
           
@@ -168,7 +168,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(25, 21, 16, 0.7)', // Fundo glass acastanhado requintado
     borderRadius: 22,
     overflow: "hidden",
-    marginBottom: 20, // Mais distância linear
+    marginBottom: mobileSpacing.cardRowGap,
     borderWidth: 1.2,
     borderColor: 'rgba(231,196,138, 0.25)', // Borda dourada igual à da imagem de referência
     shadowColor: '#000',
@@ -179,7 +179,7 @@ const styles = StyleSheet.create({
   },
   horizontalCard: {
     borderRadius: 14,
-    marginBottom: 12,
+    marginBottom: mobileSpacing.cardRowGap,
   },
   imageContainer: {
     width: '100%',
