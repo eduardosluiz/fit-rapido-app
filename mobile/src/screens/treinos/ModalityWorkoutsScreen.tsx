@@ -180,18 +180,16 @@ const TreinoListItem = ({ item, index, initiallyExpanded, isLesson = false }: { 
                    key: `video-${item.id}-${expandedVideo}`,
                    src: getImageUrl(currentVideoUrl),
                    controls: true,
-                   poster: getImageUrl(coverUrl),
-                   style: { width: '100%', height: '100%', backgroundColor: '#000', objectFit: 'cover' }
+                   playsInline: true,
+                   style: { width: '100%', height: '100%', backgroundColor: '#000', objectFit: 'contain' }
                  })
                ) : (
                  <Video
                    key={`video-${item.id}-${expandedVideo}`}
                    source={{ uri: getImageUrl(currentVideoUrl) || '' }}
-                   posterSource={coverUrl ? { uri: getImageUrl(coverUrl) } : undefined}
-                   usePoster={!!coverUrl}
                    style={{ width: '100%', height: '100%', backgroundColor: '#000' }}
                    useNativeControls
-                   resizeMode={ResizeMode.COVER}
+                   resizeMode={ResizeMode.CONTAIN}
                    shouldPlay={false}
                  />
                )

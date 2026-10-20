@@ -281,8 +281,7 @@ class ApiService {
         if (lowCarb) {
           const carbs = String(item.carboidratos ?? '').trim().replace(',', '.').match(/^[0-9]+(?:[.][0-9]+)?(?:\s*[-–]\s*([0-9]+(?:[.][0-9]+)?))?/);
           const maximum = carbs ? Number(carbs[1] || carbs[0]) : NaN;
-          const tagged = item.categorias?.some((category: any) => category.nome?.toLowerCase().includes('low carb'));
-          if (!tagged && !(maximum <= 15)) return false;
+          if (!(maximum <= 10)) return false;
         }
         return true;
       });

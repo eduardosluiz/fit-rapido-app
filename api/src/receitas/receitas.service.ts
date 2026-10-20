@@ -301,10 +301,9 @@ export class ReceitasService {
     }
 
     if (lowCarb) {
-      queryBuilder.leftJoin('receita.categorias', 'carbCategory');
       queryBuilder.andWhere(
-        "(CAST(SUBSTRING(REGEXP_REPLACE(REPLACE(TRIM(receita.carboidratos), ',', '.'), '[[:space:]]*[gG][[:space:]]*$', '') FROM '[0-9]+[.]?[0-9]*$') AS numeric) <= :lowCarbMax OR carbCategory.nome ILIKE :lowCarbText)",
-        { lowCarbMax: 15, lowCarbText: '%low carb%' },
+        "(CAST(SUBSTRING(REGEXP_REPLACE(REPLACE(TRIM(receita.carboidratos), ',', '.'), '[[:space:]]*[gG][[:space:]]*$', '') FROM '[0-9]+[.]?[0-9]*$') AS numeric) <= :lowCarbMax)",
+        { lowCarbMax: 10 },
       );
     }
 

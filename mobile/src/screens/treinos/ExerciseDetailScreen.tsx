@@ -27,7 +27,10 @@ type DetailTab = 'instructions' | 'muscles' | 'substitutes' | 'explanation';
 export default function ExerciseDetailScreen() {
   const route = useRoute();
   const navigation = useNavigation();
-  const { treinoId, exerciseIndex = 1, exerciseIds = [] } = route.params as { treinoId: string; exerciseIndex?: number; exerciseIds?: string[] };
+  const { treinoId, exerciseIndex = 1, exerciseIds: routeExerciseIds } = route.params as { treinoId: string; exerciseIndex?: number; exerciseIds?: string[] };
+  const exerciseIds = useMemo(() => Array.from(new Set(
+    routeExerciseIds?.length ? [...routeExerciseIds, treinoId] : [treinoId],
+  )), [routeExerciseIds, treinoId]);
   const sequenceIndex = exerciseIds.indexOf(treinoId);
   const nextId = sequenceIndex >= 0 ? exerciseIds[sequenceIndex + 1] : undefined;
 
@@ -199,10 +202,12 @@ export default function ExerciseDetailScreen() {
     try {
       const completed = await Promise.all(exerciseIds.map((id) => api.verificarFezHoje(id, 'treinei_hoje', true)));
       const missingIndex = completed.findIndex((done) => !done);
-      setPendingId(missingIndex >= 0 ? exerciseIds[missingIndex] : null);
-      setCompletionMessage(missingIndex >= 0
-        ? 'Ainda há exercícios pendentes. Conclua todos para finalizar o treino.'
-        : 'Parabéns! Você concluiu todos os exercícios deste treino hoje.');
+      if (missingIndex < 0) {
+        navigation.dispatch(StackActions.replace('WorkoutComplete', { exerciseCount: exerciseIds.length }));
+        return;
+      }
+      setPendingId(exerciseIds[missingIndex]);
+      setCompletionMessage('Ainda há exercícios pendentes. Conclua todos para finalizar o treino.');
     } catch {
       setPendingId(null);
       setCompletionMessage('Não foi possível verificar a conclusão do treino. Tente novamente.');

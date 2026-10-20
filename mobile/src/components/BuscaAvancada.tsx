@@ -243,7 +243,7 @@ export default function BuscaAvancada({
 
               {/* Low carb */}
               <View style={styles.switchGroup}>
-                <Text style={styles.switchLabel}>Low carb</Text>
+                <Text style={styles.switchLabel}>Low carb (até 10 g/porção)</Text>
                 <Switch
                   value={filters.lowCarb || false}
                   onValueChange={(value) => setFilters({ ...filters, lowCarb: value })}
