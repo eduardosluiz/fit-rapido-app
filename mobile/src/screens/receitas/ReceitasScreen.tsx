@@ -22,6 +22,7 @@ import colors, { mobileSpacing } from '../../constants/colors';
 import fonts from '../../constants/fonts';
 import AppBackground from '../../components/AppBackground';
 import ReceitaCardAnimated from '../../components/ReceitaCardAnimated';
+import BackButton from '../../components/BackButton';
 import BuscaAvancada, { BuscaFilters } from '../../components/BuscaAvancada';
 
 interface Categoria {
@@ -35,6 +36,7 @@ interface Categoria {
 export default function ReceitasScreen() {
   const navigation = useNavigation();
   const route = useRoute();
+  const onlyFree = route.name === 'ReceitasFree';
   const { width: windowWidth } = useWindowDimensions();
   const { user } = useAuth();
   
@@ -217,6 +219,7 @@ export default function ReceitasScreen() {
       else setLoadingMore(true);
 
       const params: any = { page: pageNum, limit: 15 };
+      if (onlyFree) params.onlyFree = true;
       if (currentSearch.trim()) params.search = currentSearch.trim();
       if (selectedCategoria) params.categoria = selectedCategoria;
       
@@ -242,7 +245,7 @@ export default function ReceitasScreen() {
 
       const [response, freeResponse] = await Promise.all([
         api.getReceitas(params),
-        trialActive && pageNum === 1 ? api.getReceitas({ ...params, onlyFree: true, page: 1, limit: 15 }).catch(() => []) : Promise.resolve(null),
+        trialActive && !onlyFree && pageNum === 1 ? api.getReceitas({ ...params, onlyFree: true, page: 1, limit: 15 }).catch(() => []) : Promise.resolve(null),
       ]);
       
       if (requestTime !== lastRequestTimeRef.current) {
@@ -289,7 +292,7 @@ export default function ReceitasScreen() {
       setLoading(false);
       setLoadingMore(false);
     }
-  }, [searchText, selectedCategoria, user?.subscription_tier, trialActive, filtrosBusca, onlyIneditas, onlyPopulares, onlyMaisFavoritadas, onlyAte10Minutos]);
+  }, [searchText, selectedCategoria, user?.subscription_tier, trialActive, onlyFree, filtrosBusca, onlyIneditas, onlyPopulares, onlyMaisFavoritadas, onlyAte10Minutos]);
 
   const loadMore = () => {
     if (receitas.length > 0 && !loadError && !loadingMore && hasMore && !loading && filterMode === 'todos') {
@@ -302,7 +305,7 @@ export default function ReceitasScreen() {
   // Use effect apenas para carregar inicialmente ou quando a categoria/filtros/atalhos mudarem
   useEffect(() => { 
     loadReceitas(searchText, 1); 
-  }, [selectedCategoria, filtrosBusca, user?.subscription_tier, trialActive, onlyIneditas, onlyPopulares, onlyMaisFavoritadas, onlyAte10Minutos, resetSequence]);
+  }, [selectedCategoria, filtrosBusca, user?.subscription_tier, trialActive, onlyFree, onlyIneditas, onlyPopulares, onlyMaisFavoritadas, onlyAte10Minutos, resetSequence]);
 
   const handleSearchTextChange = (text: string) => {
     setSearchText(text);
@@ -342,9 +345,9 @@ export default function ReceitasScreen() {
     />
   );
 
-  const isShortcutFilter = onlyIneditas || onlyPopulares || onlyMaisFavoritadas || onlyAte10Minutos;
+  const isShortcutFilter = onlyFree || onlyIneditas || onlyPopulares || onlyMaisFavoritadas || onlyAte10Minutos;
   const hasSearchFilters = Boolean(searchText.trim() || selectedCategoria || Object.values(filtrosBusca).some(value => value !== undefined && value !== false && value !== ''));
-  const shortcutTitle = onlyIneditas
+  const shortcutTitle = onlyFree ? 'Receitas Free' : onlyIneditas
     ? 'Receitas inéditas'
     : onlyPopulares
       ? 'Mais acessadas'
@@ -358,6 +361,7 @@ export default function ReceitasScreen() {
     <View style={{ paddingBottom: mobileSpacing.sectionHeaderToContent }}>
       <View style={styles.headerContainer}>
         <View style={styles.headerRow}>
+          {onlyFree && <BackButton onPress={() => navigation.goBack()} />}
           <Text style={styles.headerTitle}>{shortcutTitle || 'Receitas'}</Text>
         </View>
         <View style={styles.headerDivider} />
@@ -444,7 +448,7 @@ export default function ReceitasScreen() {
         </View>
       )}
 
-      {trialActive && trialRecipes.some(item => canAccessRecipeContent(user, item)) && (
+      {!onlyFree && trialActive && trialRecipes.some(item => canAccessRecipeContent(user, item)) && (
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
             <View style={styles.sectionHeading}>
@@ -454,6 +458,9 @@ export default function ReceitasScreen() {
               </View>
               <View style={styles.sectionTitleUnderline} />
             </View>
+            <TouchableOpacity accessibilityRole="button" onPress={() => (navigation as any).navigate('ReceitasFree')}>
+              <Text style={styles.seeAllText}>Ver todas</Text>
+            </TouchableOpacity>
           </View>
           <FlatList horizontal showsHorizontalScrollIndicator={false}
             data={trialRecipes.filter(item => canAccessRecipeContent(user, item))}
@@ -519,7 +526,7 @@ export default function ReceitasScreen() {
           <View style={styles.titleWithIcon}>
             <Ionicons name="restaurant" size={12} color={colors.primary} />
             <Text style={styles.sectionTitle}>
-              {hasSearchFilters ? 'Resultados da busca' : onlyIneditas ? 'Inéditas' : onlyPopulares ? 'Mais acessadas' : onlyAte10Minutos ? 'Até 10 minutos' : onlyMaisFavoritadas ? 'Selecionadas e mais favoritadas' : filterMode === 'populares' ? 'Populares' : filterMode === 'rapidas' ? 'Receitas de 10 min' : 'Todas as Receitas'}
+              {hasSearchFilters ? 'Resultados da busca' : onlyFree ? 'Receitas Free' : onlyIneditas ? 'Inéditas' : onlyPopulares ? 'Mais acessadas' : onlyAte10Minutos ? 'Até 10 minutos' : onlyMaisFavoritadas ? 'Selecionadas e mais favoritadas' : filterMode === 'populares' ? 'Populares' : filterMode === 'rapidas' ? 'Receitas de 10 min' : 'Todas as Receitas'}
             </Text>
           </View>
           <View style={styles.sectionTitleUnderline} />

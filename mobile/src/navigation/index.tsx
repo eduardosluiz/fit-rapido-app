@@ -102,6 +102,11 @@ function ReceitasStack() {
         options={{ headerShown: false }}
       />
       <ReceitasStackNav.Screen
+        name="ReceitasFree"
+        component={ReceitasScreen}
+        options={{ headerShown: false }}
+      />
+      <ReceitasStackNav.Screen
         name="ReceitaDetail"
         component={ReceitaDetailScreen}
         options={{
