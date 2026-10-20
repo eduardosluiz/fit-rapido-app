@@ -5,7 +5,11 @@ export function isFreeWorkout(treino: Partial<Treino>): boolean {
   if (treino.ativa !== true) return false;
   if (!treino.modalidade_id) return treino.is_free === true;
   const modality = treino.modalidade;
-  if (!modality || !modality.ativo || treino.dia_semana == null) return false;
+  if (!modality || !modality.ativo) return false;
+  if (!modality.tem_nivelamento && treino.dia_semana == null) {
+    return modality.configuracao_dias?.acesso?.aulas?.is_free === true;
+  }
+  if (treino.dia_semana == null) return false;
   const level = modality.tem_nivelamento ? treino.nivel : 'geral';
   return modality.configuracao_dias?.[level]?.[String(treino.dia_semana)]?.is_free === true;
 }

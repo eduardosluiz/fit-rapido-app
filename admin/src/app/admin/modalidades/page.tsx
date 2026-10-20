@@ -1340,6 +1340,17 @@ export default function ModalidadesPage() {
                 </div>
               </div>
 
+              {!formData.tem_nivelamento && (
+                <div className="rounded-xl border border-gray-200 dark:border-[#333] p-4 space-y-2">
+                  <label className="flex items-center gap-3 text-sm text-gray-800 dark:text-gray-100">
+                    <input type="checkbox"
+                      checked={formData.configuracao_dias.acesso?.aulas?.is_free === true}
+                      onChange={event => { const is_free = event.target.checked; setFormData(prev => ({ ...prev, configuracao_dias: { ...prev.configuracao_dias, acesso: { ...prev.configuracao_dias.acesso, aulas: { is_free } } } })); }} />
+                    Disponível para Free — todas as vídeo aulas sem dia definido
+                  </label>
+                  <p className="text-xs text-gray-500">Marcado: acesso durante os 3 dias de teste. Desmarcado: exige o plano Completo. As sessões organizadas por dia mantêm sua configuração própria. Salve para aplicar.</p>
+                </div>
+              )}
               {/* Botão de Conteúdo Geral APENAS quando NÃO tem nivelamento */}
               {!formData.tem_nivelamento ? (
                 <>
