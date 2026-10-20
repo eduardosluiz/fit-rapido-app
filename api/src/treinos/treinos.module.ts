@@ -16,6 +16,9 @@ import { TreinoModalidade } from './entities/treino-modalidade.entity';
 import { NotificationsModule } from '../notifications/notifications.module';
 import { AuthModule } from '../auth/auth.module';
 import { WorkoutAccessGuard } from './workout-access.guard';
+import { WorkoutDraft } from './entities/workout-draft.entity';
+import { WorkoutDraftsController } from './workout-drafts.controller';
+import { WorkoutDraftsService } from './workout-drafts.service';
 
 @Module({
   imports: [
@@ -24,7 +27,7 @@ import { WorkoutAccessGuard } from './workout-access.guard';
       CategoriaTreino, 
       ExercicioBiblioteca, 
       ExercicioCategoria,
-      TreinoModalidade
+      TreinoModalidade, WorkoutDraft
     ]),
     forwardRef(() => NotificationsModule),
     AuthModule,
@@ -34,9 +37,9 @@ import { WorkoutAccessGuard } from './workout-access.guard';
     CategoriasTreinosController, 
     ExerciciosBibliotecaController,
     ExerciciosCategoriasController,
-    TreinosModalidadesController
+    TreinosModalidadesController, WorkoutDraftsController
   ],
-  providers: [WorkoutAdminGuard, TreinosService, CategoriasTreinosService, WorkoutAccessGuard],
+  providers: [WorkoutAdminGuard, TreinosService, CategoriasTreinosService, WorkoutAccessGuard, WorkoutDraftsService],
   exports: [TreinosService, TypeOrmModule],
 })
 export class TreinosModule {}

@@ -1,6 +1,21 @@
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
 
 class ApiService {
+  async getWorkoutDrafts(type: 'modalidade' | 'treino') {
+    return this.request<any[]>(`/workout-drafts/${type}`);
+  }
+  async getWorkoutEditor(type: 'modalidade' | 'treino', id: string) {
+    return this.request<any>(`/workout-drafts/${type}/${id}`);
+  }
+  async saveWorkoutDraft(type: 'modalidade' | 'treino', id: string, payload: any, revision: number, baseVersion: string) {
+    return this.request<any>(`/workout-drafts/${type}/${id}`, { method: 'PUT', body: JSON.stringify({ payload, revision, baseVersion }) });
+  }
+  async publishWorkoutDraft(type: 'modalidade' | 'treino', id: string, revision: number) {
+    return this.request<any>(`/workout-drafts/${type}/${id}/publish`, { method: 'POST', body: JSON.stringify({ revision }) });
+  }
+  async discardWorkoutDraft(type: 'modalidade' | 'treino', id: string, revision: number) {
+    return this.request<any>(`/workout-drafts/${type}/${id}`, { method: 'DELETE', body: JSON.stringify({ revision }) });
+  }
   private getAuthToken(): string | null {
     if (typeof window === 'undefined') return null;
     return localStorage.getItem('auth_token');

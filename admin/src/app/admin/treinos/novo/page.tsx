@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, Suspense, useCallback } from 'react';
+import { useState, useEffect, Suspense, useCallback, useRef } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { api } from '@/lib/api';
@@ -23,6 +23,9 @@ function NovoTreinoForm() {
   const [bibliotecaExercicios, setBibliotecaExercicios] = useState<any[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const inFlight = useRef(false);
+  const draftId = useRef<string | null>(null);
+  const [editorState, setEditorState] = useState({ revision: 0, baseVersion: 'new', published: false });
   
   const filteredBiblioteca = bibliotecaExercicios.filter(ex => 
     ex.nome.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -77,13 +80,7 @@ function NovoTreinoForm() {
       const modalidadeUrl = searchParams?.get('modalidade');
       const nivelUrl = searchParams?.get('nivel');
       
-      if (modalidadeUrl || nivelUrl) {
-        setFormData(prev => ({
-          ...prev,
-          modalidade_id: modalidadeUrl || prev.modalidade_id,
-          nivel: (nivelUrl as any) || prev.nivel
-        }));
-      }
+      if (modalidadeUrl) router.replace('/admin/modalidades?edit=' + encodeURIComponent(modalidadeUrl));
     }
   }, [modalidades, searchParams]);
 
@@ -95,9 +92,10 @@ function NovoTreinoForm() {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent, publish = false) => {
     e.preventDefault();
-    if (!validate()) return;
+    if (inFlight.current || !validate()) return;
+    inFlight.current = true;
 
     setLoading(true);
     try {
@@ -110,7 +108,7 @@ function NovoTreinoForm() {
         dias_por_semana: parseInt(formData.dias_por_semana) || 0,
         grupos_musculares: formData.grupos_musculares.split(',').map(s => s.trim()).filter(s => s),
         tags: formData.tags.split(',').map(s => s.trim()).filter(s => s),
-        exercicios_detalhados: exercicios_detalhados.filter(ex => ex.nome.trim() !== '')
+        exercicios_detalhados
       };
 
       if (modalidade_id && modalidade_id !== '') {
@@ -121,12 +119,21 @@ function NovoTreinoForm() {
         data.dia_semana = parseInt(dia_semana);
       }
 
-      await api.createTreino(data);
-      toast.success('Treino criado com sucesso');
-      router.push('/admin/treinos');
+      const contentId = draftId.current ||= crypto.randomUUID();
+      const saved = await api.saveWorkoutDraft('treino', contentId, { content: data }, editorState.revision, editorState.baseVersion);
+      setEditorState(saved);
+      if (publish) {
+        await api.publishWorkoutDraft('treino', contentId, saved.revision);
+        toast.success('Treino publicado no aplicativo');
+        router.replace('/admin/treinos/' + contentId);
+      } else {
+        toast.success('Rascunho salvo. O aplicativo não foi alterado.');
+        router.replace('/admin/treinos/' + contentId);
+      }
     } catch (err: any) {
       toast.error(err.message || 'Erro ao criar treino');
     } finally {
+      inFlight.current = false;
       setLoading(false);
     }
   };
@@ -163,6 +170,10 @@ function NovoTreinoForm() {
 
         <div className="bg-white dark:bg-[#0f0f0f] border border-gray-200 dark:border-[#222] rounded-xl shadow-sm overflow-hidden p-4 sm:p-12">
           <form id="treino-form" onSubmit={handleSubmit} className="space-y-12">
+            <p className="rounded-lg border border-amber-400/30 p-3 text-sm text-gray-700 dark:text-gray-200">
+              {editorState.revision ? 'Rascunho salvo · edições não publicadas.' : editorState.published ? 'Publicado · novas edições serão salvas como rascunho.' : 'Novo rascunho · ainda não aparece no aplicativo.'}
+              {' '}Salvar rascunho guarda seu trabalho. Publicar edições atualiza o aplicativo.
+            </p>
             {/* Seção: Dados Técnicos */}
             <div className="space-y-8">
               <div className="border-b border-gray-100 dark:border-[#1a1a1a] pb-4">
@@ -560,10 +571,11 @@ function NovoTreinoForm() {
                   </>
                 ) : (
                   <>
-                    <i className="bx bx-check text-lg"></i> Salvar Treino
+                    <i className="bx bx-check text-lg"></i> Salvar rascunho
                   </>
                 )}
               </button>
+              <button type="button" disabled={loading} onClick={e => handleSubmit(e, true)} className="w-full sm:w-auto px-6 py-3 rounded-md bg-emerald-700 text-white text-xs disabled:opacity-50">Publicar edições</button>
             </div>
           </form>
         </div>

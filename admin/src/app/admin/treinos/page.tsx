@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { api } from '@/lib/api';
+import { WorkoutDraftList } from '@/components/admin/WorkoutDraftList';
 import { useAuth } from '@/lib/useAuth';
 import { EmptyState } from '@/components/admin/EmptyState';
 import { ItemCard } from '@/components/admin/ItemCard';
@@ -195,7 +196,7 @@ export default function TreinosPage() {
                   <p className="text-[9px] text-gray-400 font-normal uppercase mt-1">{treinosNivel.length} Treinos Registrados</p>
                 </div>
                 <Link 
-                  href={`/admin/treinos/novo?modalidade=${selectedModalidade}&nivel=${nivel.id}`}
+                  href={`/admin/modalidades?edit=${selectedModalidade}`}
                   className="w-8 h-8 rounded-full bg-gray-50 dark:bg-[#1a1a1a] flex items-center justify-center text-gray-400 hover:text-[#c8921a] hover:bg-[#c8921a]/10 transition-all border border-gray-100 dark:border-[#222]"
                 >
                   <Plus size={14} />
@@ -223,7 +224,7 @@ export default function TreinosPage() {
                         { icon: 'bx-time', text: `${treino.duracao_minutos || 0}m` },
                         { icon: 'bx-list-ul', text: `${treino.exercicios?.length || 0}` },
                       ]}
-                      editHref={`/admin/treinos/${treino.id}`}
+                      editHref={`/admin/modalidades?edit=${selectedModalidade}`}
                       onDelete={() => handleDelete(treino.id, treino.titulo)}
                     />
                   ))
@@ -271,6 +272,7 @@ export default function TreinosPage() {
           </div>
         </div>
 
+        <WorkoutDraftList />
         {/* Barra Superior de Busca e Filtros - Estilo Linha Fina */}
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 mb-12">
           {/* Campo de Busca */}

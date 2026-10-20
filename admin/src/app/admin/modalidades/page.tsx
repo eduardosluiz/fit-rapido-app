@@ -127,6 +127,7 @@ interface Modalidade {
   configuracao_dias?: Record<string, Record<string, { titulo?: string; imagem_url?: string; is_free?: boolean }>>;
   ativo: boolean;
   treinos?: any[];
+  draftStatus?: string;
 }
 
 export default function ModalidadesPage() {
@@ -136,6 +137,8 @@ export default function ModalidadesPage() {
   const [showForm, setShowForm] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
+  const [editorState, setEditorState] = useState({ revision: 0, baseVersion: 'new', published: false });
+  const newContentId = useRef<string | null>(null);
   const [saveError, setSaveError] = useState<string | null>(null);
   const saveInFlightRef = useRef(false);
   const [expandedExerciseIndex, setExpandedExerciseIndex] = useState<number | null>(null);
@@ -208,27 +211,16 @@ export default function ModalidadesPage() {
   const loadData = useCallback(async () => {
     try {
       setLoading(true);
-      const [mods, biblio, allTreinos] = await Promise.all([
+      const [mods, biblio, drafts] = await Promise.all([
         api.getModalidadesTreinos(),
         api.getExerciciosBiblioteca({ limit: 1000 }).catch(() => ({ items: [] })),
-        api.getTreinos({ incluirInativas: true }).catch(() => [])
+        api.getWorkoutDrafts('modalidade')
       ]);
-      
-      const modsWithTreinos = mods.map((mod: any) => {
-        // Filtra os treinos desta modalidade e garante que não haja duplicatas por ID
-        const seenIds = new Set();
-        const treinosDaMod = allTreinos.filter((t: any) => {
-          const isFromMod = t.modalidade_id === mod.id || t.modalidade?.id === mod.id;
-          if (isFromMod && !seenIds.has(t.id)) {
-            seenIds.add(t.id);
-            return true;
-          }
-          return false;
-        });
-        return { ...mod, treinos: treinosDaMod };
-      });
-
-      setModalidades(modsWithTreinos);
+      const byId = new Map(drafts.map(d => [d.id, d]));
+      setModalidades([
+        ...mods.map((mod: any) => ({ ...mod, draftStatus: byId.has(mod.id) ? 'Edições não publicadas' : 'Publicado' })),
+        ...drafts.filter(d => !mods.some((m: any) => m.id === d.id)).map(d => ({ id: d.id, nome: d.title, ativo: false, tem_nivelamento: false, draftStatus: 'Rascunho' }))
+      ]);
       setBibliotecaExercicios(biblio.items || biblio || []);
       setDeletedVideoIds([]); // Limpa ao carregar
     } catch (err: any) {
@@ -377,7 +369,7 @@ export default function ModalidadesPage() {
     }));
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent, publish = false) => {
     e.preventDefault();
     if (saveInFlightRef.current) return;
     saveInFlightRef.current = true;
@@ -391,8 +383,8 @@ export default function ModalidadesPage() {
     }
 
     const duplicateIndexes = getDuplicateVideoIndexes(formData.videos);
-    if (duplicateIndexes.size > 0) {
-      const message = `Ainda existem ${duplicateIndexes.size} exercícios exatamente duplicados. Remova uma cópia de cada par antes de salvar.`;
+    if (publish && duplicateIndexes.size > 0) {
+      const message = `Ainda existem ${duplicateIndexes.size} exercícios exatamente duplicados. Remova uma cópia de cada par antes de publicar.`;
       setSaveError(message);
       toast.error(message, { duration: 7000 });
       saveInFlightRef.current = false;
@@ -410,11 +402,11 @@ export default function ModalidadesPage() {
       return hasAnyContent && (!video.titulo.trim() || !video.video_url.trim());
     });
 
-    if (incompleteVideo) {
+    if (publish && incompleteVideo) {
       const nivelLabel = incompleteVideo.nivel === 'intermediario'
         ? 'Intermediário'
         : incompleteVideo.nivel === 'avancado' ? 'Avançado' : 'Iniciante';
-      const message = `O exercício de ${nivelLabel} — ${getDiaNome(incompleteVideo.dia_semana)} precisa ter título e vídeo de execução antes de salvar.`;
+      const message = `O exercício de ${nivelLabel} — ${getDiaNome(incompleteVideo.dia_semana)} precisa ter título e vídeo de execução antes de publicar.`;
       setSaveError(message);
       toast.error(message, { duration: 8000 });
       saveInFlightRef.current = false;
@@ -423,7 +415,7 @@ export default function ModalidadesPage() {
 
     setSaving(true);
     try {
-      let modalidadeId = editingId;
+      const modalidadeId = editingId || (newContentId.current ||= crypto.randomUUID());
       
       const modData = {
         nome: formData.nome,
@@ -439,30 +431,8 @@ export default function ModalidadesPage() {
         ativo: formData.ativo
       };
 
-      if (editingId) {
-        await api.updateModalidadeTreino(editingId, modData);
-        toast.success('Modalidade atualizada');
-      } else {
-        const newMod = await api.createModalidadeTreino(modData);
-        modalidadeId = newMod.id;
-        toast.success('Modalidade criada');
-      }
-
-      if (modalidadeId) {
-        // 1. Deletar vídeos removidos
-        if (deletedVideoIds.length > 0) {
-          for (const id of deletedVideoIds) {
-            try {
-              await api.deleteTreino(id);
-            } catch (error: any) {
-              throw new Error(`Não foi possível excluir o exercício ${id.slice(0, 8)}. ${error.message || 'A API recusou a exclusão.'}`);
-            }
-          }
-        }
-
-        // 2. Salvar/Atualizar vídeos atuais
-        // GARANTIA DE ORDEM: Recalculamos a ordem baseada na posição visual exata da lista
-        // antes de enviar para a API.
+      const draftVideos: any[] = [];
+      {
         const currentVideos = [...formData.videos];
         
         // Agrupar por Nível e Dia para resetar as ordens de forma limpa dentro de cada sub-lista
@@ -480,9 +450,10 @@ export default function ModalidadesPage() {
 
           for (let i = 0; i < subList.length; i++) {
             const video = subList[i];
-            if (!video.titulo.trim() || !video.video_url.trim()) continue;
+            video.id ||= crypto.randomUUID();
 
             const treinoData: any = {
+              id: video.id,
               titulo: video.titulo,
               video_url: video.video_url,
               video_explicativo_url: video.video_explicativo_url || null,
@@ -513,19 +484,7 @@ export default function ModalidadesPage() {
               ]
             };
 
-            if (video.id) {
-              if (video._isDirty) {
-                await api.updateTreino(video.id, treinoData);
-                video._isDirty = false;
-              }
-            } else {
-              const created = await api.createTreino(treinoData);
-              if (!created?.id) {
-                throw new Error(`A API não confirmou o cadastro de “${video.titulo}”. Tente novamente.`);
-              }
-              video.id = created.id;
-              video._isDirty = false;
-            }
+            draftVideos.push(treinoData);
           }
         }
 
@@ -534,8 +493,16 @@ export default function ModalidadesPage() {
         setFormData(prev => ({ ...prev, videos: currentVideos }));
       }
 
-      if (!editingId && modalidadeId) {
-        setEditingId(modalidadeId);
+      const saved = await api.saveWorkoutDraft('modalidade', modalidadeId, { content: modData, treinos: draftVideos }, editorState.revision, editorState.baseVersion);
+      setEditingId(modalidadeId);
+      setEditorState(saved);
+      if (publish) {
+        await api.publishWorkoutDraft('modalidade', modalidadeId, saved.revision);
+        const published = await api.getWorkoutEditor('modalidade', modalidadeId);
+        setEditorState(published);
+        toast.success('Modalidade publicada no aplicativo');
+      } else {
+        toast.success('Rascunho salvo. O aplicativo não foi alterado.');
       }
       setDeletedVideoIds([]);
       await loadData();
@@ -549,7 +516,13 @@ export default function ModalidadesPage() {
     }
   };
 
-  const handleEdit = (mod: Modalidade) => {
+  const handleEdit = async (selected: Modalidade) => {
+    let editor;
+    try { editor = await api.getWorkoutEditor('modalidade', selected.id); }
+    catch (error: any) { toast.error(error.message || 'Não foi possível abrir o editor'); return; }
+    setEditorState(editor);
+    const mod: Modalidade = { ...editor.payload.content, id: selected.id, treinos: editor.payload.treinos };
+    setSaveError(null);
     setEditingId(mod.id);
     setDeletedVideoIds([]); // Reset
     setFormData({
@@ -563,12 +536,12 @@ export default function ModalidadesPage() {
       descricao_intermediario: mod.descricao_intermediario || '',
       descricao_avancado: mod.descricao_avancado || '',
       configuracao_dias: mod.configuracao_dias || {},
-      ativo: mod.ativo,
+      ativo: mod.ativo ?? true,
       videos: mod.treinos?.map((t, index) => ({
         id: t.id,
         is_free: t.is_free === true,
-        titulo: t.titulo,
-        video_url: t.video_url,
+        titulo: t.titulo || '',
+        video_url: t.video_url || '',
         video_explicativo_url: t.video_explicativo_url || '',
         dia_semana: t.dia_semana !== null && t.dia_semana !== undefined ? String(t.dia_semana) : '',
         nivel: t.nivel || 'iniciante',
@@ -603,6 +576,42 @@ export default function ModalidadesPage() {
     setShowForm(true);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
+  const openedLink = useRef(false);
+  const discardDraft = async () => {
+    if (!editingId || saving || !editorState.revision) return;
+    if (!await confirm('Descartar o rascunho e as alterações deste formulário? O conteúdo publicado será mantido.')) return;
+    setSaving(true);
+    try {
+      await api.discardWorkoutDraft('modalidade', editingId, editorState.revision);
+      setShowForm(false);
+      await loadData();
+      toast.success('Rascunho descartado');
+    } catch (error: any) { toast.error(error.message); }
+    finally { setSaving(false); }
+  };
+  useEffect(() => {
+    if (openedLink.current || !isAuthenticated || loading) return;
+    const id = new URLSearchParams(window.location.search).get('edit');
+    if (!id) return;
+    openedLink.current = true;
+    void handleEdit({ id } as Modalidade);
+  }, [isAuthenticated, loading]);
+  const startNewModality = () => {
+    setShowForm(true);
+    setEditingId(null);
+    setSaveError(null);
+    setDeletedVideoIds([]);
+    setSelectedDayByNivel({});
+    setEditorState({ revision: 0, baseVersion: 'new', published: false });
+    newContentId.current = null;
+    setFormData({
+      nome: '', subtitulo: '', ordem_modalidade: 0, descricao: '', imagem_url: '',
+      tem_nivelamento: false, descricao_iniciante: '', descricao_intermediario: '',
+      descricao_avancado: '', configuracao_dias: {}, ativo: true, videos: []
+    });
+    setExpandedSections({ iniciante: true, intermediario: false, avancado: false });
+  };
+
   const handleDelete = async (mod: Modalidade) => {
     if (!(await confirm(`Tem certeza que deseja excluir a modalidade "${mod.nome}" e todos os seus vídeos associados?`))) return;
     try {
@@ -1211,25 +1220,7 @@ export default function ModalidadesPage() {
           
           {!showForm && (
             <button 
-              onClick={() => {
-                setShowForm(true);
-                setEditingId(null);
-                setFormData({ 
-                  nome: '', 
-                  subtitulo: '',
-                  ordem_modalidade: 0,
-                  descricao: '', 
-                  imagem_url: '', 
-                  tem_nivelamento: false, 
-                  descricao_iniciante: '',
-                  descricao_intermediario: '',
-                  descricao_avancado: '',
-                  configuracao_dias: {},
-                  ativo: true, 
-                  videos: [] 
-                });
-                setExpandedSections({ iniciante: true, intermediario: false, avancado: false });
-              }}
+              onClick={startNewModality}
               className="w-fit sm:w-auto px-6 py-2.5 rounded-md bg-[#c8921a] text-[#2d2106] text-[10px] font-normal uppercase tracking-wide shadow-sm shadow-[#c8921a]/20 hover:scale-105 transition-all flex items-center justify-center gap-2"
             >
               <Plus size={14} /> Nova Modalidade
@@ -1262,6 +1253,10 @@ export default function ModalidadesPage() {
             </nav>
 
             <form onSubmit={handleSubmit} className="modalidades-form space-y-10">
+              <p className="rounded-lg border border-amber-400/30 p-3 text-sm text-gray-700 dark:text-gray-200">
+                {editorState.revision ? 'Rascunho salvo · edições não publicadas.' : editorState.published ? 'Publicado · novas edições serão salvas como rascunho.' : 'Novo rascunho · ainda não aparece no aplicativo.'}
+                {' '}Salvar rascunho guarda seu trabalho. Publicar edições atualiza o aplicativo.
+              </p>
               <div id="dados-modalidade" className="modality-identity-card bg-white dark:bg-[#0f0f0f] border border-gray-200 dark:border-[#222] rounded-2xl shadow-sm overflow-hidden">
                 <div className="modality-card-content p-8 sm:p-12 space-y-12">
                   <div className="border-b border-gray-100 dark:border-[#1a1a1a] pb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -1314,7 +1309,7 @@ export default function ModalidadesPage() {
                             placeholder="Ex: 1"
                             className="w-full bg-white dark:bg-[#111] border border-gray-400 dark:border-[#444] rounded-md px-4 py-3 text-xs focus:outline-none focus:border-[#c8921a] text-gray-700 dark:text-gray-300 font-normal transition-all"
                           />
-                          <p className="text-xs text-gray-500">Use 1 para a primeira posição, 2 para a segunda e 3 para a terceira. Zero usa o padrão: Sua Jornada → Academia → Em Casa. Salve as alterações para aplicar.</p>
+                          <p className="text-xs text-gray-500">Use 1 para a primeira posição, 2 para a segunda e 3 para a terceira. Zero usa o padrão: Sua Jornada → Academia → Em Casa. Publique as edições para aplicar no aplicativo.</p>
                         </div>
                       </div>
 
@@ -1425,15 +1420,17 @@ export default function ModalidadesPage() {
                   <button type="button" onClick={() => setSaveError(null)} aria-label="Fechar aviso"><X size={16} /></button>
                 </div>
               )}
-              <div className="modality-action-bar fixed bottom-0 left-0 right-0 sm:left-64 bg-white/80 dark:bg-black/80 backdrop-blur-md border-t border-gray-200 dark:border-[#222] p-4 z-[100] flex gap-4 justify-end shadow-2xl">
+              <div className="modality-action-bar flex-wrap fixed bottom-0 left-0 right-0 sm:left-64 bg-white/80 dark:bg-black/80 backdrop-blur-md border-t border-gray-200 dark:border-[#222] p-4 z-[100] flex gap-4 justify-end shadow-2xl">
+                {!!editorState.revision && <button type="button" disabled={saving} onClick={discardDraft} className="px-4 py-2 text-xs text-red-600">Descartar rascunho</button>}
                 <button type="button" onClick={() => setShowForm(false)} className="px-6 py-2.5 rounded-md border border-gray-300 dark:border-[#333] text-[10px] font-normal uppercase tracking-wide text-gray-500 hover:bg-gray-50 transition-all bg-white dark:bg-black">Cancelar</button>
                 <button type="submit" disabled={saving} className="px-10 py-2.5 rounded-md bg-[#c8921a] text-[#2d2106] text-[10px] font-normal uppercase tracking-wide shadow-sm shadow-[#c8921a]/20 hover:scale-105 transition-all disabled:opacity-50 flex items-center gap-2">
-                  {saving ? (<><div className="w-3 h-3 border-2 border-[#2d2106]/20 border-t-[#2d2106] rounded-full animate-spin"></div> Sincronizando...</>) : (<><Save size={14} /> {editingId ? 'Salvar Alterações' : 'Confirmar Registro'}</>)}
+                  {saving ? (<><div className="w-3 h-3 border-2 border-[#2d2106]/20 border-t-[#2d2106] rounded-full animate-spin"></div> Sincronizando...</>) : (<><Save size={14} /> Salvar rascunho</>)}
                 </button>
+                <button type="button" disabled={saving} onClick={e => handleSubmit(e, true)} className="px-6 py-2.5 rounded-md bg-emerald-700 text-white text-xs disabled:opacity-50">Publicar edições</button>
               </div>
               
               {/* Espaçador para o rodapé fixo não cobrir o conteúdo */}
-              <div className="h-24"></div>
+              <div className="h-44 sm:h-24"></div>
             </form>
           </div>
         ) : (
@@ -1454,20 +1451,21 @@ export default function ModalidadesPage() {
                 </div>
                 <div className="p-6 flex flex-col gap-4">
                   <div>
+                    <p className="text-xs text-amber-700 dark:text-amber-300">{mod.draftStatus}</p>
                     <h3 className="text-lg font-normal text-gray-900 dark:text-white uppercase tracking-tight group-hover:text-[#c8921a] transition-colors">{mod.nome}</h3>
                     <p className="text-xs text-[#c8921a] mt-1">Ordem no mobile: {modalityPosition(mod) === 999 ? 'após as principais' : modalityPosition(mod)}{!mod.ordem_modalidade ? ' (automática)' : ''}</p>
                     <p className="text-xs text-gray-500 line-clamp-2 mt-2 leading-relaxed">{mod.descricao || 'Sem descrição técnica disponível para esta modalidade.'}</p>
                   </div>
                   <div className="flex gap-2 pt-2 border-t border-gray-50 dark:border-[#1a1a1a]">
                     <button onClick={() => handleEdit(mod)} className="flex-1 py-2 rounded-md bg-[#c8921a] text-white text-[9px] font-normal uppercase tracking-wide shadow-sm hover:opacity-90 transition-all flex items-center justify-center gap-2"><Edit3 size={12} /> Editar</button>
-                    <button onClick={() => handleDelete(mod)} className="p-2 w-10 flex items-center justify-center rounded-md bg-red-50 dark:bg-red-950/20 text-red-500 hover:bg-red-500 hover:text-white transition-all"><Trash2 size={14} /></button>
+                    <button disabled={mod.draftStatus !== 'Publicado'} onClick={() => handleDelete(mod)} className="p-2 w-10 flex items-center justify-center rounded-md bg-red-50 dark:bg-red-950/20 text-red-500 hover:bg-red-500 hover:text-white transition-all"><Trash2 size={14} /></button>
                   </div>
                 </div>
               </div>
             ))}
             {modalidades.length === 0 && (
               <div className="col-span-full py-32 flex flex-col items-center justify-center border-2 border-dashed border-gray-200 dark:border-[#222] rounded-3xl">
-                <LayoutGrid size={48} className="text-gray-200 dark:text-gray-800 mb-6" /><h3 className="text-gray-500 dark:text-gray-400 font-normal uppercase tracking-wide text-xs">Nenhuma Modalidade Encontrada</h3><p className="text-gray-400 dark:text-gray-500 text-[10px] mt-2 mb-8 uppercase tracking-wide">Inicie o planejamento da sua primeira trilha corporativa</p><button onClick={() => setShowForm(true)} className="px-8 py-3 rounded-full bg-[#c8921a] text-white text-[10px] font-normal uppercase tracking-wide shadow-xl shadow-[#c8921a]/20 hover:scale-105 transition-all">Criar Primeiro Registro</button>
+                <LayoutGrid size={48} className="text-gray-200 dark:text-gray-800 mb-6" /><h3 className="text-gray-500 dark:text-gray-400 font-normal uppercase tracking-wide text-xs">Nenhuma Modalidade Encontrada</h3><p className="text-gray-400 dark:text-gray-500 text-[10px] mt-2 mb-8 uppercase tracking-wide">Inicie o planejamento da sua primeira trilha corporativa</p><button onClick={startNewModality} className="px-8 py-3 rounded-full bg-[#c8921a] text-white text-[10px] font-normal uppercase tracking-wide shadow-xl shadow-[#c8921a]/20 hover:scale-105 transition-all">Criar Primeiro Registro</button>
               </div>
             )}
           </div>

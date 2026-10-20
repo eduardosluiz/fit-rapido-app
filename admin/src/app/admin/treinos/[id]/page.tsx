@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, Suspense, useCallback } from 'react';
+import { useState, useEffect, Suspense, useCallback, useRef } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import Link from 'next/link';
 import { api } from '@/lib/api';
@@ -28,8 +28,10 @@ function EditarTreinoForm() {
   const [bibliotecaExercicios, setBibliotecaExercicios] = useState<any[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [errors, setErrors] = useState<Record<string, string>>({});
-  
-  const filteredBiblioteca = bibliotecaExercicios.filter(ex => 
+  const inFlight = useRef(false);
+  const [editorState, setEditorState] = useState({ revision: 0, baseVersion: 'new', published: false });
+
+  const filteredBiblioteca = bibliotecaExercicios.filter(ex =>
     ex.nome.toLowerCase().includes(searchTerm.toLowerCase()) ||
     ex.grupo_muscular?.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -58,17 +60,19 @@ function EditarTreinoForm() {
   const loadData = useCallback(async () => {
     try {
       setLoading(true);
-      const [treino, cats, mods, biblio] = await Promise.all([
-        api.getTreino(id),
+      const [editor, cats, mods, biblio] = await Promise.all([
+        api.getWorkoutEditor('treino', id),
         api.getCategoriasTreinos().catch(() => []),
         api.getModalidadesTreinos().catch(() => []),
         api.getExerciciosBiblioteca({ limit: 1000 }).catch(() => ({ items: [] }))
       ]);
-      
+
+      setEditorState(editor);
+      const treino = editor.payload.content;
       setCategorias(cats || []);
       setModalidades(mods || []);
       setBibliotecaExercicios(biblio.items || biblio || []);
-      
+
       setFormData({
         titulo: treino.titulo || '',
         descricao: treino.descricao || '',
@@ -80,9 +84,9 @@ function EditarTreinoForm() {
         tipo_treino: treino.tipo_treino || 'academia',
         modalidade_id: treino.modalidade?.id || treino.modalidade_id || '',
         dia_semana: treino.dia_semana !== null && treino.dia_semana !== undefined ? String(treino.dia_semana) : '',
-        categoria_ids: Array.isArray(treino.categorias) 
+        categoria_ids: treino.categoria_ids || (Array.isArray(treino.categorias)
           ? treino.categorias.map((cat: any) => cat.id)
-          : treino.categoria_id ? [treino.categoria_id] : [],
+          : treino.categoria_id ? [treino.categoria_id] : []),
         grupos_musculares: Array.isArray(treino.grupos_musculares) ? treino.grupos_musculares.join(', ') : '',
         tags: Array.isArray(treino.tags) ? treino.tags.join(', ') : '',
         ativa: treino.ativa ?? true,
@@ -96,9 +100,9 @@ function EditarTreinoForm() {
               nome: ex.nome || '',
               repeticoes: ex.repeticoes || '',
               imagem_url: ex.imagem_url || '',
-              // Registros antigos usavam imagem_url para execução e video_url para explicação.
-              video_url: ex.video_explicativo_url ? (ex.video_url || '') : (ex.imagem_url || ''),
-              video_explicativo_url: ex.video_explicativo_url || ex.video_url || '',
+              // Preserve saved media assignments when reopening drafts or published content.
+              video_url: ex.video_url || '',
+              video_explicativo_url: ex.video_explicativo_url || '',
             }))
           : [{ nome: '', repeticoes: '', imagem_url: '', video_url: '', video_explicativo_url: '' }]
       });
@@ -129,14 +133,15 @@ function EditarTreinoForm() {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent, publish = false) => {
     e.preventDefault();
-    if (!validate()) return;
+    if (inFlight.current || !validate()) return;
+    inFlight.current = true;
 
     setSaving(true);
     try {
       const { ativa, modalidade_id, dia_semana, exercicios_detalhados, ...rest } = formData;
-      
+
       const data: any = {
         ...rest,
         ativa: ativa,
@@ -144,7 +149,7 @@ function EditarTreinoForm() {
         dias_por_semana: parseInt(formData.dias_por_semana) || 0,
         grupos_musculares: formData.grupos_musculares.split(',').map(s => s.trim()).filter(s => s),
         tags: formData.tags.split(',').map(s => s.trim()).filter(s => s),
-        exercicios_detalhados: exercicios_detalhados.filter(ex => ex.nome.trim() !== '')
+        exercicios_detalhados
       };
 
       if (modalidade_id && modalidade_id !== '') {
@@ -155,12 +160,21 @@ function EditarTreinoForm() {
         data.dia_semana = parseInt(dia_semana);
       }
 
-      await api.updateTreino(id, data);
-      toast.success('Treino atualizado com sucesso');
-      router.push('/admin/treinos');
+      const contentId = id;
+      const saved = await api.saveWorkoutDraft('treino', contentId, { content: data }, editorState.revision, editorState.baseVersion);
+      setEditorState(saved);
+      if (publish) {
+        await api.publishWorkoutDraft('treino', contentId, saved.revision);
+        toast.success('Treino publicado no aplicativo');
+        await loadData();
+      } else {
+        toast.success('Rascunho salvo. O aplicativo não foi alterado.');
+
+      }
     } catch (err: any) {
       toast.error(err.message || 'Erro ao atualizar treino');
     } finally {
+      inFlight.current = false;
       setSaving(false);
     }
   };
@@ -187,6 +201,18 @@ function EditarTreinoForm() {
     } finally {
       setDeleting(false);
     }
+  };
+
+  const discardDraft = async () => {
+    if (saving || deleting || !editorState.revision) return;
+    if (!await confirm('Descartar o rascunho e as alterações deste formulário? O conteúdo publicado será mantido.')) return;
+    setSaving(true);
+    try {
+      await api.discardWorkoutDraft('treino', id, editorState.revision);
+      toast.success('Rascunho descartado');
+      router.push('/admin/treinos');
+    } catch (error: any) { toast.error(error.message); }
+    finally { setSaving(false); }
   };
 
   if (!isAuthenticated || loading) {
@@ -228,6 +254,10 @@ function EditarTreinoForm() {
 
         <div className="treino-edit-card bg-white dark:bg-[#0f0f0f] border border-gray-200 dark:border-[#222] rounded-xl shadow-sm overflow-hidden p-4 sm:p-12">
           <form id="treino-form" onSubmit={handleSubmit} className="treino-edit-form space-y-12">
+            <p className="rounded-lg border border-amber-400/30 p-3 text-sm text-gray-700 dark:text-gray-200">
+              {editorState.revision ? 'Rascunho salvo · edições não publicadas.' : editorState.published ? 'Publicado · novas edições serão salvas como rascunho.' : 'Novo rascunho · ainda não aparece no aplicativo.'}
+              {' '}Salvar rascunho guarda seu trabalho. Publicar edições atualiza o aplicativo.
+            </p>
             {/* Seção: Dados Técnicos */}
             <div className="space-y-8">
               <div className="border-b border-gray-100 dark:border-[#1a1a1a] pb-4">
@@ -458,12 +488,12 @@ function EditarTreinoForm() {
                             <div className="relative group/media w-full h-20 rounded-lg overflow-hidden bg-gray-50 dark:bg-black border border-gray-200 dark:border-[#333]">
                               {ex.video_url ? (
                                 <>
-                                  <video 
+                                  <video
                                     key={`execucao-${ex.video_url}`}
                                     src={`${ex.video_url}#t=0.5`}
-                                    className="w-full h-full object-contain" 
-                                    muted 
-                                    preload="metadata" 
+                                    className="w-full h-full object-contain"
+                                    muted
+                                    preload="metadata"
                                     playsInline
                                     onMouseOver={(e) => e.currentTarget.play()}
                                     onMouseOut={(e) => { e.currentTarget.pause(); e.currentTarget.currentTime = 0.5; }}
@@ -484,7 +514,7 @@ function EditarTreinoForm() {
                                         <i className="bx bx-library text-lg"></i>
                                       </button>
                                     </MediaSelectorPopover>
-                                    <button 
+                                    <button
                                       type="button"
                                       onClick={() => {
                                         const novos = [...formData.exercicios_detalhados];
@@ -528,14 +558,14 @@ function EditarTreinoForm() {
                             <div className="relative group/media w-full h-20 rounded-lg overflow-hidden bg-gray-50 dark:bg-black border border-gray-200 dark:border-[#333]">
                               {ex.video_explicativo_url ? (
                                 <>
-                                  <video 
+                                  <video
                                     key={`explicativo-${ex.video_explicativo_url}`}
                                     src={`${ex.video_explicativo_url}#t=0.5`}
-                                    className="w-full h-full object-cover opacity-90 group-hover/media:opacity-100 transition-opacity" 
-                                    muted 
-                                    playsInline 
-                                    preload="metadata" 
-                                    crossOrigin="anonymous" 
+                                    className="w-full h-full object-cover opacity-90 group-hover/media:opacity-100 transition-opacity"
+                                    muted
+                                    playsInline
+                                    preload="metadata"
+                                    crossOrigin="anonymous"
                                     onMouseOver={(e) => e.currentTarget.play()}
                                     onMouseOut={(e) => { e.currentTarget.pause(); e.currentTarget.currentTime = 0.5; }}
                                   />
@@ -555,7 +585,7 @@ function EditarTreinoForm() {
                                         <i className="bx bx-library text-lg"></i>
                                       </button>
                                     </MediaSelectorPopover>
-                                    <button 
+                                    <button
                                       type="button"
                                       onClick={() => {
                                         const novos = [...formData.exercicios_detalhados];
@@ -618,20 +648,20 @@ function EditarTreinoForm() {
               <button
                 type="button"
                 onClick={handleDelete}
-                disabled={saving || deleting}
+                disabled={!editorState.published || !!editorState.revision || saving || deleting}
                 className="w-full sm:w-auto sm:mr-auto px-5 py-3 sm:py-2 rounded-md border border-red-300 bg-red-50 text-[10px] font-normal uppercase tracking-widest text-red-700 hover:bg-red-100 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
               >
                 {deleting ? <><span className="w-3 h-3 border-2 border-red-300 border-t-red-700 rounded-full animate-spin" /> Excluindo...</> : <><Trash2 size={14} /> Excluir treino</>}
               </button>
-              <button 
-                type="button" 
+              <button
+                type="button"
                 onClick={() => router.push('/admin/treinos')}
                 className="w-full sm:w-auto px-5 py-3 sm:py-2 rounded-md border border-gray-300 dark:border-[#444] text-[10px] font-normal uppercase tracking-widest text-gray-500 hover:bg-gray-50 transition-all flex items-center justify-center gap-2"
               >
                 <i className="bx bx-x text-lg"></i> Cancelar
               </button>
-              <button 
-                type="submit" 
+              <button
+                type="submit"
                 disabled={saving || deleting}
                 className="w-full sm:w-auto px-8 py-3 sm:py-2.5 rounded-md bg-[#c8921a] text-[#2d2106] text-[10px] font-normal uppercase tracking-widest shadow-md hover:shadow-xl transition-all disabled:opacity-50 flex items-center justify-center gap-2"
               >
@@ -641,10 +671,12 @@ function EditarTreinoForm() {
                   </>
                 ) : (
                   <>
-                    <i className="bx bx-check text-lg"></i> Salvar Alterações
+                    <i className="bx bx-check text-lg"></i> Salvar rascunho
                   </>
                 )}
               </button>
+              <button type="button" disabled={saving || deleting} onClick={e => handleSubmit(e, true)} className="w-full sm:w-auto px-6 py-3 rounded-md bg-emerald-700 text-white text-xs disabled:opacity-50">Publicar edições</button>
+              {!!editorState.revision && <button type="button" disabled={saving || deleting} onClick={discardDraft} className="px-4 py-3 text-xs text-red-600">Descartar rascunho</button>}
             </div>
           </form>
         </div>
