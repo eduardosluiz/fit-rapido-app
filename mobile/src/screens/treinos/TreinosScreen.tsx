@@ -1,4 +1,5 @@
-import { canAccessWorkoutContent } from '../../utils/workoutAccess';
+import { hasActiveTrial } from '../../utils/trialAccess';
+import { canAccessWorkoutContent, canAccessPaidWorkouts } from '../../utils/workoutAccess';
 import React, { useState, useEffect, useCallback } from 'react';
 import { compareModalities } from '../../utils/modalityOrder';
 import {
@@ -41,6 +42,8 @@ interface Modalidade {
 export default function TreinosScreen() {
   const navigation = useNavigation();
   const { user } = useAuth();
+  const trialActive = hasActiveTrial(user) && !canAccessPaidWorkouts(user);
+  const [trialWorkouts, setTrialWorkouts] = useState<Treino[]>([]);
   const [treinos, setTreinos] = useState<Treino[]>([]);
   const [modalidades, setModalidades] = useState<Modalidade[]>([]);
   const [loading, setLoading] = useState(true);
@@ -101,7 +104,11 @@ export default function TreinosScreen() {
       }
       if (filtrosBusca.tempoMaximo) params.tempoMaximo = filtrosBusca.tempoMaximo;
 
-      const response = await api.getTreinos(params);
+      const [response, freeResponse] = await Promise.all([
+        api.getTreinos(params),
+        trialActive && pageNum === 1 ? api.getTreinos({ ...params, onlyFree: true, page: 1, limit: 15 }) : Promise.resolve(null),
+      ]);
+      if (pageNum === 1) setTrialWorkouts(freeResponse ? (Array.isArray(freeResponse) ? freeResponse : freeResponse.data || []) : []);
       const isPaginated = !Array.isArray(response) && response && response.data;
       const treinosRaw = isPaginated ? response.data : (Array.isArray(response) ? response : []);
       const totalPages = isPaginated ? response.totalPages : 1;
@@ -130,7 +137,7 @@ export default function TreinosScreen() {
       setLoading(false);
       setLoadingMore(false);
     }
-  }, [searchText, user?.subscription_tier, filtrosBusca]);
+  }, [searchText, user?.subscription_tier, trialActive, filtrosBusca]);
 
   const loadMore = () => {
     if (!loadingMore && hasMore && !loading) {
@@ -142,7 +149,7 @@ export default function TreinosScreen() {
   
   useEffect(() => { 
     loadTreinos(searchText); 
-  }, [filtrosBusca, user?.subscription_tier]);
+  }, [filtrosBusca, user?.subscription_tier, trialActive]);
 
   const handleSearchTextChange = (text: string) => {
     setSearchText(text);
@@ -305,6 +312,19 @@ export default function TreinosScreen() {
             availableCategories={modalidades}
           />
 
+          {trialActive && trialWorkouts.some(item => item.is_free && canAccessWorkoutContent(user, item)) && (
+            <View style={{ marginBottom: 24 }}>
+              <View style={[styles.sectionHeaderRow, { justifyContent: 'flex-start', gap: 6 }]}>
+                <Ionicons name="gift-outline" size={14} color={colors.primary} />
+                <Text style={[styles.sectionTitle, { flexShrink: 1 }]}>Liberados para você experimentar</Text>
+              </View>
+              <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: 12 }}>
+                {trialWorkouts.filter(item => item.is_free && canAccessWorkoutContent(user, item)).map(item => (
+                  <TreinoCardAnimated key={item.id} item={item} isHorizontal onPress={() => (navigation as any).navigate('TreinoDetail', { treinoId: item.id })} />
+                ))}
+              </ScrollView>
+            </View>
+          )}
           <View style={styles.sectionHeaderRow}>
             <Text style={styles.sectionTitle}>Todos os treinos</Text>
             <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ flex: 1 }} contentContainerStyle={styles.inlineFilters}>

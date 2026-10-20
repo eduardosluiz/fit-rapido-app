@@ -446,8 +446,7 @@ export default function ReceitasScreen() {
 
       {trialActive && trialRecipes.some(item => canAccessRecipeContent(user, item)) && (
         <View style={styles.section}>
-          <View style={styles.sectionHeader}><Text style={styles.sectionTitle}>Liberadas para você experimentar</Text></View>
-          <Text style={{ color: colors.textSecondary, fontFamily: fonts.body, marginBottom: 12 }}>Estas receitas estão disponíveis durante seus 3 dias de teste.</Text>
+          <View style={styles.sectionHeader}><View style={styles.titleWithIcon}><Ionicons name="gift-outline" size={14} color={colors.primary} /><Text style={styles.sectionTitle}>Liberadas para você experimentar</Text></View></View>
           <FlatList horizontal showsHorizontalScrollIndicator={false}
             data={trialRecipes.filter(item => canAccessRecipeContent(user, item))}
             keyExtractor={item => 'trial-' + item.id}

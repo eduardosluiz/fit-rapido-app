@@ -54,6 +54,7 @@ export class TreinosController {
     @Query('tempoMaximo') tempoMaximo?: string,
     @Query('page') page?: string,
     @Query('limit') limit?: string,
+    @Query('onlyFree') onlyFree?: string,
   ) {
     // Buscar usuário se autenticado
     let user = null;
@@ -79,6 +80,7 @@ export class TreinosController {
       nome,
       categoriaNome,
       tempoMaximo ? parseInt(tempoMaximo, 10) : undefined,
+      onlyFree === 'true',
     );
   }
 

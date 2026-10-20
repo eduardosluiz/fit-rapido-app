@@ -103,6 +103,7 @@ export class TreinosService {
     nome?: string,
     categoriaNome?: string,
     tempoMaximo?: number,
+    onlyFree?: boolean,
   ) {
     if (incluirInativas === undefined) incluirInativas = false;
     
@@ -163,6 +164,10 @@ export class TreinosService {
     };
     if (!fullAccess) queryBuilder.andWhere('treino.ativa = true');
 
+    // Esta seleção é de treinos soltos; sessões de modalidade mantêm sua configuração própria.
+    if (onlyFree) {
+      queryBuilder.andWhere('treino.modalidade_id IS NULL').andWhere('treino.is_free = true');
+    }
     if (apenasAvulsos) {
       queryBuilder.andWhere('treino.modalidade_id IS NULL');
     }
