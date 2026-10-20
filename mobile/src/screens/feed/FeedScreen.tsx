@@ -299,10 +299,10 @@ export default function FeedScreen() {
   const openWorkouts = treinos.filter(workoutAccessible);
   const lockedWorkouts = treinos.filter(item => !workoutAccessible(item));
   const feedSections = [
-    { title: '🍽️ Receitas liberadas para você', items: openRecipes, type: 'recipe' },
-    { title: '💪 Treinos liberados para você', items: openWorkouts, type: 'workout' },
-    { title: '🔒 Receitas com assinatura', items: lockedRecipes, type: 'recipe' },
-    { title: '🔒 Treinos com assinatura', items: lockedWorkouts, type: 'workout' },
+    { title: '🍽️ Novas Receitas', items: openRecipes, type: 'recipe' },
+    { title: '💪 Novos Treinos', items: openWorkouts, type: 'workout' },
+    { title: '🔒 Receitas Assinatura', items: lockedRecipes, type: 'recipe' },
+    { title: '🔒 Treinos Assinatura', items: lockedWorkouts, type: 'workout' },
   ];
 
   if (loading && receitas.length === 0) {
@@ -405,13 +405,12 @@ export default function FeedScreen() {
               <View style={styles.sectionHeader}>
                 <View style={[styles.sectionTitleContainer, { flex: 1 }]}>
                   <Text style={styles.sectionTitle}>{section.title}</Text>
-                  <View style={styles.sectionTitleUnderline} />
                 </View>
                 <TouchableOpacity onPress={() => (navigation as any).navigate(section.type === 'recipe' ? 'Receitas' : 'Treinos', {
                   screen: section.type === 'recipe' ? 'ReceitasList' : 'TreinosList',
                   params: { resetFiltersKey: Date.now() },
                 })}>
-                  <Text style={styles.seeAllText}>Ver todos</Text>
+                  <Text style={styles.seeAllText}>{section.type === 'recipe' ? 'Ver todas' : 'Ver todos'}</Text>
                 </TouchableOpacity>
               </View>
               <ScrollView horizontal showsHorizontalScrollIndicator={false}
@@ -639,12 +638,6 @@ const styles = StyleSheet.create({
     fontFamily: fonts.body,
     color: '#ffffff',
     marginBottom: 4,
-  },
-  sectionTitleUnderline: {
-    height: 2,
-    backgroundColor: colors.primary,
-    width: '100%',
-    borderRadius: 1,
   },
   seeAllText: {
     fontSize: 12,
