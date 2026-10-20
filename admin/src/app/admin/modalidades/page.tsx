@@ -1418,17 +1418,17 @@ export default function ModalidadesPage() {
                   <button type="button" onClick={() => setSaveError(null)} aria-label="Fechar aviso"><X size={16} /></button>
                 </div>
               )}
+              {!!editorState.revision && <div className="flex justify-end"><button type="button" disabled={saving} onClick={discardDraft} className="px-3 py-2 text-xs text-red-600 disabled:opacity-50">Descartar rascunho</button></div>}
               <div className="modality-action-bar flex-wrap fixed bottom-0 left-0 right-0 sm:left-64 bg-white/80 dark:bg-black/80 backdrop-blur-md border-t border-gray-200 dark:border-[#222] p-4 z-[100] flex gap-4 justify-end shadow-2xl">
-                {!!editorState.revision && <button type="button" disabled={saving} onClick={discardDraft} className="px-4 py-2 text-xs text-red-600">Descartar rascunho</button>}
                 <button type="button" onClick={() => setShowForm(false)} className="px-6 py-2.5 rounded-md border border-gray-300 dark:border-[#333] text-[10px] font-normal uppercase tracking-wide text-gray-500 hover:bg-gray-50 transition-all bg-white dark:bg-black">Cancelar</button>
                 <button type="submit" disabled={saving} className="px-10 py-2.5 rounded-md bg-[#c8921a] text-[#2d2106] text-[10px] font-normal uppercase tracking-wide shadow-sm shadow-[#c8921a]/20 hover:scale-105 transition-all disabled:opacity-50 flex items-center gap-2">
-                  {saving ? (<><div className="w-3 h-3 border-2 border-[#2d2106]/20 border-t-[#2d2106] rounded-full animate-spin"></div> Sincronizando...</>) : (<><Save size={14} /> Salvar rascunho</>)}
+                  {saving ? (<><div className="w-3 h-3 border-2 border-[#2d2106]/20 border-t-[#2d2106] rounded-full animate-spin"></div> Salvando...</>) : (<><Save size={14} className="hidden sm:block shrink-0" /> <span>Salvar rascunho</span></>)}
                 </button>
                 <button type="button" disabled={saving} onClick={e => handleSubmit(e, true)} className="px-6 py-2.5 rounded-md bg-emerald-700 text-white text-xs disabled:opacity-50">Publicar edições</button>
               </div>
               
               {/* Espaçador para o rodapé fixo não cobrir o conteúdo */}
-              <div className="h-44 sm:h-24"></div>
+              <div className="h-24"></div>
             </form>
           </div>
         ) : (

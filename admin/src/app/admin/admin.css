@@ -1937,34 +1937,38 @@
 
   .modality-action-bar {
     display: grid !important;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     left: 0 !important;
     padding: 0.75rem 1rem calc(0.75rem + env(safe-area-inset-bottom, 0px)) !important;
-    gap: 0.75rem !important;
+    gap: 0.5rem !important;
     background: rgba(255, 255, 255, 0.96) !important;
   }
 
   .modality-save-error {
     right: 0.75rem;
-    bottom: calc(9rem + env(safe-area-inset-bottom, 0px));
+    bottom: calc(5.5rem + env(safe-area-inset-bottom, 0px));
     left: 0.75rem;
     max-width: none;
     font-size: 0.8125rem;
   }
 
   .modality-action-bar button {
-    min-height: 3rem;
-    padding: 0.75rem 1rem !important;
-    font-size: 0.75rem !important;
-  }
-
-  .modality-action-bar button:first-child {
-    flex: 0 0 auto;
-  }
-
-  .modality-action-bar button[type="submit"] {
-    flex: 1;
+    display: flex;
+    align-items: center;
     justify-content: center;
+    min-width: 0;
+    min-height: 3rem;
+    padding: 0.5rem 0.375rem !important;
+    border-radius: 0.75rem;
+    font-size: 0.6875rem !important;
+    font-weight: 600;
+    line-height: 1.25;
+    text-align: center;
+    text-transform: none;
+    letter-spacing: normal;
+    gap: 0.25rem;
+    box-shadow: none;
+    transform: none !important;
   }
 }
 
