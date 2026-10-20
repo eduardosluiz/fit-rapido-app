@@ -1,6 +1,6 @@
 import { CanActivate, ExecutionContext, ForbiddenException, Injectable } from '@nestjs/common';
 import { AuthService } from '../auth/auth.service';
-import { canAccessTreino } from '../common/helpers/subscription.helper';
+import { canAccessTreino, hasActiveTrial } from '../common/helpers/subscription.helper';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Treino } from './entities/treino.entity';
@@ -15,7 +15,7 @@ export class WorkoutAccessGuard implements CanActivate {
     const user = id ? await this.auth.findById(id) : null;
     if (user && (['admin', 'personal_trainer'].includes(user.role) || canAccessTreino(user))) return true;
     const request = context.switchToHttp().getRequest();
-    if (user && request.params?.id) {
+    if (hasActiveTrial(user) && request.params?.id) {
       if (context.getClass().name === 'TreinosController') {
         const treino = await this.treinos.findOne({ where: { id: request.params.id }, relations: ['modalidade'] });
         if (treino && isFreeWorkout(treino)) return true;

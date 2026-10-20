@@ -16,7 +16,7 @@ export default function SubscriptionPrompt({ visible, onClose, contentType = 're
           <View style={styles.panel} accessibilityViewIsModal>
             <Ionicons name="lock-closed" size={32} color="#FFD26F" />
             <Text style={styles.title}>{workout ? 'Libere este treino' : 'Libere esta receita'}</Text>
-            <Text style={styles.copy}>Este conteúdo faz parte de uma assinatura. Escolha o plano que combina com você:</Text>
+            <Text style={styles.copy}>Os conteúdos Free ficam disponíveis por 3 dias após o cadastro. Depois desse prazo, é necessário assinar para continuar. Escolha o plano para liberar este conteúdo:</Text>
             <View style={[styles.plan, !workout && styles.recommended]}>
               <Text style={styles.planTitle}>DAI + Receitas</Text>
               <Text style={styles.copy}>Acesso a todas as receitas do aplicativo. Não inclui os treinos pagos.</Text>

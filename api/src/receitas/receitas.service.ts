@@ -197,7 +197,7 @@ export class ReceitasService {
     }
 
     const present = (receita: Receita) => {
-      const locked = !isAdmin && !receita.is_free && !canAccessRecipe(user || null, receita);
+      const locked = !isAdmin && !canAccessRecipe(user || null, receita);
       if (!locked) return { ...receita, locked: false };
       return {
         id: receita.id, titulo: receita.titulo, imagem_url: receita.imagem_url,

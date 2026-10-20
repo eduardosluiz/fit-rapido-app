@@ -1,3 +1,4 @@
+import { trialDeadline } from '../utils/trialAccess';
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { api, User } from '../services/api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -69,6 +70,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const interval = setInterval(expire, 60000);
     return () => { clearTimeout(timer); clearInterval(interval); };
   }, [user?.id, user?.subscription_tier, user?.subscription_expires_at]);
+
+  useEffect(() => {
+    const deadline = trialDeadline(user);
+    if (!Number.isFinite(deadline) || deadline <= Date.now()) return;
+    const expire = () => setUser(current => current ? { ...current } : current);
+    const timer = setTimeout(expire, Math.min(deadline - Date.now(), 2147483647));
+    const listener = AppState.addEventListener('change', state => { if (state === 'active') expire(); });
+    return () => { clearTimeout(timer); listener.remove(); };
+  }, [user?.id, user?.created_at, user?.trial_expires_at]);
 
   const configureRevenueCatUser = async (userId: string) => {
     if (Platform.OS === 'web') return;

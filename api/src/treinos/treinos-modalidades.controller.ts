@@ -18,7 +18,7 @@ import { Repository } from 'typeorm';
 import { TreinoModalidade } from './entities/treino-modalidade.entity';
 import { CreateTreinoModalidadeDto, UpdateTreinoModalidadeDto } from './dto/treino-modalidade.dto';
 import { AuthService } from '../auth/auth.service';
-import { canAccessTreino } from '../common/helpers/subscription.helper';
+import { canAccessTreino, hasActiveTrial } from '../common/helpers/subscription.helper';
 import { isFreeWorkout } from './workout-free.helper';
 
 @Controller('treinos-modalidades')
@@ -67,10 +67,10 @@ export class TreinosModalidadesController {
       .filter(t => admin || t.ativa)
       .map(t => {
         const free = isFreeWorkout({ ...t, modalidade: m });
-        return full || free ? { ...t, is_free: free } : {
+        return full || (free && hasActiveTrial(user)) ? { ...t, is_free: free } : {
           id: t.id, titulo: t.titulo, nivel: t.nivel, dia_semana: t.dia_semana,
           imagem_capa_url: t.imagem_capa_url, imagem_url: t.imagem_url,
-          ordem: t.ordem, ativa: t.ativa, is_free: false, locked: true,
+          ordem: t.ordem, ativa: t.ativa, is_free: free, locked: true,
         };
       }) }));
   }

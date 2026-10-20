@@ -1,3 +1,4 @@
+import { hasActiveTrial, TRIAL_DURATION_MS } from '../common/helpers/trial.helper';
 import { Injectable, UnauthorizedException, ConflictException, NotFoundException, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -37,7 +38,7 @@ export class AuthService {
     // Criar usuário
     const now = new Date();
     const trialExpiresAt = new Date(now);
-    trialExpiresAt.setDate(trialExpiresAt.getDate() + 7); // 7 dias após cadastro
+    trialExpiresAt.setTime(trialExpiresAt.getTime() + TRIAL_DURATION_MS); // 3 dias após cadastro
 
     const user = this.userRepository.create({
       email,
@@ -115,7 +116,7 @@ export class AuthService {
     if (!user) {
       const now = new Date();
       const trialExpiresAt = new Date(now);
-      trialExpiresAt.setDate(trialExpiresAt.getDate() + 7);
+      trialExpiresAt.setTime(trialExpiresAt.getTime() + TRIAL_DURATION_MS);
 
       user = this.userRepository.create({
         email: decodedEmail,
@@ -273,10 +274,7 @@ export class AuthService {
 
   async checkTrialStatus(userId: string): Promise<boolean> {
     const user = await this.userRepository.findOne({ where: { id: userId } });
-    if (!user || !user.trial_expires_at) {
-      return false;
-    }
-    return new Date() < new Date(user.trial_expires_at);
+    return hasActiveTrial(user);
   }
 
   async deleteUser(id: string): Promise<void> {

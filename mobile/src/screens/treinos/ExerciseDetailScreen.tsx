@@ -1,3 +1,6 @@
+import { useAuth } from '../../contexts/AuthContext';
+import { canAccessWorkoutContent } from '../../utils/workoutAccess';
+import SubscriptionPrompt from '../../components/SubscriptionPrompt';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { ActivityIndicator, Alert, Image, Modal, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
@@ -25,6 +28,7 @@ interface Substituto {
 type DetailTab = 'instructions' | 'muscles' | 'substitutes' | 'explanation';
 
 export default function ExerciseDetailScreen() {
+  const { user } = useAuth();
   const route = useRoute();
   const navigation = useNavigation();
   const { treinoId, exerciseIndex = 1, exerciseIds: routeExerciseIds } = route.params as { treinoId: string; exerciseIndex?: number; exerciseIds?: string[] };
@@ -222,6 +226,8 @@ export default function ExerciseDetailScreen() {
   if (!treino || !display) {
     return <AppBackground><SafeAreaView style={styles.centered}><Text style={styles.emptyText}>Exercício não encontrado</Text></SafeAreaView></AppBackground>;
   }
+
+  if (!canAccessWorkoutContent(user, treino)) return <SubscriptionPrompt visible contentType="workout" onClose={() => navigation.goBack()} />;
 
   const tabs: Array<{ key: DetailTab; label: string }> = [
     { key: 'instructions', label: 'Instruções' },

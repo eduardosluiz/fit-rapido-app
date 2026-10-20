@@ -1,3 +1,5 @@
+import { useAuth } from '../../contexts/AuthContext';
+import { canAccessWorkoutContent } from '../../utils/workoutAccess';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { ActivityIndicator, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
@@ -24,6 +26,7 @@ const levelLabel = (nivel?: string) => nivel === 'intermediario'
   : nivel === 'avancado' ? 'Avançado' : nivel === 'iniciante' ? 'Iniciante' : '';
 
 export default function ModalityDayWorkoutScreen() {
+  const { user } = useAuth();
   const navigation = useNavigation();
   const route = useRoute();
   const params = route.params as DayWorkoutParams;
@@ -51,7 +54,7 @@ export default function ModalityDayWorkoutScreen() {
 
   const totalMinutes = useMemo(() => exercicios.reduce((total, item) => total + (Number(item.duracao_minutos) || 0), 0), [exercicios]);
 
-  const openExercise = (treinoId: string, exerciseIndex = 1) => (navigation as any).navigate('ExerciseDetail', {
+  const openExercise = (treinoId: string, exerciseIndex = 1) => (navigation as any).navigate(canAccessWorkoutContent(user, exercicios.find(item => item.id === treinoId) || {}) ? 'ExerciseDetail' : 'Subscriptions', {
     treinoId, exerciseIndex, exerciseIds: exercicios.map((item) => item.id),
   });
 

@@ -14,7 +14,7 @@ describe('WorkoutAccessGuard', () => {
     await expect(guard.canActivate(context)).resolves.toBe(true);
   });
   it('permite Free explícito e bloqueia o mesmo link após revogar a liberação', async () => {
-    auth.findById.mockResolvedValue({ role: 'user', subscription_tier: 'free' });
+    auth.findById.mockResolvedValue({ role: 'user', subscription_tier: 'free', created_at: new Date(Date.now() - 3600000), trial_expires_at: new Date(Date.now() + 3600000) });
     const repo = { findOne: jest.fn().mockResolvedValue({ ativa: true, is_free: true }) };
     const guard = new WorkoutAccessGuard(auth as any, repo as any);
     const ctx: any = { switchToHttp: () => ({ getRequest: () => ({ user: { sub: 'u' }, params: { id: 't' } }) }), getClass: () => ({ name: 'TreinosController' }) };
@@ -23,7 +23,7 @@ describe('WorkoutAccessGuard', () => {
     await expect(guard.canActivate(ctx)).rejects.toThrow('assinatura');
   });
   it('libera só substituto ligado a um treino gratuito, sem abrir a biblioteca inteira', async () => {
-    auth.findById.mockResolvedValue({ role: 'user', subscription_tier: 'free' });
+    auth.findById.mockResolvedValue({ role: 'user', subscription_tier: 'free', created_at: new Date(Date.now() - 3600000), trial_expires_at: new Date(Date.now() + 3600000) });
     const repo = { find: jest.fn().mockResolvedValue([{ ativa: true, is_free: true }]) };
     const guard = new WorkoutAccessGuard(auth as any, repo as any);
     const ctx: any = { switchToHttp: () => ({ getRequest: () => ({ user: { sub: 'u' }, params: { id: 's' } }) }), getClass: () => ({ name: 'ExerciciosBibliotecaController' }) };

@@ -1,4 +1,4 @@
-import { canAccessPaidWorkouts } from '../../utils/workoutAccess';
+import { canAccessPaidWorkouts, canAccessWorkoutContent } from '../../utils/workoutAccess';
 import React, { useState, useEffect, useCallback } from 'react';
 import {
   View,
@@ -48,13 +48,15 @@ interface ModalityParams {
 }
 
 const TreinoListItem = ({ item, index, initiallyExpanded, isLesson = false }: { item: Treino, index: number, initiallyExpanded?: boolean, isLesson?: boolean }) => {
+  const { user } = useAuth();
+  const locked = !canAccessWorkoutContent(user, item);
   const [expandedVideo, setExpandedVideo] = useState<'execucao' | 'explicativo' | 'substituicao' | null>(initiallyExpanded ? 'execucao' : null);
   const [detail, setDetail] = useState<Treino | null>(null);
   const [loading, setLoading] = useState(false);
   const [substitutes, setSubstitutes] = useState<any[]>([]);
 
   useEffect(() => {
-    if (initiallyExpanded && !item.locked && !detail && !item.video_url && !item.video_explicativo_url) {
+    if (initiallyExpanded && !locked && !detail && !item.video_url && !item.video_explicativo_url) {
       const fetchDetail = async () => {
         setLoading(true);
         try {
@@ -69,7 +71,7 @@ const TreinoListItem = ({ item, index, initiallyExpanded, isLesson = false }: { 
 
   const navigation = useNavigation();
   const handleExpand = async (type: 'execucao' | 'explicativo' | 'substituicao') => {
-    if (item.locked) { navigation.navigate('Subscriptions' as never); return; }
+    if (locked) { navigation.navigate('Subscriptions' as never); return; }
     if (expandedVideo === type) {
       setExpandedVideo(null);
       return;
@@ -108,7 +110,7 @@ const TreinoListItem = ({ item, index, initiallyExpanded, isLesson = false }: { 
     setExpandedVideo(type);
   };
 
-  const displayData = detail || item;
+  const displayData = locked ? { ...item, descricao: undefined, descricao_tecnica: undefined, video_url: undefined, video_explicativo_url: undefined } : detail || item;
   const coverUrl = displayData.imagem_capa_url || displayData.imagem_url;
   const tecnico = displayData.exercicios_detalhados?.[0] || {};
   const series = tecnico.series || displayData.series || '';
@@ -118,7 +120,7 @@ const TreinoListItem = ({ item, index, initiallyExpanded, isLesson = false }: { 
   const videoExecucaoUrl = displayData.video_url;
   const videoExplicativoUrl = displayData.video_explicativo_url;
 
-  const showVideoContainer = expandedVideo === 'execucao' || expandedVideo === 'explicativo';
+  const showVideoContainer = !locked && (expandedVideo === 'execucao' || expandedVideo === 'explicativo');
   const currentVideoUrl = expandedVideo === 'execucao' ? videoExecucaoUrl : videoExplicativoUrl;
   const hasSubstituicao = !!(displayData.substituto_id_1 || displayData.substituto_id_2);
 
@@ -127,11 +129,11 @@ const TreinoListItem = ({ item, index, initiallyExpanded, isLesson = false }: { 
       <View style={isLesson ? styles.lessonRow : undefined}>
       {isLesson && <TouchableOpacity accessibilityRole="button" accessibilityLabel={`Ver vídeo: ${displayData.titulo}`} onPress={() => handleExpand('execucao')} style={styles.lessonCover}>
         {coverUrl ? <Image source={{ uri: getImageUrl(coverUrl) }} style={StyleSheet.absoluteFillObject} resizeMode="cover" /> : <Ionicons name="videocam-outline" size={28} color="#E7C48A" />}
-        <View style={styles.lessonPlay}><Ionicons name={item.locked ? 'lock-closed' : 'play'} size={18} color="#FFFFFF" /></View>
+        <View style={styles.lessonPlay}><Ionicons name={locked ? 'lock-closed' : 'play'} size={18} color="#FFFFFF" /></View>
       </TouchableOpacity>}
       <View style={isLesson ? styles.lessonCopy : undefined}>
       <Text style={styles.accordionTitle} numberOfLines={isLesson ? 2 : undefined}>{index + 1}. {displayData.titulo}</Text>
-      {item.locked && <Text style={{ color: colors.primary }}>🔒 Incluído no plano Completo</Text>}
+      {locked && <Text style={{ color: colors.primary }}>🔒 Incluído no plano Completo</Text>}
       
       {!isLesson && (series || repeticoes) ? (
          <Text style={styles.accordionInfo}>{series} Séries | {repeticoes} repetições</Text>
@@ -198,7 +200,7 @@ const TreinoListItem = ({ item, index, initiallyExpanded, isLesson = false }: { 
         </View>
       )}
 
-      {expandedVideo === 'substituicao' && (
+      {!locked && expandedVideo === 'substituicao' && (
         <View style={{ marginTop: 15, borderTopWidth: 1, borderTopColor: 'rgba(255,255,255,0.1)', paddingTop: 15 }}>
           <Text style={{ fontFamily: fonts.bold, color: '#E7C48A', fontSize: 12, marginBottom: 10, textTransform: 'uppercase', letterSpacing: 1 }}>Opções de Substituição</Text>
           {loading ? <ActivityIndicator color={colors.primary} /> : 
@@ -450,7 +452,7 @@ export default function ModalityWorkoutsScreen() {
       <TouchableOpacity
         key={dia}
         style={styles.dayCard}
-        onPress={() => !canAccessWorkouts && !treinosDoDia.every(t => t.is_free === true) ? navigation.navigate('Subscriptions' as never) : handleDayPress(index, treinosDoDia)}
+        onPress={() => !treinosDoDia.every(t => canAccessWorkoutContent(user, t)) ? navigation.navigate('Subscriptions' as never) : handleDayPress(index, treinosDoDia)}
         activeOpacity={temTreino ? 0.78 : 1}
       >
         <View style={styles.dayImageArea}>
@@ -461,7 +463,7 @@ export default function ModalityWorkoutsScreen() {
           </View>
         </View>
         <View style={styles.dayCardCopy}>
-          {temTreino && <Text style={{ color: colors.primary, fontSize: 11 }}>{treinosDoDia.every(t => t.is_free === true) ? 'Grátis' : !canAccessWorkouts ? '🔒 Completo' : ''}</Text>}
+          {temTreino && <Text style={{ color: colors.primary, fontSize: 11 }}>{!treinosDoDia.every(t => canAccessWorkoutContent(user, t)) ? '🔒 Completo' : !canAccessWorkouts ? 'Teste' : ''}</Text>}
           <Text style={[styles.dayName, !temTreino && styles.dayNameDisabled]}>{dia.split('(')[1]?.replace(')', '') || dia}</Text>
           <Text style={[styles.dayWorkoutName, !temTreino && styles.dayWorkoutDisabled]} numberOfLines={2}>{titulo}</Text>
         </View>

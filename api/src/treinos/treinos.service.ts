@@ -7,7 +7,7 @@ import { CategoriaTreino } from './entities/categoria-treino.entity';
 import { CreateTreinoDto, UpdateTreinoDto } from './dto/treino.dto';
 import { NotificationsService } from '../notifications/notifications.service';
 import { User, SubscriptionTier, UserRole } from '../auth/entities/user.entity';
-import { canAccessTreino } from '../common/helpers/subscription.helper';
+import { canAccessTreino, hasActiveTrial } from '../common/helpers/subscription.helper';
 
 @Injectable()
 export class TreinosService {
@@ -153,12 +153,12 @@ export class TreinosService {
       .leftJoinAndSelect('treino.modalidade', 'modalidade');
     const present = (t: Treino) => {
       const is_free = isFreeWorkout(t);
-      if (fullAccess || is_free) return { ...t, is_free, locked: false };
+      if (fullAccess || (is_free && hasActiveTrial(user))) return { ...t, is_free, locked: false };
       return {
         id: t.id, titulo: t.titulo, imagem_url: t.imagem_url, imagem_capa_url: t.imagem_capa_url,
         nivel: t.nivel, dia_semana: t.dia_semana, ordem: t.ordem, ativa: t.ativa,
         duracao_minutos: t.duracao_minutos, categorias: t.categorias, modalidade_id: t.modalidade_id,
-        modalidade: t.modalidade, is_free: false, locked: true,
+        modalidade: t.modalidade, is_free, locked: true,
       };
     };
     if (!fullAccess) queryBuilder.andWhere('treino.ativa = true');

@@ -42,6 +42,7 @@ export interface User {
   subscription_tier: 'none' | 'basic' | 'free' | 'premium' | 'premium_fit';
   subscription_expires_at?: string;
   trial_expires_at?: string;
+  created_at?: string;
   dieta_atual?: string;
   avatar_url?: string;
 }

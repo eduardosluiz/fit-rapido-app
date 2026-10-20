@@ -112,7 +112,7 @@ export class ReceitasController {
   async findOne(@Param('id') id: string, @Request() req: any) {
     const receita = await this.receitasService.findOne(id);
     const user = req.user?.sub ? await this.authService.findById(req.user.sub) : null;
-    if (receita.is_free || (user && ['admin', 'personal_trainer'].includes(user.role)) || canAccessRecipe(user, receita)) return receita;
+    if ((user && ['admin', 'personal_trainer'].includes(user.role)) || canAccessRecipe(user, receita)) return receita;
     throw new ForbiddenException('Esta receita requer uma assinatura ativa.');
   }
 

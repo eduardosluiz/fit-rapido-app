@@ -10,7 +10,7 @@ function repository(items: any[]) {
 }
 
 describe('catálogo completo com acesso restrito', () => {
-  const freeUser: any = { role: 'user', subscription_tier: 'free' };
+  const freeUser: any = { role: 'user', subscription_tier: 'free', created_at: new Date(Date.now() - 3600000), trial_expires_at: new Date(Date.now() + 3600000) };
   it('lista treinos pagos sem vídeos ou instruções, preserva paginação e libera Free', async () => {
     const items = [
       { id: 'free', ativa: true, is_free: true, video_url: 'free-video' },
@@ -38,6 +38,16 @@ describe('catálogo completo com acesso restrito', () => {
     expect(response.data[1].proteinas).toBe('20');
     if (tier === 'free') expect(JSON.stringify(response)).not.toContain('secret');
     else expect(response.data[1].video_url).toBe('secret-video');
+  });
+  it('não expõe conteúdo Free nos catálogos após 72 horas', async () => {
+    const expired = { ...freeUser, created_at: new Date(Date.now() - 4 * 86400000), trial_expires_at: new Date(Date.now() + 3 * 86400000) };
+    const items = [{ id: 'free', ativa: true, is_free: true, video_url: 'secret-video', ingredientes: ['secret-ingredient'], modo_preparo: ['secret-instruction'] }];
+    const recipes = new ReceitasService(repository(items) as any, {} as any, {} as any, {} as any);
+    const workouts = new TreinosService(repository(items) as any, {} as any, {} as any);
+    for (const result of [await (recipes.findAll as any)(...Array(14).fill(undefined), expired), await (workouts.findAll as any)(...Array(11).fill(undefined), expired)]) {
+      expect(result[0].locked).toBe(true);
+      expect(JSON.stringify(result)).not.toContain('secret');
+    }
   });
   it('plano de receitas não libera vídeo de treino pago', async () => {
     const service = new TreinosService(repository([{ id: 'paid', ativa: true, video_url: 'secret' }]) as any, {} as any, {} as any);

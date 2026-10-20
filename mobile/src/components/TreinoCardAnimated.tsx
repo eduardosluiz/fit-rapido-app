@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 import { useAuth } from '../contexts/AuthContext';
 import SubscriptionPrompt from './SubscriptionPrompt';
-import { canAccessPaidWorkouts } from '../utils/workoutAccess';
+import { canAccessWorkoutContent } from '../utils/workoutAccess';
 import { View, Text, StyleSheet, Animated, Pressable, Dimensions } from "react-native";
 import { Image } from "expo-image";
 import { Ionicons } from '@expo/vector-icons';
@@ -19,7 +19,7 @@ interface TreinoCardProps {
 export default function TreinoCardAnimated({ item, isHorizontal, onPress }: TreinoCardProps) {
   const { user } = useAuth();
   const [showSubscription, setShowSubscription] = useState(false);
-  const locked = item.locked === true || !(item.is_free === true || canAccessPaidWorkouts(user));
+  const locked = !canAccessWorkoutContent(user, item);
   const scale = useRef(new Animated.Value(1)).current;
 
   const onPressIn = () => {
@@ -44,7 +44,7 @@ export default function TreinoCardAnimated({ item, isHorizontal, onPress }: Trei
     return (
       <View style={styles.tagsContainer}>
         {locked && <View style={styles.badge}><Ionicons name="lock-closed" size={16} color={colors.primary} /><Text style={styles.badgeText}>Completo</Text></View>}
-        {item.is_free === true && <View style={[styles.badge, { backgroundColor: '#173D32' }]}><Text style={[styles.badgeText, { color: '#A7E3C1' }]}>Grátis</Text></View>}
+        {!locked && item.is_free === true && <View style={[styles.badge, { backgroundColor: '#173D32' }]}><Text style={[styles.badgeText, { color: '#A7E3C1' }]}>Teste</Text></View>}
         {item.is_inedito && (
           <View style={[styles.badge, { backgroundColor: colors.primary }]}>
             <Text style={styles.badgeText}>Novo</Text>

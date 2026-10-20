@@ -17,6 +17,8 @@ describe('acesso durante cancelamento e expiração', () => {
   });
   it('libera receitas Free, mas trial sem assinatura não libera conteúdo pago', () => {
     const user = account('2026-09-24T18:00:00Z');
+    user.created_at = new Date('2026-09-24T18:00:00Z');
+    user.trial_expires_at = new Date('2026-09-27T18:00:00Z');
     expect(canAccessRecipe(user, { is_free: true } as any)).toBe(true);
     user.trial_expires_at = new Date('2026-09-26T18:00:00Z');
     expect(canAccessRecipe(user, { is_free: false } as any)).toBe(false);

@@ -18,7 +18,7 @@ describe('conteúdo de modalidades para Free', () => {
   beforeEach(() => {
     repo.find.mockResolvedValue([modality]);
     repo.findOne.mockResolvedValue(modality);
-    auth.findById.mockResolvedValue({ role: 'user', subscription_tier: 'free' });
+    auth.findById.mockResolvedValue({ role: 'user', subscription_tier: 'free', created_at: new Date(Date.now() - 3600000), trial_expires_at: new Date(Date.now() + 3600000) });
   });
   it('expõe mídia apenas da sessão liberada, mantendo título e bloqueio das demais', async () => {
     const result = await controller.findOne('m', req);

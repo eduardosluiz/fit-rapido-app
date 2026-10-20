@@ -14,7 +14,7 @@ import {
 import { useNavigation } from '@react-navigation/native';
 import { useAuth } from '../../contexts/AuthContext';
 import { canAccessRecipeContent } from '../../utils/recipeAccess';
-import { canAccessPaidWorkouts } from '../../utils/workoutAccess';
+import { canAccessWorkoutContent } from '../../utils/workoutAccess';
 import { api, Banner, Receita, Treino, getImageUrl } from '../../services/api';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import ScreenBanner from '../../components/ScreenBanner';
@@ -255,7 +255,7 @@ export default function FeedScreen() {
   );
 
   const renderTreino = (treino: Treino) => {
-    const canAccessWorkouts = (treino as any).locked !== true && (canAccessPaidWorkouts(user) || treino.is_free === true);
+    const canAccessWorkouts = canAccessWorkoutContent(user, treino);
     const displayData: any = {
       ...treino,
       tempo_preparo: treino.duracao_minutos,
@@ -295,7 +295,7 @@ export default function FeedScreen() {
 
   const openRecipes = receitas.filter(item => canAccessRecipeContent(user, item));
   const lockedRecipes = receitas.filter(item => !canAccessRecipeContent(user, item));
-  const workoutAccessible = (item: Treino) => (item as any).locked !== true && (item.is_free === true || canAccessPaidWorkouts(user));
+  const workoutAccessible = (item: Treino) => canAccessWorkoutContent(user, item);
   const openWorkouts = treinos.filter(workoutAccessible);
   const lockedWorkouts = treinos.filter(item => !workoutAccessible(item));
   const feedSections = [

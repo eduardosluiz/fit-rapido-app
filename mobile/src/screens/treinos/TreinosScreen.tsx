@@ -1,4 +1,4 @@
-import { canAccessPaidWorkouts } from '../../utils/workoutAccess';
+import { canAccessWorkoutContent } from '../../utils/workoutAccess';
 import React, { useState, useEffect, useCallback } from 'react';
 import { compareModalities } from '../../utils/modalityOrder';
 import {
@@ -163,7 +163,7 @@ export default function TreinosScreen() {
       <TouchableOpacity 
         style={styles.featuredBannerContainer} 
         activeOpacity={0.9}
-        onPress={() => (navigation as any).navigate(!canAccessPaidWorkouts(user) && !featuredWorkout.is_free ? 'Subscriptions' : 'TreinoDetail', { treinoId: featuredWorkout.id })}
+        onPress={() => (navigation as any).navigate(!canAccessWorkoutContent(user, featuredWorkout) ? 'Subscriptions' : 'TreinoDetail', { treinoId: featuredWorkout.id })}
       >
         {thumbnail ? (
           <ImageBackground source={{ uri: thumbnail }} style={styles.bannerImage} resizeMode="cover">
@@ -172,7 +172,7 @@ export default function TreinosScreen() {
               style={StyleSheet.absoluteFillObject} 
             />
             <View style={styles.bannerOverlay}>
-              <Text style={styles.bannerBadge}>{!canAccessPaidWorkouts(user) && !featuredWorkout.is_free ? '🔒 PLANO COMPLETO' : '✨ NOVO TREINO'}</Text>
+              <Text style={styles.bannerBadge}>{!canAccessWorkoutContent(user, featuredWorkout) ? '🔒 PLANO COMPLETO' : '✨ NOVO TREINO'}</Text>
               <Text style={styles.headerTitleBanner} numberOfLines={2}>{featuredWorkout.titulo}</Text>
               <View style={styles.titleUnderline} />
               <Text style={styles.bannerSubtitle}>{featuredWorkout.duracao_minutos} min • {
@@ -181,7 +181,7 @@ export default function TreinosScreen() {
               }</Text>
               <TouchableOpacity 
                 style={styles.bannerButton}
-                onPress={() => (navigation as any).navigate(!canAccessPaidWorkouts(user) && !featuredWorkout.is_free ? 'Subscriptions' : 'TreinoDetail', { treinoId: featuredWorkout.id })}
+                onPress={() => (navigation as any).navigate(!canAccessWorkoutContent(user, featuredWorkout) ? 'Subscriptions' : 'TreinoDetail', { treinoId: featuredWorkout.id })}
               >
                 <Text style={styles.bannerButtonText}>Explorar Agora</Text>
                 <Ionicons name="arrow-forward" size={16} color="#000" />

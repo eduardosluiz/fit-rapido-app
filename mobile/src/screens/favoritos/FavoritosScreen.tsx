@@ -1,4 +1,4 @@
-import { canAccessPaidWorkouts } from '../../utils/workoutAccess';
+import { canAccessPaidWorkouts, canAccessWorkoutContent } from '../../utils/workoutAccess';
 import React, { useCallback, useMemo, useRef, useState } from 'react';
 import {
   ActivityIndicator, Alert, KeyboardAvoidingView, Modal, Platform, ScrollView,
@@ -221,7 +221,7 @@ export default function FavoritosScreen() {
       <View key={key} style={styles.cardColumn}>
         <ReceitaCardAnimated
           item={displayData}
-            isLocked={isRecipe ? undefined : !(canAccessWorkouts || workout.is_free === true)}
+            isLocked={isRecipe ? undefined : !canAccessWorkoutContent(user, workout)}
           onPress={() => isRecipe
             ? (navigation as any).navigate('Receitas', {
               screen: 'ReceitaDetail', params: { receitaId: item.id },

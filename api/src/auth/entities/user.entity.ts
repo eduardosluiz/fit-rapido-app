@@ -71,7 +71,7 @@ export class User {
   subscription_receipt: string; // Último receipt válido
 
   @Column({ type: 'timestamp', nullable: true, name: 'trial_expires_at' })
-  trial_expires_at: Date; // Data de expiração do trial (7 dias após cadastro)
+  trial_expires_at: Date; // Data de expiração do trial (3 dias após cadastro)
 
   @Column({ type: 'text', nullable: true, name: 'dieta_atual' })
   dieta_atual: string; // Ex: 'gluten-free', 'vegan', 'keto', etc.

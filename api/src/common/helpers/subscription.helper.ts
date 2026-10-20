@@ -1,9 +1,11 @@
+import { hasActiveTrial } from './trial.helper';
+export { hasActiveTrial } from './trial.helper';
 import { User, SubscriptionTier } from '../../auth/entities/user.entity';
 import { Receita } from '../../receitas/entities/receita.entity';
 
 export enum AccessLevel {
-  FREE_TRIAL = 'free_trial', // Dentro dos 7 dias de trial
-  FREE = 'free', // Após trial, apenas receitas FREE
+  FREE_TRIAL = 'free_trial', // Dentro dos 3 dias de trial
+  FREE = 'free', // Após trial, conteúdo bloqueado
   PREMIUM = 'premium', // Premium receitas
   PREMIUM_FIT = 'premium_fit', // Premium receitas + treinos
 }
@@ -20,20 +22,10 @@ export function getEffectiveSubscriptionTier(user: User | null): SubscriptionTie
 }
 
 /**
- * Verifica se o usuário está dentro do período de trial (7 dias)
- */
-export function hasActiveTrial(user: User | null): boolean {
-  if (!user || !user.trial_expires_at) {
-    return false;
-  }
-  return new Date() < new Date(user.trial_expires_at);
-}
-
-/**
  * Verifica se o usuário pode acessar uma receita específica
  */
 export function canAccessRecipe(user: User | null, receita: Receita): boolean {
-  if (receita.is_free === true) return true;
+  if (receita.is_free === true && hasActiveTrial(user)) return true;
   if (!user) {
     return false;
   }
@@ -41,7 +33,7 @@ export function canAccessRecipe(user: User | null, receita: Receita): boolean {
   const tier = getEffectiveSubscriptionTier(user);
 
 
-  // Se é FREE (após trial), apenas receitas FREE
+  // Sem assinatura, o acesso Free já foi avaliado pelo prazo acima.
   if (tier === SubscriptionTier.FREE || tier === SubscriptionTier.NONE) {
     return false;
   }
@@ -77,7 +69,7 @@ export function getUserAccessLevel(user: User | null): AccessLevel {
 
   const tier = getEffectiveSubscriptionTier(user);
 
-  if (hasActiveTrial(user)) {
+  if (hasActiveTrial(user) && ![SubscriptionTier.PREMIUM, SubscriptionTier.PREMIUM_FIT].includes(tier)) {
     return AccessLevel.FREE_TRIAL;
   }
 

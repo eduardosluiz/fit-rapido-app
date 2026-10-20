@@ -1,5 +1,5 @@
 import ZoomableContent from '../../components/ZoomableContent';
-import { canAccessPaidWorkouts } from '../../utils/workoutAccess';
+import { canAccessWorkoutContent } from '../../utils/workoutAccess';
 import React, { useState, useEffect } from 'react';
 import {
   View,
@@ -158,7 +158,7 @@ export default function TreinoDetailScreen() {
     );
   }
 
-  const isPremiumLocked = !canAccessPaidWorkouts(user) && treino.is_free !== true;
+  const isPremiumLocked = !canAccessWorkoutContent(user, treino);
 
   if (isPremiumLocked) {
     return (
