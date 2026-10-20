@@ -31,6 +31,7 @@ import '@/app/admin/item-card.css';
 
 interface VideoTreino {
   id?: string;
+  is_free?: boolean;
   titulo: string;
   video_url: string;
   video_explicativo_url?: string;
@@ -363,7 +364,7 @@ export default function ModalidadesPage() {
     }
   };
 
-  const handleVideoChange = (index: number, field: keyof VideoTreino, value: string) => {
+  const handleVideoChange = (index: number, field: keyof VideoTreino, value: string | boolean) => {
     const newVideos = [...formData.videos];
     newVideos[index] = { ...newVideos[index], [field]: value, _isDirty: true } as VideoTreino;
     setFormData(prev => ({ ...prev, videos: newVideos }));
@@ -489,6 +490,7 @@ export default function ModalidadesPage() {
               dia_semana: video.dia_semana !== '' ? parseInt(video.dia_semana) : null,
               ativa: true,
               is_premium: true,
+              is_free: video.is_free === true,
               tipo_treino: 'academia',
               nivel: video.nivel || 'iniciante',
               ordem: i, // USAMOS O ÍNDICE i PARA GARANTIR A POSIÇÃO ABSOLUTA
@@ -564,6 +566,7 @@ export default function ModalidadesPage() {
       ativo: mod.ativo,
       videos: mod.treinos?.map((t, index) => ({
         id: t.id,
+        is_free: t.is_free === true,
         titulo: t.titulo,
         video_url: t.video_url,
         video_explicativo_url: t.video_explicativo_url || '',
@@ -876,6 +879,17 @@ export default function ModalidadesPage() {
                                       className="w-full bg-white dark:bg-[#111] border border-gray-400 dark:border-[#333] rounded-md px-4 py-2.5 text-xs focus:border-[#c8921a] outline-none text-gray-700 dark:text-gray-300 font-normal"
                                     />
                                   </div>
+
+                                  {!formData.tem_nivelamento && video.dia_semana === '' && (
+                                    <div className="space-y-2">
+                                      <label className="flex items-center gap-2 text-sm text-gray-800 dark:text-gray-100">
+                                        <input type="checkbox" checked={video.is_free === true}
+                                          onChange={event => handleVideoChange(video.originalIndex, 'is_free', event.target.checked)} />
+                                        Disponível para Free
+                                      </label>
+                                      <p className="text-xs text-gray-500">Marcado: este vídeo fica disponível durante os 3 dias de teste. Desmarcado: exige o plano Completo.</p>
+                                    </div>
+                                  )}
 
                                   <div className={`grid grid-cols-1 ${formData.tem_nivelamento ? 'sm:grid-cols-2' : ''} gap-4`}>
                                     <div className="space-y-2">
@@ -1340,17 +1354,6 @@ export default function ModalidadesPage() {
                 </div>
               </div>
 
-              {!formData.tem_nivelamento && (
-                <div className="rounded-xl border border-gray-200 dark:border-[#333] p-4 space-y-2">
-                  <label className="flex items-center gap-3 text-sm text-gray-800 dark:text-gray-100">
-                    <input type="checkbox"
-                      checked={formData.configuracao_dias.acesso?.aulas?.is_free === true}
-                      onChange={event => { const is_free = event.target.checked; setFormData(prev => ({ ...prev, configuracao_dias: { ...prev.configuracao_dias, acesso: { ...prev.configuracao_dias.acesso, aulas: { is_free } } } })); }} />
-                    Disponível para Free — todas as vídeo aulas sem dia definido
-                  </label>
-                  <p className="text-xs text-gray-500">Marcado: acesso durante os 3 dias de teste. Desmarcado: exige o plano Completo. As sessões organizadas por dia mantêm sua configuração própria. Salve para aplicar.</p>
-                </div>
-              )}
               {/* Botão de Conteúdo Geral APENAS quando NÃO tem nivelamento */}
               {!formData.tem_nivelamento ? (
                 <>
