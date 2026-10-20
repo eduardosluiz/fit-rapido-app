@@ -27,14 +27,13 @@ import ReceitaCardAnimated from '../../components/ReceitaCardAnimated';
 
 // Load every catalog page so older Free items are not hidden behind recent paid items.
 async function loadFeedCatalog<T>(fetchPage: (page: number) => Promise<any>): Promise<T[]> {
-  const items: T[] = [];
-  let page = 1;
-  while (true) {
-    const response = await fetchPage(page);
-    const batch = Array.isArray(response) ? response : response?.data || [];
-    items.push(...batch);
-    if (Array.isArray(response) || !batch.length || page >= (response.totalPages || 1)) break;
-    page++;
+  const first = await fetchPage(1);
+  const items: T[] = Array.isArray(first) ? first : first?.data || [];
+  const totalPages = Array.isArray(first) ? 1 : first?.totalPages || 1;
+  for (let page = 2; page <= totalPages; page += 3) {
+    const pages = Array.from({ length: Math.min(3, totalPages - page + 1) }, (_, offset) => page + offset);
+    const responses = await Promise.all(pages.map(fetchPage));
+    for (const response of responses) items.push(...(Array.isArray(response) ? response : response?.data || []));
   }
   return items;
 }
@@ -151,6 +150,8 @@ export default function FeedScreen() {
   const loadFeed = useCallback(async () => {
     try {
       setLoading(true);
+      const notificationsRequest = api.getNotificationHistory().catch(() => []);
+      const categoriesRequest = api.getCategorias().catch(() => []);
       
       const [bannersData, receitasResp, treinosResp] = await Promise.all([
         api.getBanners(),
@@ -158,12 +159,6 @@ export default function FeedScreen() {
         loadFeedCatalog<Treino>((page) => api.getTreinos({ apenasAvulsos: true, page, limit: 100 })).catch(() => []),
       ]);
 
-      let notificacoesData: any[] = [];
-      try {
-        notificacoesData = await api.getNotificationHistory();
-      } catch (error) {
-        console.error('Erro ao carregar notificações:', error);
-      }
 
       const receitasData = receitasResp;
       const treinosData = treinosResp;
@@ -180,6 +175,9 @@ export default function FeedScreen() {
       setBanners(Array.isArray(bannersData) ? bannersData : []);
       setReceitas(receitasOrdenadas);
       setTreinos(treinosOrdenados);
+      setLoading(false);
+      setRefreshing(false);
+      const notificacoesData = await notificationsRequest;
 
       if (notificacoesData && notificacoesData.length > 0) {
         const notificacoesOrdenadas = [...notificacoesData].sort((a, b) => {
@@ -194,7 +192,7 @@ export default function FeedScreen() {
 
       // Carregar categorias para a busca avançada
       try {
-        const cats = await api.getCategorias();
+        const cats = await categoriesRequest;
         setCategorias(cats.filter((cat: any) => cat.ativa !== false));
       } catch (err) {
         console.error('Erro ao carregar categorias no Feed:', err);

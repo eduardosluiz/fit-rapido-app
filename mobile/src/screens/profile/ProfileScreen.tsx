@@ -127,7 +127,7 @@ export default function ProfileScreen() {
         <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
           <View style={styles.content}>
             <Text selectable style={{ color: colors.textMuted, fontFamily: fonts.regular, fontSize: 12, marginBottom: 16 }}>
-              Versão {Constants.expoConfig?.version || '1.0.1'} · Revisão 20/10-C{'\n'}
+              Versão {Constants.expoConfig?.version || '1.0.1'} · Revisão 20/10-D{'\n'}
               {Updates.updateId ? `Atualização ${Updates.updateId.slice(0, 8)}` : 'Versão local'}
             </Text>
             {/* Profile Card Modernizado */}

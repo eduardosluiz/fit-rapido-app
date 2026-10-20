@@ -7,7 +7,6 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import { StackActions } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
-import { ResizeMode, Video } from 'expo-av';
 import { api, getImageUrl, Treino } from '../../services/api';
 import AppBackground from '../../components/AppBackground';
 import VideoPlayer from '../../components/VideoPlayer';
@@ -54,8 +53,6 @@ export default function ExerciseDetailScreen() {
   const [finishing, setFinishing] = useState(false);
   const [completionMessage, setCompletionMessage] = useState<string | null>(null);
   const [pendingId, setPendingId] = useState<string | null>(null);
-  const videoThumbnailRef = useRef<Video | null>(null);
-  const explanationThumbnailRef = useRef<Video | null>(null);
 
 
 
@@ -70,14 +67,15 @@ export default function ExerciseDetailScreen() {
         setCurrentView('main');
         setIsComplete(false);
         setIsFavorite(false);
+        const metadataRequest = Promise.allSettled([
+          api.checkIsFavorito('treino', treinoId),
+          api.verificarFezHoje(treinoId, 'treinei_hoje'),
+        ]);
         const data = await api.getTreino(treinoId);
         if (cancelled) return;
         if (!data?.id) throw Object.assign(new Error('missing'), { status: 404 });
         setTreino(data);
-        const [favorite, complete] = await Promise.allSettled([
-          api.checkIsFavorito('treino', treinoId),
-          api.verificarFezHoje(treinoId, 'treinei_hoje'),
-        ]);
+        const [favorite, complete] = await metadataRequest;
         if (cancelled) return;
         setIsFavorite(favorite.status === 'fulfilled' && Boolean(favorite.value?.is_favorito));
         setIsComplete(complete.status === 'fulfilled' && Boolean(complete.value));
@@ -309,25 +307,8 @@ export default function ExerciseDetailScreen() {
               }}
             >
               {display.video_url ? (
-                Platform.OS === 'web' ? React.createElement('video', {
-                  key: display.video_url,
-                  src: `${getImageUrl(display.video_url)}#t=0.5`,
-                  muted: true,
-                  preload: 'metadata',
-                  playsInline: true,
-                  style: { width: '100%', height: '100%', objectFit: 'cover' },
-                }) : (
-                  <Video
-                    key={display.video_url}
-                    ref={videoThumbnailRef}
-                    source={{ uri: getImageUrl(display.video_url) || '' }}
-                    style={styles.videoThumbnail}
-                    resizeMode={ResizeMode.COVER}
-                    shouldPlay={false}
-                    isMuted
-                    onLoad={() => videoThumbnailRef.current?.setPositionAsync(500)}
-                  />
-                )
+                display.imagem_capa ? <Image source={{ uri: getImageUrl(display.imagem_capa) }} style={styles.videoThumbnail} resizeMode="cover" /> :
+                <View style={styles.mediaFallback}><Ionicons name="videocam-outline" size={42} color="#6f6b72" /></View>
               ) : (
                 <View style={styles.mediaFallback}>
                   <Ionicons name="videocam-outline" size={42} color="#6f6b72" />
@@ -388,25 +369,8 @@ export default function ExerciseDetailScreen() {
                   }}
                 >
                   {selectedVideoUrl ? (
-                    Platform.OS === 'web' ? React.createElement('video', {
-                      key: selectedVideoUrl,
-                      src: `${getImageUrl(selectedVideoUrl)}#t=0.5`,
-                      muted: true,
-                      preload: 'metadata',
-                      playsInline: true,
-                      style: { width: '100%', height: '100%', objectFit: 'cover' },
-                    }) : (
-                      <Video
-                        key={selectedVideoUrl}
-                        ref={explanationThumbnailRef}
-                        source={{ uri: getImageUrl(selectedVideoUrl) || '' }}
-                        style={styles.videoThumbnail}
-                        resizeMode={ResizeMode.COVER}
-                        shouldPlay={false}
-                        isMuted
-                        onLoad={() => explanationThumbnailRef.current?.setPositionAsync(500)}
-                      />
-                    )
+                    display.imagem_capa ? <Image source={{ uri: getImageUrl(display.imagem_capa) }} style={styles.videoThumbnail} resizeMode="cover" /> :
+                    <View style={styles.mediaFallback}><Ionicons name="videocam-outline" size={42} color="#6f6b72" /></View>
                   ) : (
                     <View style={styles.mediaFallback}>
                       <Ionicons name="videocam-outline" size={42} color="#6f6b72" />

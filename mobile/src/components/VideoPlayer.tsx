@@ -51,11 +51,6 @@ export default function VideoPlayer({ videoUrl, title, onClose }: VideoPlayerPro
       setIsLoading(false);
       setError(null);
       
-      // Tenta abrir em tela cheia automaticamente assim que carregar
-      if (videoRef.current && !isFullscreen && Platform.OS !== 'web') {
-        videoRef.current.presentFullscreenPlayer();
-        setIsFullscreen(true);
-      }
     } else if (playbackStatus.error) {
       setError('Erro ao carregar vídeo');
       setIsLoading(false);
