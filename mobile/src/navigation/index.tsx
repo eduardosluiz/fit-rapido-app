@@ -1,3 +1,4 @@
+import type { NavigationState } from '@react-navigation/native';
 import React from 'react';
 import { View, ActivityIndicator } from 'react-native';
 import { NavigationContainer, CommonActions } from '@react-navigation/native';
@@ -192,6 +193,26 @@ function TabsNavigator() {
   return (
     <MainTabs.Navigator
       initialRouteName="Feed"
+      screenListeners={({ navigation, route }) => ({
+        tabPress: event => {
+          event.preventDefault();
+          const state = navigation.getState() as NavigationState;
+          const roots: Record<string, string> = { Feed: 'FeedMain', Receitas: 'ReceitasList', Treinos: 'TreinosList' };
+          const root = roots[route.name];
+          navigation.dispatch({
+            ...CommonActions.reset({
+              ...state,
+              index: state.routes.findIndex(item => item.key === route.key),
+              routes: state.routes.map(item => item.key !== route.key ? item : {
+                ...item,
+                params: undefined,
+                ...(root ? { state: { index: 0, routes: [{ name: root, params: { resetFiltersKey: Date.now() } }] } } : {}),
+              }),
+            }),
+            target: state.key,
+          });
+        },
+      })}
       screenOptions={{
         headerShown: false,
         tabBarActiveTintColor: colors.primary,
@@ -220,20 +241,6 @@ function TabsNavigator() {
             <Ionicons name="restaurant" size={size} color={color} />
           ),
         }}
-        listeners={({ navigation }) => ({
-          tabPress: (e) => {
-            e.preventDefault();
-            navigation.dispatch(
-              CommonActions.navigate({
-                name: 'Receitas',
-                params: {
-                  screen: 'ReceitasList',
-                  params: { resetFiltersKey: Date.now() },
-                },
-              })
-            );
-          },
-        })}
       />
       <MainTabs.Screen
         name="Treinos"
@@ -245,23 +252,6 @@ function TabsNavigator() {
             </View>
           ),
         }}
-        listeners={({ navigation }) => ({
-          tabPress: (e) => {
-            navigation.dispatch(
-              CommonActions.reset({
-                index: 0,
-                routes: [
-                  {
-                    name: 'Treinos',
-                    state: {
-                      routes: [{ name: 'TreinosList' }],
-                    },
-                  },
-                ],
-              })
-            );
-          },
-        })}
       />
       <MainTabs.Screen
         name="Favoritos"

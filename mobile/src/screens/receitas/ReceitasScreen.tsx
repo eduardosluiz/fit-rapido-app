@@ -360,7 +360,7 @@ export default function ReceitasScreen() {
   const renderHeader = () => (
     <View style={{ paddingBottom: mobileSpacing.sectionHeaderToContent }}>
       <View style={styles.headerContainer}>
-        <View style={styles.headerRow}>
+        <View style={[styles.headerRow, onlyFree && { justifyContent: 'flex-start', gap: 12 }]}>
           {onlyFree && <BackButton onPress={() => navigation.goBack()} />}
           <Text style={styles.headerTitle}>{shortcutTitle || 'Receitas'}</Text>
         </View>
