@@ -44,7 +44,7 @@ module.exports = {
         "android.permission.READ_MEDIA_VIDEO",
         "com.google.android.gms.permission.AD_ID"
       ],
-      runtimeVersion: { policy: "appVersion" },
+      runtimeVersion: "1.0.1",
       adaptiveIcon: {
         foregroundImage: "./assets/adaptive-icon.png",
         backgroundColor: "#0f0f0f"
