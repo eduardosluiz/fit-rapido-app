@@ -33,7 +33,10 @@ export class SupabaseService implements OnModuleInit {
     this.logger.log('Conectado ao cliente de armazenamento do Supabase');
   }
 
-  async uploadFile(bucket: string, path: string, fileData: any, contentType: string): Promise<string> {
+  async uploadFile(bucket: string, path: string, fileData: any, contentType: string, expectedBytes?: number): Promise<string> {
+    if (expectedBytes !== undefined && (!Number.isSafeInteger(expectedBytes) || expectedBytes <= 0)) {
+      throw new Error('O arquivo está vazio ou tem tamanho inválido');
+    }
     if (!this.supabase) {
       this.logger.error('Cliente Supabase não inicializado. Verifique as credenciais no .env');
       throw new Error('Supabase client not initialized');
@@ -61,7 +64,9 @@ export class SupabaseService implements OnModuleInit {
       .upload(path, uploadBody, {
         contentType: validContentType,
         cacheControl: '3600',
-        upsert: true,
+        upsert: expectedBytes === undefined,
+        // Explicit length avoids treating a streamed request as an empty body.
+        ...(expectedBytes === undefined ? {} : { headers: { 'Content-Length': String(expectedBytes) }, duplex: 'half' as const }),
       });
 
     if (error) {
@@ -84,6 +89,16 @@ export class SupabaseService implements OnModuleInit {
       throw new Error(`Supabase Public URL Error`);
     }
 
+    if (expectedBytes !== undefined) {
+      const verifyUrl = new URL(publicData.publicUrl);
+      verifyUrl.searchParams.set('verify', String(Date.now()));
+      const response = await fetch(verifyUrl, { method: 'HEAD', signal: AbortSignal.timeout(15000) });
+      const storedBytes = Number(response.headers.get('content-length'));
+      if (!response.ok || storedBytes !== expectedBytes) {
+        this.logger.error(`Arquivo incompleto no Storage: esperado=${expectedBytes}, recebido=${storedBytes}, status=${response.status}`);
+        throw new Error('O armazenamento não confirmou o vídeo completo. O cadastro não foi atualizado.');
+      }
+    }
     this.logger.log(`Sucesso! URL: ${publicData.publicUrl}`);
     return publicData.publicUrl;
   }

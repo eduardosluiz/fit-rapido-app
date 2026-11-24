@@ -118,20 +118,25 @@ export class UploadController {
       const fileName = `video-${Date.now()}-${Math.round(Math.random() * 1e9)}${ext}`;
       const s3Path = `exercicios/${fileName}`;
 
-      let contentType = file.mimetype;
-      if (ext.toLowerCase() === '.mov') {
-        contentType = 'video/mp4';
-      }
+      const contentType = ext.toLowerCase() === '.mov' ? 'video/quicktime' : file.mimetype;
+      const diskSize = (await fs.promises.stat(file.path)).size;
+      if (diskSize <= 0 || diskSize !== file.size) throw new Error('O vídeo recebido está vazio ou incompleto.');
 
       // Usar ReadStream para transmitir o vídeo diretamente do disco para o Supabase, evitando uso excessivo de RAM e crashes
       const fileStream = fs.createReadStream(file.path);
 
-      const publicUrl = await this.supabaseService.uploadFile(
+      let publicUrl: string;
+      try {
+        publicUrl = await this.supabaseService.uploadFile(
         'treinos',
         s3Path,
         fileStream,
         contentType,
+        diskSize,
       );
+      } finally {
+        fileStream.destroy();
+      }
 
       // Deletar o arquivo temporário
       fs.unlinkSync(file.path);

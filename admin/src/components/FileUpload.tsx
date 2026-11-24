@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect, useId } from 'react';
 import { uploadImagem, uploadVideo } from '@/lib/upload';
+import { VideoUploadProgress } from './VideoUploadProgress';
 
 interface FileUploadProps {
   type: 'imagem' | 'video';
@@ -14,6 +15,7 @@ interface FileUploadProps {
 export function FileUpload({ type, value, onChange, label, accept }: FileUploadProps) {
   const reactId = useId();
   const [uploading, setUploading] = useState(false);
+  const [progress, setProgress] = useState(0);
   const [error, setError] = useState<string | null>(null);
   const [preview, setPreview] = useState<string | null>(value || null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -29,6 +31,7 @@ export function FileUpload({ type, value, onChange, label, accept }: FileUploadP
 
     setError(null);
     setUploading(true);
+    setProgress(0);
 
     try {
       let uploadResponse;
@@ -41,7 +44,7 @@ export function FileUpload({ type, value, onChange, label, accept }: FileUploadP
         };
         reader.readAsDataURL(file);
       } else {
-        uploadResponse = await uploadVideo(file);
+        uploadResponse = await uploadVideo(file, setProgress);
         setPreview(uploadResponse.url);
       }
 
@@ -157,6 +160,7 @@ export function FileUpload({ type, value, onChange, label, accept }: FileUploadP
         )}
 
         {/* Manual URL Input (fallback) */}
+        {uploading && type === 'video' && <VideoUploadProgress percent={progress} />}
         <div>
           <label className="block text-text-light text-sm mb-1">
             Ou informe a URL diretamente:

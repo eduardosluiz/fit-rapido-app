@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { cn } from '@/lib/utils';
 import { ImageCropper } from './ImageCropper';
+import { VideoUploadProgress } from '../VideoUploadProgress';
 
 interface FileUploadProps {
   type: 'imagem' | 'video';
@@ -24,6 +25,7 @@ interface FileUploadProps {
 export function FileUpload({ type, value, onChange, label, accept, error, hideUrlInput = false, compact = false, aspect = 4 / 3 }: FileUploadProps) {
   const reactId = useId();
   const [uploading, setUploading] = useState(false);
+  const [progress, setProgress] = useState(0);
   const [uploadError, setUploadError] = useState<string | null>(null);
   const [preview, setPreview] = useState<string | null>(value || null);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
@@ -59,8 +61,9 @@ export function FileUpload({ type, value, onChange, label, accept, error, hideUr
     } else {
       setUploadError(null);
       setUploading(true);
+      setProgress(0);
       try {
-        const uploadResponse = await uploadVideo(file);
+        const uploadResponse = await uploadVideo(file, setProgress);
         setPreview(uploadResponse.url);
         onChange(uploadResponse.url);
       } catch (err: any) {
@@ -172,6 +175,8 @@ export function FileUpload({ type, value, onChange, label, accept, error, hideUr
             )}
           </Label>
         )}
+        {uploading && type === 'video' && <VideoUploadProgress percent={progress} />}
+        {displayError && <p className="text-xs text-destructive" role="alert">{displayError}</p>}
       </div>
     );
   }
@@ -277,6 +282,7 @@ export function FileUpload({ type, value, onChange, label, accept, error, hideUr
       )}
 
       {/* Manual URL Input - Oculto quando hideUrlInput é true */}
+      {uploading && type === 'video' && <VideoUploadProgress percent={progress} />}
       {!hideUrlInput && (
         <div>
           <Input
