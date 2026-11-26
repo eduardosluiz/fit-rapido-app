@@ -115,7 +115,7 @@ export class IAService {
         const unidade = ri.unidade || 'g';
         return `- ${nome}: ${quantidade}${unidade}`;
       })
-      .join('\n');
+      .join('\n') || (receita.ingredientes || []).join('\n');
 
     return `
 RECEITA: ${receita.titulo}

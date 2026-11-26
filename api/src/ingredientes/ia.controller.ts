@@ -1,3 +1,4 @@
+import { NutritionSimulationService, NutritionSimulationDto } from './nutrition-simulation.service';
 import {
   Controller,
   Post,
@@ -15,7 +16,12 @@ import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 @Controller('ingredientes/ia')
 @UseGuards(JwtAuthGuard)
 export class IAController {
-  constructor(private readonly iaService: IAService) {}
+  constructor(private readonly iaService: IAService, private readonly nutrition: NutritionSimulationService) {}
+
+  @Post('simular-nutricao')
+  simulate(@Request() req, @Body() dto: NutritionSimulationDto) {
+    return this.nutrition.simulate(req.user.sub, dto);
+  }
 
   @Post('consulta')
   async consultar(@Request() req, @Body() createDto: CreateConsultaIADto) {

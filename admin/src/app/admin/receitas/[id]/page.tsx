@@ -5,6 +5,7 @@ import { useRouter, useParams } from 'next/navigation';
 import Link from 'next/link';
 import { api } from '@/lib/api';
 import { useAuth } from '@/lib/useAuth';
+import { useRecipeDraft } from '@/lib/useRecipeDraft';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Checkbox } from '@/components/ui/checkbox';
 import { ChevronsUpDown, PlusCircle, Trash2, BookOpen, Video, Info, Package } from 'lucide-react';
@@ -18,14 +19,14 @@ export default function EditarReceita() {
   const router = useRouter();
   const params = useParams();
   const id = params?.id as string;
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, user } = useAuth();
   const confirm = useConfirm();
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [categorias, setCategorias] = useState<any[]>([]);
   const [errors, setErrors] = useState<Record<string, string>>({});
 
-  const [formData, setFormData] = useState({
+  const { value: formData, setValue: setFormData, initialize: initializeForm, clear: clearDraft, discard: discardDraft, notice: draftNotice } = useRecipeDraft({
     titulo: '',
     descricao: '',
     ingredientes: '',
@@ -54,13 +55,13 @@ export default function EditarReceita() {
     sodio: '',
     dica: '',
     finalizacao: '',
-  });
+  }, user?.id ? `recipe-draft:v1:${user.id}:${id}` : null);
 
   useEffect(() => {
     if (isAuthenticated && id) {
       loadData();
     }
-  }, [isAuthenticated, id]);
+  }, [isAuthenticated, id, user?.id, initializeForm]);
 
   const loadData = async () => {
     try {
@@ -111,7 +112,7 @@ export default function EditarReceita() {
       const modoPreparoList = normalizeArray(receita.modo_preparo);
       const tagsList = normalizeArray(receita.tags);
 
-      setFormData({
+      initializeForm({
         titulo: receita.titulo || '',
         descricao: receita.descricao || '',
         ingredientes: ingredientesList.join('\n'),
@@ -193,6 +194,7 @@ export default function EditarReceita() {
       data.substituicoes_ingredientes = substituicoesAgrupadas;
 
       await api.updateReceita(id, data);
+      clearDraft();
       toast.success('Receita atualizada');
       router.push('/admin/receitas');
     } catch (err: any) {
@@ -239,12 +241,12 @@ export default function EditarReceita() {
           </div>
           <div className="flex items-center justify-end gap-3">
             <Link href={`/admin/receitas/${id}/ingredientes`}>
-              <button className="px-4 py-2 rounded-md border border-[#c8921a]/20 text-[#c8921a] text-[10px] font-normal uppercase tracking-widest hover:bg-[#c8921a] hover:text-white transition-all flex items-center gap-2">
+              <button type="button" className="px-4 py-2 rounded-md border border-[#c8921a]/20 text-[#c8921a] text-[10px] font-normal uppercase tracking-widest hover:bg-[#c8921a] hover:text-white transition-all flex items-center gap-2">
                 <Package size={14} /> Ingredientes
               </button>
             </Link>
             <Link href="/admin/receitas">
-              <button className="px-4 py-2 rounded-md border border-gray-300 dark:border-[#333] text-gray-500 dark:text-gray-400 text-[10px] font-normal uppercase tracking-widest hover:bg-gray-50 transition-all">
+              <button type="button" className="px-4 py-2 rounded-md border border-gray-300 dark:border-[#333] text-gray-500 dark:text-gray-400 text-[10px] font-normal uppercase tracking-widest hover:bg-gray-50 transition-all">
                 Voltar
               </button>
             </Link>
@@ -252,6 +254,7 @@ export default function EditarReceita() {
         </div>
 
         <div className="bg-white dark:bg-[#0f0f0f] border border-gray-200 dark:border-[#222] rounded-xl shadow-sm overflow-hidden p-4 sm:p-12">
+          <div className="mb-4 text-sm text-gray-600 dark:text-gray-300" role="status">{draftNotice || 'Seu preenchimento será guardado neste navegador enquanto você edita.'} <button type="button" className="underline ml-2" onClick={() => { if (window.confirm('Descartar o preenchimento local e voltar aos dados iniciais?')) discardDraft(); }}>Descartar preenchimento local</button></div>
           <form id="receita-form" onSubmit={handleSubmit} className="space-y-12">
             {/* Seção: Informações Básicas */}
             <div className="space-y-8">
@@ -268,7 +271,7 @@ export default function EditarReceita() {
                     <label className="text-[9px] font-normal uppercase tracking-[0.15em] text-gray-800 dark:text-gray-200 ml-0.5">Título da Receita</label>
                     <input
                       value={formData.titulo}
-                      onChange={(e) => setFormData({ ...formData, titulo: e.target.value })}
+                      onChange={(e) => setFormData(previous => ({ ...previous, titulo: e.target.value }))}
                       placeholder="Ex: BOLO DE CHOCOLATE FIT"
                       className="w-full bg-white dark:bg-[#111] border border-gray-400 dark:border-[#555] rounded-md px-4 py-3 text-xs focus:outline-none focus:ring-2 focus:ring-[#c8921a]/20 focus:border-[#c8921a] text-gray-700 dark:text-gray-300 font-normal transition-all"
                       required
@@ -279,7 +282,7 @@ export default function EditarReceita() {
                     <label className="text-[9px] font-normal uppercase tracking-[0.15em] text-gray-800 dark:text-gray-200 ml-0.5">Descrição Editorial</label>
                     <textarea
                       value={formData.descricao}
-                      onChange={(e) => setFormData({ ...formData, descricao: e.target.value })}
+                      onChange={(e) => setFormData(previous => ({ ...previous, descricao: e.target.value }))}
                       placeholder="Breve resumo atrativo..."
                       className="w-full min-h-[150px] bg-white dark:bg-[#111] border border-gray-400 dark:border-[#555] rounded-md px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#c8921a]/20 focus:border-[#c8921a] text-gray-800 dark:text-gray-200 resize-none font-normal leading-relaxed transition-all"
                     />
@@ -294,7 +297,7 @@ export default function EditarReceita() {
                         </label>
                         <MultipleImageUpload
                           images={formData.imagens_url}
-                          onChange={(images) => setFormData({ ...formData, imagens_url: images, imagem_url: images[0] || '' })}
+                          onChange={(images) => setFormData(previous => ({ ...previous, imagens_url: images, imagem_url: images[0] || '' }))}
                           maxImages={10}
                         />
                       </div>
@@ -306,7 +309,7 @@ export default function EditarReceita() {
                         <FileUpload
                           type="video"
                           value={formData.video_url}
-                          onChange={(url) => setFormData({ ...formData, video_url: url })}
+                          onChange={(url) => setFormData(previous => ({ ...previous, video_url: url }))}
                           hideUrlInput
                         />
                       </div>
@@ -319,7 +322,7 @@ export default function EditarReceita() {
                     <label className="text-[9px] font-normal uppercase tracking-[0.15em] text-gray-800 dark:text-gray-200 ml-0.5">Tags</label>
                     <input
                       value={formData.tags}
-                      onChange={(e) => setFormData({ ...formData, tags: e.target.value })}
+                      onChange={(e) => setFormData(previous => ({ ...previous, tags: e.target.value }))}
                       placeholder="proteico, sem glúten..."
                       className="w-full bg-white dark:bg-[#111] border border-gray-400 dark:border-[#555] rounded-md px-4 py-3 text-sm focus:outline-none focus:border-[#c8921a] text-gray-700 dark:text-gray-300 transition-all"
                     />
@@ -332,7 +335,7 @@ export default function EditarReceita() {
                       </div>
                       <Switch
                         checked={formData.ativa}
-                        onCheckedChange={(checked) => setFormData({ ...formData, ativa: checked })}
+                        onCheckedChange={(checked) => setFormData(previous => ({ ...previous, ativa: checked }))}
                         className="data-[state=unchecked]:bg-gray-400 border border-gray-500 shadow-sm"
                       />
                     </div>
@@ -343,7 +346,7 @@ export default function EditarReceita() {
                       </div>
                       <Switch
                         checked={formData.is_inedito}
-                        onCheckedChange={(checked) => setFormData({ ...formData, is_inedito: checked })}
+                        onCheckedChange={(checked) => setFormData(previous => ({ ...previous, is_inedito: checked }))}
                         className="data-[state=unchecked]:bg-gray-400 border border-gray-500 shadow-sm"
                       />
                     </div>
@@ -353,7 +356,7 @@ export default function EditarReceita() {
                       </div>
                       <Switch
                         checked={formData.is_free}
-                        onCheckedChange={(checked) => setFormData({ ...formData, is_free: checked })}
+                        onCheckedChange={(checked) => setFormData(previous => ({ ...previous, is_free: checked }))}
                         className="data-[state=unchecked]:bg-gray-400 border border-gray-500 shadow-sm"
                       />
                     </div>
@@ -365,7 +368,7 @@ export default function EditarReceita() {
                       <input
                         type="number"
                         value={formData.tempo_preparo}
-                        onChange={(e) => setFormData({ ...formData, tempo_preparo: e.target.value })}
+                        onChange={(e) => setFormData(previous => ({ ...previous, tempo_preparo: e.target.value }))}
                         className="w-full bg-white dark:bg-[#111] border border-gray-400 dark:border-[#555] rounded-md px-4 py-3 text-xs focus:outline-none focus:border-[#c8921a] text-gray-700 dark:text-gray-300"
                       />
                     </div>
@@ -373,7 +376,7 @@ export default function EditarReceita() {
                       <label className="text-[9px] font-normal uppercase tracking-[0.15em] text-gray-800 dark:text-gray-200 ml-0.5">Dificuldade</label>
                       <select
                         value={formData.dificuldade}
-                        onChange={(e) => setFormData({ ...formData, dificuldade: e.target.value })}
+                        onChange={(e) => setFormData(previous => ({ ...previous, dificuldade: e.target.value }))}
                         className="w-full h-[46px] bg-white dark:bg-[#111] border border-gray-400 dark:border-[#555] rounded-md px-4 text-xs focus:outline-none focus:border-[#c8921a] text-gray-700 dark:text-gray-300 font-normal appearance-none"
                       >
                         <option value="facil">Fácil</option>
@@ -388,7 +391,7 @@ export default function EditarReceita() {
                       <label className="text-[9px] font-normal uppercase tracking-[0.15em] text-gray-800 dark:text-gray-200 ml-0.5">Categorias</label>
                       <Popover>
                         <PopoverTrigger asChild>
-                          <button className="w-full h-[46px] bg-white dark:bg-[#111] border border-gray-400 dark:border-[#555] rounded-md px-4 text-sm focus:outline-none focus:border-[#c8921a] text-gray-700 dark:text-gray-300 font-normal flex items-center justify-between">
+                          <button type="button" className="w-full h-[46px] bg-white dark:bg-[#111] border border-gray-400 dark:border-[#555] rounded-md px-4 text-sm focus:outline-none focus:border-[#c8921a] text-gray-700 dark:text-gray-300 font-normal flex items-center justify-between">
                             {formData.categoria_ids.length > 0 ? `${formData.categoria_ids.length} selecionada(s)` : 'Vincular...'}
                             <ChevronsUpDown size={14} />
                           </button>
@@ -398,7 +401,7 @@ export default function EditarReceita() {
                             {categorias.map((cat) => (
                               <div key={cat.id} className="flex items-center space-x-3 p-3 hover:bg-gray-50 rounded-md cursor-pointer" onClick={() => {
                                 const newIds = formData.categoria_ids.includes(cat.id) ? formData.categoria_ids.filter(id => id !== cat.id) : [...formData.categoria_ids, cat.id];
-                                setFormData({ ...formData, categoria_ids: newIds });
+                                setFormData(previous => ({ ...previous, categoria_ids: newIds }));
                               }}>
                                 <Checkbox checked={formData.categoria_ids.includes(cat.id)} className="border-gray-400" />
                                 <span className="text-[12px] font-normal uppercase tracking-tighter text-gray-700 dark:text-gray-300">{cat.nome}</span>
@@ -413,7 +416,7 @@ export default function EditarReceita() {
                       <input
                         type="number"
                         value={formData.porcoes}
-                        onChange={(e) => setFormData({ ...formData, porcoes: e.target.value })}
+                        onChange={(e) => setFormData(previous => ({ ...previous, porcoes: e.target.value }))}
                         className="w-full bg-white dark:bg-[#111] border border-gray-400 dark:border-[#555] rounded-md px-4 py-3 text-xs focus:outline-none focus:border-[#c8921a] text-gray-700 dark:text-gray-300"
                       />
                     </div>
@@ -436,7 +439,7 @@ export default function EditarReceita() {
                   <label className="text-[9px] font-normal uppercase tracking-[0.15em] text-gray-800 dark:text-gray-200 ml-0.5">Lista de Ingredientes (um por linha)</label>
                   <textarea
                     value={formData.ingredientes}
-                    onChange={(e) => setFormData({ ...formData, ingredientes: e.target.value })}
+                    onChange={(e) => setFormData(previous => ({ ...previous, ingredientes: e.target.value }))}
                     rows={8}
                     className="w-full bg-white dark:bg-[#111] border border-gray-400 dark:border-[#555] rounded-md px-4 py-4 text-sm focus:outline-none focus:ring-2 focus:ring-[#c8921a]/20 focus:border-[#c8921a] text-gray-800 dark:text-gray-200 resize-y font-mono transition-all"
                   />
@@ -505,7 +508,7 @@ export default function EditarReceita() {
                   <label className="text-[9px] font-normal uppercase tracking-[0.15em] text-gray-800 dark:text-gray-200 ml-0.5">Modo de Preparo (um passo por linha)</label>
                   <textarea
                     value={formData.modo_preparo}
-                    onChange={(e) => setFormData({ ...formData, modo_preparo: e.target.value })}
+                    onChange={(e) => setFormData(previous => ({ ...previous, modo_preparo: e.target.value }))}
                     rows={10}
                     className="w-full bg-white dark:bg-[#111] border border-gray-400 dark:border-[#555] rounded-md px-4 py-4 text-sm focus:outline-none focus:ring-2 focus:ring-[#c8921a]/20 focus:border-[#c8921a] text-gray-800 dark:text-gray-200 resize-y transition-all"
                   />
@@ -515,7 +518,7 @@ export default function EditarReceita() {
                   <label className="text-[9px] font-normal uppercase tracking-[0.15em] text-gray-800 dark:text-gray-200 ml-0.5">Dica de Ouro (Exibida com ícone de lâmpada)</label>
                   <textarea
                     value={formData.dica}
-                    onChange={(e) => setFormData({ ...formData, dica: e.target.value })}
+                    onChange={(e) => setFormData(previous => ({ ...previous, dica: e.target.value }))}
                     rows={3}
                     placeholder="Dica extra para o preparo ou conservação..."
                     className="w-full bg-white dark:bg-[#111] border border-gray-400 dark:border-[#555] rounded-md px-4 py-4 text-sm focus:outline-none focus:ring-2 focus:ring-[#c8921a]/20 focus:border-[#c8921a] text-gray-800 dark:text-gray-200 resize-none transition-all"
@@ -526,7 +529,7 @@ export default function EditarReceita() {
                   <label className="text-[9px] font-normal uppercase tracking-[0.15em] text-gray-800 dark:text-gray-200 ml-0.5">Finalização (Exibida após o modo de preparo)</label>
                   <textarea
                     value={formData.finalizacao}
-                    onChange={(e) => setFormData({ ...formData, finalizacao: e.target.value })}
+                    onChange={(e) => setFormData(previous => ({ ...previous, finalizacao: e.target.value }))}
                     rows={3}
                     placeholder="Sugestões para finalizar o prato..."
                     className="w-full bg-white dark:bg-[#111] border border-gray-400 dark:border-[#555] rounded-md px-4 py-4 text-sm focus:outline-none focus:ring-2 focus:ring-[#c8921a]/20 focus:border-[#c8921a] text-gray-800 dark:text-gray-200 resize-none transition-all"
@@ -614,7 +617,7 @@ export default function EditarReceita() {
                   <label className="text-[9px] font-normal uppercase tracking-[0.15em] text-gray-800 dark:text-gray-200 ml-0.5">Aviso Nutricional Customizado</label>
                   <textarea
                     value={formData.aviso_nutricional}
-                    onChange={(e) => setFormData({ ...formData, aviso_nutricional: e.target.value })}
+                    onChange={(e) => setFormData(previous => ({ ...previous, aviso_nutricional: e.target.value }))}
                     rows={6}
                     placeholder="Ex: Os valores podem variar dependendo da marca..."
                     className="w-full bg-white dark:bg-[#111] border border-gray-400 dark:border-[#555] rounded-md px-4 py-4 text-sm focus:outline-none focus:border-[#c8921a] text-gray-800 dark:text-gray-200 resize-none transition-all"

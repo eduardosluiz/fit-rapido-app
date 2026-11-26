@@ -1,3 +1,4 @@
+import { NutritionSimulationService } from './nutrition-simulation.service';
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { IngredientesController } from './ingredientes.controller';
@@ -36,6 +37,7 @@ import { USDAService } from './usda.service';
     IAController,
   ],
   providers: [
+    NutritionSimulationService,
     IngredientesService,
     SubstituicoesService,
     ReceitaIngredientesService,
